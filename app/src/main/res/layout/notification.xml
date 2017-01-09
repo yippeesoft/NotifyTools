@@ -10,15 +10,15 @@
             android:layout_height="wrap_content"
             android:baselineAligned="false"
             android:layout_weight="1"  >
-        <Button android:id="@+id/bt1"
+        <Button android:id="@+id/btWeather"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Notification测试"
+                android:text="Weather"
             />
         <Button android:id="@+id/bt2"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="清除Notification"
+                android:text="Clear"
             />
           </LinearLayout>
     <LinearLayout

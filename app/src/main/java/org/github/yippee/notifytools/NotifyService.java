@@ -9,6 +9,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 
+import org.github.yippee.notifytools.bean.Heweather7bean;
+import org.github.yippee.notifytools.service.HeWeatherService;
 import org.github.yippee.notifytools.utils.Logs;
 
 /**
@@ -39,13 +41,16 @@ public class NotifyService extends Service{
         noteMng = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Notification myNotify = new Notification();
         myNotify.icon=R.drawable.ic_notify;
-        myNotify.tickerText = "TickerText:您有新短消息，请注意查收！";
+        myNotify.tickerText = "";
         myNotify.when = System.currentTimeMillis();
         myNotify.flags = Notification.FLAG_NO_CLEAR;// 不能够自动清除
         RemoteViews rv = new RemoteViews(getPackageName(),
                 R.layout.notification);
         myNotify.contentView=rv;
+//        rv.setOnClickPendingIntent();
         myNotify.contentView.setProgressBar(R.id.pb, 100,0, false);
+        PendingIntent piWeather=PendingIntent.getService(this, 0, new Intent(this, HeWeatherService.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        myNotify.contentView.setOnClickPendingIntent(R.id.btWeather,piWeather);
         //设置进度条，最大值 为100,当前值为0，最后一个参数为true时显示条纹
         myNotify.contentView.setProgressBar(R.id.pb, 100,50, false);
         noteMng.notify(NOTIFICATION_FLAG, myNotify);
