@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 
 /**
- * Created by shengfang on 2016/9/14.
+ * Created by sf on 2016/9/14.
  */
 public class MainApp extends Application {
     private Logs log = Logs.getLogger(this.getClass());
@@ -27,7 +27,6 @@ public class MainApp extends Application {
         public void uncaughtException(Thread arg0, Throwable arg1) {
             Log.e(arg0.toString(),arg1.toString());
             log.e(arg1);
-
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(3);
         }
@@ -44,7 +43,7 @@ public class MainApp extends Application {
 
         log.d("DpsApp onCreate " );
         super.onCreate();
-
+        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
     }
 
     @Override

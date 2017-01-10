@@ -11,6 +11,7 @@ import android.widget.RemoteViews;
 
 import org.github.yippee.notifytools.bean.Heweather7bean;
 import org.github.yippee.notifytools.service.HeWeatherService;
+import org.github.yippee.notifytools.service.VcardService;
 import org.github.yippee.notifytools.utils.Logs;
 
 /**
@@ -48,11 +49,15 @@ public class NotifyService extends Service{
                 R.layout.notification);
         myNotify.contentView=rv;
 //        rv.setOnClickPendingIntent();
-        myNotify.contentView.setProgressBar(R.id.pb, 100,0, false);
+
         PendingIntent piWeather=PendingIntent.getService(this, 0, new Intent(this, HeWeatherService.class), PendingIntent.FLAG_UPDATE_CURRENT);
         myNotify.contentView.setOnClickPendingIntent(R.id.btWeather,piWeather);
+
+        PendingIntent piVcard=PendingIntent.getService(this, 0, new Intent(this, VcardService.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        myNotify.contentView.setOnClickPendingIntent(R.id.btVcard,piVcard);
         //设置进度条，最大值 为100,当前值为0，最后一个参数为true时显示条纹
-        myNotify.contentView.setProgressBar(R.id.pb, 100,50, false);
+        //        myNotify.contentView.setProgressBar(R.id.pb, 100,0, false);
+//        myNotify.contentView.setProgressBar(R.id.pb, 100,50, false);
         noteMng.notify(NOTIFICATION_FLAG, myNotify);
     }
 

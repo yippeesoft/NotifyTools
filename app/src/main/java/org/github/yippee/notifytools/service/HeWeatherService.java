@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import org.github.yippee.notifytools.R;
 import org.github.yippee.notifytools.bean.Heweather7bean;
 import org.github.yippee.notifytools.utils.LocalConst;
+import org.github.yippee.notifytools.utils.LocalConstsf;
 import org.github.yippee.notifytools.utils.Logs;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ import rx.schedulers.Schedulers;
 public class HeWeatherService  extends Service {
     private Logs log = Logs.getLogger(this.getClass());
     String baseUrl="https://free-api.heweather.com/v5/";
-    String [] citys={"福州","长沙","武汉"};
+    String [] citys={"福州"};
     Gson gson = new Gson();
     Retrofit retrofit;
     OkHttpClient okHttpClient;
@@ -69,7 +70,7 @@ public class HeWeatherService  extends Service {
     int notifyID=10;
     void get7(){
         for(int i=0;i<citys.length;i++){
-            String url=baseUrl+"forecast?"+"city="+citys[i]+"&key="+ LocalConst.heweatherKey;
+            String url=baseUrl+"forecast?"+"city="+citys[i]+"&key="+ LocalConstsf.heweatherKey;
             log.d(url);
             weatherService.get7(url).subscribeOn(Schedulers.io())
                     .flatMap(new Func1<Response<ResponseBody>, Observable<Heweather7bean>>() {
