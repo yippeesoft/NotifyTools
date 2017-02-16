@@ -14,6 +14,8 @@ import org.github.yippee.notifytools.utils.Logs;
 
 import java.util.HashMap;
 
+import static android.support.multidex.MultiDex.*;
+
 
 /**
  * Created by sf on 2016/9/14.
@@ -36,7 +38,7 @@ public class MainApp extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this);
+        install(this);
     }
     @Override
     public void onCreate() {
