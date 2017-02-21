@@ -27,8 +27,9 @@ public class MainApp extends Application {
 
         @Override
         public void uncaughtException(Thread arg0, Throwable arg1) {
-            Log.e(arg0.toString(),arg1.toString());
-            log.e(arg1);
+            arg1.printStackTrace();
+            Log.e("uncaughtException:  "+arg0.toString(),arg1.toString());
+            log.e("uncaughtException:  "+arg1);
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(3);
         }
