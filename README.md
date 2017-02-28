@@ -16,7 +16,7 @@
 |天气     |从和风天气获取天气数据，默认福州 |
 |联系人导出    |解决安卓默认导出有500限制| 
 |PDF文件显示    |安卓5.0以上| 
-
+|行政区划   |基于 xzqh.org网页解析| 
 
 ##感谢
 
@@ -29,4 +29,4 @@
 |https://github.com/chrisbanes/PhotoView| 图片缩放移动等 |
 |太多，从略 |toolbar |
 |https://github.com/google/material-design-icons |图标 |
- 
+|http://www.xzqh.org/html/sitemap.html|行政区划网|

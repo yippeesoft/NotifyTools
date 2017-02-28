@@ -1,5 +1,6 @@
 package org.github.yippee.notifytools;
 
+import org.github.yippee.notifytools.java.WardService;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,5 +14,8 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
+        new WardService().getWard();
+
+        Thread.sleep(600000);
     }
 }
