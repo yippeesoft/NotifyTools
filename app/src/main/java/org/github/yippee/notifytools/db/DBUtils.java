@@ -4,8 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.github.yippee.notifytools.MainApp;
-import org.github.yippee.notifytools.db.greendao.DaoMaster;
-import org.github.yippee.notifytools.db.greendao.DaoSession;
+import org.github.yippee.notifytools.db.greendaogen.DaoMaster;
+import org.github.yippee.notifytools.db.greendaogen.DaoSession;
+
 
 /**
  * Created by sf on 2017/2/28.

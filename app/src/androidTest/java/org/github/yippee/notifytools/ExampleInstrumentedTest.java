@@ -5,7 +5,8 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.github.yippee.notifytools.db.DBUtils;
-import org.github.yippee.notifytools.db.greendao.UserDao;
+
+import org.github.yippee.notifytools.db.greendaogen.UserDao;
 import org.github.yippee.notifytools.db.test.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
