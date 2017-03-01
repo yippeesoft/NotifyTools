@@ -1,7 +1,13 @@
 package org.github.yippee.notifytools;
 
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+
 import org.github.yippee.notifytools.java.WardService;
+import org.github.yippee.notifytools.media.BmpUtils;
+import org.github.yippee.notifytools.media.MediaMetas;
 import org.junit.Test;
+
 
 import static org.junit.Assert.*;
 
@@ -17,5 +23,12 @@ public class ExampleUnitTest {
         new WardService().getWard();
 
         Thread.sleep(600000);
+    }
+
+
+    @Test
+    public void testMediaMeta(){
+        Bitmap b= MediaMetas.getVideoBmp("/sdcard/1_smooth.mp4",3*1000*1000, MediaMetadataRetriever.OPTION_CLOSEST);
+        BmpUtils.savePic(b,"/sdcard/","111.png");
     }
 }

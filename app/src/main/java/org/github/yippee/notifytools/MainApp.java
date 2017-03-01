@@ -22,14 +22,15 @@ import static android.support.multidex.MultiDex.*;
  */
 public class MainApp extends Application {
     private Logs log = Logs.getLogger(this.getClass());
+
     public class CrashHandler implements Thread.UncaughtExceptionHandler {
         private Logs log = Logs.getLogger(this.getClass());
 
         @Override
         public void uncaughtException(Thread arg0, Throwable arg1) {
             arg1.printStackTrace();
-            Log.e("uncaughtException:  "+arg0.toString(),arg1.toString());
-            log.e("uncaughtException:  "+arg1);
+            Log.e("uncaughtException:  " + arg0.toString(), arg1.toString());
+            log.e("uncaughtException:  " + arg1);
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(3);
         }
@@ -41,12 +42,14 @@ public class MainApp extends Application {
         super.attachBaseContext(base);
         install(this);
     }
+
     @Override
     public void onCreate() {
 
-        log.d("DpsApp onCreate " );
+        log.d("DpsApp onCreate ");
         super.onCreate();
         Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
+        application=this;
     }
 
     @Override
@@ -57,12 +60,13 @@ public class MainApp extends Application {
 
     @Override
     public void onTerminate() {
-        log.d("onTerminate "  );
+        log.d("onTerminate ");
         super.onTerminate();
 
-
-
     }
-
+    private static MainApp application;
+    public static MainApp getApplication() {
+        return application;
+    }
 
 }
