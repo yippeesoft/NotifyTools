@@ -10,6 +10,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.github.yippee.notifytools.db.DBUtils;
 import org.github.yippee.notifytools.utils.Logs;
 
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public class MainApp extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         install(this);
+
     }
 
     @Override
@@ -50,6 +52,7 @@ public class MainApp extends Application {
         super.onCreate();
         Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
         application=this;
+        DBUtils.getSingleTon().setDatabase();
     }
 
     @Override
