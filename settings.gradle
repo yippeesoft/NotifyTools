@@ -1,1 +1,1 @@
-include ':app', ':chinesecalendar'
+include ':app', ':chinesecalendar', ':javatest'

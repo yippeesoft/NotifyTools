@@ -17,6 +17,7 @@
 |联系人导出    |解决安卓默认导出有500限制| 
 |PDF文件显示    |安卓5.0以上| 
 |行政区划   |基于 xzqh.org网页解析| 
+|JAVA BPDEEP  |java实现的深度神经网络| 
 
 ##感谢
 
@@ -30,3 +31,4 @@
 |太多，从略 |toolbar |
 |https://github.com/google/material-design-icons |图标 |
 |http://www.xzqh.org/html/sitemap.html|行政区划网|
+|http://blog.csdn.net/wtq1993/article/details/50705677|java实现的深度神经网络|
