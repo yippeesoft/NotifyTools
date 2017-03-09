@@ -1,8 +1,16 @@
 # NotifyTools
 
 ##简介
-    android notify tools
-	基于安卓系统通知栏Android Notification小工具集
+    
+	
+| 目录    |    说明  |
+| ------------- |  -------------------- |
+|app android notify tools  |基于安卓系统通知栏Android Notification小工具集 |
+|chinesecalendar |万年历 农历 节气 节日 星座 星宿 属相 生肖 闰年月 时辰 |
+|javatest |java demo|
+|thidrd/chinesecalendar  |C# 万年历 农历 节气 节日 星座 星宿 属相 生肖 闰年月 时辰 |
+|thidrd/xzqh |行政区划HTML |
+
 	
 ##测试设备
 | 机型    |    说明  |
