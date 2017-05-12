@@ -10,6 +10,7 @@
 |javatest |java demo|
 |thidrd/chinesecalendar  |C# 万年历 农历 节气 节日 星座 星宿 属相 生肖 闰年月 时辰 |
 |thidrd/xzqh |行政区划HTML |
+|ClearProcesses|后台进程清理|
 
 	
 ##测试设备
@@ -26,6 +27,7 @@
 |PDF文件显示    |安卓5.0以上| 
 |行政区划   |基于 xzqh.org网页解析| 
 |JAVA BPDEEP  |java实现的深度神经网络| 
+|ClearProcesses|后台进程清理|
 
 ##感谢
 
@@ -40,3 +42,4 @@
 |https://github.com/google/material-design-icons |图标 |
 |http://www.xzqh.org/html/sitemap.html|行政区划网|
 |http://blog.csdn.net/wtq1993/article/details/50705677|java实现的深度神经网络|
+|https://github.com/qyxxjd/ClearProcesses|无障碍清理进程|
