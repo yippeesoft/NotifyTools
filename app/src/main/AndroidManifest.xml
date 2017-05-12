@@ -27,7 +27,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="com.classic.clearprocesses.ForceStopActivity"
+            android:exported="true"
+                  android:launchMode="singleTop"
+                  android:noHistory="true"
+                  android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
 
+                <category android:name="android.intent.category.stop"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

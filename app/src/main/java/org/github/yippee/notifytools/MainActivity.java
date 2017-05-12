@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         log.d("oncreate ");
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 //        sendTenNotifications();
 
 //        1. 第一次请求权限时，用户拒绝了，下一次：shouldShowRequestPermissionRationale()  返回 true，应该显示一些为什么需要这个权限的说明
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 //        3. 设备的策略禁止当前应用获取这个权限的授权：shouldShowRequestPermissionRationale()  返回 false
         requestPermissions();
         startService(new Intent(this, NotifyService.class));
-//        this.finish();
+        this.finish();
     }
 
     void simInfo(){

@@ -157,10 +157,10 @@ public class HeWeatherService  extends Service {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         okHttpClient = new OkHttpClient.Builder()
-//                .readTimeout(5, TimeUnit.SECONDS)//设置读取超时时间
-//                .writeTimeout(5,TimeUnit.SECONDS)//设置写的超时时间
-//                .connectTimeout(5,TimeUnit.SECONDS)//设置连接超时时间
-//                .addInterceptor(interceptor)
+                .readTimeout(15, TimeUnit.SECONDS)//设置读取超时时间
+                .writeTimeout(15,TimeUnit.SECONDS)//设置写的超时时间
+                .connectTimeout(15,TimeUnit.SECONDS)//设置连接超时时间
+                .addInterceptor(interceptor)
                 .build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

@@ -9,6 +9,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 
+import com.classic.clearprocesses.*;
+
 import org.github.yippee.notifytools.bean.Heweather7bean;
 import org.github.yippee.notifytools.service.HeWeatherService;
 import org.github.yippee.notifytools.service.SimService;
@@ -59,6 +61,13 @@ public class NotifyService extends Service{
 
         PendingIntent piSimInfo=PendingIntent.getService(this, 0, new Intent(this, SimService.class), PendingIntent.FLAG_UPDATE_CURRENT);
         myNotify.contentView.setOnClickPendingIntent(R.id.btSimInfo,piSimInfo);
+
+        Intent intent = new Intent(this,com.classic.clearprocesses.ForceStopActivity.class);//"com.classic.clearprocesses.ForceStopActivity");
+//        intent.setClassName("com.classic.clearprocesses", "com.classic.clearprocesses.ForceStopActivity");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        this.startActivity(intent);
+        PendingIntent psProcee=PendingIntent.getActivity(this,0,intent, 0);
+        myNotify.contentView.setOnClickPendingIntent(R.id.btStop,psProcee);
 
         //设置进度条，最大值 为100,当前值为0，最后一个参数为true时显示条纹
         //        myNotify.contentView.setProgressBar(R.id.pb, 100,0, false);
