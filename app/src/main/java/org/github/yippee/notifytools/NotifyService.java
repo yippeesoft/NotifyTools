@@ -63,10 +63,10 @@ public class NotifyService extends Service{
         myNotify.contentView.setOnClickPendingIntent(R.id.btSimInfo,piSimInfo);
 
         Intent intent = new Intent(this,com.classic.clearprocesses.ForceStopActivity.class);//"com.classic.clearprocesses.ForceStopActivity");
-//        intent.setClassName("com.classic.clearprocesses", "com.classic.clearprocesses.ForceStopActivity");
+      // intent.setClassName("com.classic.clearprocesses", "com.classic.clearprocesses.ForceStopActivity");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        this.startActivity(intent);
-        PendingIntent psProcee=PendingIntent.getActivity(this,0,intent, 0);
+//      this.startActivity(intent);
+        PendingIntent psProcee=PendingIntent.getActivity(this,0,intent, Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         myNotify.contentView.setOnClickPendingIntent(R.id.btStop,psProcee);
 
         //设置进度条，最大值 为100,当前值为0，最后一个参数为true时显示条纹

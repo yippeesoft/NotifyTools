@@ -30,7 +30,7 @@
         <activity android:name="com.classic.clearprocesses.ForceStopActivity"
             android:exported="true"
                   android:launchMode="singleTop"
-                  android:noHistory="true"
+
                   android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
 
@@ -56,7 +56,19 @@
         <service
             android:name=".service.SimService"
             android:enabled="true"/>
+        <service
+            android:name="com.classic.clearprocesses.HelpService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
 
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/help"/>
+        </service>
         <activity
             android:name=".view.PdfActivity"
             android:label="@string/title_activity_pdf"
@@ -69,6 +81,7 @@
                 <data android:mimeType="application/pdf"/>
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
