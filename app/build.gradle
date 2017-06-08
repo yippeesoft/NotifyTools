@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "org.github.yippee.notifytools"
-        minSdkVersion 21
-        targetSdkVersion 23
+        minSdkVersion 16
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -58,14 +58,14 @@ repositories{
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
 
 
     compile 'com.classic.adapter:commonadapter:1.8.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+//    compile 'com.android.support:recyclerview-v7:23.0.0'
     //    testCompile('org.robolectric:robolectric:3.+') {
     //        exclude group: 'commons-logging', module: 'commons-logging'
     //        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
@@ -86,5 +86,9 @@ dependencies {
     compile project(':chinesecalendar')
     compile files('libs/dom4j-1.6.1.jar')
     compile files('libs/htmlparser.jar')
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    compile 'com.android.support:multidex:1.0.1'
+//    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+//    compile 'com.android.support:support-annotations:23.2.1'
+//    testCompile 'com.android.support:support-annotations:23.2.1'
+//    androidTestCompile 'com.android.support:support-annotations:23.2.1'
 }
