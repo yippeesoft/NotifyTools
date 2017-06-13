@@ -11,6 +11,7 @@
 |thidrd/chinesecalendar  |C# 万年历 农历 节气 节日 星座 星宿 属相 生肖 闰年月 时辰 |
 |thidrd/xzqh |行政区划HTML |
 |ClearProcesses|后台进程清理|
+|BingWallpage|BING壁纸 KOTLIN|
 
 	
 ##测试设备
@@ -43,3 +44,5 @@
 |http://www.xzqh.org/html/sitemap.html|行政区划网|
 |http://blog.csdn.net/wtq1993/article/details/50705677|java实现的深度神经网络|
 |https://github.com/qyxxjd/ClearProcesses|无障碍清理进程|
+|http://cn.bing.com|BING壁纸|
+|太多，从略 |KOTLIN |
