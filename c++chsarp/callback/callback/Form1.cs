@@ -41,7 +41,22 @@ namespace callback
         public static extern int ExportedFunction(int a,int b, CsharpDllCall fa);
         private void Form1_Load(object sender, EventArgs e)
         {
+            EnumDesktops(GetProcessWindowStation(), OnDesktop, 0);
             Console.Out.WriteLine(ExportedFunction(111,222,FunA));
         }
+
+        delegate bool EnumDesktopProc([MarshalAs(UnmanagedType.LPTStr)]string desktopName, int lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern bool EnumDesktops(IntPtr windowStation, EnumDesktopProc callback, int lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern IntPtr GetProcessWindowStation();
+
+        static bool OnDesktop(string name, int param)
+        {
+            Console.WriteLine("OnDesktop:"+name);
+            return true;
+        }
+
     }
 }
