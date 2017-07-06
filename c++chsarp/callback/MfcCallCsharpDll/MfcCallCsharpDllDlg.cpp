@@ -87,12 +87,16 @@ HCURSOR CMfcCallCsharpDllDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
+extern "C" int PASCAL EXPORT CallBack(int dd)
+{
+	TRACE("C%d\r\n", dd);
+	return dd + 9;
+}
 
 void CMfcCallCsharpDllDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	HRESULT hr = CoInitialize (NULL);
 	if (hr != S_OK)
 		printf("hr failed\n");
 	else
@@ -101,7 +105,8 @@ void CMfcCallCsharpDllDlg::OnBnClickedOk()
 	CsharpDll4Mfc::ICalculatorPtr ic(__uuidof(CsharpDll4Mfc::Class1));
 	CsharpDll4Mfc::ICalculator *icc = ic;
 	int kk=icc->Add(111, 9);
-	 
-	TRACE("%d", kk);
+	TRACE("A%d\r\n", kk);
+	kk = icc->testCallBack(kk, (long)CallBack);
+	TRACE("B%d\r\n", kk);
 	//CDialogEx::OnOK();
 }

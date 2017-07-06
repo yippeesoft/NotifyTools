@@ -14,6 +14,9 @@ namespace CsharpDll4Mfc
     {
         [DispId(1)]
         int Add(int Number1, int Number2);
+
+        [DispId(2)]
+        int testCallBack(int kk, long callback);
     }
 
     [TypeLibType(4160)]
@@ -26,6 +29,18 @@ namespace CsharpDll4Mfc
         {
             return Number1 * Number2;
         }
+
+        public int testCallBack(int kk, long callback)
+        {
+            ProgressCallback p = (ProgressCallback)Marshal.GetDelegateForFunctionPointer(new IntPtr(callback), typeof(ProgressCallback));
+            int dd = kk + 1000;
+            return p(dd);
+        }
+
+        [UnmanagedFunctionPointerAttribute(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public delegate int ProgressCallback(int kk);
+
+
         public void Initialize()
         {
             //nothing todo
