@@ -14,7 +14,30 @@
 
 // CMfcCallCsharpDllDlg dialog
 #import "CsharpDll4Mfc.tlb"  named_guids
+ATL::CComModule _Module;
 using namespace CsharpDll4Mfc;
+ //http://blog.csdn.net/xxdddail/article/details/17305467?utm_source=jiancool
+
+class EventReceiver :
+	public IDispEventImpl<0,
+	EventReceiver,
+	&(__uuidof(CsharpDll4Mfc::IEvent)),
+	&(__uuidof(CsharpDll4Mfc::__CsharpDll4Mfc)), 1, 0>
+{
+public:
+	STDMETHOD(DrawEventResponse)(int count);
+
+	BEGIN_SINK_MAP(EventReceiver)
+		SINK_ENTRY_EX(0, (__uuidof(CsharpDll4Mfc::IEvent)), 20, DrawEventResponse)
+	END_SINK_MAP()
+};
+
+STDMETHODIMP EventReceiver::DrawEventResponse(int count)
+{
+	TRACE("Event Reponse : %d\n", count);
+	return S_OK;
+}
+
 
 
 CMfcCallCsharpDllDlg::CMfcCallCsharpDllDlg(CWnd* pParent /*=NULL*/)
@@ -96,6 +119,7 @@ extern "C" int PASCAL EXPORT CallBack(int dd)
 void CMfcCallCsharpDllDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
+	_Module.Init(NULL, (HINSTANCE)GetModuleHandle(NULL));
 	HRESULT hr = CoInitialize (NULL);
 	if (hr != S_OK)
 		printf("hr failed\n");
@@ -104,9 +128,24 @@ void CMfcCallCsharpDllDlg::OnBnClickedOk()
 
 	CsharpDll4Mfc::ICalculatorPtr ic(__uuidof(CsharpDll4Mfc::Class1));
 	CsharpDll4Mfc::ICalculator *icc = ic;
+
+	EventReceiver * pReceiver = new EventReceiver; //Detected memory leaks!
+	
+	HRESULT hresult = pReceiver->DispEventAdvise(ic);
+
 	int kk=icc->Add(111, 9);
 	TRACE("A%d\r\n", kk);
 	kk = icc->testCallBack(kk, (long)CallBack);
 	TRACE("B%d\r\n", kk);
+
+	
+	pReceiver->DispEventUnadvise(ic);
+	
+	_Module.Term();
+	CoUninitialize();
+	pReceiver->Release();
+	icc->Release();
+	ic.Release();
+ 
 	//CDialogEx::OnOK();
 }

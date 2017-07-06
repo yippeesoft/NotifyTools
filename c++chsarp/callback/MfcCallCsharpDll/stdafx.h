@@ -52,3 +52,6 @@
 #endif
 
 
+#include <atlbase.h> //增加  
+extern CComModule _Module;//增加  
+#include <atlcom.h>//增加  
