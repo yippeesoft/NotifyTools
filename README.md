@@ -16,7 +16,7 @@
 	
 ##测试设备
 | 机型    |    说明  |
-| ------------- |  -------------------- |
+| ------ |  -------------------- |
 |MI2S   |notify图标显示不正常 |
 
 ##功能列表
@@ -29,6 +29,7 @@
 |行政区划   |基于 xzqh.org网页解析| 
 |JAVA BPDEEP  |java实现的深度神经网络| 
 |ClearProcesses|后台进程清理|
+|callback|C++ C#互相回调、事件等|
 
 ##感谢
 
@@ -46,3 +47,4 @@
 |https://github.com/qyxxjd/ClearProcesses|无障碍清理进程|
 |http://cn.bing.com|BING壁纸|
 |太多，从略 |KOTLIN |
+|参见注释 |C++ C# COM组件 |

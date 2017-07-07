@@ -1,3 +1,10 @@
 /app/src/main/java/org/github/yippee/notifytools/utils/LocalConstsf.java
 .idea
 .gradle
+callback.VC.db
+/c++chsarp/callback/callback/ipch
+obj
+Debug
+bin
+.vs
+/build

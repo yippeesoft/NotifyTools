@@ -52,6 +52,16 @@ public class MainActivity extends AppCompatActivity {
         Logger.d(TAG,"onCreate");
 
         net.getBingWall().subscribeWith(bingObserver());
+
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                Samba smb=new Samba();
+                smb.getShare("smb://sf:sfsf123123@192.168.1.143/ffplay/");
+            }
+        }).start();
+
+
     }
     Net net=new Net();
     public Observer<List<Net.BingWallBean>> bingObserver() {
