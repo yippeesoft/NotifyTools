@@ -1,6 +1,6 @@
 # NotifyTools
 
-##简介
+## 简介
     
 	
 | 目录    |    说明  |
@@ -12,14 +12,16 @@
 |thidrd/xzqh |行政区划HTML |
 |ClearProcesses|后台进程清理|
 |BingWallpage|BING壁纸 KOTLIN|
+|c++chsarp|C++ C# COM组件事件回调|
+|dbToJavaBean|sqlite数据库生成greendao bean|
 
 	
-##测试设备
+## 测试设备
 | 机型    |    说明  |
 | ------ |  -------------------- |
 |MI2S   |notify图标显示不正常 |
 
-##功能列表
+## 功能列表
 
 | 功能    |    说明  |
 | ------------- |  -------------------- |
@@ -31,7 +33,7 @@
 |ClearProcesses|后台进程清理|
 |callback|C++ C#互相回调、事件等|
 
-##感谢
+## 感谢
 
 | 功能    |    说明  |
 | ------------- | -------------------- |
@@ -48,3 +50,4 @@
 |http://cn.bing.com|BING壁纸|
 |太多，从略 |KOTLIN |
 |参见注释 |C++ C# COM组件 |
+|http://www.oschina.net/code/snippet_128886_26726 |数据库生成javabean小工具（java） |
