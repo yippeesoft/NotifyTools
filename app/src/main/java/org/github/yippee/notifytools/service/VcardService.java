@@ -144,9 +144,9 @@ public class VcardService extends IntentService {
             FileOutputStream out = new FileOutputStream(path);
             out.write(VCard.toString().getBytes());
             Log.d("Vcard",  VCard);*/
-
+            //https://stackoverflow.com/questions/42017591/in-android-7-contentresolvers-method-openassetfiledescriptorvcarduri-r-re
             FileInputStream fis = fd.createInputStream();
-            byte[] buf = new byte[(int) fd.getDeclaredLength()];
+            byte[] buf = new byte[fis.available()];
             fis.read(buf);
             String vcardstring = new String(buf);
             if(mapVcard.containsKey(uri.toString())){
@@ -158,12 +158,13 @@ public class VcardService extends IntentService {
             }
 
             mapVcard.put(uri.toString(),vcardstring);
-
+            //log.d("write "+vcardstring);
 //            FileOutputStream mFileOutputStream = new FileOutputStream(storage_path, true);
-            mFileOutputStream.write(vcardstring.toString().getBytes());
+            mFileOutputStream.write(buf);//vcardstring.toString().getBytes());
             return vcardstring;
 
         } catch (Exception e1) {
+            e1.printStackTrace();
             log.e(e1);
         }
         return "";
