@@ -44,6 +44,7 @@ public class Ts2Sqlite {
     long start = System.currentTimeMillis();
     int count=0;
     try {
+      //Class.forName("org.sqlite.jdbc");
       conn = DriverManager.getConnection("jdbc:sqlite:" + database);
       conn.setAutoCommit(false);  //设为手动提交
 
@@ -55,7 +56,10 @@ public class Ts2Sqlite {
 
       for (int i = 0; i < jsonfiles.length; i++) {
         //System.out.println(jsonfiles[i]);
+        if(jsonfiles[i].indexOf("poet.tang")<0)
+          continue;
         String fn = path + File.separator + jsonfiles[i];
+
         InputStream is = null;
 
         is = new FileInputStream(new File(fn));
@@ -80,14 +84,14 @@ public class Ts2Sqlite {
           }
 
           if(bstmt==false) {
-            ps.setString(1, tsBean.getAuthor());
-            ps.setString(2, tsBean.getTitle());
-            ps.setString(3, paragraphs);
-            ps.setString(4, strains); //体积137M
-            //ps.setBytes(1, tsBean.getAuthor().getBytes("UTF-16LE")); //体积91M
-            //ps.setBytes(2, tsBean.getTitle().getBytes("UTF-16LE"));
-            //ps.setBytes(3, paragraphs.getBytes("UTF-16LE"));
-            //ps.setBytes(4, strains.getBytes("UTF-16LE"));
+            //ps.setString(1, tsBean.getAuthor());
+            //ps.setString(2, tsBean.getTitle());
+            //ps.setString(3, paragraphs);
+            //ps.setString(4, strains); //体积137M
+            ps.setBytes(1, tsBean.getAuthor().getBytes("UTF-16LE")); //体积91M
+            ps.setBytes(2, tsBean.getTitle().getBytes("UTF-16LE"));
+            ps.setBytes(3, paragraphs.getBytes("UTF-16LE"));
+            ps.setBytes(4, strains.getBytes("UTF-16LE"));
             ps.addBatch();
           }else {
             String sqll =
