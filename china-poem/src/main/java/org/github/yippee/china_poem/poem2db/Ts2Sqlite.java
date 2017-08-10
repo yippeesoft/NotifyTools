@@ -33,7 +33,8 @@ public class Ts2Sqlite {
     long start=System.currentTimeMillis();
     Log.d(TAG, HanLP.convertToSimplifiedChinese("裴諴"));
     Log.d(TAG, HanLP.convertToSimplifiedChinese("拾得"));
-    List<Pinyin> pinyinList = HanLP.convertToPinyinList("曾扈") ;
+    List<Pinyin> pinyinList ;
+    pinyinList= HanLP.convertToPinyinList("曾扈") ;
     String pyname="";
     for (Pinyin pinyin : pinyinList)
     {
