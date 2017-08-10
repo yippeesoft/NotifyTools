@@ -7,6 +7,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.dictionary.py.Pinyin;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -29,15 +31,33 @@ public class Ts2Sqlite {
     final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+TangshiDao.Properties.Author.columnName+" FROM "+TangshiDao.TABLENAME;
 
     long start=System.currentTimeMillis();
-    Log.d(TAG,"begin "+ start);
+    Log.d(TAG, HanLP.convertToSimplifiedChinese("裴諴"));
+    Log.d(TAG, HanLP.convertToSimplifiedChinese("拾得"));
+    List<Pinyin> pinyinList = HanLP.convertToPinyinList("曾扈") ;
+    String pyname="";
+    for (Pinyin pinyin : pinyinList)
+    {
+      pyname+= pinyin.getPinyinWithToneMark()+" ";
+    }
+    Log.d(TAG, pyname);
+
     Cursor c = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
-    //while(c.moveToNext()){
-    //  try {
-    //    Log.d(TAG,new String(c.getBlob(0),"UTF-16LE"));
-    //  } catch (UnsupportedEncodingException e) {
-    //    e.printStackTrace();
-    //  }
-    //}
+    while(c.moveToNext()){
+      try {
+        String ftname=new String(c.getBlob(0),"UTF-16LE");
+        String jtname= HanLP.convertToSimplifiedChinese(ftname);
+         pinyinList = HanLP.convertToPinyinList(ftname) ;
+          pyname="";
+        for (Pinyin pinyin : pinyinList)
+        {
+          pyname+= pinyin.getPinyinWithToneMark()+" ";
+        }
+
+        Log.d(TAG,ftname+" "+jtname+" "+pyname);
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+    }
     c.moveToFirst();
     Log.d(TAG,c.getCount() +" end "+ (System.currentTimeMillis()-start));
   }
