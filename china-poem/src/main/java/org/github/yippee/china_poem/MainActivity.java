@@ -12,9 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import org.github.yippee.china_poem.poem2db.Ts2Sqlite;
+import com.jakewharton.rxrelay2.BehaviorRelay;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import org.github.yippee.china_poem.Utils.LogUtils;
+import org.github.yippee.china_poem.view.DataBuilder;
+import org.github.yippee.china_poem.view.Rx.RxView;
+import org.github.yippee.china_poem.view.ViewBuilder;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+  LogUtils log=LogUtils.getLogger(MainActivity.class);
+
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -41,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     navigationView.setNavigationItemSelectedListener(this);
 
     //Ts2Sqlite.main(new String[]{});
-    Ts2Sqlite.getAuthors(this);
+    //Ts2Sqlite.getAuthors(this);
+    new RxView(this).init();
   }
 
   @Override public void onBackPressed() {
@@ -95,4 +104,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     drawer.closeDrawer(GravityCompat.START);
     return true;
   }
+
+
 }

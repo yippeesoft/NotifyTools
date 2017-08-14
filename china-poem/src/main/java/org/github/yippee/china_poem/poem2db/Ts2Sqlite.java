@@ -16,6 +16,11 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 import org.github.yippee.china_poem.poem2db.dao.gen.TangshiDao;
 
@@ -33,32 +38,66 @@ public class Ts2Sqlite {
     long start=System.currentTimeMillis();
     Log.d(TAG, HanLP.convertToSimplifiedChinese("裴諴"));
     Log.d(TAG, HanLP.convertToSimplifiedChinese("拾得"));
+
     List<Pinyin> pinyinList ;
     pinyinList= HanLP.convertToPinyinList("曾扈") ;
     String pyname="";
     for (Pinyin pinyin : pinyinList)
     {
       pyname+= pinyin.getPinyinWithToneMark()+" ";
+      Log.d(TAG, pinyin.getHead().toString().toUpperCase());
     }
     Log.d(TAG, pyname);
 
-    Cursor c = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
-    while(c.moveToNext()){
-      try {
-        String ftname=new String(c.getBlob(0),"UTF-16LE");
-        String jtname= HanLP.convertToSimplifiedChinese(ftname);
-         pinyinList = HanLP.convertToPinyinList(ftname) ;
-          pyname="";
-        for (Pinyin pinyin : pinyinList)
-        {
-          pyname+= pinyin.getPinyinWithToneMark()+" ";
-        }
+    HanyuPinyinOutputFormat format= new HanyuPinyinOutputFormat();
 
-        Log.d(TAG,ftname+" "+jtname+" "+pyname);
-      } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
-      }
+    format.setToneType(HanyuPinyinToneType.WITH_TONE_MARK);
+
+    format.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE);
+    String[] pinyinArray = null;
+
+    try
+
+    {
+
+      pinyinArray = PinyinHelper.toHanyuPinyinStringArray('曾', format);
+
     }
+
+    catch(BadHanyuPinyinOutputFormatCombination e)
+
+    {
+
+      e.printStackTrace();
+
+    }
+
+    for(int i = 0; i < pinyinArray.length; ++i)
+
+    {
+
+      Log.d(TAG,i+pinyinArray[i]);
+
+    }
+
+    Cursor c = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
+
+    //while(c.moveToNext()){
+    //  try {
+    //    String ftname=new String(c.getBlob(0),"UTF-16LE");
+    //    String jtname= HanLP.convertToSimplifiedChinese(ftname);
+    //     pinyinList = HanLP.convertToPinyinList(ftname) ;
+    //      pyname="";
+    //    for (Pinyin pinyin : pinyinList)
+    //    {
+    //      pyname+= pinyin.getPinyinWithToneMark()+" ";
+    //    }
+    //
+    //    Log.d(TAG,ftname+" "+jtname+" "+pyname);
+    //  } catch (UnsupportedEncodingException e) {
+    //    e.printStackTrace();
+    //  }
+    //}
     c.moveToFirst();
     Log.d(TAG,c.getCount() +" end "+ (System.currentTimeMillis()-start));
   }
