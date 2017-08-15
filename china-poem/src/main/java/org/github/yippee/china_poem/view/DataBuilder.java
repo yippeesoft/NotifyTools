@@ -26,6 +26,7 @@ import org.github.yippee.china_poem.MainActivity;
 import org.github.yippee.china_poem.PoemApp;
 import org.github.yippee.china_poem.Utils.LogUtils;
 import org.github.yippee.china_poem.poem2db.DBManager;
+import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 import org.github.yippee.china_poem.poem2db.dao.gen.TangshiDao;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
@@ -45,33 +46,32 @@ public class DataBuilder {
 
   DBManager dbManager ;
   TangshiDao tsDao;
-  final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+TangshiDao.Properties.Author.columnName+" FROM "+TangshiDao.TABLENAME;
+  final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+TangshiDao.Properties.Author.columnName+" FROM "+TangshiDao.TABLENAME
+      +" order by pyjian";
 
-  public Flowable<String> getAuthors(){
+  public Flowable<Tangshi> getAuthors(){
 
     final Cursor c = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
 
-    Flowable<String> source = StatementFlowable.whileDo(
+    Flowable<Tangshi> source = StatementFlowable.whileDo(
 
-        Flowable.just(c).flatMap(new Function<Cursor, Publisher<String>>() {
-          String ftName,jtName,pyName;
-          List<Pinyin> pinyinList;
-          @Override public Publisher<String> apply(@NonNull Cursor cursor)   {
+        Flowable.just(c).flatMap(new Function<Cursor, Publisher<Tangshi>>() {
+
+          @Override public Publisher<Tangshi> apply(@NonNull Cursor cursor)   {
+            Tangshi ts=new Tangshi();
             try {
-              ftName=new String(c.getBlob(0),"UTF-16LE");
-              jtName= HanLP.convertToSimplifiedChinese(ftName);
-              pinyinList = HanLP.convertToPinyinList(ftName) ;
-              pyName="";
-              for (Pinyin pinyin : pinyinList)
-              {
-                pyName+= pinyin.getPinyinWithToneMark()+" ";
-              }
-              //log.d("ftName {},jtName {} ,pyName {}",ftName,jtName,pyName);
-
-            } catch (UnsupportedEncodingException e) {
+              ts.setAuthor(c.getString(0));  //new String(c.getBlob(0),"UTF-16LE");
+              ts.setTitle(c.getString(1));
+              ts.setParagraphs(c.getString(2));
+              ts.setStrains(c.getString(3));
+              ts.setPyquany(c.getString(4));
+              ts.setPyjian(c.getString(5));
+              ts.setAuthorjt(c.getString(6));
+              ts.setPyquan(c.getString(7));
+            } catch (Exception e) {
               log.e(e);
             }
-            return Flowable.just(ftName);
+            return Flowable.just(ts);
           }
         })
         , new BooleanSupplier() {

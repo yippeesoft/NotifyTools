@@ -25,10 +25,14 @@ public class TangshiDao extends AbstractDao<Tangshi, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Author = new Property(1, byte[].class, "author", false, "AUTHOR");
-        public final static Property Title = new Property(2, byte[].class, "title", false, "TITLE");
-        public final static Property Strains = new Property(3, byte[].class, "strains", false, "STRAINS");
-        public final static Property Paragraphs = new Property(4, byte[].class, "paragraphs", false, "PARAGRAPHS");
+        public final static Property Author = new Property(1, String.class, "author", false, "AUTHOR");
+        public final static Property Title = new Property(2, String.class, "title", false, "TITLE");
+        public final static Property Strains = new Property(3, String.class, "strains", false, "STRAINS");
+        public final static Property Paragraphs = new Property(4, String.class, "paragraphs", false, "PARAGRAPHS");
+        public final static Property Pyquany = new Property(5, String.class, "pyquany", false, "PYQUANY");
+        public final static Property Pyjian = new Property(6, String.class, "pyjian", false, "PYJIAN");
+        public final static Property Authorjt = new Property(7, String.class, "authorjt", false, "AUTHORJT");
+        public final static Property Pyquan = new Property(8, String.class, "pyquan", false, "PYQUAN");
     }
 
 
@@ -45,10 +49,14 @@ public class TangshiDao extends AbstractDao<Tangshi, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"tangshi\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"AUTHOR\" BLOB," + // 1: author
-                "\"TITLE\" BLOB," + // 2: title
-                "\"STRAINS\" BLOB," + // 3: strains
-                "\"PARAGRAPHS\" BLOB);"); // 4: paragraphs
+                "\"AUTHOR\" TEXT," + // 1: author
+                "\"TITLE\" TEXT," + // 2: title
+                "\"STRAINS\" TEXT," + // 3: strains
+                "\"PARAGRAPHS\" TEXT," + // 4: paragraphs
+                "\"PYQUANY\" TEXT," + // 5: pyquany
+                "\"PYJIAN\" TEXT," + // 6: pyjian
+                "\"AUTHORJT\" TEXT," + // 7: authorjt
+                "\"PYQUAN\" TEXT);"); // 8: pyquan
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_tangshi_AUTHOR_TITLE_STRAINS ON tangshi" +
                 " (\"AUTHOR\" ASC,\"TITLE\" ASC,\"STRAINS\" ASC);");
@@ -69,24 +77,44 @@ public class TangshiDao extends AbstractDao<Tangshi, Long> {
             stmt.bindLong(1, id);
         }
  
-        byte[] author = entity.getAuthor();
+        String author = entity.getAuthor();
         if (author != null) {
-            stmt.bindBlob(2, author);
+            stmt.bindString(2, author);
         }
  
-        byte[] title = entity.getTitle();
+        String title = entity.getTitle();
         if (title != null) {
-            stmt.bindBlob(3, title);
+            stmt.bindString(3, title);
         }
  
-        byte[] strains = entity.getStrains();
+        String strains = entity.getStrains();
         if (strains != null) {
-            stmt.bindBlob(4, strains);
+            stmt.bindString(4, strains);
         }
  
-        byte[] paragraphs = entity.getParagraphs();
+        String paragraphs = entity.getParagraphs();
         if (paragraphs != null) {
-            stmt.bindBlob(5, paragraphs);
+            stmt.bindString(5, paragraphs);
+        }
+ 
+        String pyquany = entity.getPyquany();
+        if (pyquany != null) {
+            stmt.bindString(6, pyquany);
+        }
+ 
+        String pyjian = entity.getPyjian();
+        if (pyjian != null) {
+            stmt.bindString(7, pyjian);
+        }
+ 
+        String authorjt = entity.getAuthorjt();
+        if (authorjt != null) {
+            stmt.bindString(8, authorjt);
+        }
+ 
+        String pyquan = entity.getPyquan();
+        if (pyquan != null) {
+            stmt.bindString(9, pyquan);
         }
     }
 
@@ -99,24 +127,44 @@ public class TangshiDao extends AbstractDao<Tangshi, Long> {
             stmt.bindLong(1, id);
         }
  
-        byte[] author = entity.getAuthor();
+        String author = entity.getAuthor();
         if (author != null) {
-            stmt.bindBlob(2, author);
+            stmt.bindString(2, author);
         }
  
-        byte[] title = entity.getTitle();
+        String title = entity.getTitle();
         if (title != null) {
-            stmt.bindBlob(3, title);
+            stmt.bindString(3, title);
         }
  
-        byte[] strains = entity.getStrains();
+        String strains = entity.getStrains();
         if (strains != null) {
-            stmt.bindBlob(4, strains);
+            stmt.bindString(4, strains);
         }
  
-        byte[] paragraphs = entity.getParagraphs();
+        String paragraphs = entity.getParagraphs();
         if (paragraphs != null) {
-            stmt.bindBlob(5, paragraphs);
+            stmt.bindString(5, paragraphs);
+        }
+ 
+        String pyquany = entity.getPyquany();
+        if (pyquany != null) {
+            stmt.bindString(6, pyquany);
+        }
+ 
+        String pyjian = entity.getPyjian();
+        if (pyjian != null) {
+            stmt.bindString(7, pyjian);
+        }
+ 
+        String authorjt = entity.getAuthorjt();
+        if (authorjt != null) {
+            stmt.bindString(8, authorjt);
+        }
+ 
+        String pyquan = entity.getPyquan();
+        if (pyquan != null) {
+            stmt.bindString(9, pyquan);
         }
     }
 
@@ -129,10 +177,14 @@ public class TangshiDao extends AbstractDao<Tangshi, Long> {
     public Tangshi readEntity(Cursor cursor, int offset) {
         Tangshi entity = new Tangshi( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getBlob(offset + 1), // author
-            cursor.isNull(offset + 2) ? null : cursor.getBlob(offset + 2), // title
-            cursor.isNull(offset + 3) ? null : cursor.getBlob(offset + 3), // strains
-            cursor.isNull(offset + 4) ? null : cursor.getBlob(offset + 4) // paragraphs
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // author
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // title
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // strains
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // paragraphs
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // pyquany
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // pyjian
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // authorjt
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // pyquan
         );
         return entity;
     }
@@ -140,10 +192,14 @@ public class TangshiDao extends AbstractDao<Tangshi, Long> {
     @Override
     public void readEntity(Cursor cursor, Tangshi entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setAuthor(cursor.isNull(offset + 1) ? null : cursor.getBlob(offset + 1));
-        entity.setTitle(cursor.isNull(offset + 2) ? null : cursor.getBlob(offset + 2));
-        entity.setStrains(cursor.isNull(offset + 3) ? null : cursor.getBlob(offset + 3));
-        entity.setParagraphs(cursor.isNull(offset + 4) ? null : cursor.getBlob(offset + 4));
+        entity.setAuthor(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setTitle(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setStrains(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setParagraphs(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setPyquany(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setPyjian(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setAuthorjt(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setPyquan(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
      }
     
     @Override

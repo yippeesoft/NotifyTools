@@ -152,10 +152,10 @@ public class Ts2Sqlite {
             paragraphs += tsBean.getParagraphs().get(j);
           }
           Tangshi ts=new Tangshi();
-          ts.setAuthor(tsBean.getAuthor().getBytes("UTF-16LE"));
-          ts.setTitle(tsBean.getTitle().getBytes("UTF-16LE"));
-          ts.setParagraphs(paragraphs.getBytes("UTF-16LE"));
-          ts.setStrains(strains.getBytes("UTF-16LE"));
+          ts.setAuthor(tsBean.getAuthor());
+          ts.setTitle(tsBean.getTitle());
+          ts.setParagraphs(paragraphs);
+          ts.setStrains(strains);
           lstTs.add(ts);
           count++;
 

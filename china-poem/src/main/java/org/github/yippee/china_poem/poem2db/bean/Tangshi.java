@@ -25,71 +25,104 @@ public class Tangshi {
     return id;
   }
 
-  private byte[] author;
-  private byte[] title;
+  private String author;
+  private String title;
 
-  private byte[] strains;
+  private String strains;
+  private String paragraphs;
 
-  private byte[] paragraphs;
+  private String pyquany;
+  private String pyjian;
+  private String authorjt;
 
-  @Generated(hash = 620167664)
-  public Tangshi(Long id, byte[] author, byte[] title, byte[] strains,
-          byte[] paragraphs) {
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(String author) {
+    this.author = author;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getStrains() {
+    return strains;
+  }
+
+  public void setStrains(String strains) {
+    this.strains = strains;
+  }
+
+  public String getParagraphs() {
+    return paragraphs;
+  }
+
+  public void setParagraphs(String paragraphs) {
+    this.paragraphs = paragraphs;
+  }
+
+  public String getPyquany() {
+    return pyquany;
+  }
+
+  public void setPyquany(String pyquany) {
+    this.pyquany = pyquany;
+  }
+
+  public String getPyjian() {
+    return pyjian;
+  }
+
+  public void setPyjian(String pyjian) {
+    this.pyjian = pyjian;
+  }
+
+  public String getAuthorjt() {
+    return authorjt;
+  }
+
+  public void setAuthorjt(String authorjt) {
+    this.authorjt = authorjt;
+  }
+
+  public String getPyquan() {
+    return pyquan;
+  }
+
+  public void setPyquan(String pyquan) {
+    this.pyquan = pyquan;
+  }
+
+  private String pyquan;
+
+  @Generated(hash = 1930148604)
+  public Tangshi(Long id, String author, String title, String strains,
+          String paragraphs, String pyquany, String pyjian, String authorjt,
+          String pyquan) {
       this.id = id;
       this.author = author;
       this.title = title;
       this.strains = strains;
       this.paragraphs = paragraphs;
+      this.pyquany = pyquany;
+      this.pyjian = pyjian;
+      this.authorjt = authorjt;
+      this.pyquan = pyquan;
   }
-
 
   @Generated(hash = 26218254)
   public Tangshi() {
   }
 
-
-  public void setId(Long id) {
-      this.id = id;
-  }
-
-
-  public byte[] getAuthor() {
-      return this.author;
-  }
-
-
-  public void setAuthor(byte[] author) {
-      this.author = author;
-  }
-
-
-  public byte[] getTitle() {
-      return this.title;
-  }
-
-
-  public void setTitle(byte[] title) {
-      this.title = title;
-  }
-
-
-  public byte[] getStrains() {
-      return this.strains;
-  }
-
-
-  public void setStrains(byte[] strains) {
-      this.strains = strains;
-  }
-
-
-  public byte[] getParagraphs() {
-      return this.paragraphs;
-  }
-
-
-  public void setParagraphs(byte[] paragraphs) {
-      this.paragraphs = paragraphs;
-  }
 }
 

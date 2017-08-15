@@ -13,6 +13,7 @@ import android.widget.TextView;
 import net.cachapa.expandablelayout.ExpandableLayout;
 import org.github.yippee.china_poem.R;
 import org.github.yippee.china_poem.Utils.LogUtils;
+import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 
 /**
  * Created by sf on 2017/8/11.
@@ -20,7 +21,7 @@ import org.github.yippee.china_poem.Utils.LogUtils;
 
 public class PoemAdapter extends RecyclerView.Adapter<PoemAdapter.PoemViewHolder> {
   LogUtils log=LogUtils.getLogger(PoemAdapter.class);
-  private List<String> mDatas;
+  private List<Tangshi> mDatas;
   private Context mContext;
   private LayoutInflater inflater;
   private RecyclerView recyclerView;
@@ -28,7 +29,7 @@ public class PoemAdapter extends RecyclerView.Adapter<PoemAdapter.PoemViewHolder
   private static final int UNSELECTED = -1;
   private int selectedItem = UNSELECTED;
 
-  public PoemAdapter(Context context, List<String> datas,RecyclerView recyclerView){
+  public PoemAdapter(Context context, List<Tangshi> datas,RecyclerView recyclerView){
     this. mContext=context;
     this. mDatas=datas;
     inflater=LayoutInflater. from(mContext);
@@ -79,7 +80,7 @@ public class PoemAdapter extends RecyclerView.Adapter<PoemAdapter.PoemViewHolder
       log.d("bind "+position+mDatas.get(position));
       this.position = position;
       tv.setSelected(false);
-      tv.setText( mDatas.get(position));
+      tv.setText( mDatas.get(position).getAuthor());
       expandableLayout.collapse(false);
     }
 

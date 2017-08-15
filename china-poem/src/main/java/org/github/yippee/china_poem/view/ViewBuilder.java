@@ -2,10 +2,12 @@ package org.github.yippee.china_poem.view;
 
 import android.app.Activity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import org.github.yippee.china_poem.R;
+import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 
 /**
  * Created by sf on 2017/8/11.
@@ -18,15 +20,15 @@ public class ViewBuilder {
   }
   RecyclerView poemRecyclerView;
   PoemAdapter poemAdapter;
-  ArrayList<String> poemData=new ArrayList<>();
+  ArrayList<Tangshi> poemData=new ArrayList<>();
 
-  public void initData(String s){
+  public void initData(Tangshi s){
     poemData.add(s );
     poemAdapter.notifyItemInserted(poemData.size()-1);
   }
   public void initView(){
     //initdata();
-    poemData = new ArrayList<String>();
+    poemData = new ArrayList<Tangshi>();
 
     poemRecyclerView = (RecyclerView) cxt.findViewById(R.id.recycler_view);
 
@@ -39,7 +41,7 @@ public class ViewBuilder {
     poemRecyclerView.setLayoutManager(linerLayoutManager);
 
     //设置分隔线
-    //mRecycleView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL_LIST));
+    poemRecyclerView.addItemDecoration(new DividerItemDecoration(cxt , DividerItemDecoration.VERTICAL));
 
     //设置增加或删除条目动画
     poemRecyclerView.setItemAnimator(new DefaultItemAnimator());
