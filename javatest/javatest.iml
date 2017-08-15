@@ -27,6 +27,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="fastjson-1.2.5" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.8.1" level="project" />
+    <orderEntry type="library" exported="" name="hanlp-portable-1.3.4" level="project" />
+    <orderEntry type="library" exported="" name="jdbc-api-1.4" level="project" />
+    <orderEntry type="library" exported="" name="sqlite-jdbc-3.19.3" level="project" />
   </component>
 </module>

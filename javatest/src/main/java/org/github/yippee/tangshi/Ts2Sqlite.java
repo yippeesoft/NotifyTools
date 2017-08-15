@@ -2,6 +2,8 @@ package org.github.yippee.tangshi;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.dictionary.py.Pinyin;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sf on 2017/7/25.
@@ -33,7 +36,7 @@ public class Ts2Sqlite {
     String sql;
     if(bstmt==false) {
       //sql = "insert into tangshi(author,title,paragraphs,strains) values (?,?,?,?)";
-      sql = "REPLACE INTO tangshi(author,title,paragraphs,strains) values (?,?,?,?)";
+      sql = "REPLACE INTO tangshi(author,title,paragraphs,strains,pyquany,pyjian,authorjt,pyquan) values (?,?,?,?,?,?,?,?)";
     }
     else
       sql = "insert into tangshi(author,title,paragraphs,strains) values ('%s','%s','%s','%s')";
@@ -84,14 +87,28 @@ public class Ts2Sqlite {
           }
 
           if(bstmt==false) {
+            String ftName= tsBean.getAuthor();
+
             //ps.setString(1, tsBean.getAuthor());
             //ps.setString(2, tsBean.getTitle());
             //ps.setString(3, paragraphs);
             //ps.setString(4, strains); //体积137M
-            ps.setBytes(1, tsBean.getAuthor().getBytes("UTF-16LE")); //体积91M
-            ps.setBytes(2, tsBean.getTitle().getBytes("UTF-16LE"));
-            ps.setBytes(3, paragraphs.getBytes("UTF-16LE"));
-            ps.setBytes(4, strains.getBytes("UTF-16LE"));
+
+            ps.setString(1,ftName ); //体积91M
+            ps.setString(2, tsBean.getTitle() );
+            ps.setString(3, paragraphs );
+            ps.setString(4, strains );
+            ps.setString(5, getQpY(ftName) );
+            ps.setString(6, getJp(ftName) );
+            ps.setString(7, HanLP.convertToSimplifiedChinese(ftName) );
+            ps.setString(8, getQp(ftName) );
+            //ps.setBytes(1,ftName.getBytes("UTF-16LE")); //体积91M
+            //ps.setBytes(2, tsBean.getTitle().getBytes("UTF-16LE"));
+            //ps.setBytes(3, paragraphs.getBytes("UTF-16LE"));
+            //ps.setBytes(4, strains.getBytes("UTF-16LE"));
+            //ps.setBytes(5, getQp(ftName).getBytes("UTF-16LE"));
+            //ps.setBytes(6, getJp(ftName).getBytes("UTF-16LE"));
+            //ps.setBytes(7, HanLP.convertToSimplifiedChinese(ftName).getBytes("UTF-16LE"));
             ps.addBatch();
           }else {
             String sqll =
@@ -130,5 +147,49 @@ public class Ts2Sqlite {
 
     long t2 = System.currentTimeMillis();
     System.out.println("计时："+(t2-start)+" 条数："+count);
+  }
+
+  static String getQpY(String s){
+    List<Pinyin> pinyinList;
+    pinyinList = HanLP.convertToPinyinList(s) ;
+    String pyName="";
+    for (Pinyin pinyin : pinyinList)
+    {
+      pyName+= upOne(pinyin.getPinyinWithToneMark());
+    }
+    return pyName;
+  }
+  static String getQp(String s){
+    List<Pinyin> pinyinList;
+    pinyinList = HanLP.convertToPinyinList(s) ;
+    String pyName="";
+    for (Pinyin pinyin : pinyinList)
+    {
+      pyName+= upOne(pinyin.getPinyinWithoutTone());
+    }
+    return pyName;
+  }
+
+  static String getJp(String s){
+    List<Pinyin> pinyinList;
+    pinyinList = HanLP.convertToPinyinList(s) ;
+    String pyName="";
+    for (Pinyin pinyin : pinyinList)
+    {
+      pyName+= pinyin.getPinyinWithToneMark().charAt(0);
+    }
+    return pyName;
+  }
+
+  //首字母转大写
+  //public static String upOne(String s){
+  //  if(Character.isUpperCase(s.charAt(0)))
+  //    return s;
+  //  else
+  //    return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+  //}
+  public static String upOne(String str)
+  {
+    return str.replaceFirst(str.substring(0, 1),str.substring(0, 1).toUpperCase()) ;
   }
 }

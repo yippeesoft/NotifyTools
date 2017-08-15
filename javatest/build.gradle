@@ -6,7 +6,7 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/fastjson-1.2.5.jar')
+
 }
 
 sourceCompatibility = "1.7"
