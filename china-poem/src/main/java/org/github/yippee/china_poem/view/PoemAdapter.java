@@ -77,10 +77,13 @@ public class PoemAdapter extends RecyclerView.Adapter<PoemAdapter.PoemViewHolder
     }
 
     public void bind(int position) {
-      log.d("bind "+position+mDatas.get(position));
+      log.d("bind "+position);
+      Tangshi ts=mDatas.get(position);
       this.position = position;
       tv.setSelected(false);
-      tv.setText( mDatas.get(position).getAuthor());
+      tv.setText(ts.getAuthor());
+      expandText.setText(String.format("简体中文：%s；音标拼音：%s；\r\n拼音：%s；首字母拼音：%s",
+      ts.getAuthorjt(),ts.getPyquany(),ts.getPyquan(),ts.getPyjian()));
       expandableLayout.collapse(false);
     }
 

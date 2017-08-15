@@ -46,11 +46,13 @@ public class DataBuilder {
 
   DBManager dbManager ;
   TangshiDao tsDao;
-  final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+TangshiDao.Properties.Author.columnName+" FROM "+TangshiDao.TABLENAME
+  final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+TangshiDao.Properties.Author.columnName+","+TangshiDao.Properties.Pyquany.columnName
+      +","+TangshiDao.Properties.Pyjian.columnName+","+TangshiDao.Properties.Authorjt.columnName+","+TangshiDao.Properties.Pyquan.columnName
+      +" FROM "+TangshiDao.TABLENAME
       +" order by pyjian";
 
   public Flowable<Tangshi> getAuthors(){
-
+    log.d("SQL_DISTINCT_ENAME:"+SQL_DISTINCT_ENAME);
     final Cursor c = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
 
     Flowable<Tangshi> source = StatementFlowable.whileDo(
@@ -60,14 +62,16 @@ public class DataBuilder {
           @Override public Publisher<Tangshi> apply(@NonNull Cursor cursor)   {
             Tangshi ts=new Tangshi();
             try {
+              //log.d("Publisher0:"+c.getString(0));
               ts.setAuthor(c.getString(0));  //new String(c.getBlob(0),"UTF-16LE");
-              ts.setTitle(c.getString(1));
-              ts.setParagraphs(c.getString(2));
-              ts.setStrains(c.getString(3));
-              ts.setPyquany(c.getString(4));
-              ts.setPyjian(c.getString(5));
-              ts.setAuthorjt(c.getString(6));
-              ts.setPyquan(c.getString(7));
+              //log.d("Publisher1:"+new String(c.getBlob(cursor.getColumnIndex("title")),"UTF-8"));
+              //ts.setTitle(c.getString(1));
+              //ts.setParagraphs(c.getString(2));
+              //ts.setStrains(c.getString(3));
+              ts.setPyquany(c.getString(1));
+              ts.setPyjian(c.getString(2));
+              ts.setAuthorjt(c.getString(3));
+              ts.setPyquan(c.getString(4));
             } catch (Exception e) {
               log.e(e);
             }
