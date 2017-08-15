@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     >
-  <TextView android:id="@+id/item_tv" android:layout_width="match_parent"
-      android:layout_height="match_parent" android:gravity="center" tools:text="item"/>
 
+  <TextView
+      android:id="@+id/item_tv"
+      style="@style/TextAppearance.AppCompat.Medium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/list_item_background"
+      android:elevation="6dp"
+      android:foreground="?selectableItemBackground"
+      android:padding="16dp" />
 
+  <net.cachapa.expandablelayout.ExpandableLayout
+      android:id="@+id/expandable_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/colorPrimaryDark"
+      app:el_duration="300"
+      app:el_expanded="false">
+
+    <TextView
+        android:id="@+id/expandable_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="Content"
+        android:textColor="#fff" />
+
+  </net.cachapa.expandablelayout.ExpandableLayout>
 </LinearLayout>

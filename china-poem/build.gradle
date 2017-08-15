@@ -48,4 +48,6 @@ dependencies {
   compile files('libs/pinyin4j-2.5.0.jar')
   compile 'io.reactivex.rxjava2:rxjava:2.1.2'
   compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+  compile 'net.cachapa.expandablelayout:expandablelayout:2.9.1'
 }

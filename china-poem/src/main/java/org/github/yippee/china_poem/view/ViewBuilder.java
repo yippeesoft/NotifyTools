@@ -30,7 +30,7 @@ public class ViewBuilder {
 
     poemRecyclerView = (RecyclerView) cxt.findViewById(R.id.recycler_view);
 
-    poemAdapter = new PoemAdapter(cxt, poemData);
+    poemAdapter = new PoemAdapter(cxt, poemData,poemRecyclerView);
     poemRecyclerView.setAdapter(poemAdapter);//设置适配器
     poemRecyclerView.setVerticalScrollBarEnabled(true);
     //设置布局管理器 , 将布局设置成纵向
