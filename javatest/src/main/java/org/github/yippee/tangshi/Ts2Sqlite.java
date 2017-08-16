@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.beanutils.PropertyUtils;
 
 /**
  * Created by sf on 2017/7/25.
@@ -25,6 +28,73 @@ import java.util.List;
 public class Ts2Sqlite {
 
   public static void main(String[] args) {
+    beanutils();
+  }
+
+  static void beanutils(){
+    long start=System.currentTimeMillis();
+
+    String s;
+    String clsname="org.github.yippee.tangshi.TsBean";
+    try {
+
+      Class<?> managerClass = Class.forName(clsname);
+      Object ts = managerClass.newInstance();
+      for(int i=0;i<100*100*100;i++) {
+        //Tangshi ts = new Tangshi();
+
+        PropertyUtils.setSimpleProperty(ts, "title", "AAAAAAAAAA");
+        s=((String) PropertyUtils.getSimpleProperty(ts, "title"));
+
+
+      } } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    }
+    System.out.println("耗时："+(System.currentTimeMillis()-start));  //547
+
+    start=System.currentTimeMillis();
+    //ts = new Tangshi();
+    s="";
+
+    try {
+      Class<?> managerClass = Class.forName(clsname);
+      Object obj = managerClass.newInstance();
+      for(int i=0;i<100*100*100;i++) {
+
+
+
+        Field field=managerClass.getDeclaredField("title");
+        field.setAccessible(true);
+        field.set(obj,"AAAAAAAAAA");
+        //PropertyUtils.setSimpleProperty(ts, "title", "title");
+        Field field2=managerClass.getDeclaredField("title");
+        field.setAccessible(true);
+        s=   (String) field.get(obj); //((String) PropertyUtils.getSimpleProperty(ts, "title"));
+        //log.e("ss "+s);
+
+      } } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }   catch (NoSuchFieldException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    }
+    System.out.println("耗时2："+(System.currentTimeMillis()-start)); //280
+
+  }
+
+
+  static void ts2sqlite(){
     Gson gson = new Gson();
 
     String path = "Y:\\yyyy\\chinese-poetry\\json";
@@ -52,7 +122,7 @@ public class Ts2Sqlite {
       conn.setAutoCommit(false);  //设为手动提交
 
       if(bstmt)
-       stmt = conn.createStatement(); //计时：17360 条数：311828
+        stmt = conn.createStatement(); //计时：17360 条数：311828
       else
         ps = conn.prepareStatement(sql); //计时：15640 条数：311828
 
@@ -148,7 +218,6 @@ public class Ts2Sqlite {
     long t2 = System.currentTimeMillis();
     System.out.println("计时："+(t2-start)+" 条数："+count);
   }
-
   static String getQpY(String s){
     List<Pinyin> pinyinList;
     pinyinList = HanLP.convertToPinyinList(s) ;

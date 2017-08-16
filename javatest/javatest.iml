@@ -27,6 +27,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="commons-beanutils-1.9.3" level="project" />
+    <orderEntry type="library" exported="" name="commons-collections-3.2.2" level="project" />
+    <orderEntry type="library" exported="" name="commons-logging-1.2" level="project" />
     <orderEntry type="library" exported="" name="gson-2.8.1" level="project" />
     <orderEntry type="library" exported="" name="hanlp-portable-1.3.4" level="project" />
     <orderEntry type="library" exported="" name="jdbc-api-1.4" level="project" />
