@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+dependencies {
+  compile fileTree(include: ['*.jar'], dir: 'libs')
+  compile files('libs/commons-logging-1.2.jar')
+  compile files('libs/commons-collections-3.2.2.jar')
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
