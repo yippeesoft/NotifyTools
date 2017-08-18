@@ -14,6 +14,7 @@ import java.util.List;
 import net.cachapa.expandablelayout.ExpandableLayout;
 import org.github.yippee.china_poem.R;
 import org.github.yippee.china_poem.Utils.LogUtils;
+import org.github.yippee.china_poem.poem2db.bean.SongCi;
 import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 
 /**
@@ -22,7 +23,7 @@ import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 
 public class PoemDetailAdapter extends RecyclerView.Adapter<PoemDetailAdapter.PoemViewHolder> {
   LogUtils log=LogUtils.getLogger(PoemDetailAdapter.class);
-  private List<Tangshi> mDatas;
+  private List<SongCi> mDatas;
   private Context mContext;
   private LayoutInflater inflater;
   private RecyclerView recyclerView;
@@ -30,7 +31,7 @@ public class PoemDetailAdapter extends RecyclerView.Adapter<PoemDetailAdapter.Po
   private static final int UNSELECTED = -1;
   private int selectedItem = UNSELECTED;
 
-  public PoemDetailAdapter(Context context, List<Tangshi> datas,RecyclerView recyclerView){
+  public PoemDetailAdapter(Context context, List<SongCi> datas,RecyclerView recyclerView){
     this. mContext=context;
     this. mDatas=datas;
     inflater=LayoutInflater. from(mContext);
@@ -79,11 +80,11 @@ public class PoemDetailAdapter extends RecyclerView.Adapter<PoemDetailAdapter.Po
 
     public void bind(int position) {
       log.d("bind "+position);
-      final Tangshi ts=mDatas.get(position);
+      final SongCi ts=mDatas.get(position);
       this.position = position;
       tv.setSelected(false);
-      tv.setText(ts.getTitle());
-      expandText.setText(ts.getParagraphs().replace("。","。\n\n"));
+      tv.setText(ts.getRhythmic());
+      expandText.setText(ts.getContent());
 
       expandableLayout.collapse(false);
     }

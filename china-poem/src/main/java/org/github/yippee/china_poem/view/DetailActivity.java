@@ -17,19 +17,22 @@ import org.github.yippee.china_poem.MainActivity;
 import org.github.yippee.china_poem.PoemApp;
 import org.github.yippee.china_poem.R;
 import org.github.yippee.china_poem.Utils.LogUtils;
+import org.github.yippee.china_poem.poem2db.DBCiManager;
 import org.github.yippee.china_poem.poem2db.DBManager;
+import org.github.yippee.china_poem.poem2db.bean.SongCi;
 import org.github.yippee.china_poem.poem2db.bean.Tangshi;
+import org.github.yippee.china_poem.poem2db.dao.gen.SongCiDao;
 import org.github.yippee.china_poem.poem2db.dao.gen.TangshiDao;
 
 public class DetailActivity extends AppCompatActivity {
   LogUtils log=LogUtils.getLogger(DetailActivity.class);
 
 
-  DBManager dbManager ;
-  TangshiDao tsDao;
+  DBCiManager dbManager ;
+  SongCiDao tsDao;
 
   RecyclerView rvDetail;
-  List<Tangshi> tsList;
+  List<SongCi> tsList;
   PoemDetailAdapter poemDetailAdapter;
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -58,11 +61,11 @@ public class DetailActivity extends AppCompatActivity {
       }
     });
 
-    dbManager = DBManager.getInstance(PoemApp.getContext());
-    tsDao=dbManager.getTangshiDao();
-    tsList=tsDao.queryBuilder().where(TangshiDao.Properties.Author.eq(ts.getAuthor())).list();
-    for (Tangshi t : tsList){
-      log.d("DetailActivity where "+new Gson().toJson(t,Tangshi.class));
+    dbManager = DBCiManager.getInstance(PoemApp.getContext());
+    tsDao=dbManager.getSongCiDao();
+    tsList=tsDao.queryBuilder().where(SongCiDao.Properties.Author.eq(ts.getAuthor())).list();
+    for (SongCi t : tsList){
+      log.d("DetailActivity where "+new Gson().toJson(t,SongCi.class));
     }
     poemDetailAdapter = new PoemDetailAdapter(this, tsList,rvDetail);
     rvDetail.setAdapter(poemDetailAdapter);//设置适配器

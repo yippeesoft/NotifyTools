@@ -25,8 +25,11 @@ import java.util.List;
 import org.github.yippee.china_poem.MainActivity;
 import org.github.yippee.china_poem.PoemApp;
 import org.github.yippee.china_poem.Utils.LogUtils;
+import org.github.yippee.china_poem.poem2db.DBCiManager;
 import org.github.yippee.china_poem.poem2db.DBManager;
+import org.github.yippee.china_poem.poem2db.bean.SongCi;
 import org.github.yippee.china_poem.poem2db.bean.Tangshi;
+import org.github.yippee.china_poem.poem2db.dao.gen.SongCiDao;
 import org.github.yippee.china_poem.poem2db.dao.gen.TangshiDao;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
@@ -40,16 +43,23 @@ public class DataBuilder {
 
   public DataBuilder( ){
 
-    dbManager = DBManager.getInstance(PoemApp.getContext());
-    tsDao=dbManager.getTangshiDao();
+    dbManager = DBCiManager.getInstance(PoemApp.getContext());
+    tsDao=dbManager.getSongCiDao();
   }
 
-  DBManager dbManager ;
-  TangshiDao tsDao;
-  final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+TangshiDao.Properties.Author.columnName+","+TangshiDao.Properties.Pyquany.columnName
-      +","+TangshiDao.Properties.Pyjian.columnName+","+TangshiDao.Properties.Authorjt.columnName+","+TangshiDao.Properties.Pyquan.columnName
-      +" FROM "+TangshiDao.TABLENAME
+  DBCiManager dbManager ;
+  SongCiDao tsDao;
+  //final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+TangshiDao.Properties.Author.columnName+","+TangshiDao.Properties.Pyquany.columnName
+  //    +","+TangshiDao.Properties.Pyjian.columnName+","+TangshiDao.Properties.Authorjt.columnName+","+TangshiDao.Properties.Pyquan.columnName
+  //    +" FROM "+TangshiDao.TABLENAME
+  //    +" order by pyquan";
+
+  final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+ SongCiDao.Properties.Author.columnName+","+SongCiDao.Properties.Pyquany.columnName
+      +","+SongCiDao.Properties.Pyjian.columnName+"," +SongCiDao.Properties.Pyquan.columnName
+      +" FROM "+SongCiDao.TABLENAME
       +" order by pyquan";
+
+  //Select Name,Count(*) From A Group By Name Having Count(*) > 1
 
   public Flowable<Tangshi> getAuthors(){
     log.d("SQL_DISTINCT_ENAME:"+SQL_DISTINCT_ENAME);
@@ -70,8 +80,8 @@ public class DataBuilder {
               //ts.setStrains(c.getString(3));
               ts.setPyquany(c.getString(1));
               ts.setPyjian(c.getString(2));
-              ts.setAuthorjt(c.getString(3));
-              ts.setPyquan(c.getString(4));
+              //ts.setAuthorjt(c.getString(3));
+              ts.setPyquan(c.getString(3));
             } catch (Exception e) {
               log.e(e);
             }
