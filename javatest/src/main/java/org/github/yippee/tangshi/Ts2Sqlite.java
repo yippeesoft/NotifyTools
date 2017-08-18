@@ -20,6 +20,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.jetbrains.kotlin.jline.internal.Log;
 
 /**
  * Created by sf on 2017/7/25.
@@ -28,7 +29,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 public class Ts2Sqlite {
 
   public static void main(String[] args) {
-    beanutils();
+    sc2sqlite();
   }
 
   static void beanutils(){
@@ -67,7 +68,7 @@ public class Ts2Sqlite {
     try {
       Class<?> managerClass = Class.forName(clsname);
       Object obj = managerClass.newInstance();
-      for(int i=0;i<100*100*100;i++) {
+      for(int i=0;i<1;i++) {
 
 
 
@@ -75,10 +76,10 @@ public class Ts2Sqlite {
         field.setAccessible(true);
         field.set(obj,"AAAAAAAAAA");
         //PropertyUtils.setSimpleProperty(ts, "title", "title");
-        Field field2=managerClass.getDeclaredField("title");
-        field.setAccessible(true);
-        s=   (String) field.get(obj); //((String) PropertyUtils.getSimpleProperty(ts, "title"));
-        //log.e("ss "+s);
+        Field field2=managerClass.getDeclaredField("author");
+        field2.setAccessible(true);
+        s=   (String) field2.get(obj); //((String) PropertyUtils.getSimpleProperty(ts, "title"));
+         System.out.println("ss "+s);
 
       } } catch (IllegalAccessException e) {
       e.printStackTrace();
@@ -91,6 +92,100 @@ public class Ts2Sqlite {
     }
     System.out.println("耗时2："+(System.currentTimeMillis()-start)); //280
 
+  }
+
+  static void sc2sqlite(){
+
+    int cnt = 0;
+    boolean bstmt=false;
+    String database = "y:/temp/ci.db";//"E:\\CBDBDatabase\\tangshi.sqlite";
+    String sql;
+    if(bstmt==false) {
+      //sql = "insert into tangshi(author,title,paragraphs,strains) values (?,?,?,?)";
+      sql = "REPLACE INTO ci(author,rhythmic,content,pyquany,pyjian,pyquan,value) values (?,?,?,?,?,?,?)";
+    }
+    else
+      sql = "insert into tangshi(author,title,paragraphs,strains) values ('%s','%s','%s','%s')";
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    PreparedStatement ps = null;
+    long start = System.currentTimeMillis();
+    int count=0;
+    try {
+      //Class.forName("org.sqlite.jdbc");
+      conn = DriverManager.getConnection("jdbc:sqlite:" + database);
+      conn.setAutoCommit(false);  //设为手动提交
+
+      if(bstmt)
+        stmt = conn.createStatement(); //计时：17360 条数：311828
+      else
+        ps = conn.prepareStatement(sql); //计时：15640 条数：311828
+
+
+      String sqll = "SELECT value,\n"
+          + "       rhythmic,\n"
+          + "       author,\n"
+          + "       content,\n"
+          + "       pyquan,\n"
+          + "       pyjian,\n"
+          + "       pyquany\n"
+          + "  FROM ci;";
+      stmt = conn.createStatement();
+      ResultSet rsr = stmt.executeQuery(sqll);
+
+      while(rsr.next()){
+
+
+
+          if(bstmt==false) {
+            String ftName= rsr.getString("author");
+            ps.setString(1, rsr.getString("author") );
+            ps.setString(2, rsr.getString("rhythmic") );
+            ps.setString(3, rsr.getString("content") );
+            ps.setString(4, getQpY(ftName) );
+            ps.setString(5, getJp(ftName) );
+             ps.setString(6, getQp(ftName) );
+            ps.setString(7, rsr.getString("value") );
+            //ps.setBytes(1,ftName.getBytes("UTF-16LE")); //体积91M
+            //ps.setBytes(2, tsBean.getTitle().getBytes("UTF-16LE"));
+            //ps.setBytes(3, paragraphs.getBytes("UTF-16LE"));
+            //ps.setBytes(4, strains.getBytes("UTF-16LE"));
+            //ps.setBytes(5, getQp(ftName).getBytes("UTF-16LE"));
+            //ps.setBytes(6, getJp(ftName).getBytes("UTF-16LE"));
+            //ps.setBytes(7, HanLP.convertToSimplifiedChinese(ftName).getBytes("UTF-16LE"));
+            ps.addBatch();
+          }else {
+            //  sqll =
+            //    String.format(sql, tsBean.getAuthor(), tsBean.getTitle(), paragraphs, strains);
+            //
+            //stmt.addBatch(sqll);
+          }
+          count++;
+          //System.out.println(sqll);
+          //if(lststrains.contains(strains)==false) {
+          //  System.out.println("strains :"+cnt+"  " + strains);
+          //  lststrains.add(strains);
+          //}
+          //cnt++;
+        }
+
+
+      if(bstmt==false) {
+        int[] ret = ps.executeBatch();
+        conn.commit();  //提交事务
+        ps.clearBatch();
+      }else {
+        stmt.executeBatch();
+        conn.commit();  //提交事务
+        stmt.clearBatch();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    long t2 = System.currentTimeMillis();
+    System.out.println("计时："+(t2-start)+" 条数："+count);
   }
 
 
@@ -247,6 +342,7 @@ public class Ts2Sqlite {
     {
       pyName+= pinyin.getPinyinWithToneMark().charAt(0);
     }
+    System.out.println(pyName);
     return pyName;
   }
 

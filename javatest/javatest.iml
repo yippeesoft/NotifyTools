@@ -12,14 +12,39 @@
         <option name="BUILDABLE" value="true" />
       </configuration>
     </facet>
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="3" platform="JVM 1.8" useProjectSettings="false">
+        <compilerSettings />
+        <compilerArguments>
+          <option name="destination" value="$MODULE_DIR$/build/kotlin-classes/main" />
+          <option name="noStdlib" value="true" />
+          <option name="noReflect" value="true" />
+          <option name="moduleName" value="javatest_main" />
+          <option name="jvmTarget" value="1.8" />
+          <option name="addCompilerBuiltIns" value="true" />
+          <option name="loadBuiltInsFromDependencies" value="true" />
+          <option name="languageVersion" value="1.1" />
+          <option name="apiVersion" value="1.1" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="version" value="true" />
+        </compilerArguments>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/classes/main" />
     <output-test url="file://$MODULE_DIR$/build/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
@@ -27,6 +52,22 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="kotlin-gradle-plugin-1.1.4" level="project" />
+    <orderEntry type="library" exported="" name="rxkotlin-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="rxjava-2.1.2" level="project" />
+    <orderEntry type="library" exported="" name="guava-23.0" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-gradle-plugin-api-1.1.4" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-stdlib-1.1.4" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-android-extensions-1.1.4" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-compiler-embeddable-1.1.4" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-compiler-runner-1.1.4" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-annotation-processing-1.1.4" level="project" />
+    <orderEntry type="library" exported="" name="jsr305-1.3.9" level="project" />
+    <orderEntry type="library" exported="" name="error_prone_annotations-2.0.18" level="project" />
+    <orderEntry type="library" exported="" name="j2objc-annotations-1.1" level="project" />
+    <orderEntry type="library" exported="" name="animal-sniffer-annotations-1.14" level="project" />
+    <orderEntry type="library" exported="" name="reactive-streams-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="annotations-13.0" level="project" />
     <orderEntry type="library" exported="" name="commons-beanutils-1.9.3" level="project" />
     <orderEntry type="library" exported="" name="commons-collections-3.2.2" level="project" />
     <orderEntry type="library" exported="" name="commons-logging-1.2" level="project" />
