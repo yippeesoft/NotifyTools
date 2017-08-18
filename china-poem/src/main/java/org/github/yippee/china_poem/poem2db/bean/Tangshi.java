@@ -1,5 +1,7 @@
 package org.github.yippee.china_poem.poem2db.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
@@ -17,7 +19,7 @@ import org.greenrobot.greendao.annotation.Index;
 
         )
 
-public class Tangshi {
+public class Tangshi implements Parcelable {
   @Id
   Long id;
 
@@ -124,5 +126,42 @@ public class Tangshi {
   public Tangshi() {
   }
 
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeValue(this.id);
+    dest.writeString(this.author);
+    dest.writeString(this.title);
+    dest.writeString(this.strains);
+    dest.writeString(this.paragraphs);
+    dest.writeString(this.pyquany);
+    dest.writeString(this.pyjian);
+    dest.writeString(this.authorjt);
+    dest.writeString(this.pyquan);
+  }
+
+  protected Tangshi(Parcel in) {
+    this.id = (Long) in.readValue(Long.class.getClassLoader());
+    this.author = in.readString();
+    this.title = in.readString();
+    this.strains = in.readString();
+    this.paragraphs = in.readString();
+    this.pyquany = in.readString();
+    this.pyjian = in.readString();
+    this.authorjt = in.readString();
+    this.pyquan = in.readString();
+  }
+
+  public static final Parcelable.Creator<Tangshi> CREATOR = new Parcelable.Creator<Tangshi>() {
+    @Override public Tangshi createFromParcel(Parcel source) {
+      return new Tangshi(source);
+    }
+
+    @Override public Tangshi[] newArray(int size) {
+      return new Tangshi[size];
+    }
+  };
 }
 

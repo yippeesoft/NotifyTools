@@ -20,6 +20,9 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+  configurations.all {
+    resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+  }
 }
 
 greendao {
@@ -29,25 +32,26 @@ greendao {
 }
 
 dependencies {
-  compile 'com.android.support:multidex:1.0.1'
   compile fileTree(include: ['*.jar'], dir: 'libs')
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
+  // add library
+  compile files('libs/hanlp-portable-1.3.4.jar')
+  compile files('libs/pinyin4j-2.5.0.jar')
+  compile project(path: ':beanutils')
+  compile 'com.android.support:multidex:1.0.1'
   compile 'com.android.support:appcompat-v7:25.3.1'
   compile 'com.android.support:design:25.3.1'
   compile 'com.android.support.constraint:constraint-layout:1.0.2'
-  testCompile 'junit:junit:4.12'
   compile 'com.google.code.gson:gson:2.8.1'
   compile 'org.greenrobot:greendao:3.2.0'
-  // add library
   compile 'org.greenrobot:greendao-api:3.2.0'
-  compile files('libs/hanlp-portable-1.3.4.jar')
   compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
   compile 'com.github.akarnokd:rxjava2-extensions:0.17.5'
-  compile files('libs/pinyin4j-2.5.0.jar')
   compile 'io.reactivex.rxjava2:rxjava:2.1.2'
   compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
   compile 'net.cachapa.expandablelayout:expandablelayout:2.9.1'
-  compile project(path: ':beanutils')
+  compile 'com.google.guava:guava:23.0-android'
+  testCompile 'junit:junit:4.12'
 }

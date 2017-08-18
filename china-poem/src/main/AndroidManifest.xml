@@ -2,17 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.github.yippee.china_poem">
 
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+  <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.GET_TASKS"/>
-  <!--suppress DeprecatedClassUsageInspection -->
-  <uses-permission android:name="android.permission.GET_TASKS" />
+  <!-- suppress DeprecatedClassUsageInspection -->
+  <uses-permission android:name="android.permission.GET_TASKS"/>
 
   <application
       android:name=".PoemApp"
@@ -31,6 +31,12 @@
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
+    </activity>
+    <activity
+        android:name="org.github.yippee.china_poem.view.DetailActivity"
+        android:label="@string/title_activity_detail"
+        android:exported = "true"
+        android:theme="@style/AppTheme.NoActionBar">
     </activity>
   </application>
 

@@ -49,7 +49,7 @@ public class DataBuilder {
   final String SQL_DISTINCT_ENAME = "SELECT DISTINCT "+TangshiDao.Properties.Author.columnName+","+TangshiDao.Properties.Pyquany.columnName
       +","+TangshiDao.Properties.Pyjian.columnName+","+TangshiDao.Properties.Authorjt.columnName+","+TangshiDao.Properties.Pyquan.columnName
       +" FROM "+TangshiDao.TABLENAME
-      +" order by pyjian";
+      +" order by pyquan";
 
   public Flowable<Tangshi> getAuthors(){
     log.d("SQL_DISTINCT_ENAME:"+SQL_DISTINCT_ENAME);
