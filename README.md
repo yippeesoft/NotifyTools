@@ -5,6 +5,7 @@
 	
 | 目录    |    说明  |
 | ------------- |  -------------------- |
+|china-pome|中华诗词|
 |app android notify tools  |基于安卓系统通知栏Android Notification小工具集 |
 |chinesecalendar |万年历 农历 节气 节日 星座 星宿 属相 生肖 闰年月 时辰 |
 |javatest |java demo|
@@ -25,6 +26,7 @@
 
 | 功能    |    说明  |
 | ------------- |  -------------------- |
+|china-pome|中华诗词|
 |天气     |从和风天气获取天气数据，默认福州 |
 |联系人导出    |解决安卓默认导出有500限制| 
 |PDF文件显示    |安卓5.0以上| 
@@ -33,10 +35,13 @@
 |ClearProcesses|后台进程清理|
 |callback|C++ C#互相回调、事件等|
 
+
 ## 感谢
 
 | 功能    |    说明  |
 | ------------- | -------------------- |
+|https://github.com/chinese-poetry/chinese-poetry |最全中华古诗词数据库 |
+|https://github.com/hankcs/HanLP |自然语言处理|
 |和风天气     |天气数据提供 |
 |http://www.cnblogs.com/txw1958/archive/2013/01/27/csharp-calendar.html|C# 万年历 农历 节气 节日 星座 星宿 属相 生肖 闰年月 时辰|
 |https://github.com/barteksc/AndroidPdfViewer |PDF显示 |
