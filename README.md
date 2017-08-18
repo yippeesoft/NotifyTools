@@ -5,7 +5,7 @@
 	
 | 目录    |    说明  |
 | ------------- |  -------------------- |
-|china-pome|中华诗词|
+|china-pome|唐宋诗词 |
 |app android notify tools  |基于安卓系统通知栏Android Notification小工具集 |
 |chinesecalendar |万年历 农历 节气 节日 星座 星宿 属相 生肖 闰年月 时辰 |
 |javatest |java demo|
@@ -26,7 +26,7 @@
 
 | 功能    |    说明  |
 | ------------- |  -------------------- |
-|china-pome|中华诗词|
+|china-pome|唐宋诗词|
 |天气     |从和风天气获取天气数据，默认福州 |
 |联系人导出    |解决安卓默认导出有500限制| 
 |PDF文件显示    |安卓5.0以上| 
