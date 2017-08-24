@@ -3,6 +3,7 @@ package org.github.yippee.china_poem;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Maps;
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import hu.akarnokd.rxjava2.expr.StatementFlowable;
 import io.reactivex.Flowable;
@@ -23,8 +27,14 @@ import io.reactivex.functions.Function;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.github.yippee.china_poem.Test.TestBeanUtils;
 import org.github.yippee.china_poem.Utils.LogUtils;
 import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 import org.github.yippee.china_poem.view.DataBuilder;
@@ -65,7 +75,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Ts2Sqlite.getAuthors(this);
 
 
-    new RxView(this).init();
+
+    log.e("AAAAA".hashCode()+"");
+
+
+    long start=System.currentTimeMillis();
+    TestBeanUtils.testMvel();
+    log.d("end2 "+(System.currentTimeMillis()-start)+"  " );
   }
 
   @Override public void onBackPressed() {

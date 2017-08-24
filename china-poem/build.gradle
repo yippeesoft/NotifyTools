@@ -11,7 +11,7 @@ android {
     targetSdkVersion 25
     versionCode 1
     versionName "1.0"
-
+    multiDexEnabled true
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
@@ -33,6 +33,7 @@ greendao {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
+  compile 'com.android.support:multidex:1.0.1'
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
@@ -40,7 +41,7 @@ dependencies {
   compile files('libs/hanlp-portable-1.3.4.jar')
   compile files('libs/pinyin4j-2.5.0.jar')
   compile project(path: ':beanutils')
-  compile 'com.android.support:multidex:1.0.1'
+
   compile 'com.android.support:appcompat-v7:25.3.1'
   compile 'com.android.support:design:25.3.1'
   compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -54,4 +55,9 @@ dependencies {
   compile 'net.cachapa.expandablelayout:expandablelayout:2.9.1'
   compile 'com.google.guava:guava:23.0-android'
   testCompile 'junit:junit:4.12'
+
+  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+  compile group: 'org.mvel', name: 'mvel2', version: '2.3.1.Final'
+  compile group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
+
 }
