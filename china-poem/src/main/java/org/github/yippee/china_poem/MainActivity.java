@@ -71,17 +71,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    //Ts2Sqlite.main(new String[]{});
-    //Ts2Sqlite.getAuthors(this);
-
-
-
-    log.e("AAAAA".hashCode()+"");
-
-
-    long start=System.currentTimeMillis();
-    TestBeanUtils.testMvel();
-    log.d("end2 "+(System.currentTimeMillis()-start)+"  " );
+    //long start=System.currentTimeMillis();
+    //TestBeanUtils.testMvel();
+    //log.d("end2 "+(System.currentTimeMillis()-start)+"  " );
+    new RxView(this).init();
   }
 
   @Override public void onBackPressed() {

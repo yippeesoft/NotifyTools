@@ -61,16 +61,16 @@ public class DataBuilder {
 
   //Select Name,Count(*) From A Group By Name Having Count(*) > 1
 
-  public Flowable<Tangshi> getAuthors(){
+  public Flowable<SongCi> getAuthors(){
     log.d("SQL_DISTINCT_ENAME:"+SQL_DISTINCT_ENAME);
     final Cursor c = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
 
-    Flowable<Tangshi> source = StatementFlowable.whileDo(
+    Flowable<SongCi> source = StatementFlowable.whileDo(
 
-        Flowable.just(c).flatMap(new Function<Cursor, Publisher<Tangshi>>() {
+        Flowable.just(c).flatMap(new Function<Cursor, Publisher<SongCi>>() {
 
-          @Override public Publisher<Tangshi> apply(@NonNull Cursor cursor)   {
-            Tangshi ts=new Tangshi();
+          @Override public Publisher<SongCi> apply(@NonNull Cursor cursor)   {
+            SongCi ts=new SongCi();
             try {
               //log.d("Publisher0:"+c.getString(0));
               ts.setAuthor(c.getString(0));  //new String(c.getBlob(0),"UTF-16LE");

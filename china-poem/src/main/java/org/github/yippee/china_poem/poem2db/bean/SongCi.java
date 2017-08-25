@@ -7,6 +7,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Transient;
 
 /**
  * Created by sf on 2017/8/18.
@@ -83,6 +84,17 @@ public class SongCi implements Parcelable {
 
   private String pyquany;
   private String pyjian;
+
+  @Transient
+  private int count;
+
+  public int getCount() {
+    return count;
+  }
+
+  public void setCount(int count) {
+    this.count = count;
+  }
 
   @Override public int describeContents() {
     return 0;

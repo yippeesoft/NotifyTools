@@ -48,8 +48,8 @@ public class DetailActivity extends AppCompatActivity {
     if(it==null || it.getParcelableExtra("tangshi")==null){
       this.finish();
     }
-    Tangshi ts=it.getParcelableExtra("tangshi");
-    log.d("DetailActivity "+new Gson().toJson(ts,Tangshi.class));
+    SongCi ts=it.getParcelableExtra("tangshi");
+    log.d("DetailActivity "+new Gson().toJson(ts,SongCi.class));
     this.setTitle(ts.getAuthor());
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

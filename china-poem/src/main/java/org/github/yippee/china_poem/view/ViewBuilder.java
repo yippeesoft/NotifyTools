@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import org.github.yippee.china_poem.R;
+import org.github.yippee.china_poem.poem2db.bean.SongCi;
 import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 
 /**
@@ -20,15 +21,15 @@ public class ViewBuilder {
   }
   RecyclerView poemRecyclerView;
   PoemAdapter poemAdapter;
-  ArrayList<Tangshi> poemData=new ArrayList<>();
+  ArrayList<SongCi> poemData=new ArrayList<>();
 
-  public void initData(Tangshi s){
+  public void initData(SongCi s){
     poemData.add(s );
     poemAdapter.notifyItemInserted(poemData.size()-1);
   }
   public void initView(){
     //initdata();
-    poemData = new ArrayList<Tangshi>();
+    poemData = new ArrayList<SongCi>();
 
     poemRecyclerView = (RecyclerView) cxt.findViewById(R.id.recycler_view);
 

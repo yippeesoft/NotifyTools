@@ -7,6 +7,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import org.github.yippee.china_poem.MainActivity;
 import org.github.yippee.china_poem.Utils.LogUtils;
+import org.github.yippee.china_poem.poem2db.bean.SongCi;
 import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 import org.github.yippee.china_poem.view.DataBuilder;
 import org.github.yippee.china_poem.view.ViewBuilder;
@@ -18,7 +19,7 @@ import org.github.yippee.china_poem.view.ViewBuilder;
 public class RxView {
   LogUtils log=LogUtils.getLogger(RxView.class);
 
-  public BehaviorRelay<Tangshi> relay=BehaviorRelay.create();
+  public BehaviorRelay<SongCi> relay=BehaviorRelay.create();
 
   ViewBuilder viewBuilder;
   MainActivity main;
@@ -31,14 +32,14 @@ public class RxView {
     viewBuilder.initView();
 
 
-    relay.observeOn(AndroidSchedulers.mainThread()) .subscribe(new Consumer<Tangshi>() {
-      @Override public void accept(Tangshi s) throws Exception {
+    relay.observeOn(AndroidSchedulers.mainThread()) .subscribe(new Consumer<SongCi>() {
+      @Override public void accept(SongCi s) throws Exception {
         //log.d("Consumer:"+s);
         viewBuilder.initData(s);
       }
     });
-    new DataBuilder().getAuthors().map(new Function<Tangshi, String>() {
-      @Override public String apply(@NonNull Tangshi s) throws Exception {
+    new DataBuilder().getAuthors().map(new Function<SongCi, String>() {
+      @Override public String apply(@NonNull SongCi s) throws Exception {
         relay.accept(s);
         return "";
       }
