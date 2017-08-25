@@ -66,7 +66,7 @@ public class DataBuilder {
     log.d("SQL_DISTINCT_ENAME:"+SQL_DISTINCT_ENAME);
     final long start=System.currentTimeMillis();
     log.d("Consumer startt:"+start);
-    final Cursor cursor = dbManager.getDaoSession().getDatabase().rawQuery("select * from ci", null);
+    final Cursor cursor = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
     //List<SongCi> ll=new ArrayList<>();
     //SongCi point;
     //while (cursor.moveToNext()){
