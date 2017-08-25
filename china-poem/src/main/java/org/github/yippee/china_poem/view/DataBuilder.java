@@ -21,6 +21,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.processors.PublishProcessor;
 import io.reactivex.schedulers.Schedulers;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import org.github.yippee.china_poem.MainActivity;
 import org.github.yippee.china_poem.PoemApp;
@@ -65,8 +66,27 @@ public class DataBuilder {
     log.d("SQL_DISTINCT_ENAME:"+SQL_DISTINCT_ENAME);
     final long start=System.currentTimeMillis();
     log.d("Consumer startt:"+start);
-    final Cursor c = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
-
+    final Cursor cursor = dbManager.getDaoSession().getDatabase().rawQuery("select * from ci", null);
+    //List<SongCi> ll=new ArrayList<>();
+    //SongCi point;
+    //while (cursor.moveToNext()){
+    //  point = new SongCi();
+    //  point.setPyquan(cursor.getString(cursor
+    //      .getColumnIndex("pyquan")));
+    //  point.setRhythmic(cursor.getString(cursor
+    //      .getColumnIndex("rhythmic")));
+    //  point.setAuthor(cursor.getString(cursor
+    //      .getColumnIndex("author")));
+    //  point.setContent(cursor.getString(cursor
+    //      .getColumnIndex("content")));
+    //  point.setPyjian(cursor.getString(cursor
+    //      .getColumnIndex("pyjian")));
+    //  point.setPyquany(cursor.getString(cursor
+    //      .getColumnIndex("pyquany")));
+    //  ll.add(point);
+    //}
+    //log.d("Consumer enddd:"+System.currentTimeMillis());
+    final Cursor c=cursor;
     Flowable<SongCi> source = StatementFlowable.whileDo(
 
         Flowable.just(c).flatMap(new Function<Cursor, Publisher<SongCi>>() {
