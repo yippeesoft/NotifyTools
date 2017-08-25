@@ -63,6 +63,8 @@ public class DataBuilder {
 
   public Flowable<SongCi> getAuthors(){
     log.d("SQL_DISTINCT_ENAME:"+SQL_DISTINCT_ENAME);
+    final long start=System.currentTimeMillis();
+    log.d("Consumer startt:"+start);
     final Cursor c = dbManager.getDaoSession().getDatabase().rawQuery(SQL_DISTINCT_ENAME, null);
 
     Flowable<SongCi> source = StatementFlowable.whileDo(

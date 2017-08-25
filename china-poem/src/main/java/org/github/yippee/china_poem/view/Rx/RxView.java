@@ -3,6 +3,7 @@ package org.github.yippee.china_poem.view.Rx;
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import org.github.yippee.china_poem.MainActivity;
@@ -30,19 +31,33 @@ public class RxView {
   public void init(){
     viewBuilder=new ViewBuilder(main);
     viewBuilder.initView();
-
+    log.d("Consumer init:"+(System.currentTimeMillis() ));
 
     relay.observeOn(AndroidSchedulers.mainThread()) .subscribe(new Consumer<SongCi>() {
       @Override public void accept(SongCi s) throws Exception {
-        //log.d("Consumer:"+s);
+
         viewBuilder.initData(s);
       }
     });
+    final long start=System.currentTimeMillis();
+    log.d("Consumer init2:"+(System.currentTimeMillis() ));
     new DataBuilder().getAuthors().map(new Function<SongCi, String>() {
       @Override public String apply(@NonNull SongCi s) throws Exception {
         relay.accept(s);
         return "";
       }
-    }).subscribe( );
+    }).subscribe(new Consumer<String>() {
+      @Override public void accept(String s) throws Exception {
+
+      }
+    }, new Consumer<Throwable>() {
+      @Override public void accept(Throwable throwable) throws Exception {
+
+      }
+    }, new Action() {
+      @Override public void run() throws Exception {
+         log.d("Consumer onend:"+(System.currentTimeMillis() ));
+      }
+    });
   }
 }

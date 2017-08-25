@@ -38,6 +38,7 @@ import org.github.yippee.china_poem.Test.TestBeanUtils;
 import org.github.yippee.china_poem.Utils.LogUtils;
 import org.github.yippee.china_poem.poem2db.bean.Tangshi;
 import org.github.yippee.china_poem.view.DataBuilder;
+import org.github.yippee.china_poem.view.DataBuilderGuava;
 import org.github.yippee.china_poem.view.Rx.RxView;
 import org.github.yippee.china_poem.view.ViewBuilder;
 import org.reactivestreams.Publisher;
@@ -73,8 +74,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //long start=System.currentTimeMillis();
     //TestBeanUtils.testMvel();
-    //log.d("end2 "+(System.currentTimeMillis()-start)+"  " );
+
+    //new DataBuilderGuava().getAuthors().subscribe();
+    log.d("Consumer start "+(System.currentTimeMillis() )+"  " );
     new RxView(this).init();
+
   }
 
   @Override public void onBackPressed() {
