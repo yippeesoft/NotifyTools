@@ -15,7 +15,7 @@
 |BingWallpage|BING壁纸 KOTLIN|
 |c++chsarp|C++ C# COM组件事件回调|
 |dbToJavaBean|sqlite数据库生成greendao bean|
-
+|1bpp-monochrome-bitmap|android bitmap转存单色位图 |
 	
 ## 测试设备
 | 机型    |    说明  |
@@ -41,6 +41,7 @@
 | 功能    |    说明  |
 | ------------- | -------------------- |
 |https://github.com/chinese-poetry/chinese-poetry |最全中华古诗词数据库 |
+|https://github.com/acdevs/1bpp-monochrome-android |android bitmap转存单色位图|
 |https://github.com/hankcs/HanLP |自然语言处理|
 |和风天气     |天气数据提供 |
 |http://www.cnblogs.com/txw1958/archive/2013/01/27/csharp-calendar.html|C# 万年历 农历 节气 节日 星座 星宿 属相 生肖 闰年月 时辰|
