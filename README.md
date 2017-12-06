@@ -13,7 +13,8 @@
 |thidrd/xzqh |行政区划HTML |
 |ClearProcesses|后台进程清理|
 |BingWallpage|BING壁纸 KOTLIN|
-|c++chsarp|C++ C# COM组件事件回调|
+|c++chsarp/callback|C++ C# COM组件事件回调|
+|c++chsarp/FireFoxPwdCrack|firefox/chrome密码解析|
 |dbToJavaBean|sqlite数据库生成greendao bean|
 |1bpp-monochrome-bitmap|android bitmap转存单色位图 |
 	
@@ -27,13 +28,15 @@
 | 功能    |    说明  |
 | ------------- |  -------------------- |
 |china-pome|唐宋诗词|
+|1bpp-monochrome-bitmap|android bitmap转存单色位图 |
 |天气     |从和风天气获取天气数据，默认福州 |
 |联系人导出    |解决安卓默认导出有500限制| 
 |PDF文件显示    |安卓5.0以上| 
 |行政区划   |基于 xzqh.org网页解析| 
 |JAVA BPDEEP  |java实现的深度神经网络| 
 |ClearProcesses|后台进程清理|
-|callback|C++ C#互相回调、事件等|
+|c++chsarp/callback|C++ C# COM组件事件回调|
+|c++chsarp/FireFoxPwdCrack|firefox/chrome密码解析|
 
 
 ## 感谢
@@ -57,3 +60,4 @@
 |太多，从略 |KOTLIN |
 |参见注释 |C++ C# COM组件 |
 |http://www.oschina.net/code/snippet_128886_26726 |数据库生成javabean小工具（java） |
+|https://github.com/ybfung/FireFoxPwdCrack.git|firefox/chrome密码解析|

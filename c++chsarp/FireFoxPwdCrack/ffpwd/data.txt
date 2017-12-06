@@ -1,0 +1,104 @@
+Date: 面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面面L廿YMozilla Firefox is not installed!
+Google Chrome is not installed!
+Mozilla Firefox is not installed!
+Google Chrome is not installed!
+From Mozilla Firefox:
+
+
+
+--------------------------------------------------
+Entry: 0
+URL: https://www.testflightapp.cn
+Username: sf7509@gmail.com
+Password: sfsfsf
+--------------------------------------------------
+--------------------------------------------------
+Entry: 1
+URL: https://graph.renren.com
+Username: zhongtong75@163.com
+Password: zhongtong7575
+--------------------------------------------------
+--------------------------------------------------
+Entry: 2
+URL: https://portal.qiniu.com
+Username: lingley_123@163.com
+Password: android1080
+--------------------------------------------------
+--------------------------------------------------
+Entry: 3
+URL: http://www.fuckallwinner.com
+Username: AW
+Password: yippeesksf123
+--------------------------------------------------
+--------------------------------------------------
+Entry: 4
+URL: http://www.fuckrockchip.com
+Username: yippee
+Password: yippeesksf123
+--------------------------------------------------
+--------------------------------------------------
+Entry: 5
+URL: http://120.35.11.153:8080
+Username: shengf
+Password: sfsfsf
+--------------------------------------------------
+--------------------------------------------------
+Entry: 6
+URL: http://192.168.65.116
+Username: shengf@star-net.com
+Password: sfsfsfsf
+--------------------------------------------------
+--------------------------------------------------
+Entry: 7
+URL: http://192.168.65.116
+Username: shengf@star-net.cn
+Password: sfsfsfsf
+--------------------------------------------------
+--------------------------------------------------
+Entry: 8
+URL: ul
+Username: admin
+Password: admin
+--------------------------------------------------
+--------------------------------------------------
+Entry: 9
+URL: https://www.umeng.com
+Username: yongzhen_tao@163.com
+Password: tyz593
+--------------------------------------------------
+--------------------------------------------------
+Entry: 10
+URL: http://bbs.pediy.com
+Username: yippees
+Password: yippeesk123
+--------------------------------------------------
+--------------------------------------------------
+Entry: 11
+URL: http://client.gegehost.com
+Username: yippeesoft@gmail.com
+Password: yippeesksf123
+--------------------------------------------------
+--------------------------------------------------
+Entry: 12
+URL: http://oa.evideostb.com
+Username: shengf
+Password: sfsfsf
+--------------------------------------------------
+--------------------------------------------------
+Entry: 13
+URL: http://www.56iq.net
+Username: yippeesoft@gmail.com
+Password: yippeesksf123
+--------------------------------------------------
+--------------------------------------------------
+Entry: 14
+URL: http://220.249.189.91:8080
+Username: shengf
+Password: sfsfsf
+--------------------------------------------------
+--------------------------------------------------
+Entry: 15
+URL: http://www.xblah.com
+Username: Yippee
+Password: yippeesksf123
+--------------------------------------------------
