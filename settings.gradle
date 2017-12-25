@@ -1,4 +1,4 @@
-include ':app', ':chinesecalendar', ':javatest', ':BingWallpage', ':cbdb', ':china-poem', ':lib',
-    ':1bpp-monochrome-bitmap',
-    ':SfLogger',
-    ':beanutils'
+include ':app', ':chinesecalendar', ':javatest', ':BingWallpage', ':cbdb', ':china-poem', ':lib', ':java_js_2screen',
+        ':1bpp-monochrome-bitmap',
+        ':SfLogger',
+        ':beanutils'

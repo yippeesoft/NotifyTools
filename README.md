@@ -17,6 +17,7 @@
 |c++chsarp/FireFoxPwdCrack|firefox/chrome密码解析|
 |dbToJavaBean|sqlite数据库生成greendao bean|
 |1bpp-monochrome-bitmap|android bitmap转存单色位图 |
+|java_js_2screen|android java-js交互 双屏异显|
 	
 ## 测试设备
 | 机型    |    说明  |
@@ -37,7 +38,7 @@
 |ClearProcesses|后台进程清理|
 |c++chsarp/callback|C++ C# COM组件事件回调|
 |c++chsarp/FireFoxPwdCrack|firefox/chrome密码解析|
-
+|java_js_2screen|android java-js交互 双屏异显|
 
 ## 感谢
 
