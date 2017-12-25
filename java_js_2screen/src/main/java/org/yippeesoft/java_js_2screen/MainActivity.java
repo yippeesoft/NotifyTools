@@ -91,6 +91,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //调用js方法，第一个参数是js方法名，后面的参数是js方法的参数列表
+    void doJs(String function, Object... params){
+        StringBuilder result = new StringBuilder();
+        result.append("javascript:").append(function).append("(");
+        for(int i = 0; i < params.length; i++){
+            result.append("'").append(params[i].toString()).append("'");
+            if(i < params.length - 1){
+                result.append(",");
+            }
+        }
+        result.append(")");
+        String jsStr = result.toString();
+        webView.loadUrl(jsStr);
+    }
+    WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 " function jsFun(msg) {\n" +
                         "          alert(\"jsFun...\" + msg); " +
                         "           } ";
-        final WebView webView=new WebView(this);
+        webView=new WebView(this);
         this.setContentView(webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {});
