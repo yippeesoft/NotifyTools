@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
@@ -14,7 +15,9 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         this.setContentView(webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {});
-        webView.loadUrl("file:///sdcard/1.html");
+        webView.loadUrl("file:///sdcard/javajs.html");
         webView.addJavascriptInterface(new JSBridge(),"slack");
 
         webView.setWebViewClient(new WebViewClient(){
@@ -130,8 +133,31 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
                 webView.loadUrl("javascript:" + JS_FUNCTION);//注入js函数
 
-                webView.loadUrl("javascript:doHelp()");//调用js函数
+                webView.loadUrl("javascript:doHelp('java')");//调用js函数
             }
+
+            @Override
+            // 在点击请求的是链接是才会调用，重写此方法返回true表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边。这个函数我们可以做很多操作，比如我们读取到某些特殊的URL，于是就可以不打开地址，取消这个操作，进行预先定义的其他操作，这对一个程序是非常必要的。
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // 判断url链接中是否含有某个字段，如果有就执行指定的跳转（不执行跳转url链接），如果没有就加载url链接
+                return true;
+            }
+
+            public void onReceivedSslError(WebView view,
+                SslErrorHandler handler, SslError error) {
+                // handler.cancel(); 默认的处理方式，WebView变成空白页
+                // //接受证书
+                handler.proceed();
+                // handleMessage(Message msg); 其他处理
+            }
+
+            @Override
+            // 此回调是拦截点击要跳转的url链接，并对请求的url链接做修改（添加删除字段）
+            public WebResourceResponse shouldInterceptRequest(WebView view,
+                String url) {
+                return null;
+            }
+
         });
 
         vv.setVideoPath("/sdcard/1.mp4");

@@ -8,3 +8,5 @@ Debug
 bin
 .vs
 /build
+.iml
+*.iml

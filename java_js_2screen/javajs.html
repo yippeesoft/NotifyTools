@@ -1,17 +1,23 @@
 <html>
  
 <script language="JavaScript"><!-- 
-function doHelp(){alert('jsjs');}
+function doHelp(a){alert('jsjs'+a);}
  
 function jscalljava() {  
             slack.jsMessage("哈哈,I am from webview");  
         }  
+function jscalljava2(str) {  
+			var v=str+" from js";
+            slack.jsMessage("哈哈,I am from webview "+v);  
+}  
 //--></script>
 <body bgcolor="#FFFFFF">
 		<div id="Description">
 			 <input name="Save"  id="doHelp" onclick="return jsFun('aa');" type="submit" value="java inj js">
 			 
 			 <input name="Save"  id="doHelp" onclick="return jscalljava('aa');" type="submit" value="js call java">
+			 
+			  <input name="Save"  id="doHelp" onclick="return jscalljava2('aa');" type="submit" value="js return java">
 		</div>
 </body>
 </html>
