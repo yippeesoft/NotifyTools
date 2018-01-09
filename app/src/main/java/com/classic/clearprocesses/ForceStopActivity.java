@@ -25,11 +25,17 @@ import org.github.yippee.notifytools.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class ForceStopActivity extends AppCompatActivity implements CommonRecyclerAdapter.OnItemClickListener {
     String TAG="ForceStopActivity";
@@ -53,7 +59,7 @@ public class ForceStopActivity extends AppCompatActivity implements CommonRecycl
     private Context               mAppContext;
     private ActivityManager       mActivityManager;
     private RecyclerView          mRecyclerView;
-    private CompositeSubscription mCompositeSubscription;
+    private CompositeDisposable mCompositeDisposable ;
     private AccessibilityManager  mAccessibilityManager;
     private ArrayList<String>     mPackageList;
     private PackageAdapter mPackageAdapter;
@@ -64,7 +70,7 @@ public class ForceStopActivity extends AppCompatActivity implements CommonRecycl
         mAppContext = getApplicationContext();
         mAccessibilityManager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         mPackageList = new ArrayList<>();
-        mCompositeSubscription = new CompositeSubscription();
+        mCompositeDisposable = new CompositeDisposable();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.main_rv);
@@ -88,22 +94,23 @@ public class ForceStopActivity extends AppCompatActivity implements CommonRecycl
 
     @Override protected void onResume() {
         super.onResume();
-        query();
+        queryBackgroundProcesses();
     }
 
     private void query() {
-        mCompositeSubscription.add(Observable.create(new Observable.OnSubscribe<List<String>>() {
-                                    @Override public void call(Subscriber<? super List<String>> subscriber) {
-                                        mPackageList.clear();
-                                        mPackageList.addAll(queryBackgroundProcesses());
-                                        subscriber.onNext(mPackageList);
-                                        subscriber.onCompleted();
-                                    }
-                                })
-                                .subscribeOn(Schedulers.newThread())
-                                .unsubscribeOn(Schedulers.newThread())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(mPackageAdapter));
+//        CompositeDisposable.add(Observable.create(new Observable.OnSubscribe<List<String>>() {
+//                                    @Override public void call(Subscriber<? super List<String>> subscriber) {
+//                                        mPackageList.clear();
+//                                        mPackageList.addAll(queryBackgroundProcesses());
+//                                        subscriber.onNext(mPackageList);
+//                                        subscriber.onCompleted();
+//                                    }
+//                                })
+//                                .subscribeOn(Schedulers.newThread())
+//                                .unsubscribeOn(Schedulers.newThread())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(mPackageAdapter));
+
     }
 
     private List<String> queryBackgroundProcesses(){
@@ -124,6 +131,10 @@ public class ForceStopActivity extends AppCompatActivity implements CommonRecycl
                 packageList.add(packageName);
             }
         }
+        mPackageList.clear();
+        mPackageList.addAll(packageList);
+        mPackageAdapter.clear();
+        mPackageAdapter.addAll(packageList);
         return packageList;
     }
 
@@ -141,22 +152,22 @@ public class ForceStopActivity extends AppCompatActivity implements CommonRecycl
     }
 
     private void clearAllProcesses(){
-        mCompositeSubscription.add(
-                Observable.from(mPackageList)
-                          .subscribeOn(Schedulers.io())
-                          .unsubscribeOn(Schedulers.io())
-                          .observeOn(Schedulers.io())
-                          .subscribe(new Subscriber<String>() {
-                              @Override public void onCompleted() {  }
-
-                              @Override public void onError(Throwable e) {
-                                  e.printStackTrace();
-                              }
-
-                              @Override public void onNext(String packageName) {
-                                  showPackageDetail(packageName);
-                              }
-                          }));
+//        mCompositeSubscription.add(
+//                Observable.from(mPackageList)
+//                        .subscribeOn(Schedulers.io())
+//                        .unsubscribeOn(Schedulers.io())
+//                        .observeOn(Schedulers.io())
+//                        .subscribe(new Subscriber<String>() {
+//                            @Override public void onCompleted() {  }
+//
+//                            @Override public void onError(Throwable e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            @Override public void onNext(String packageName) {
+//                                showPackageDetail(packageName);
+//                            }
+//                        }));
     }
 
     private void showPackageDetail(String packageName){
@@ -232,8 +243,9 @@ public class ForceStopActivity extends AppCompatActivity implements CommonRecycl
 
     @Override protected void onDestroy() {
         super.onDestroy();
-        if (null != mCompositeSubscription) {
-            mCompositeSubscription.unsubscribe();
+        if (null != mCompositeDisposable) {
+            mCompositeDisposable.dispose();
+            mCompositeDisposable=null;
         }
     }
 }

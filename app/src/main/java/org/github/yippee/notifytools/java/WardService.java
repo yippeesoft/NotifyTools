@@ -27,21 +27,27 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+//import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Url;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+//import rx.Observable;
+//import rx.android.schedulers.AndroidSchedulers;
+//import rx.functions.Action0;
+//import rx.functions.Action1;
+//import rx.functions.Func1;
+//import rx.schedulers.Schedulers;
 
 /**
  * Created by sf on 2017/2/24.
@@ -76,7 +82,7 @@ public class WardService {
                 .build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(StringConverterFactory.create())
                 .client(okHttpClient)
                 .build();
@@ -87,9 +93,9 @@ public class WardService {
         String url = baseUrl + "sitemap.html";
         log.d(url);
         wardService.getWard(url).subscribeOn(Schedulers.io())
-                .flatMap(new Func1<Response<ResponseBody>, Observable<String>>() {
+                .flatMap(new Function<Response<ResponseBody>, Observable<String>>() {
                     @Override
-                    public Observable<String> call(Response<ResponseBody> response) {
+                    public Observable<String> apply(@NonNull Response<ResponseBody> response) throws Exception {
                         String resp = null;
                         if (response != null && !response.isSuccessful()) {
                             try {
@@ -108,13 +114,15 @@ public class WardService {
                             }
                         }
                         return Observable.just(resp);
-                    }
-                })
+                    } })
+
+
+
                 .observeOn(Schedulers.computation())
-                .subscribe(new Action1<String>() {
+                .subscribe(new Consumer<String>() {
                     @Override
-                    public void call(String resp) {
-//                        log.d("onnext：" + resp);
+                    public void accept(String resp) throws Exception {
+                        log.d("onnext：" + resp);
                         // DocumentBuilder对象
 
 
@@ -208,18 +216,9 @@ public class WardService {
                             e.printStackTrace();
                         }
 
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        log.e("onnext：" + throwable.toString());
-                    }
-                }, new Action0() {
-                    @Override
-                    public void call() {
-                        log.d("oncomplete：");
-                    }
-                });
+
+                    }});
+
 
     }
 

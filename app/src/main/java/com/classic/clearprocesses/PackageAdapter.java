@@ -9,7 +9,11 @@ import org.github.yippee.notifytools.R;
 
 import java.util.List;
 
-import rx.functions.Action1;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+
 
 /**
  * 应用名称: ClearProcesses
@@ -19,7 +23,7 @@ import rx.functions.Action1;
  * 创 建 人: 续写经典
  * 创建时间: 2016/7/25 18:05
  */
-public class PackageAdapter extends CommonRecyclerAdapter<String> implements Action1<List<String>> {
+public class PackageAdapter extends CommonRecyclerAdapter<String>   {
 
     public PackageAdapter(Context context) {
         super(context, R.layout.item_app_info);
@@ -29,11 +33,7 @@ public class PackageAdapter extends CommonRecyclerAdapter<String> implements Act
         helper.setText(R.id.item_pkg, item);
     }
 
-    @Override public void call(List<String> items) {
-        if(null != items && items.size() > 0){
-            replaceAll(items);
-        } else {
-            clear();
-        }
-    }
+
+
+
 }

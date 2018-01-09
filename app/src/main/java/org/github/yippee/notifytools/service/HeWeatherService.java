@@ -21,12 +21,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+//import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -34,13 +44,13 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
-import rx.Observable;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+//import rx.Observable;
+//import rx.Scheduler;
+//import rx.android.schedulers.AndroidSchedulers;
+//import rx.functions.Action0;
+//import rx.functions.Action1;
+//import rx.functions.Func1;
+//import rx.schedulers.Schedulers;
 
 /**
  * Created by sf on 2017/1/6.
@@ -73,9 +83,9 @@ public class HeWeatherService  extends Service {
             String url=baseUrl+"forecast?"+"city="+citys[i]+"&key="+ LocalConstsf.heweatherKey;
             log.d(url);
             weatherService.get7(url).subscribeOn(Schedulers.io())
-                    .flatMap(new Func1<Response<ResponseBody>, Observable<Heweather7bean>>() {
+                    .flatMap(new Function<Response<ResponseBody>, ObservableSource<Heweather7bean>>() {
                         @Override
-                        public Observable<Heweather7bean> call(Response<ResponseBody> response) {
+                        public ObservableSource<Heweather7bean> apply(@NonNull Response<ResponseBody> response) throws Exception {
                             Heweather7bean resp = null;
                             if (response != null && !response.isSuccessful()) {
                                 try {
@@ -96,11 +106,12 @@ public class HeWeatherService  extends Service {
 
                             return Observable.just(resp);
                         }
+
                     })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Heweather7bean>() {
+                    .subscribe(new Consumer<Heweather7bean>() {
                         @Override
-                        public void call(Heweather7bean heweather7bean) {
+                        public void accept(Heweather7bean heweather7bean) throws Exception {
                             log.d("onnext：" + heweather7bean);
 //                            noteMng = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 //                            Notification myNotify = new Notification();
@@ -128,19 +139,9 @@ public class HeWeatherService  extends Service {
                             mBuilder.setStyle(inboxStyle);
 
                             noteMng.notify(notifyID, mBuilder.build());
-
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            log.e("onnext："+throwable.toString());
-                        }
-                    }, new Action0() {
-                        @Override
-                        public void call() {
-                            log.d("oncomplete：");
                         }
                     });
+
 
         }
 
@@ -164,7 +165,7 @@ public class HeWeatherService  extends Service {
                 .build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(StringConverterFactory.create())
                 .client(okHttpClient)
                 .build();

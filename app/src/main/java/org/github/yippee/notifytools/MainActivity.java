@@ -16,15 +16,19 @@ import android.os.Bundle;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 
-import com.tbruyelle.rxpermissions.Permission;
-import com.tbruyelle.rxpermissions.RxPermissions;
+//import com.tbruyelle.rxpermissions.Permission;
+//import com.tbruyelle.rxpermissions.RxPermissions;
+
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.github.yippee.notifytools.bean.Heweather7bean;
 import org.github.yippee.notifytools.utils.Logs;
 
 import java.util.List;
 
-import rx.functions.Action1;
+import io.reactivex.functions.Consumer;
+
 
 public class MainActivity extends AppCompatActivity {
     private Logs log = Logs.getLogger(this.getClass());
@@ -47,15 +51,15 @@ public class MainActivity extends AppCompatActivity {
 
     void simInfo(){
         //SubscriptionManager  该类主要包含了所有sim卡的信息
-        SubscriptionManager mSubscriptionManager = SubscriptionManager.from(this);
-        int simcnt=mSubscriptionManager.getActiveSubscriptionInfoCount();
-        List<SubscriptionInfo> lstSim=mSubscriptionManager.getActiveSubscriptionInfoList();
-        for(int i=0;i<lstSim.size();i++){
-            SubscriptionInfo si=lstSim.get(i);
-
-            if(si!=null)
-                log.d(si.toString());
-        }
+//        SubscriptionManager mSubscriptionManager = SubscriptionManager.from(this);
+//        int simcnt=mSubscriptionManager.getActiveSubscriptionInfoCount();
+//        List<SubscriptionInfo> lstSim=mSubscriptionManager.getActiveSubscriptionInfoList();
+//        for(int i=0;i<lstSim.size();i++){
+//            SubscriptionInfo si=lstSim.get(i);
+//
+//            if(si!=null)
+//                log.d(si.toString());
+//        }
     }
 
     private boolean requestPermissions() {
@@ -65,11 +69,13 @@ public class MainActivity extends AppCompatActivity {
         RxPermissions rxp=new RxPermissions(this);
         rxp.requestEach(Manifest.permission.CAMERA,Manifest.permission.READ_CONTACTS,  //requestEach or ensureEach
                         Manifest.permission.READ_PHONE_STATE)
-                .subscribe(new Action1<Permission>() {
+                .subscribe(new Consumer<Permission>() {
                     @Override
-                    public void call(Permission permission) {
+                    public void accept(Permission permission) throws Exception {
                         log.d("mayRequestPermissions "+permission.toString());
                     }
+
+
                 });
 //        if (checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
 //            return true;

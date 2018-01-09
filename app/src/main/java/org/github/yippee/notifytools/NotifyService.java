@@ -69,6 +69,7 @@ public class NotifyService extends Service{
         PendingIntent psProcee=PendingIntent.getActivity(this,0,intent, Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         myNotify.contentView.setOnClickPendingIntent(R.id.btStop,psProcee);
 
+
         //设置进度条，最大值 为100,当前值为0，最后一个参数为true时显示条纹
         //        myNotify.contentView.setProgressBar(R.id.pb, 100,0, false);
 //        myNotify.contentView.setProgressBar(R.id.pb, 100,50, false);
