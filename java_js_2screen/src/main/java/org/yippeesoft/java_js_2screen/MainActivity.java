@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
                 " function jsFun(msg) {\n" +
                         "          alert(\"jsFun...\" + msg); " +
                         "           } ";
-        webView=new WebView(this);
-        this.setContentView(webView);
+        webView=new WebView(rlmain.getContext());
+        this.setContentView(rlmain);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {});
         webView.loadUrl("file:///sdcard/javajs.html");

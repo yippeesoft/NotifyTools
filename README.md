@@ -40,6 +40,7 @@
 |c++chsarp/FireFoxPwdCrack|firefox/chrome密码解析|
 |java_js_2screen|android java-js交互 双屏异显|
 |JumpService|android 截屏 MI3TD卡死|
+|VoicePCM|android 录音播放|
 
 ## 感谢
 
