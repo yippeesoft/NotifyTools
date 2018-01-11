@@ -1,11 +1,15 @@
 package org.github.yippee.notifytools;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.os.Environment;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,13 +19,12 @@ import org.github.yippee.notifytools.utils.Logs;
 
 import java.util.HashMap;
 
-import static android.support.multidex.MultiDex.*;
 
 
 /**
  * Created by sf on 2016/9/14.
  */
-public class MainApp extends Application {
+public class MainApp extends MultiDexApplication {
     private Logs log = Logs.getLogger(this.getClass());
 
     public class CrashHandler implements Thread.UncaughtExceptionHandler {
@@ -41,7 +44,7 @@ public class MainApp extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        install(this);
+//        Multidex.install(this);
 
     }
 
@@ -70,6 +73,16 @@ public class MainApp extends Application {
     private static MainApp application;
     public static MainApp getApplication() {
         return application;
+    }
+
+    public static MediaProjectionManager mediaProjectionManager;
+    public static MediaProjection mediaProjection;
+
+    public static void getMediaProjection(int resultCode,Intent data){
+        mediaProjection = ((MediaProjectionManager) getApplication(). getSystemService(
+                Context.MEDIA_PROJECTION_SERVICE)).getMediaProjection(resultCode,
+                data);
+
     }
 
 }

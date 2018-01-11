@@ -39,6 +39,7 @@
 |c++chsarp/callback|C++ C# COM组件事件回调|
 |c++chsarp/FireFoxPwdCrack|firefox/chrome密码解析|
 |java_js_2screen|android java-js交互 双屏异显|
+|JumpService|android 截屏 MI3TD卡死|
 
 ## 感谢
 

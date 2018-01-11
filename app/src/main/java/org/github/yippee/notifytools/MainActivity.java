@@ -23,6 +23,7 @@ import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.github.yippee.notifytools.bean.Heweather7bean;
+import org.github.yippee.notifytools.utils.CaptureHelper;
 import org.github.yippee.notifytools.utils.Logs;
 
 import java.util.List;
@@ -46,9 +47,15 @@ public class MainActivity extends AppCompatActivity {
 //        3. 设备的策略禁止当前应用获取这个权限的授权：shouldShowRequestPermissionRationale()  返回 false
         requestPermissions();
         startService(new Intent(this, NotifyService.class));
+        CaptureHelper.fireScreenCaptureIntent(this);
+//        this.finish();
+    }
+    @Override
+    public  void onActivityResult(int requestCode, int resultCode, Intent data) {
+        log.d(resultCode+" acquire permission to screen capture."+requestCode);
+         CaptureHelper.handleActivityResult(this,requestCode,resultCode,data);
         this.finish();
     }
-
     void simInfo(){
         //SubscriptionManager  该类主要包含了所有sim卡的信息
 //        SubscriptionManager mSubscriptionManager = SubscriptionManager.from(this);
@@ -98,42 +105,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 循环发送十个通知
-     */
-    private void sendTenNotifications() {
-        NotificationManager noteMng = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        log.d("sendTenNotifications：");
-        for (int i = 0; i < 2; i++) {
-            Notification.Builder builder = new Notification.Builder(this);
-            builder.setSmallIcon(R.drawable.ic_notify);
-            builder.setTicker("");
 
-            builder.setWhen(System.currentTimeMillis());
-
-            Notification.BigTextStyle inboxStyle =
-                    new Notification.BigTextStyle();
-
-
-            StringBuilder sb = new StringBuilder();
-            String s = "";
-            for (int j = 0; j < 2; j++) {
-
-                s += String.format("aaaaaaaaaaaaaaaaaaaaaaaa\r\n"
-                );
-
-            }
-            log.d("DailyForecastBean：" + s);
-            inboxStyle.bigText(s);
-            inboxStyle.setBigContentTitle("天气");
-            inboxStyle.setSummaryText(i + "天天气");
-            builder.setStyle(inboxStyle);
-            noteMng.notify(i + "", i, builder.build());
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
