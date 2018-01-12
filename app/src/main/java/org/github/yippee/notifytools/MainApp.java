@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.github.yippee.notifytools.db.DBUtils;
+import org.github.yippee.notifytools.utils.CaptureHelper;
 import org.github.yippee.notifytools.utils.Logs;
 
 import java.util.HashMap;
@@ -48,6 +49,7 @@ public class MainApp extends MultiDexApplication {
 
     }
 
+    public static CaptureHelper captureHelper;
     @Override
     public void onCreate() {
 
@@ -56,8 +58,13 @@ public class MainApp extends MultiDexApplication {
         Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
         application=this;
         DBUtils.getSingleTon().setDatabase();
+        captureHelper=new CaptureHelper(this);
+
     }
 
+    public static CaptureHelper getCaputeHelper(){
+        return captureHelper;
+    }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         log.d("onConfigurationChanged");
@@ -75,14 +82,6 @@ public class MainApp extends MultiDexApplication {
         return application;
     }
 
-    public static MediaProjectionManager mediaProjectionManager;
-    public static MediaProjection mediaProjection;
 
-    public static void getMediaProjection(int resultCode,Intent data){
-        mediaProjection = ((MediaProjectionManager) getApplication(). getSystemService(
-                Context.MEDIA_PROJECTION_SERVICE)).getMediaProjection(resultCode,
-                data);
-
-    }
 
 }

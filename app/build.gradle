@@ -50,7 +50,7 @@ greendao {
 //    generateTests
 }
 
-repositories{
+repositories {
     flatDir {
         dirs 'libs'
     }
@@ -59,17 +59,27 @@ repositories{
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    testCompile 'junit:junit:4.12'
-
-
-    compile 'com.classic.adapter:commonadapter:1.8.1'
-//    compile 'com.android.support:recyclerview-v7:23.0.0'
+    //    compile 'com.android.support:recyclerview-v7:23.0.0'
     //    testCompile('org.robolectric:robolectric:3.+') {
     //        exclude group: 'commons-logging', module: 'commons-logging'
     //        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     //    }
+    //    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
+    //    compile 'com.artemzin.rxjava:proguard-rules:1.2.1.0'
+    //    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0-RC1'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile(name: 'PhotoView', ext: 'aar')
+    compile project(':chinesecalendar')
+    compile files('libs/dom4j-1.6.1.jar')
+    compile files('libs/htmlparser.jar')
+
+//    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+//    compile 'com.android.support:support-annotations:23.2.1'
+//    testCompile 'com.android.support:support-annotations:23.2.1'
+//    androidTestCompile 'com.android.support:support-annotations:23.2.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.classic.adapter:commonadapter:1.8.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -77,25 +87,11 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.1.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'commons-codec:commons-codec:1.10'
-//    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     compile 'org.greenrobot:greendao:3.2.0'
-    //    compile 'com.artemzin.rxjava:proguard-rules:1.2.1.0'
-    //    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0-RC1'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.github.rubensousa:floatingtoolbar:1.4.1'
-    compile(name: 'PhotoView', ext: 'aar')
-    compile project(':chinesecalendar')
-    compile files('libs/dom4j-1.6.1.jar')
-    compile files('libs/htmlparser.jar')
-
-
     compile 'com.google.android:flexbox:0.3.0'
-
     compile 'com.android.support:multidex:1.0.1'
-
-//    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-//    compile 'com.android.support:support-annotations:23.2.1'
-//    testCompile 'com.android.support:support-annotations:23.2.1'
-//    androidTestCompile 'com.android.support:support-annotations:23.2.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
 }

@@ -106,7 +106,7 @@ public class JumpService extends Service {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void screenShotPrepare() {
         initLooper();
-        mediaProjection = MainApp.mediaProjection;
+//        mediaProjection = MainApp.mediaProjection;
 //        SysUtils.hideStatusBar(this);
         if(mediaProjection==null) {
             log.d("screenShotPrepare mediaProjection null ");

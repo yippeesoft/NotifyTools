@@ -25,6 +25,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import org.github.yippee.notifytools.bean.Heweather7bean;
 import org.github.yippee.notifytools.utils.CaptureHelper;
 import org.github.yippee.notifytools.utils.Logs;
+import org.github.yippee.notifytools.view.FloatView;
 
 import java.util.List;
 
@@ -48,12 +49,15 @@ public class MainActivity extends AppCompatActivity {
         requestPermissions();
         startService(new Intent(this, NotifyService.class));
         CaptureHelper.fireScreenCaptureIntent(this);
+
+        new FloatView(MainApp.getApplication()).setLayout();
 //        this.finish();
     }
     @Override
     public  void onActivityResult(int requestCode, int resultCode, Intent data) {
         log.d(resultCode+" acquire permission to screen capture."+requestCode);
-         CaptureHelper.handleActivityResult(this,requestCode,resultCode,data);
+         MainApp.getCaputeHelper().handleActivityResult(this,requestCode,resultCode,data);
+        MainApp.getCaputeHelper().screenShotPrepare();
         this.finish();
     }
     void simInfo(){
