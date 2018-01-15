@@ -43,6 +43,7 @@ public class DrawImageView extends ImageView {
 //            this.paint.setARGB(255, 138, 43, 226);
         if(x!=-1) {
 //            this.paint.setStrokeWidth(2);
+            paint.setColor(color);
             canvas.drawCircle(x, y, innerCircle, this.paint);
         }
 //
@@ -61,10 +62,11 @@ public class DrawImageView extends ImageView {
 
 
     }
-
-    public void drawC(int xx,int yy){
+    int color;
+    public void drawC(int col,int xx,int yy){
         x=xx;
         y=yy;
+        color=col;
         this.invalidate();
     }
 

@@ -17,6 +17,7 @@ import android.util.Log;
 import org.github.yippee.notifytools.db.DBUtils;
 import org.github.yippee.notifytools.utils.CaptureHelper;
 import org.github.yippee.notifytools.utils.Logs;
+import org.github.yippee.notifytools.view.FloatView;
 
 import java.util.HashMap;
 
@@ -49,7 +50,7 @@ public class MainApp extends MultiDexApplication {
 
     }
 
-    public static CaptureHelper captureHelper;
+    private static CaptureHelper captureHelper;
     @Override
     public void onCreate() {
 
@@ -60,6 +61,7 @@ public class MainApp extends MultiDexApplication {
         DBUtils.getSingleTon().setDatabase();
         captureHelper=new CaptureHelper(this);
 
+        floatView=new FloatView(this);
     }
 
     public static CaptureHelper getCaputeHelper(){
@@ -77,6 +79,11 @@ public class MainApp extends MultiDexApplication {
         super.onTerminate();
 
     }
+    private static FloatView floatView;
+    public static FloatView getFloatView() {
+        return floatView;
+    }
+
     private static MainApp application;
     public static MainApp getApplication() {
         return application;

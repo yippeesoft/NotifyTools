@@ -98,7 +98,7 @@ public class FullActivity extends Activity {
         int xx= ((maxX + minX) / 2);
         int yy=maxY;
         log.e(xx+" ddd position  "+maxY);
-        imageView.drawC(xx,yy);
+        imageView.drawC(Color.RED,xx,yy);
 
         boolean bbak=true;
         if(bbak) {
@@ -126,7 +126,7 @@ public class FullActivity extends Activity {
             int endX=width;
             int gapcount=0;
             HashMap<String,Integer> apex=new HashMap<String,Integer>();
-            endY=Math.min(endY,y);
+            endY=Math.min(endY,yy);
 
 
 
@@ -161,23 +161,28 @@ public class FullActivity extends Activity {
                             //存在顶点了，则根据颜色值开始匹配
                             maxY = Math.max(maxY, y);
                             find = true;
+                            log.e("Math.max "+maxY);
                             break;
                         }
                     }
                 }
-                if (apex.size() !=  0 && !find) {
-                    gapcount++;
-                }
-                if (gapcount == 3) {
-                    break;
-                }
+//                log.e(find+" Math.max gapcount "+gapcount+" "+apex.size());
+//                if (apex.size() >  0 &&  find) {
+//
+//                    gapcount++;
+//                    log.e(find+" Math.max2 gapcount "+gapcount+" "+apex.size());
+//
+//                }
+//                if (gapcount == 3) {
+//                    break;
+//                }
             }
 
             log.e("APEX "+apex.toString());
               yy= (maxY + apex.get("y")) / 2;
               xx=posX;
-            log.e(xx+" position  "+maxY);
-            imageView.drawC(xx,yy);
+            log.e(xx+" position  "+yy);
+            imageView.drawC(Color.RED,xx,maxY);
 
         }
 

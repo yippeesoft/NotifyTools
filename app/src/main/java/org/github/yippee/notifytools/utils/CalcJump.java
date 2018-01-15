@@ -3,6 +3,9 @@ package org.github.yippee.notifytools.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Handler;
+
+import org.github.yippee.notifytools.MainApp;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -54,19 +57,21 @@ public class CalcJump {
                 int alpha = Color.alpha(pixel); // same as (pixel >>> 24)
 
                 if (y > posY && tolerenceHelper(red, green, blue, playerR, playerG, playerB, 16)) {
-
                     minX = Math.min(minX, x);
-
                     maxX = Math.max(maxX, x);
-
                     maxY = Math.max(maxY, y);
-
                 }
             }
         }
-        int xx1= ((maxX + minX) / 2);
-        int yy1=maxY;
+        final int xx1= ((maxX + minX) / 2);
+        final int yy1=maxY;
         log.e(xx1+" AAA position  "+yy1);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                MainApp.getFloatView().layoutImageView(1,xx1,yy1);
+            }
+        });
 //        imageView.drawC(xx,yy);
 
         boolean bbak=true;
@@ -94,8 +99,8 @@ public class CalcJump {
 
             int endX=width;
             int gapcount=0;
-            HashMap<String,Integer> apex=new HashMap<String,Integer>();
-            endY=Math.min(endY,y);
+            final HashMap<String,Integer> apex=new HashMap<String,Integer>();
+            endY=Math.min(endY,yy1);
 
 
 
@@ -134,27 +139,35 @@ public class CalcJump {
                         }
                     }
                 }
-                if (apex.size() !=  0 && !find) {
-                    gapcount++;
-                }
-                if (gapcount == 3) {
-                    break;
-                }
+//                if (apex.size() !=  0 && !find) {
+//                    gapcount++;
+//                }
+//                if (gapcount == 3) {
+//                    break;
+//                }
             }
 
 //            log.e("APEX "+apex.toString());
-            int yy= (maxY + apex.get("y")) / 2;
-            int xx=posX;
+            final int yy= (maxY + apex.get("y")) / 2;
+            final int xx=posX;
             log.e(xx+" BBBposition  "+maxY);
+            final int finalMaxY = maxY;
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    MainApp.getFloatView().layoutImageView(2,xx, yy);
+                }
+            });
+
             double distance =  Math.sqrt(Math.abs((xx1 -xx)
                     * (xx1 -xx)+(yy1 -yy)
                     * (yy1 -yy)));
             log.e("两点间的距离是:" + distance);
-            log.e(distance+" adb shell input swipe 320 410 320 410 "+( (int)(distance* 1.42)));  //1.35
-        }
+            log.e(distance+" adb shell input swipe 350 450 350 450 "+( (int)(distance* (1.35))));  //1.35
+        } //2.0 720P
 
     }
-
+    Handler handler=new Handler();
     void FillMap(HashMap map,int r,int g,int b,int x,int y){
         map.put("r",r);
         map.put("g",g);
