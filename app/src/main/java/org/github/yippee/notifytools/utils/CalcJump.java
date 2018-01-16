@@ -9,6 +9,7 @@ import org.github.yippee.notifytools.MainApp;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by sf on 2018/1/12.
@@ -163,9 +164,18 @@ public class CalcJump {
                     * (xx1 -xx)+(yy1 -yy)
                     * (yy1 -yy)));
             log.e("两点间的距离是:" + distance);
-            log.e(distance+" adb shell input swipe 350 450 350 450 "+( (int)(distance* (1.35))));  //1.35
-        } //2.0 720P
+            log.e(distance+" adb shell input swipe  "+random()+" "+random()+" "+random()+" "+random()+( (int)(distance* (2.0))));  //1.35
+        } //2.0 720P 1.35 1080P
 
+    }
+
+    int random(){
+        int max=60;
+        int min=100;
+        Random random = new Random();
+
+        int s = random.nextInt(max)%(max-min+1) + min;
+        return s;
     }
     Handler handler=new Handler();
     void FillMap(HashMap map,int r,int g,int b,int x,int y){

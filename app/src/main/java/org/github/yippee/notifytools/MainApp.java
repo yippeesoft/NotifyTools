@@ -62,6 +62,7 @@ public class MainApp extends MultiDexApplication {
         captureHelper=new CaptureHelper(this);
 
         floatView=new FloatView(this);
+
     }
 
     public static CaptureHelper getCaputeHelper(){

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
          MainApp.getCaputeHelper().handleActivityResult(this,requestCode,resultCode,data);
         MainApp.getCaputeHelper().screenShotPrepare();
 
-        if(Build.VERSION.SDK_INT>=23) {
+        if(Build.VERSION.SDK_INT>=23 && canDrawOverlays==false) {
             if (!Settings.canDrawOverlays(this)) {
                 log.e( "权限授予失败，无法开启悬浮窗");
             } else {
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 log.e( "权限授予成功");
                 //有悬浮窗权限开启服务绑定 绑定权限
                 MainApp.getFloatView().setLayout();
+
             }
         }else {
 
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
 
+    boolean canDrawOverlays=false;
     public void permission(){
         if (Build.VERSION.SDK_INT >= 23) {
             if(!Settings.canDrawOverlays(this)) {
@@ -95,10 +97,13 @@ public class MainActivity extends AppCompatActivity {
                 //Android6.0以上
                 log.e( "permission2");
                 MainApp.getFloatView().setLayout();
+                canDrawOverlays=true;
             }
         } else {
             //Android6.0以下，不用动态声明权限
-            MainApp.getFloatView().setLayout();
+            log.e( "permission3");
+            MainApp.getFloatView().setLayout1();
+            canDrawOverlays=true;
         }
     }
 

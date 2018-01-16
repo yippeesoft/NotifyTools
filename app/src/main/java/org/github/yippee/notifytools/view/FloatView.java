@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.github.yippee.notifytools.MainApp;
+import org.github.yippee.notifytools.R;
 import org.github.yippee.notifytools.utils.CalcJump;
 import org.github.yippee.notifytools.utils.Logs;
 
@@ -32,15 +34,57 @@ public class FloatView {
                   (WindowManager) cxt.getSystemService(Context.WINDOW_SERVICE);
 
     }
-
     public void setLayout(){
+        //获取param对象
+        paramsBtn= new WindowManager.LayoutParams();
+
+        if (Build.VERSION.SDK_INT >= 23)
+            this.paramsBtn.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        else this.paramsBtn.type = WindowManager.LayoutParams.TYPE_TOAST;
+        this.paramsBtn.format = PixelFormat.RGBA_8888;
+        this.paramsBtn.flags =WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH ;
+
+        this.paramsBtn.gravity = Gravity.LEFT | Gravity.TOP;
+
+        paramsBtn.width = 100;
+        paramsBtn.height = 100;
+        paramsBtn.x = 300;
+        paramsBtn.y = 300;
+
+
+
+//        paramsBtn.format = PixelFormat.RGBA_8888;
+//        paramsBtn.gravity = Gravity.LEFT | Gravity.TOP;
+//        paramsBtn.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        //设置可以显示在状态栏上
+//        paramsBtn.flags =  WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|
+//                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN| WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR|
+//                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+
+//        paramsBtn.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+
+        button= new Button(cxt);
+        button.setText("Jump");
+        button.setBackgroundColor(Color.RED);
+
+        windowManager.addView(button, paramsBtn);
+
+        addImageView();
+
+        initEvent();
+    }
+
+    public void setLayout1(){
         //获取param对象
         paramsBtn= new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams. TYPE_PHONE,
+                WindowManager.LayoutParams.TYPE_TOAST,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
 
-
+        if (Build.VERSION.SDK_INT >= 23)
+            this.paramsBtn.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        else
+            this.paramsBtn.type = WindowManager.LayoutParams.TYPE_TOAST;
 
         paramsBtn.format = PixelFormat.RGBA_8888;
         paramsBtn.gravity = Gravity.LEFT | Gravity.TOP;
@@ -62,6 +106,7 @@ public class FloatView {
         button.setWidth(100);
         button.setHeight(100);
         windowManager.addView(button, paramsBtn);
+
         addImageView();
 
         initEvent();
@@ -69,11 +114,19 @@ public class FloatView {
 
     public void addImageView(){
         //获取param对象
-        params1=new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
-
-
-//        params1.type = WindowManager.LayoutParams.TYPE_PHONE;
-        params1.format = PixelFormat.RGBA_8888;
+//        params1= new WindowManager.LayoutParams();
+//
+//        if (Build.VERSION.SDK_INT >= 23)
+//            this.params1.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+//        else this.params1.type = WindowManager.LayoutParams.TYPE_TOAST;
+        params1= new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_TOAST,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+        if (Build.VERSION.SDK_INT >= 23)
+            this.params1.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        else this.params1.type = WindowManager.LayoutParams.TYPE_TOAST;
+        this.params1.format = PixelFormat.RGBA_8888;
         params1.gravity = Gravity.LEFT | Gravity.TOP;
 //        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         //设置可以显示在状态栏上
@@ -93,10 +146,17 @@ public class FloatView {
         windowManager.addView(imageView1, params1);
 
         //获取param对象
-        params2=new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
-
+        params2= new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_TOAST,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+        if (Build.VERSION.SDK_INT >= 23)
+            this.params2.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        else
+            this.params2.type = WindowManager.LayoutParams.TYPE_TOAST;
+        this.params2.format = PixelFormat.RGBA_8888;
 //        params2.type = WindowManager.LayoutParams.TYPE_PHONE;
-        params2.format = PixelFormat.RGBA_8888;
+
         params2.gravity = Gravity.LEFT | Gravity.TOP;
 //        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         //设置可以显示在状态栏上
@@ -115,11 +175,15 @@ public class FloatView {
         windowManager.addView(imageView2, params2);
 
         //获取param对象
-        params3=new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
-
-
-        params3.type = WindowManager.LayoutParams.TYPE_PHONE;
-        params3.format = PixelFormat.RGBA_8888;
+        params3= new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_TOAST,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+        this.params3.format = PixelFormat.RGBA_8888;
+        if (Build.VERSION.SDK_INT >= 23)
+            this.params3.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        else
+            this.params3.type = WindowManager.LayoutParams.TYPE_TOAST;
         params3.gravity = Gravity.LEFT | Gravity.TOP;
 //        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         //设置可以显示在状态栏上
@@ -232,7 +296,7 @@ public class FloatView {
 
         paramsBtn.x = (int) (x - mTouchStartX);
         paramsBtn.y = (int) (y - mTouchStartY);
-        log.d("updateViewPosition "+paramsBtn.toString());
+
         windowManager.updateViewLayout(button,paramsBtn  );
     }
 }
