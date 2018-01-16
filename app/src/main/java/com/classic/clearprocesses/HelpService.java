@@ -27,7 +27,7 @@ public class HelpService extends AccessibilityService {
 
     private boolean isAppDetail;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override public void onAccessibilityEvent(final AccessibilityEvent event) {
-        Log.d(TAG,"onAccessibilityEvent "+event.getSource());
+        Log.d(TAG,"onAccessibilityEvent "+event.getSource()+event.toString());
         if(null == event || null == event.getSource()) { return; }
         if(event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
                 event.getPackageName().equals(PACKAGE)){

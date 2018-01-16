@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Handler;
 
 import org.github.yippee.notifytools.MainApp;
+import org.github.yippee.notifytools.view.FloatView;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class CalcJump {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                MainApp.getFloatView().layoutImageView(1,xx1,yy1);
+                MainApp.getFloatView().layoutImageView(FloatView.PIECE,xx1,yy1);
             }
         });
 //        imageView.drawC(xx,yy);
@@ -156,7 +157,7 @@ public class CalcJump {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    MainApp.getFloatView().layoutImageView(2,xx, yy);
+                    MainApp.getFloatView().layoutImageView(FloatView.BOARD,xx, yy);
                 }
             });
 
