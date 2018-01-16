@@ -164,13 +164,13 @@ public class CalcJump {
                     * (xx1 -xx)+(yy1 -yy)
                     * (yy1 -yy)));
             log.e("两点间的距离是:" + distance);
-            log.e(distance+" adb shell input swipe  "+random()+" "+random()+" "+random()+" "+random()+( (int)(distance* (2.0))));  //1.35
+            log.e(distance+" adb shell input swipe  "+random()+" "+random()+" "+random()+" "+random()+" "+( (int)(distance* (2.0))));  //1.35
         } //2.0 720P 1.35 1080P
 
     }
 
     int random(){
-        int max=60;
+        int max=600;
         int min=100;
         Random random = new Random();
 
