@@ -57,7 +57,12 @@ public class Logs {
         msg=createLog(msg);
         Log.e(tag, msg);
     }
-
+    public  void v(String msg) {
+        getMethodNames(new Throwable().getStackTrace());
+        msg = createLog(msg);
+        System.out.println(msg);
+        Log.v(tag, msg);
+    }
     public  void d(String msg) {
         getMethodNames(new Throwable().getStackTrace());
         msg = createLog(msg);

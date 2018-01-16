@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Handler;
 
 import org.github.yippee.notifytools.MainApp;
+import org.github.yippee.notifytools.service.JumpService;
 import org.github.yippee.notifytools.view.FloatView;
 
 import java.nio.ByteBuffer;
@@ -71,7 +72,7 @@ public class CalcJump {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                MainApp.getFloatView().layoutImageView(FloatView.PIECE,xx1,yy1);
+                JumpService.getFloatView().layoutImageView(FloatView.PIECE,xx1,yy1);
             }
         });
 //        imageView.drawC(xx,yy);
@@ -157,7 +158,7 @@ public class CalcJump {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    MainApp.getFloatView().layoutImageView(FloatView.BOARD,xx, yy);
+                    JumpService.getFloatView().layoutImageView(FloatView.BOARD,xx, yy);
                 }
             });
 

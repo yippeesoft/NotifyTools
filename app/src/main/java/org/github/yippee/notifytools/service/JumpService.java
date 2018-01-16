@@ -1,5 +1,6 @@
 package org.github.yippee.notifytools.service;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Service;
@@ -19,9 +20,13 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Message;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
 
 import org.github.yippee.notifytools.MainApp;
@@ -29,8 +34,10 @@ import org.github.yippee.notifytools.utils.CaptureHelper;
 import org.github.yippee.notifytools.utils.FileUtil;
 import org.github.yippee.notifytools.utils.Logs;
 import org.github.yippee.notifytools.utils.SysUtils;
+import org.github.yippee.notifytools.view.FloatView;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 
 import static android.graphics.PixelFormat.RGBA_8888;
 
@@ -51,6 +58,10 @@ public class JumpService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
+    private static FloatView floatView;
+    public static FloatView getFloatView() {
+        return floatView;
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -63,7 +74,76 @@ public class JumpService extends Service {
 //                screenShotPrepare();
 //            }
 //        }).start();
+        if(mAccessibilityManager==null)
+         mAccessibilityManager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
+        checkEnabledAccessibilityService();
+        if(floatView==null)
+            floatView=new FloatView(this);
+        floatView.Show();
+        log.d("onStartCommand end");
+        return Service.START_NOT_STICKY;
+    }
 
+
+    // To check if service is enabled
+    private boolean isAccessibilitySettingsOn(Context mContext) {
+        int accessibilityEnabled = 0;
+        final String service = getPackageName() + "/" + JumpService.class.getCanonicalName();
+        try {
+            accessibilityEnabled = Settings.Secure.getInt(
+                    mContext.getApplicationContext().getContentResolver(),
+                    android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+            log.v( "accessibilityEnabled = " + accessibilityEnabled);
+        } catch (Settings.SettingNotFoundException e) {
+            log.d( "Error finding setting, default accessibility to not found: "
+                    + e.getMessage());
+        }
+        TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
+
+        if (accessibilityEnabled == 1) {
+            log.v( "***ACCESSIBILITY IS ENABLED*** -----------------");
+            String settingValue = Settings.Secure.getString(
+                    mContext.getApplicationContext().getContentResolver(),
+                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            if (settingValue != null) {
+                mStringColonSplitter.setString(settingValue);
+                while (mStringColonSplitter.hasNext()) {
+                    String accessibilityService = mStringColonSplitter.next();
+
+                    log.v( "-------------- > accessibilityService :: " + accessibilityService + " " + service);
+                    if (accessibilityService.equalsIgnoreCase(service)) {
+                        log.v( "We've found the correct setting - accessibility is switched on!");
+                        return true;
+                    }
+                }
+            }
+        } else {
+            log.v( "***ACCESSIBILITY IS DISABLED***");
+        }
+
+        return false;
+    }
+    //https://stackoverflow.com/questions/5081145/android-how-do-you-check-if-a-particular-accessibilityservice-is-enabled
+    private AccessibilityManager mAccessibilityManager;
+    private static final String SERVICE_NAME    = "org.github.yippee.notifytools.service/.JumpService";
+    private boolean checkEnabledAccessibilityService() {
+        if(isAccessibilitySettingsOn(this))
+            return true;;
+        List<AccessibilityServiceInfo> accessibilityServices =
+                mAccessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
+        for (AccessibilityServiceInfo info : accessibilityServices) {
+            if (info.getId().equals(SERVICE_NAME)) {
+                log.d(info.getId()+" "+info.toString());
+                return true;
+            }
+        }
+        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        return false;
+    }
+    
+    void shot(){
         final Handler handler=new Handler(Looper.getMainLooper());
         new Thread(new Runnable() {
             @Override
@@ -92,10 +172,7 @@ public class JumpService extends Service {
 
             }
         }).start();
-        log.d("onStartCommand end");
-        return Service.START_NOT_STICKY;
     }
-
 
     DisplayMetrics metrics;
     int width,height;

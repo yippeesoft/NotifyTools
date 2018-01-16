@@ -61,7 +61,7 @@ public class MainApp extends MultiDexApplication {
         DBUtils.getSingleTon().setDatabase();
         captureHelper=new CaptureHelper(this);
 
-        floatView=new FloatView(this);
+
 
     }
 
@@ -79,10 +79,6 @@ public class MainApp extends MultiDexApplication {
         log.d("onTerminate ");
         super.onTerminate();
 
-    }
-    private static FloatView floatView;
-    public static FloatView getFloatView() {
-        return floatView;
     }
 
     private static MainApp application;

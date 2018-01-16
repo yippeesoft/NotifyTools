@@ -52,6 +52,7 @@ public class ForceStopActivity extends AppCompatActivity implements CommonRecycl
             "org.cyanogenmod",
             "com.qualcomm", //高通cpu监控进程
             "com.huawei",
+            "com.miui",
             "in.zhaoj",
             CURRENT_PACKAGE
     };

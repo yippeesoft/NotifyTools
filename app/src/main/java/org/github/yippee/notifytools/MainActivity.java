@@ -70,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
                 log.e( "权限授予失败，无法开启悬浮窗");
             } else {
 //                Toast.makeText(this, "权限授予成功！", Toast.LENGTH_SHORT).show();
-                log.e( "权限授予成功");
+                log.e( "权限授予成功 开启悬浮窗");
                 //有悬浮窗权限开启服务绑定 绑定权限
-                MainApp.getFloatView().Show();
+//                MainApp.getFloatView().Show();
 
             }
         }else {
@@ -96,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 //Android6.0以上
                 log.e( "permission2");
-                MainApp.getFloatView().Show();
+//                MainApp.getFloatView().Show();
                 canDrawOverlays=true;
             }
         } else {
             //Android6.0以下，不用动态声明权限
             log.e( "permission3");
-            MainApp.getFloatView().Show();
+//            MainApp.getFloatView().Show();
             canDrawOverlays=true;
         }
     }

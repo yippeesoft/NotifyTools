@@ -4,6 +4,7 @@ package org.github.yippee.notifytools.utils;
  * Created by sf on 2018/1/10.
  */
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -20,13 +21,18 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
 
+import com.classic.clearprocesses.HelpService;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 
@@ -199,4 +205,6 @@ public class CaptureHelper {
         }
         return true;//
     }
+
+
 }

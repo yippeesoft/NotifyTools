@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.view.Gravity;
@@ -125,34 +126,40 @@ public class FloatView {
             return true;
         }
     };
+    HashMap<View,Point> mapPoint=new HashMap<>();
 
     public View.OnTouchListener onTouchListener=new View.OnTouchListener() {
+        float mRawX ,        mRawY;
+
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if(v instanceof Button ==false)
+                return false;
+            mRawX = event.getRawX();
+            mRawY = event.getRawY()  ;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-//                    if (!initViewPlace) {
-//                        initViewPlace = true;
-//                        //获取初始位置
-//                        mTouchStartX += (event.getRawX() - map.get(v).x);
-//                        mTouchStartY += (event.getRawY() - map.get(v).y);
-//                    } else {
-//                        //根据上次手指离开的位置与此次点击的位置进行初始位置微调
-//                        mTouchStartX += (event.getRawX() - x);
-//                        mTouchStartY += (event.getRawY() - y);
-//                    }
+                    // 以当前父视图左上角为原点
+                    Point p=new Point();
+                    p.x = (int)event.getX();
+                    p.y = (int)event.getY();
+                    mapPoint.put(v,p);
                     break;
                 case MotionEvent.ACTION_MOVE:
                     // 获取相对屏幕的坐标，以屏幕左上角为原点
 //                    x = event.getRawX();
 //                    y = event.getRawY();
-                    map.get(v).x =(int) event.getRawX();//int) (x - mTouchStartX);
-                    map.get(v).y = (int)event.getRawY(); //(y - mTouchStartY);
+                    map.get(v).x = (int)(mRawX - mapPoint.get(v).x);
+                    map.get(v).y = (int)(mRawY - mapPoint.get(v).y);
 
                     windowManager.updateViewLayout(v,map.get(v)  );
                     break;
 
                 case MotionEvent.ACTION_UP:
+                    map.get(v).x = (int)(mRawX - mapPoint.get(v).x);
+                    map.get(v).y = (int)(mRawY - mapPoint.get(v).y);
+
+                    windowManager.updateViewLayout(v,map.get(v)  );
                     break;
             }
             return false;
@@ -166,7 +173,7 @@ public class FloatView {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if(v instanceof ImageView && v.getTag().toString().equalsIgnoreCase("calc")) {
+                    if(v instanceof Button && v.getTag().toString().equalsIgnoreCase("calc")) {
 
                         Bitmap bmp = MainApp.getCaputeHelper().screenShot();
                         calcJump.bmp(bmp);
