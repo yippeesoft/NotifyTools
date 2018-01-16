@@ -141,8 +141,8 @@ public class FloatView {
                 case MotionEvent.ACTION_DOWN:
                     // 以当前父视图左上角为原点
                     Point p=new Point();
-                    p.x = (int)event.getX();
-                    p.y = (int)event.getY();
+                    p.x = (int)(mRawX - map.get(v).x);
+                    p.y = (int)(mRawY - map.get(v).y);
                     mapPoint.put(v,p);
                     break;
                 case MotionEvent.ACTION_MOVE:
@@ -156,10 +156,10 @@ public class FloatView {
                     break;
 
                 case MotionEvent.ACTION_UP:
-                    map.get(v).x = (int)(mRawX - mapPoint.get(v).x);
-                    map.get(v).y = (int)(mRawY - mapPoint.get(v).y);
-
-                    windowManager.updateViewLayout(v,map.get(v)  );
+//                    map.get(v).x = (int)(mRawX - mapPoint.get(v).x);
+//                    map.get(v).y = (int)(mRawY - mapPoint.get(v).y);
+//
+//                    windowManager.updateViewLayout(v,map.get(v)  );
                     break;
             }
             return false;
