@@ -14,13 +14,18 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.classic.clearprocesses.JumpInfo;
+
 import org.github.yippee.notifytools.MainApp;
 import org.github.yippee.notifytools.R;
 import org.github.yippee.notifytools.utils.CalcJump;
 import org.github.yippee.notifytools.utils.Logs;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by sf on 2018/1/12.
@@ -108,6 +113,9 @@ public class FloatView {
     public void layoutImageView(String tag,int x,int y){
         for (View key : map.keySet()) {
             if(key instanceof ImageView && key.getTag().toString().equalsIgnoreCase(tag)){
+                map.get(key).x=x;
+                map.get(key).y=y;
+//                log.e(key.getTag()+" updateViewLayout "+map.get(key).toString());
                 windowManager.updateViewLayout(key,map.get(key));
             }
         }
@@ -169,7 +177,7 @@ public class FloatView {
     View.OnClickListener onClickListener=new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            log.d("setOnClickListener");
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -178,11 +186,37 @@ public class FloatView {
                         Bitmap bmp = MainApp.getCaputeHelper().screenShot();
                         calcJump.bmp(bmp);
                     }
+                    if(v instanceof Button && v.getTag().toString().equalsIgnoreCase("jump")) {
+                        log.d("setOnClickListener "+v.getTag());
+                        JumpInfo.getInstance().setbSwipe(true);
+                    }
                 }
             }).start();
         }
     };
+//    log.e(distance+" adb shell input swipe  "+random()+" "+random()+" "+random()+" "+random()+" "+( (int)(distance* (2.0))));  //1.35
 
     CalcJump calcJump=new CalcJump();
+    /**
+     * 执行shell命令
+     *
+     * @param cmd
+     */
+    private void execShellCmd(String cmd) {
 
+        try {
+            // 申请获取root权限，这一步很重要，不然会没有作用
+            Process process = Runtime.getRuntime().exec("su");
+            // 获取输出流
+            OutputStream outputStream = process.getOutputStream();
+            DataOutputStream dataOutputStream = new DataOutputStream(
+                    outputStream);
+            dataOutputStream.writeBytes(cmd);
+            dataOutputStream.flush();
+            dataOutputStream.close();
+            outputStream.close();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
 }

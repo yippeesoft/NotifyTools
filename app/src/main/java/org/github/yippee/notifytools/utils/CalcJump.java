@@ -3,7 +3,10 @@ package org.github.yippee.notifytools.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Handler;
+
+import com.classic.clearprocesses.JumpInfo;
 
 import org.github.yippee.notifytools.MainApp;
 import org.github.yippee.notifytools.service.JumpService;
@@ -166,8 +169,21 @@ public class CalcJump {
                     * (xx1 -xx)+(yy1 -yy)
                     * (yy1 -yy)));
             log.e("两点间的距离是:" + distance);
-            log.e(distance+" adb shell input swipe  "+random()+" "+random()+" "+random()+" "+random()+" "+( (int)(distance* (2.0))));  //1.35
+
+            JumpInfo.getInstance().setpStart(new Point(random(),random()));
+            JumpInfo.getInstance().setpEnd(new Point(random(),random()));
+
+//            JumpInfo.getInstance().setpStart(new Point(xx,yy));
+//            JumpInfo.getInstance().setpEnd(new Point(xx1,yy1));
+
+            JumpInfo.getInstance().setTime((int)(distance* (1.35)));
+
+
+            //log.e(distance+" adb shell input swipe  "+random()+" "+random()+" "+random()+" "+random()+" "+( (int)(distance* (0.9))));  //1.35
+            log.e(distance+" adb shell input swipe  "+xx+" "+yy+" "+xx1+" "+yy1+" "+( (int)(distance* (0.9))));  //1.35
         } //2.0 720P 1.35 1080P
+
+
 
     }
 

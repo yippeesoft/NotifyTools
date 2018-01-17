@@ -41,6 +41,7 @@
 |java_js_2screen|android java-js交互 双屏异显|
 |JumpService|android 截屏 MI3TD卡死|
 |VoicePCM|android 录音播放|
+|Jump**|https://github.com/wangshub/wechat_jump_game/ android本地版 7.0|
 
 ## 感谢
 
