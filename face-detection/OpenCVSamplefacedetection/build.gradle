@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        applicationId "org.opencv.samples.facedetect"
+        minSdkVersion 8
+        targetSdkVersion 21
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    sourceSets {
+        main {
+            // 1. 配置在根目录libs下可以加载第三方so库, (最好不要创建jniLibs, 在众多的开源库中可能会引起冲突,还没发现)
+            // 2. 运行时会自动将libs目录下的so库拷贝到指定目录
+            // 3. 如果自己创建的so不需要重新编译,可以将(app/build/intermediates/transforms)生成的so拷贝到这个目录
+            jniLibs.srcDirs = ['libs']
+            // 如果是单个文件夹 可以直接这样如下配置
+            // jniLibs.srcDir 'libs'
+        }
+    }
+
+}
+
+dependencies {
+    compile project(':OpenCVLibrary340')
+}
