@@ -28,8 +28,22 @@ android {
         }
     }
 
+    //Exclude duplicates
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        pickFirst  'META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.properties'
+        pickFirst  'META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.xml'
+        pickFirst  'META-INF/maven/org.bytedeco.javacpp-presets/ffmpeg/pom.properties'
+        pickFirst  'META-INF/maven/org.bytedeco.javacpp-presets/ffmpeg/pom.xml'
+    }
+
 }
 
 dependencies {
     compile project(':OpenCVLibrary340')
+    compile files('libs/javacpp.jar')
+    compile files('libs/javacv.jar')
+    compile files('libs/opencv-android-arm.jar')
+    compile files('libs/javacv-platform.jar')
+    compile files('libs/opencv.jar')
 }

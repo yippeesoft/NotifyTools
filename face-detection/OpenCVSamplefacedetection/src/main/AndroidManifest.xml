@@ -3,7 +3,9 @@
           package="org.opencv.samples.facedetect"
           android:versionCode="301"
           android:versionName="3.01">
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="@string/app_name"
         android:icon="@drawable/icon"
@@ -13,6 +15,12 @@
                   android:label="@string/app_name"
                   android:screenOrientation="landscape"
                   android:configChanges="keyboardHidden|orientation">
+
+        </activity>
+        <activity android:name=".JpgFace"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
