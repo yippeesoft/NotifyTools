@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 
 import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_face;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
@@ -39,6 +40,7 @@ import java.io.InputStream;
 import static org.bytedeco.javacpp.helper.opencv_imgproc.cvCalcHist;
 import static org.bytedeco.javacpp.opencv_core.CV_HIST_ARRAY;
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
+import static org.bytedeco.javacpp.opencv_core.doubleRand;
 import static org.bytedeco.javacpp.opencv_imgcodecs.CV_LOAD_IMAGE_GRAYSCALE;
 import static org.bytedeco.javacpp.opencv_imgcodecs.cvLoadImage;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_COMP_BHATTACHARYYA;
@@ -47,6 +49,8 @@ import static org.bytedeco.javacpp.opencv_imgproc.CV_COMP_CORREL;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_COMP_INTERSECT;
 import static org.bytedeco.javacpp.opencv_imgproc.cvCompareHist;
 import static org.bytedeco.javacpp.opencv_imgproc.cvNormalizeHist;
+import static org.bytedeco.javacpp.opencv_objdetect.CASCADE_SCALE_IMAGE;
+import static org.opencv.imgproc.Imgproc.equalizeHist;
 
 
 /**
@@ -67,7 +71,7 @@ public class JpgFace extends Activity {
 
     RelativeLayout rlmain;
 
-    String[] src={ "/sdcard/Face/ll.jpg","/sdcard/Face/ll3.jpg" };
+    String[] src={ "/sdcard/face/low/320x240/ll.jpg","/sdcard/face/low/320x240/ll2.jpg" };
 //    private ObjectDetection mFaceDetector;
 
     @Override
@@ -102,6 +106,7 @@ public class JpgFace extends Activity {
             rlmain.addView(imgDst[i],p);
             imgDst[i].setBackgroundColor(Color.DKGRAY);
         }
+        org.bytedeco.javacpp.opencv_face.FaceRecognizer ff= opencv_face.LBPHFaceRecognizer.create();
 
 
         new Handler().postDelayed(new Runnable() {
@@ -222,80 +227,135 @@ public class JpgFace extends Activity {
                 Mat copyMat = new Mat();
                 toMat.copyTo(copyMat); // 复制
 
+
+
+
+                boolean bCpp = false;
                 // togray
                 Mat gray = new Mat();
                 Imgproc.cvtColor(toMat, gray, Imgproc.COLOR_RGBA2GRAY);
+                if (bCpp) {
+                    Mat smallImg = new Mat();
+                    double fx=1;
+                    Imgproc.resize(gray,smallImg, new Size(),fx,fx,Imgproc.INTER_LINEAR_EXACT);
+                    Imgproc.equalizeHist(smallImg,smallImg);
+                    MatOfRect faces = new MatOfRect();
+                    mJavaDetector.detectMultiScale( smallImg, faces,
+                            1.1, 2, 0
+                                    //|CASCADE_FIND_BIGGEST_OBJECT
+                                    //|CASCADE_DO_ROUGH_SEARCH
+                                    |CASCADE_SCALE_IMAGE,
+                            new Size(30, 30) ,new Size());
+                    Rect[] facesArray = faces.toArray();
+                    int maxRectArea = 0 * 0;
+                    Rect maxRect = null;
+                    Log.e("smallImg的长宽", String.format("高:%s,宽:%s", smallImg.cols(), smallImg.rows()));
+                    int facenum = 1;
+                    // Draw a bounding box around each face.
+                    maxRect=new Rect( facesArray[0].x  ,
+                            facesArray[0].y, facesArray[0].width, facesArray[0].height);
+                    Bitmap rectBitmap = null;
+                    if (facenum != 0) {
+                        // 剪切最大的头像
+                        Log.e("剪切的长宽", String.format("x:%s,y:%s,高:%s,宽:%s",maxRect.x,maxRect.y, maxRect.width, maxRect.height));
+                        Rect rect = new Rect(maxRect.x, maxRect.y, maxRect.width, maxRect.height);
 
-                if (mAbsoluteFaceSize == 0) {
-                    int height = gray.rows();
-                    if (Math.round(height * mRelativeFaceSize) > 0) {
-                        mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize / 3);
+                        Mat rectMat = new Mat(gray, rect);  // 从原始图像拿
+                        Mat mat = new Mat();
+                        Size size = new Size(300, 300);
+                        Imgproc.resize(rectMat, mat, size);
+
+                        rectBitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(mat, rectBitmap);
+
+                        bmpDst[i] = rectBitmap.copy(rectBitmap.getConfig(), true);
+                        imgDst[i].setScaleType(ImageView.ScaleType.CENTER);
+                        imgDst[i].setImageBitmap(rectBitmap);
+                        Imgcodecs.imwrite("/sdcard/mat" + i + ".jpg", mat);
                     }
-                    mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
-                }
-                Log.e(TAG, mRelativeFaceSize + " mRelativeFaceSize " + mAbsoluteFaceSize);
 
-                MatOfRect faces = new MatOfRect();
+                    Log.e(TAG, String.format("检测到%1$d个人脸", facenum));
 
-                mJavaDetector.detectMultiScale(
-                        gray, // 要检查的灰度图像
-                        faces, // 检测到的人脸
-                        1.1, // 表示在前后两次相继的扫描中，搜索窗口的比例系数。默认为1.1即每次搜索窗口依次扩大10%;
-                        6, // 默认是3 控制误检测，表示默认几次重叠检测到人脸，才认为人脸存在
-                        Objdetect.CASCADE_SCALE_IMAGE,
-                        new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), // 目标最小可能的大小
-                        gray.size()); // 目标最大可能的大小
+
+
+                } else {
+                    // togray
+
+                    Imgproc.equalizeHist(gray,gray);
+
+                    if (mAbsoluteFaceSize == 0) {
+                        int height = gray.rows();
+                        if (Math.round(height * mRelativeFaceSize) > 0) {
+                            mAbsoluteFaceSize =25;// Math.round(height * mRelativeFaceSize/2  );
+                        }
+                        mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
+                    }
+                    Log.e(TAG, mRelativeFaceSize + " mRelativeFaceSize " + mAbsoluteFaceSize);
+
+                    MatOfRect faces = new MatOfRect();
+
+                    mJavaDetector.detectMultiScale(
+                            gray, // 要检查的灰度图像
+                            faces, // 检测到的人脸
+                            1.1, // 表示在前后两次相继的扫描中，搜索窗口的比例系数。默认为1.1即每次搜索窗口依次扩大10%;
+                            2, // 默认是3 控制误检测，表示默认几次重叠检测到人脸，才认为人脸存在
+                            0|Objdetect.CASCADE_SCALE_IMAGE,
+
+                             new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), // 目标最小可能的大小
+                            gray.size()); // 目标最大可能的大小
 
 //            mJavaDetector.detectMultiScale(gray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
 //                    new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 
-                Rect[] facesArray = faces.toArray();
-                Log.e("objectLength", facesArray.length + "");
+                    Rect[] facesArray = faces.toArray();
+                    Log.e("objectLength", facesArray.length + "");
 
 
-                int maxRectArea = 0 * 0;
-                Rect maxRect = null;
+                    int maxRectArea = 0 * 0;
+                    Rect maxRect = null;
 
-                int facenum = 0;
-                // Draw a bounding box around each face.
-                for (Rect rect : facesArray) {
-                    Imgproc.rectangle(
-                            toMat,
-                            new Point(rect.x, rect.y),
-                            new Point(rect.x + rect.width, rect.y + rect.height),
-                            new Scalar(255, 0, 0), 3);
-                    ++facenum;
-                    // 找出最大的面积
-                    int tmp = rect.width * rect.height;
-                    if (tmp >= maxRectArea) {
-                        maxRectArea = tmp;
-                        maxRect = rect;
+                    int facenum = 1;
+                    // Draw a bounding box around each face.
+//                    for (Rect rect : facesArray) {
+//                        Imgproc.rectangle(
+//                                toMat,
+//                                new Point(rect.x, rect.y),
+//                                new Point(rect.x + rect.width, rect.y + rect.height),
+//                                new Scalar(255, 0, 0), 3);
+//                        ++facenum;
+//                        // 找出最大的面积
+//                        int tmp = rect.width * rect.height;
+//                        if (tmp >= maxRectArea) {
+//                            maxRectArea = tmp;
+//                            maxRect = rect;
+//                        }
+//                    }
+                    maxRect=new Rect( facesArray[0].x  ,
+                            facesArray[0].y, facesArray[0].width, facesArray[0].height);
+                    Bitmap rectBitmap = null;
+                    if (facenum != 0) {
+                        // 剪切最大的头像
+                        Log.e("剪切的长宽", String.format("x:%s,y:%s,高:%s,宽:%s",maxRect.x,maxRect.y, maxRect.width, maxRect.height));
+                        Rect rect = new Rect(maxRect.x, maxRect.y, maxRect.width, maxRect.height);
+
+                        Mat rectMat = new Mat(gray, rect);  // 从原始图像拿
+                        Mat mat = new Mat();
+                        Size size = new Size(300, 300);
+                        Imgproc.resize(rectMat, mat, size);
+
+                        rectBitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(mat, rectBitmap);
+
+                        bmpDst[i] = rectBitmap.copy(rectBitmap.getConfig(), true);
+                        imgDst[i].setScaleType(ImageView.ScaleType.CENTER);
+                        imgDst[i].setImageBitmap(rectBitmap);
+                        Imgcodecs.imwrite("/sdcard/mat" + i + ".jpg", mat);
                     }
-                }
 
-                Bitmap rectBitmap = null;
-                if (facenum != 0) {
-                    // 剪切最大的头像
-                    Log.e("剪切的长宽", String.format("高:%s,宽:%s", maxRect.width, maxRect.height));
-                    Rect rect = new Rect(maxRect.x, maxRect.y, maxRect.width, maxRect.height);
-
-                    Mat rectMat = new Mat(gray, rect);  // 从原始图像拿
-                    Mat mat = new Mat();
-                    Size size = new Size(100, 100);
-                    Imgproc.resize(rectMat, mat, size);
-
-                    rectBitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(mat, rectBitmap);
-
-                    bmpDst[i]=rectBitmap.copy(rectBitmap.getConfig(),true);
-                    imgDst[i].setScaleType(ImageView.ScaleType.CENTER);
-                    imgDst[i].setImageBitmap(rectBitmap);
-                    Imgcodecs.imwrite("/sdcard/mat"+i+".jpg",mat);
-                }
-
-                Log.e(TAG, String.format("检测到%1$d个人脸", facenum));
+                    Log.e(TAG, String.format("检测到%1$d个人脸", facenum));
 //                Utils.matToBitmap(toMat, bmpDst[i]);
 //                imgDst.setImageBitmap(bmpDst);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
