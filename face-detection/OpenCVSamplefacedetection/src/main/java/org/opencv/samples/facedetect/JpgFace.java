@@ -71,7 +71,7 @@ public class JpgFace extends Activity {
 
     RelativeLayout rlmain;
 
-    String[] src={ "/sdcard/face/low/320x240/ll.jpg","/sdcard/face/low/320x240/ll2.jpg" };
+    String[] src={ "/sdcard/face/low/320x240/ll.jpg","/sdcard/face/low/320x240/cpp.jpg" };
 //    private ObjectDetection mFaceDetector;
 
     @Override
