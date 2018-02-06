@@ -1,4 +1,10 @@
-import { app, BrowserWindow } from 'electron'
+// import { app, BrowserWindow } from 'electron'
+
+const electron = require('electron')
+// Module to control application life.
+const app = electron.app
+// Module to create native browser window.
+const BrowserWindow = electron.BrowserWindow
 
 /**
  * Set `__static` path to static files in production
