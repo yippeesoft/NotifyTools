@@ -2,29 +2,22 @@
   "comments": false,
   "env": {
     "main": {
-      "presets": [
-        ["env", {
-          "targets": { "node": 7 }
-        }],
-        "stage-0"
-      ]
+      "presets": ["es2015", "stage-0"]
     },
     "renderer": {
       "presets": [
-        ["env", {
-          "modules": false
-        }],
+        ["es2015", { "modules": false }],
         "stage-0"
       ]
     },
     "web": {
       "presets": [
-        ["env", {
+        ["es2015", {
           "modules": false
         }],
         "stage-0"
       ]
     }
   },
-  "plugins": ["transform-runtime"]
+  "plugins": ["transform-runtime", "transform-es2015-modules-commonjs"]
 }
