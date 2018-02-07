@@ -11,3 +11,4 @@ bin
 .iml
 *.iml
 build
+*.lock

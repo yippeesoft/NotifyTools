@@ -1,18 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import sf from '../components/sf.vue'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'landing-page',
-      component: require('@/components/LandingPage').default
+      name: 'sf',
+      component: require('@/components/sf.vue').default
     },
     {
       path: '*',
-      redirect: '/'
+      redirect: '/',
+        component: require('@/components/sf.vue').default
     }
   ]
 })

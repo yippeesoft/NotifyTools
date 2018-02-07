@@ -13,7 +13,7 @@
                 "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
             },
             "runtimeArgs": [
-                "${workspaceRoot}/main.js",
+                "${workspaceRoot}/src/main/index.js",
                 "--remote-debugging-port=9222"
             ],
             "webRoot": "${workspaceRoot}"
@@ -39,7 +39,7 @@
             "windows": {
                 "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
             },
-            "program": "${workspaceRoot}/src/main/indexsf.js",
+            "program": "${workspaceRoot}/src/main/index.js",
             "protocol": "auto",
             "preLaunchTask": "npmbuild", //首先执行build task
             // 如果存在SourceMap就使用 

@@ -7,7 +7,7 @@
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "babel src -d dist  -s inline",
-    "babelWatch":"babel src/**/*.js -d dist -w -s inline",
+    "babelWatch": "babel src/**/*.js -d dist -w -s inline",
     "buildd": "node .electron-vue/build.js && electron-builder",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
@@ -91,8 +91,12 @@
     "vue-loader": "^13.0.5",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.4.2",
+    "vue-clipboard2": "0.0.6",
+    "vue-router": "^2.3.0",
     "webpack": "^3.5.2",
     "webpack-dev-server": "^2.7.1",
-    "webpack-hot-middleware": "^2.18.2"
+    "webpack-hot-middleware": "^2.18.2",
+    "iview": "^2.9.2",
+    "vuex": "^2.2.1"
   }
 }
