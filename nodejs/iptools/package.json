@@ -54,9 +54,14 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
-    "vue": "^2.3.3",
+    "global": "^4.3.2",
+    "json-server": "^0.12.1",
+    "net": "^1.0.2",
+    "rxjs": "^5.5.6",
+    "vue": "^2.5.13",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
+    "vue-rx": "^5.0.0",
     "vuex": "^2.3.1"
   },
   "devDependencies": {
@@ -83,20 +88,20 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.30.1",
+    "iview": "^2.9.2",
     "multispinner": "^0.2.1",
     "node-loader": "^0.6.0",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9",
+    "vue-clipboard2": "0.0.6",
     "vue-html-loader": "^1.2.4",
     "vue-loader": "^13.0.5",
+    "vue-router": "^2.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.4.2",
-    "vue-clipboard2": "0.0.6",
-    "vue-router": "^2.3.0",
+    "vuex": "^2.2.1",
     "webpack": "^3.5.2",
     "webpack-dev-server": "^2.7.1",
-    "webpack-hot-middleware": "^2.18.2",
-    "iview": "^2.9.2",
-    "vuex": "^2.2.1"
+    "webpack-hot-middleware": "^2.18.2"
   }
 }
