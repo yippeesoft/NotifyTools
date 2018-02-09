@@ -1,56 +1,154 @@
 //https://www.cnblogs.com/mazey/p/6809457.html
+//https://lellansin.wordpress.com/2014/04/30/node-js-%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/
 
-import * as net from 'net';
 
-class ScanIP {
-    private startIP:string;
-    private endIP:string;
-    private port:number ;
+import {error} from "util";
+import {Socket} from "net";
 
-    constructor(sip: string,eip:string,p:number) {
-        this.startIP = sip;
-        this.endIP=eip;
-        this.port=p;
-    };
+class ScanSocket {
+    private socket: Socket = new Socket();
+    private ip: string;
+    private port: number;
 
-    public scan(timeout:number):boolean{
-        timeout=timeout+1;
-        return false;
+    private msgs: string[] = ['error','connect',   'close'];
+    private funcs = [this.onerror, this.onconnect,  this.onclose];
+
+    constructor(sip: string, p: number) {
+        this.ip = sip;
+        this.port = p;
+
+        for (let i = 0; i < this.msgs.length; i++) {
+            this.socket.on(this.msgs[i], this.funcs[i].bind(this));
+        }
+        this.socket.setKeepAlive(false);
+        this.socket.setNoDelay(true);
+        this.socket.setTimeout(500);
     }
 
-    public static ip2int(ipp:String):number{
-       let num:number=0;
-       let ip:string[]=ipp.split(".");
+    public scan=()=> {
+        let ii: number = 0;
+        console.time('port scan time ' + this.ip+" "+ this.port);
+        this.socket.connect(this.port, this.ip);
+    }
+
+    public onconnect ()  {
+        console.log('onConnect端口:' + this.socket.remoteAddress+" "+ this.socket.remotePort);
+        this.socket.destroy();
+    }
+
+    public onerror(err: Error) {
+        console.log('onError:' + err.message);
+    }
+
+    public onclose() {
+        console.log('onClose端口:' + this.socket.remoteAddress+" "+ this.socket.remotePort);
+        console.timeEnd('port scan time '+ this.ip+" "+ this.port);
+    }
+
+}
+
+class ScanIP {
+    private startIP: string;
+    private endIP: string;
+    private port: number;
+
+    constructor(sip: string, eip: string, p: number) {
+        this.startIP = sip;
+        this.endIP = eip;
+        this.port = p;
+    };
+
+    public scan(timeout: number): boolean {
+        console.time('port scan time');
+        let int1: number = ScanIP.ip2int(this.startIP);
+        let int2: number = ScanIP.ip2int(this.endIP);
+        let count: number = int2 - int1;
+        let sockets: ScanSocket[] = [];
+        let socketss:  Socket[] = [];
+        console.log("listIP " + int1 + " " + int2);
+        let cls: boolean = true;
+        for (let i = int1; i < int2; i++) {
+            if (cls) {
+
+                let socket: ScanSocket = new ScanSocket(ScanIP.int2ip(i), this.port);
+                sockets.push(socket);
+                socket.scan();
+
+            } else {
+
+                let socket: Socket = new Socket;
+                socketss.push(socket);
+                socket.connect(this.port, ScanIP.int2ip(i),
+                    function (i) {
+                        return function () {
+
+                            console.log(typeof this + ' connect1 connect端口:');
+                            this.destroy();
+                        };
+                    }(i));
+                socket.on('error', function (err: Error) {
+                    console.log('error connect端口:' + err.message);
+                    if (err.message == 'ECONNREFUSED') {
+                        this.destroy();
+                    }
+                });
+                socket.on('connect',  ()=>  {
+                    console.log('connect connect端口:' + socket.remotePort);
+                    socket.destroy();
+                });
+                socket.on('close', function () {
+                    console.log('close connect端口:' + socket.remotePort);
+                    if (!count--) {
+                        console.timeEnd('port scan time');
+
+                    }
+                });
+            }
+        }
+
+        console.timeEnd('port scan time');
+        return true;
+    }
+
+
+    public static ip2int(ipp: String): number {
+        let num: number = 0;
+        let ip: string[] = ipp.split(".");
         num = Number(ip[0]) * 256 * 256 * 256 + Number(ip[1]) * 256 * 256 + Number(ip[2]) * 256 + Number(ip[3]);
         num = num >>> 0;
         return num;
     }
 
     //数字转IP
-    public static int2ip(num:number):string{
-        let str:string="";
-        let tt:number[]=new Array();
+    public static int2ip(num: number): string {
+        let str: string = "";
+        let tt: number[] = new Array();
         tt[0] = (num >>> 24) >>> 0;
         tt[1] = ((num << 8) >>> 24) >>> 0;
         tt[2] = (num << 16) >>> 24;
         tt[3] = (num << 24) >>> 24;
         str = String(tt[0]) + "." + String(tt[1]) + "." + String(tt[2]) + "." + String(tt[3]);
-        return  str;
+        return str;
     }
 
-    public listIP(ip1:string,ip2:string){
+    public listIP(ip1: string, ip2: string) {
 
-        let int1:number=ScanIP.ip2int(ip1);
-        let int2:number=ScanIP.ip2int(ip2);
-        console.log("listIP "+int1+" "+int2);
-        for(let i=int1;i<int2;i++){
-            console.debug(ScanIP.int2ip(i)+"\n");
+        let int1: number = ScanIP.ip2int(ip1);
+        let int2: number = ScanIP.ip2int(ip2);
+        console.log("listIP " + int1 + " " + int2);
+        for (let i = int1; i < int2; i++) {
+            console.debug(ScanIP.int2ip(i) + "\n");
         }
     }
 }
 
-new ScanIP("192.168.1.1","192.168.1.255",8182).listIP("192.168.1.1","192.168.1.255");
+// new ScanIP("192.168.1.1","192.168.1.255",8182).listIP("192.168.1.1","192.168.1.255");
 // let s=new ScanIP("192.168.1.1", "192.168.1.255", 8182);
 // s.listIP("192.168.1.1", "192.168.1.255");
-
+// new ScanIP("192.168.1.140", "192.168.1.150", 8182).scan(5000)
+var x=new ScanIP("192.168.1.1", "192.168.1.255", 8182);
+x.scan.bind(x);
+x.scan(100);
 console.log("AAA");
+// var waitTill = new Date(new Date().getTime() + 60 * 1000);
+// while(waitTill > new Date()){}
