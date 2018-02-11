@@ -1,23 +1,43 @@
 {
   "comments": false,
   "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": { "node": 7 }
+        }],
+        "stage-0"
+      ],
+      "plugins": ["istanbul"]
+    },
     "main": {
-      "presets": ["es2015", "stage-0"]
+      "presets": [
+        ["env", {
+          "targets": { "node": 7 }
+        }],
+        "stage-0"
+      ]
     },
     "renderer": {
       "presets": [
-        ["es2015", { "modules": false }],
+        ["env", {
+          "modules": false
+        }],
         "stage-0"
       ]
     },
     "web": {
       "presets": [
-        ["es2015", {
+        ["env", {
           "modules": false
         }],
         "stage-0"
       ]
     }
   },
-  "plugins": ["transform-runtime", "transform-es2015-modules-commonjs"]
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-runtime",
+    "transform-class-properties"
+  ]
 }

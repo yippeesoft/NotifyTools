@@ -25,7 +25,7 @@ let mainConfig = {
       {
         test: /\.node$/,
         use: 'node-loader'
-      }
+      } 
     ]
   },
   node: {
@@ -41,7 +41,7 @@ let mainConfig = {
     new webpack.NoEmitOnErrorsPlugin()
   ],
   resolve: {
-    extensions: ['.js', '.json', '.node']
+    extensions: ['.js', '.json', '.node','vue','.ts']
   },
   target: 'electron-main'
 }

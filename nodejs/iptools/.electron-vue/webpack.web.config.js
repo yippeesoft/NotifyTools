@@ -13,7 +13,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 let webConfig = {
   devtool: '#cheap-module-eval-source-map',
   entry: {
-    web: path.join(__dirname, '../src/renderer/main.js')
+    web: path.join(__dirname, '../src/renderer/main.ts')
   },
   module: {
     rules: [
@@ -46,7 +46,7 @@ let webConfig = {
             }
           }
         }
-      },
+      } ,
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: {
