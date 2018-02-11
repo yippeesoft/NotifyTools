@@ -1,7 +1,17 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5"
+    "target": "es5",
+    "lib": ["es5", "dom", "es2015.collection","es2015"],
+    "removeComments": true,
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "allowJs": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules"

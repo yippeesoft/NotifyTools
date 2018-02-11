@@ -2,8 +2,9 @@
 //https://lellansin.wordpress.com/2014/04/30/node-js-%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/
 
 
-import {error} from "util";
+
 import {Socket} from "net";
+import {HashMap} from "TypeScriptCollectionsFramework";
 
 class ScanSocket {
     private socket: Socket = new Socket();
@@ -11,38 +12,49 @@ class ScanSocket {
     private port: number;
 
     private msgs: string[] = ['error','connect',   'close'];
-    private funcs = [this.onerror, this.onconnect,  this.onclose];
+    private funcs:Function[] = [this.onerror, this.onconnect,  this.onclose];
+    private cbs:HashMap<string,Function>=new HashMap<string,Function>();
 
-    constructor(sip: string, p: number) {
+    constructor(sip: string, p: number,cbb:HashMap<string,Function>) {
         this.ip = sip;
         this.port = p;
+        this.cbs=cbb;
 
         for (let i = 0; i < this.msgs.length; i++) {
             this.socket.on(this.msgs[i], this.funcs[i].bind(this));
+
         }
         this.socket.setKeepAlive(false);
         this.socket.setNoDelay(true);
         this.socket.setTimeout(500);
     }
-
-    public scan=()=> {
-        let ii: number = 0;
-        console.time('port scan time ' + this.ip+" "+ this.port);
-        this.socket.connect(this.port, this.ip);
+    get getRemoteIP():string{
+        return this.ip;
     }
-
+    public    scan():void {
+        // console.time('port scan time ' + this.ip+" "+ this.port);
+        this.socket.connect(this.port, this.ip);
+        return  ;
+    }
+    private raiseCallback(s:string):void{
+        if(this.cbs.containsKey(s)){
+            this.cbs.get(s)(this);
+        }
+    }
     public onconnect ()  {
-        console.log('onConnect端口:' + this.socket.remoteAddress+" "+ this.socket.remotePort);
+        // console.log('onConnect端口:' + this.socket.remoteAddress+" "+ this.socket.remotePort);
+        this.raiseCallback('connect');
         this.socket.destroy();
     }
 
     public onerror(err: Error) {
-        console.log('onError:' + err.message);
+        // console.log('onError:' + err.message);
     }
 
     public onclose() {
-        console.log('onClose端口:' + this.socket.remoteAddress+" "+ this.socket.remotePort);
-        console.timeEnd('port scan time '+ this.ip+" "+ this.port);
+        this.raiseCallback('close');
+        // console.timeEnd('port scan time '+ this.ip+" "+ this.port);
+
     }
 
 }
@@ -51,63 +63,54 @@ class ScanIP {
     private startIP: string;
     private endIP: string;
     private port: number;
+    private mapCallback:HashMap<string,Function>=new HashMap<string, Function>();
+    private ipNums:number=0;
 
     constructor(sip: string, eip: string, p: number) {
         this.startIP = sip;
         this.endIP = eip;
         this.port = p;
+        this.mapCallback.put("error",this.onSocketError.bind(this));
+        this.mapCallback.put("close",this.onSocketClose.bind(this));
+        this.mapCallback.put("connect",this.onSocketConnect.bind(this));
     };
+    public onSocketClose(sock:ScanSocket ):void{
+        // console.log("onSocketClose:"+sock.getRemoteIP );
+        this.ipNums=this.ipNums-1;
+        if(this.ipNums==0){
+            console.timeEnd('port scan time');
+        }
+    }
+    public onSocketConnect(sock:ScanSocket ):void{
+        console.log("onSocketConnect:"+sock.getRemoteIP );
 
-    public scan(timeout: number): boolean {
+    }
+    public onSocketError(err:Error,sock:ScanSocket ):void{
+        console.log("onSocketError:"+err.message+sock.getRemoteIP );
+    }
+    public scan(timeout: number): void {
         console.time('port scan time');
         let int1: number = ScanIP.ip2int(this.startIP);
         let int2: number = ScanIP.ip2int(this.endIP);
-        let count: number = int2 - int1;
+
         let sockets: ScanSocket[] = [];
-        let socketss:  Socket[] = [];
-        console.log("listIP " + int1 + " " + int2);
+
+        this.ipNums=int2-int1;
+        console.log(this.ipNums+" listIP " + int1 + " " + int2);
+
         let cls: boolean = true;
         for (let i = int1; i < int2; i++) {
             if (cls) {
 
-                let socket: ScanSocket = new ScanSocket(ScanIP.int2ip(i), this.port);
+                let socket: ScanSocket = new ScanSocket(ScanIP.int2ip(i), this.port,this.mapCallback);
                 sockets.push(socket);
                 socket.scan();
 
-            } else {
-
-                let socket: Socket = new Socket;
-                socketss.push(socket);
-                socket.connect(this.port, ScanIP.int2ip(i),
-                    function (i) {
-                        return function () {
-
-                            console.log(typeof this + ' connect1 connect端口:');
-                            this.destroy();
-                        };
-                    }(i));
-                socket.on('error', function (err: Error) {
-                    console.log('error connect端口:' + err.message);
-                    if (err.message == 'ECONNREFUSED') {
-                        this.destroy();
-                    }
-                });
-                socket.on('connect',  ()=>  {
-                    console.log('connect connect端口:' + socket.remotePort);
-                    socket.destroy();
-                });
-                socket.on('close', function () {
-                    console.log('close connect端口:' + socket.remotePort);
-                    if (!count--) {
-                        console.timeEnd('port scan time');
-
-                    }
-                });
             }
         }
 
-        console.timeEnd('port scan time');
-        return true;
+
+        return ;
     }
 
 
@@ -147,8 +150,13 @@ class ScanIP {
 // s.listIP("192.168.1.1", "192.168.1.255");
 // new ScanIP("192.168.1.140", "192.168.1.150", 8182).scan(5000)
 var x=new ScanIP("192.168.1.1", "192.168.1.255", 8182);
-x.scan.bind(x);
-x.scan(100);
+async function test() {
+
+    await x.scan(100);
+
+}
+test();
+
 console.log("AAA");
 // var waitTill = new Date(new Date().getTime() + 60 * 1000);
 // while(waitTill > new Date()){}

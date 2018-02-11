@@ -58,11 +58,14 @@
     "json-server": "^0.12.1",
     "net": "^1.0.2",
     "rxjs": "^5.5.6",
+    "typescriptcollectionsframework": "^3.1.2",
     "vue": "^2.5.13",
+    "vue-class-component": "^6.1.2",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
     "vue-rx": "^5.0.0",
-    "vuex": "^2.3.1"
+    "vuex": "^2.3.1",
+
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -99,7 +102,7 @@
     "vue-router": "^2.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.4.2",
-    "vuex": "^2.2.1",
+
     "webpack": "^3.5.2",
     "webpack-dev-server": "^2.7.1",
     "webpack-hot-middleware": "^2.18.2"
