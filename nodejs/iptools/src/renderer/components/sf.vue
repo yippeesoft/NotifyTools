@@ -12,7 +12,7 @@
     </div>
 
 </template>
-<script>
+<!--<script>
     export default {
         data() {
             return {
@@ -51,36 +51,46 @@
             }
         }
     }
+</script>-->
+<script lang="ts">
+    import Vue from 'vue'
+    import Component from 'vue-class-component'
+    import {ArrayList, HashMap} from "typescriptcollectionsframework";
+
+    @Component
+    export default class sf extends Vue {
+
+        public datas:any=[];
+        public  columns:any =[];
+        // lifecycle hook
+        public mounted ():void {
+            console.log("mounted");
+            let str:string ='{"title" :"IP","key":"ip"}';
+            // let s:any=JSON.parse(str);
+            this.columns.push(JSON.parse(str));
+
+
+            for(let i=0;i<40;i++){
+                var ipp =''+i;
+                var strfmt ='{"ip":"ip'+ipp+'"}';
+                this.datas.push(JSON.parse(strfmt));
+            }
+
+            //     var map=new Object();
+            //     map["title"]="title"+i ;
+            //     map["key"]="key"+i ;
+            //
+            //     this.datas.add(map)
+            //     // let m:object={"titile":"AA"};
+            //     // var key1 = "title";
+            //     // var key2 = "key";
+            //     // m[key1]=key1+i;
+            //     // m[key2]=key2+i;
+            //     // this.datas[i]=m;
+            // }
+
+        }
+
+
+    }
 </script>
-<!--<script lang="ts">-->
-    <!--import Vue from 'vue'-->
-    <!--import Component from 'vue-class-component'-->
-    <!--import {ArrayList, HashMap} from "typescriptcollectionsframework";-->
-
-    <!--@Component-->
-    <!--export default class sf extends Vue {-->
-        <!--private datass:ArrayList<HashMap<string,string>> = new ArrayList<HashMap<string, string>>();-->
-        <!--// private columns:ArrayList<string>=new ArrayList<string>();-->
-        <!--private datas:object=[];-->
-        <!--public columns:object=[{ titile :"AA"},{ key :"BB"}];-->
-        <!--// lifecycle hook-->
-        <!--public mounted ():void {-->
-            <!--console.log("mounted");-->
-            <!--for(let i=0;i<40;i++){-->
-                <!--// let map:HashMap<string,string>=new HashMap<string, string>();-->
-                <!--// map.put("title","title"+i);-->
-                <!--// map.put("key","key"+i);-->
-                <!--// this.datass.add(map)-->
-                <!--// let m:object={"titile":"AA"};-->
-                <!--// var key1 = "title";-->
-                <!--// var key2 = "key";-->
-                <!--// m[key1]=key1+i;-->
-                <!--// m[key2]=key2+i;-->
-                <!--// this.datas[i]=m;-->
-            <!--}-->
-
-        <!--}-->
-
-
-    <!--}-->
-<!--</script>-->
