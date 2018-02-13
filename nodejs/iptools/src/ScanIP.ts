@@ -2,9 +2,10 @@
 //https://lellansin.wordpress.com/2014/04/30/node-js-%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/
 
 
-
+'use strict'
 import {Socket} from "net";
 import {HashMap} from "TypeScriptCollectionsFramework";
+import {isNull} from "util";
 
 class ScanSocket {
     private socket: Socket = new Socket();
@@ -59,14 +60,17 @@ class ScanSocket {
 
 }
 
-class ScanIP {
+export  class ScanIP {
     private startIP: string;
     private endIP: string;
     private port: number;
     private mapCallback:HashMap<string,Function>=new HashMap<string, Function>();
     private ipNums:number=0;
+    private ipresult:Array<string>=new Array<string>();
+    private OnScanEnd:Function |null =null   ;
 
     constructor(sip: string, eip: string, p: number) {
+
         this.startIP = sip;
         this.endIP = eip;
         this.port = p;
@@ -79,11 +83,24 @@ class ScanIP {
         this.ipNums=this.ipNums-1;
         if(this.ipNums==0){
             console.timeEnd('port scan time');
+            if(isNull(this.OnScanEnd)==false && typeof this.OnScanEnd == "function"){
+                this.OnScanEnd();
+            }
         }
     }
+    public setOnScanEnd(cb : Function):void{
+        this.OnScanEnd=cb;
+    }
+    public getOnScanEnd():Function|null{
+        return this.OnScanEnd;
+    }
+    public getResult():Array<string>{
+        return this.ipresult;
+    }
+
     public onSocketConnect(sock:ScanSocket ):void{
         console.log("onSocketConnect:"+sock.getRemoteIP );
-
+        this.ipresult.push(sock.getRemoteIP);
     }
     public onSocketError(err:Error,sock:ScanSocket ):void{
         console.log("onSocketError:"+err.message+sock.getRemoteIP );
@@ -101,15 +118,11 @@ class ScanIP {
         let cls: boolean = true;
         for (let i = int1; i < int2; i++) {
             if (cls) {
-
                 let socket: ScanSocket = new ScanSocket(ScanIP.int2ip(i), this.port,this.mapCallback);
                 sockets.push(socket);
                 socket.scan();
-
             }
         }
-
-
         return ;
     }
 
@@ -149,14 +162,14 @@ class ScanIP {
 // let s=new ScanIP("192.168.1.1", "192.168.1.255", 8182);
 // s.listIP("192.168.1.1", "192.168.1.255");
 // new ScanIP("192.168.1.140", "192.168.1.150", 8182).scan(5000)
-var x=new ScanIP("192.168.1.1", "192.168.1.255", 8182);
-async function test() {
+// var x=new ScanIP("192.168.1.1", "192.168.1.255", 8182);
+// async function test() {
+//
+//     await x.scan(100);
+//
+// }
 
-    await x.scan(100);
 
-}
-test();
-
-console.log("AAA");
+// console.log("AAA");
 // var waitTill = new Date(new Date().getTime() + 60 * 1000);
 // while(waitTill > new Date()){}

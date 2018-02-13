@@ -22,7 +22,7 @@
                 <Table height="400"  border :columns="columns" :data="datas" ></Table>
             </Content>
             <Footer>
-                <Button type="success" long @click="tst()">SUBMIT</Button>
+                <Button type="success" long @click="scan()">SUBMIT</Button>
             </Footer>
         </Layout>
     </div>
@@ -79,8 +79,10 @@
     import iview from 'iview'
     import {ArrayList, HashMap} from "typescriptcollectionsframework";
     import 'iview/dist/styles/iview.css'    // 使用 CSS
-    import ScanIP from './../../ScanIP'
+    import {ScanIP} from './../../ScanIP.ts'
 
+    // export default class MyClass { /* ... */ } ==> import MyClassAlias from "./MyClass";
+    // export class MyClass { /* ... */ } == > import {MyClass} from "./MyClass";
     @Component
     export default class sf extends Vue {
 
@@ -91,9 +93,24 @@
             input2: '',
             input3: ''
         };
-
-        public tst():void{
-            console.log("created "+this.formLeft.input1);
+        private scanIP:ScanIP;
+        constructor(){
+            super();
+            this.scanIP=new ScanIP("192.168.1.1","192.168.1.255",8182);
+            this.scanIP.setOnScanEnd(this.onScanEnd);
+        }
+        public onScanEnd():void{
+            let ips:Array<string>=this.scanIP.getResult();
+            console.log("onScanEnd "+ips);
+            for(let i=0;i<ips.length;i++){
+                var ipp =ips[i];
+                var strfmt ='{"ip":"ip'+ipp+'"}';
+                this.datas.push(JSON.parse(strfmt));
+            }
+        }
+        public scan():void{
+            console.log("scan "+this.formLeft.input1);
+            this.scanIP.scan(100);
         }
         // lifecycle hook
         public mounted ():void {
@@ -101,13 +118,6 @@
             let str:string ='{"title" :"IP","key":"ip"}';
             // let s:any=JSON.parse(str);
             this.columns.push(JSON.parse(str));
-
-
-            for(let i=0;i<40;i++){
-                var ipp =''+i;
-                var strfmt ='{"ip":"ip'+ipp+'"}';
-                this.datas.push(JSON.parse(strfmt));
-            }
 
         }
 
