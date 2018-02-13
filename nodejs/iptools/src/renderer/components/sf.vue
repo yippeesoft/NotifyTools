@@ -1,5 +1,14 @@
 <template>
     <div class="layout">
+<!--        <Spin size="large" fix v-if="spinShow"></Spin>
+        <Circle :percent="percent" :stroke-color="color">
+            <Icon v-if="percent == 255" type="ios-checkmark-empty" size="60" style="color:#5cb85c"></Icon>
+            <span v-else style="font-size:24px">{{ percent }}%</span>
+        </Circle>-->
+        <Spin fix  v-if="spinShow">
+            <Icon type="load-c" size=30 class="demo-spin-icon-load"></Icon>
+            <div>Loading</div>
+        </Spin>
         <Layout>
             <Header class="header">IP配置</Header>
             <Content>
@@ -31,6 +40,9 @@
 <style>
     .header {
         color: #2d8cf0;
+    }
+    .demo-spin-icon-load{
+        animation: ani-demo-spin 1s linear infinite;
     }
 </style>
 <!--<script>
@@ -85,7 +97,7 @@
     // export class MyClass { /* ... */ } == > import {MyClass} from "./MyClass";
     @Component
     export default class sf extends Vue {
-
+        public spinShow:boolean=false;
         public datas:any=[];
         public  columns:any =[];
         public formLeft:any= {
@@ -107,8 +119,10 @@
                 var strfmt ='{"ip":"ip'+ipp+'"}';
                 this.datas.push(JSON.parse(strfmt));
             }
+            this.spinShow=false;
         }
         public scan():void{
+            this.spinShow=true;
             console.log("scan "+this.formLeft.input1);
             this.scanIP.scan(100);
         }

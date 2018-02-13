@@ -81,10 +81,11 @@ export  class ScanIP {
     public onSocketClose(sock:ScanSocket ):void{
         // console.log("onSocketClose:"+sock.getRemoteIP );
         this.ipNums=this.ipNums-1;
+
         if(this.ipNums==0){
             console.timeEnd('port scan time');
             if(isNull(this.OnScanEnd)==false && typeof this.OnScanEnd == "function"){
-                this.OnScanEnd();
+                this.OnScanEnd(this.ipNums);
             }
         }
     }
