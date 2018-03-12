@@ -27,6 +27,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
+      webPreferences: {webSecurity: false},
     width: 1000
   })
 

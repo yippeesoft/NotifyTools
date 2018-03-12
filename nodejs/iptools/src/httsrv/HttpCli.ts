@@ -1,5 +1,6 @@
 import * as http from "http";
 import {RequestOptions, OutgoingHttpHeaders, ServerResponse, ClientRequest, IncomingMessage} from "http";
+import axios, {AxiosInstance, AxiosPromise} from "axios";
 
 function income(res:IncomingMessage){
     // console.log('-----income-------',res);
@@ -30,6 +31,10 @@ function request(opt:RequestOptions){
     httpcli.write(strpost)
 }
 
+function reqAxios(){
+    var axiosInstan:AxiosPromise=axios.get("http://192.168.9.111");
+
+}
 let strpost:string="{'AA':'BBB'}";
 let headers:OutgoingHttpHeaders={};
 headers["Content-Type"]='application/json';
@@ -42,4 +47,9 @@ opts.path="/";
 opts.method="post";
 opts.headers=headers;
 
-request(opts);
+function fun1(msg:string):void{
+    alert(msg);
+}
+var message = new Function('msg','console.log(msg)');
+message("AAAA");
+//request(opts);
