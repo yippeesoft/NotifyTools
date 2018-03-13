@@ -34,6 +34,7 @@ class ScanSocket {
     }
     public    scan():void {
         // console.time('port scan time ' + this.ip+" "+ this.port);
+        console.log("scan:"+this.ip);
         this.socket.connect(this.port, this.ip);
         return  ;
     }
