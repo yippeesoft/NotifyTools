@@ -23,6 +23,7 @@
   "build": {
     "productName": "iptools",
     "appId": "org.simulatedgreg.electron-vue",
+	"copyright":"LEON",
     "directories": {
       "output": "build"
     },

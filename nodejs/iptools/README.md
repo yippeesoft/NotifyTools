@@ -1,22 +1,19 @@
-# iptools
-
-> iptools
-
-#### Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:9080
-npm run dev
-
-# build electron application for production
-npm run build
-
-
-```
-
----
-
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[1c165f7](https://github.com/SimulatedGREG/electron-vue/tree/1c165f7c5e56edaf48be0fbb70838a1af26bb015) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+﻿###下载安装 node; yarn 
+    https://yarnpkg.com/en/
+### 设置国内镜像 
+    http://blog.csdn.net/u011083967/article/details/74936588
+### 下载
+    进入iptools目录，运行 yarn
+### 运行
+    yarn run dev 
+### 编译
+    yarn build 
+### 打包
+   npm install electron-builder 
+   electron-builder --win --x64 
+### IDE 
+    http://blog.csdn.net/u011172137/article/details/77776218
+### 参考
+     基于 electron-vue   
+     http://blog.csdn.net/github_36978270/article/details/78460696
+     https://segmentfault.com/a/1190000011798689
