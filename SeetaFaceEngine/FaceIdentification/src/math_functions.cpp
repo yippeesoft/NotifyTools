@@ -32,6 +32,7 @@
 #include "math_functions.h"
 #include <xmmintrin.h>
 #include <cstdint>
+#include <cblas.h>
 
 #ifdef _WIN32
 #include <intrin.h>
@@ -61,6 +62,7 @@ float simd_dot(const float* x, const float* y, const long& len) {
   return inner_prod;
 }
 
+#if 0
 void matrix_procuct(const float* A, const float* B, float* C, const int n,
     const int m, const int k, bool ta, bool tb) {
 #ifdef _BLAS
@@ -80,4 +82,30 @@ void matrix_procuct(const float* A, const float* B, float* C, const int n,
     x += k;
   }
 #endif
+}
+#endif
+
+//https://github.com/seetaface/SeetaFaceEngine/issues/91 
+//https://github.com/sunjunlishi
+
+void blasCal(const float* A, const float* B, float* C, const int n,
+             const int m, const int k, bool ta, bool tb)
+{
+
+    const int M = n;//A的行数，C的行数
+    const int N = m;//B的列数，C的列数
+    const int K = k;//A的列数，B的行数
+
+    const int lda =  K ;//A的列
+    const int ldb =  K;//B的列
+    const int ldc = N;//C的列
+    //float * C = new float[img1.rows];
+    cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasTrans,
+                M, N, K, 1, (float*)A, lda, (float*)B, ldb, 0, C, ldc);
+}
+
+void matrix_procuct(const float* A, const float* B, float* C, const int n,
+                    const int m, const int k, bool ta, bool tb) {
+
+    blasCal(B,A,C,m,n,k,false,true);
 }

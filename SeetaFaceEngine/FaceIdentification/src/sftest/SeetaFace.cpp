@@ -9,9 +9,12 @@ Detector::Detector(const char* model_name) : seeta::FaceDetection(model_name) {
 }
 
 SeetaFace::SeetaFace() {
-	this->detector = new Detector("./seeta_fd_frontal_v1.0.bin");
-	this->point_detector = new seeta::FaceAlignment("./seeta_fa_v1.1.bin");
-	this->face_recognizer = new seeta::FaceIdentification("./seeta_fr_v1.0.bin");
+	this->detector = new Detector("seeta_fd_frontal_v1.0.bin");
+	std::cout << "SeetaFace Detector"  << std::endl;
+	this->point_detector = new seeta::FaceAlignment("seeta_fa_v1.1.bin");
+	std::cout << "SeetaFace FaceAlignment"  << std::endl;
+	this->face_recognizer = new seeta::FaceIdentification("seeta_fr_v1.0.bin");
+	std::cout << "SeetaFace FaceIdentification"  << std::endl;
 }
 
 float* SeetaFace::NewFeatureBuffer() {

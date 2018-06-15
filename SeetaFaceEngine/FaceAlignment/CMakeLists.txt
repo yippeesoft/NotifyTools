@@ -4,6 +4,8 @@ project(seeta_fa_lib)
 
 # Build options
 option(BUILD_EXAMPLES  "Set to ON to build examples"  ON)
+option(USE_OPENMP      "Set to ON to build use openmp"  ON)
+option(USE_SSE         "Set to ON to build use SSE"  ON)
 
 # Use C++11
 #set(CMAKE_CXX_STANDARD 11)

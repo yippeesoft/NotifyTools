@@ -9,6 +9,9 @@ set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++11 -O2 -g -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 
+option(USE_OPENMP      "Set to ON to build use openmp"  ON)
+option(USE_SSE         "Set to ON to build use SSE"  ON)
+
 MESSAGE(STATUS "other platform: ${CMAKE_SYSTEM_NAME}")
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
@@ -28,11 +31,16 @@ include_directories(../FaceDetection/include)
 include_directories(../FaceAlignment/include)
 link_directories(../FaceDetection/build)
 link_directories(../FaceAlignment/build)
+
 add_subdirectory(src)
 add_subdirectory(src/sftest)
 aux_source_directory(./src SRC_LIST)
 aux_source_directory(./tools TOOLS_LIST)
-add_library(viplnet SHARED ${SRC_LIST} ${TOOLS_LIST})
+add_library(viplnet SHARED ${SRC_LIST} ${TOOLS_LIST} )
+target_link_libraries(
+    viplnet
+    openblas
+)
 set_target_properties(viplnet PROPERTIES 
   VERSION ${VIPLNET_VERSION_MAJOR}.${VIPLNET_VERSION_MINOR} 
   SOVERSION ${VIPLNET_VERSION_MAJOR}.${VIPLNET_VERSION_MINOR}) 
