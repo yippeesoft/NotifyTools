@@ -5,6 +5,7 @@
 	
 | 目录    |    说明  |
 | ------------- |  -------------------- |
+|SeetaFaceEngine|源码编译以及增加资料代码|
 |nodejs/iptools|typescript ip端口扫描|
 |china-pome|唐宋诗词 |
 |app android notify tools  |基于安卓系统通知栏Android Notification小工具集 |
@@ -29,6 +30,7 @@
 
 | 功能    |    说明  |
 | ------------- |  -------------------- |
+|SeetaFaceEngine|开源人脸检测|
 |nodejs/iptools|typescript ip端口扫描|
 |china-pome|唐宋诗词|
 |1bpp-monochrome-bitmap|android bitmap转存单色位图 |
@@ -49,6 +51,7 @@
 
 | 功能    |    说明  |
 | ------------- | -------------------- |
+|SeetaFaceEngine|SeetaFace 源码、sunjunlishi BLAS、邬小阳 封装|
 |https://github.com/chinese-poetry/chinese-poetry |最全中华古诗词数据库 |
 |https://github.com/acdevs/1bpp-monochrome-android |android bitmap转存单色位图|
 |https://github.com/hankcs/HanLP |自然语言处理|
