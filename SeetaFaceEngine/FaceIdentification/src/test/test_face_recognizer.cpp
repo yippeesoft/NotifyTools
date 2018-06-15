@@ -62,11 +62,14 @@ using namespace std;
 #endif //__unix
 
 
+#include "opencv2/opencv.hpp"
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
-
+#include "opencv2/imgproc/imgproc.hpp"
 #include "face_identification.h"
 #include "common.h"
+#include <opencv2/imgproc/imgproc.hpp>
+
 
 #include "math.h"
 #include "time.h"
@@ -81,6 +84,7 @@ using namespace std;
 #include "ctime"
 
 using namespace seeta;
+using namespace cv;
 
 #define TEST(major, minor) major##_##minor##_Tester()
 #define EXPECT_NE(a, b) if ((a) == (b)) std::cout << "ERROR: "

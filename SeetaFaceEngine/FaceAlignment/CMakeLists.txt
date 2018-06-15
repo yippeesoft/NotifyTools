@@ -16,7 +16,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
 
 include_directories(include)
-
+include_directories(../FaceDetection/include)
+link_directories(../FaceDetection/build)
 set(src_files 
     src/cfan.cpp
     src/face_alignment.cpp
