@@ -29,7 +29,7 @@ include_directories(../FaceAlignment/include)
 link_directories(../FaceDetection/build)
 link_directories(../FaceAlignment/build)
 add_subdirectory(src)
-
+add_subdirectory(src/sftest)
 aux_source_directory(./src SRC_LIST)
 aux_source_directory(./tools TOOLS_LIST)
 add_library(viplnet SHARED ${SRC_LIST} ${TOOLS_LIST})
