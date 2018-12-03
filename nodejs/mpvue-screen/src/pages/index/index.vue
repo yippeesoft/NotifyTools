@@ -9,13 +9,21 @@
       duration="500"
     >
       <Slide @click="clickMe" v-for="(tag,key) in list" :key="key">
-        <img :src="tag.img">
+        <img :src="tag.img" mode="aspectFill">
       </Slide>
     </Swiper>
      
     <div>
       <button @click="preve">上一张</button>
     </div>
+
+    <swiper  indicator-dots>
+      <swiper-item class="md-splash__item"  v-for="(item, index) in list" :for-index="index" :key="index">
+        <image :src="item.img" class="md-splash__image" mode="aspectFill"/>
+        <button class="md-splash__start" @click="handleStart" v-if="index === list.length - 1">立即体验</button>
+      </swiper-item>
+    </swiper>
+
     <div>
       <button @click="next">下一张</button>
     </div>
@@ -23,7 +31,7 @@
 </template>
 
 <script>
-import { Swiper, Slide } from "vue-swiper-component";
+ 
 export default {
   data() {
     return {
@@ -43,10 +51,7 @@ export default {
       ]
     };
   },
-  components: {
-    Swiper,
-    Slide
-  },
+
   methods: {
     clickMe(index) {
       console.log(index);
@@ -61,40 +66,41 @@ export default {
 };
 </script>
 
-<style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+<style lang="scss">
+page {
+  height: 100%;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+@include c('splash') {
+  height: 100%;
+
+  @include e('swiper') {
+    height: 100%;
+  }
+
+  @include e('item') {
+    flex: 1;
+  }
+
+  @include e('image') {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: .9;
+  }
+
+  @include e('start') {
+    position: absolute;
+    bottom: 200rpx;
+    left: 50%;
+    width: 300rpx;
+    margin-left: -150rpx;
+    background-color: rgba(64, 88, 109, .4);
+    color: #fff;
+    border: 1rpx solid rgba(64, 88, 109, .8);
+    border-radius: 200rpx;
+    font-size: 40rpx;
+  }
 }
 
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-
-.counter {
-  display: inline-block;
-  margin: 10px auto;
-  padding: 5px 10px;
-  color: blue;
-  border: 1px solid blue;
-}
 </style>
