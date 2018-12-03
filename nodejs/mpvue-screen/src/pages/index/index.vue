@@ -1,69 +1,64 @@
-<template>
-  <div class="container" @click="clickHandle('test click', $event)">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
+<template >
+  <div>
+    <Swiper
+      ref="swiper"
+      v-if="list.length > 0"
+      :autoPlay="true"
+      :showIndicator="true"
+      interval="2500"
+      duration="500"
+    >
+      <Slide @click="clickMe" v-for="(tag,key) in list" :key="key">
+        <img :src="tag.img">
+      </Slide>
+    </Swiper>
+     
+    <div>
+      <button @click="preve">上一张</button>
     </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
+    <div>
+      <button @click="next">下一张</button>
     </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-  </div>
+ </div>
 </template>
 
 <script>
-import card from '@/components/card'
-
+import { Swiper, Slide } from "vue-swiper-component";
 export default {
-  data () {
+  data() {
     return {
-      motto: 'Hello World',
-      userInfo: {}
-    }
-  },
-
-  components: {
-    card
-  },
-
-  methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
-    },
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
-            }
-          })
+      list: [
+        {
+          img:
+            "https://qiniu.epipe.cn/5456575529551388672?imageslim&imageView2/1/w/750/h/360"
+        },
+        {
+          img:
+            "https://qiniu.epipe.cn/5430983074181545984?imageslim&imageView2/1/w/750/h/360"
+        },
+        {
+          img:
+            "https://qiniu.epipe.cn/5464226412548325376?imageslim&imageView2/1/w/750/h/360"
         }
-      })
-    },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
-    }
+      ]
+    };
   },
-
-  created () {
-    // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+  components: {
+    Swiper,
+    Slide
+  },
+  methods: {
+    clickMe(index) {
+      console.log(index);
+    },
+    preve() {
+      this.$refs.swiper.prevSlide();
+    },
+    next() {
+      this.$refs.swiper.nextSlide();
+    }
   }
-}
+};
 </script>
 
 <style scoped>
