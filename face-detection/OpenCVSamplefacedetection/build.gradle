@@ -28,6 +28,11 @@ android {
         }
     }
 
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
     //Exclude duplicates
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
@@ -40,10 +45,10 @@ android {
 }
 
 dependencies {
-    compile project(':OpenCVLibrary340')
+    compile(name: 'OpenCVLibrary340-release', ext: 'aar')
     compile files('libs/javacpp.jar')
     compile files('libs/javacv.jar')
-    compile files('libs/opencv-android-arm.jar')
+
     compile files('libs/javacv-platform.jar')
     compile files('libs/opencv.jar')
 }
