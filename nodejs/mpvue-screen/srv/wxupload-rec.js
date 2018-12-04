@@ -4,10 +4,12 @@ var fs = require("fs");
 
 var bodyParser = require('body-parser');
 var multer  = require('multer');
+var router = express.Router();
+var upload = multer({dest:'file_upload/'});
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ dest: './'}).array('image'));
+app.use(multer({ dest: './file_upload'}).array('file'));
 
 app.get('/index.html', function (req, res) {
   console.log(req);  // 上传的文件信息
@@ -15,7 +17,7 @@ app.get('/index.html', function (req, res) {
 })
 
 app.post('/file_upload', function (req, res) {
-
+  console.log(req);  // 上传的文件信息
   console.log(req.files[0]);  // 上传的文件信息
 
   var des_file = __dirname + "/" + req.files[0].originalname;
