@@ -1,6 +1,6 @@
 <template >
   <div>
-    <Swiper
+    <!-- <Swiper
       ref="swiper"
       v-if="list.length > 0"
       :autoPlay="true"
@@ -15,18 +15,27 @@
      
     <div>
       <button @click="preve">上一张</button>
-    </div>
+    </div> -->
 
-    <swiper  indicator-dots>
+    <swiper  :autoPlay="true"
+      :showIndicator="true"
+      interval="2500"
+      duration="500">
       <swiper-item class="md-splash__item"  v-for="(item, index) in list" :for-index="index" :key="index">
         <image :src="item.img" class="md-splash__image" mode="aspectFill"/>
         <button class="md-splash__start" @click="handleStart" v-if="index === list.length - 1">立即体验</button>
       </swiper-item>
     </swiper>
 
+
+
     <div>
-      <button @click="next">下一张</button>
+      <button  @click="gotoShow"  >点击选择照片</button>
+      
     </div>
+     <div>
+     <image :src="src" class= "show-image" mode="aspectFitf" />
+     </div>
  </div>
 </template>
 
@@ -48,11 +57,13 @@ export default {
           img:
             "https://qiniu.epipe.cn/5464226412548325376?imageslim&imageView2/1/w/750/h/360"
         }
-      ]
+      ],
+        src:"../../static/profile.png"
     };
   },
 
   methods: {
+    
     clickMe(index) {
       console.log(index);
     },
@@ -61,7 +72,31 @@ export default {
     },
     next() {
       this.$refs.swiper.nextSlide();
-    }
+    },
+    gotoShow: function(){let _this = this;
+            wx.chooseImage({
+              count: 1, // 最多可以选择的图片张数，默认9
+              sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
+              sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
+              success: function(res){
+                // success
+                
+//                 _this.setData({
+//                     src:res.tempFilePaths
+//                 })
+               res.tempFilePaths.forEach(v=>{
+                 console.log(v)
+                _this.src=v;
+              });
+              },
+              fail: function() {
+                // fail
+              },
+              complete: function() {
+                // complete
+              }
+            })
+        }
   }
 };
 </script>
