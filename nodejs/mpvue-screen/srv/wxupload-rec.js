@@ -7,6 +7,11 @@ var multer  = require('multer');
 var router = express.Router();
 var upload = multer({dest:'file_upload/'});
 
+var fly=require("flyio")
+ 
+const path=require('path');
+var log = require("log4js");
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ dest: './file_upload'}).array('file'));
@@ -18,7 +23,7 @@ app.get('/index.html', function (req, res) {
 
 app.post('/file_upload', function (req, res) {
   console.log(req);  // 上传的文件信息
-  console.log(req.files[0]);  // 上传的文件信息
+  console.log("file:\n\n"+req.files[0]);  // 上传的文件信息
 
   var des_file = __dirname + "/" + req.files[0].originalname;
   fs.readFile( req.files[0].path, function (err, data) {
@@ -30,6 +35,21 @@ app.post('/file_upload', function (req, res) {
                   message:'File uploaded successfully', 
                   filename:req.files[0].originalname
              };
+
+             var formData = {
+              name:"v.png", //普通的字段
+              playtime:"10",
+              file: fs.createReadStream(req.files[0].originalname), //文件
+              // resume: fs.createReadStream('./resume.docx'), //文件
+              // attachments:[ //可以通过数组
+              //     fs.createReadStream('./file1.zip'),
+              //     fs.createReadStream('./file2.zip')
+              // ]
+          }
+          
+          fly.upload("http://192.168.1.2:7005/uploadplay", formData)
+              .then(log).catch(log)
+
          }
          console.log( response );
          res.end( JSON.stringify( response ) );
