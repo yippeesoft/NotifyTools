@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">安卓壁纸调试工具</string>
+    <string name="action_settings">一定不要卸载</string>
+    <string name="hello_world">安卓壁纸调试工具</string>
+
+</resources>
