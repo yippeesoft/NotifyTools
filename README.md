@@ -1,10 +1,11 @@
 # NotifyTools
 
 ## 简介
-    
-	
+
+
 | 目录    |    说明  |
 | ------------- |  -------------------- |
+| WifiAdb1 | 有线网络adb |
 |SeetaFaceEngine|源码编译以及增加资料代码|
 |nodejs/iptools|typescript ip端口扫描|
 |china-pome|唐宋诗词 |
@@ -20,8 +21,9 @@
 |dbToJavaBean|sqlite数据库生成greendao bean|
 |1bpp-monochrome-bitmap|android bitmap转存单色位图 |
 |java_js_2screen|android java-js交互 双屏异显|
-	
+
 ## 测试设备
+
 | 机型    |    说明  |
 | ------ |  -------------------- |
 |MI2S   |notify图标显示不正常 |
@@ -30,15 +32,16 @@
 
 | 功能    |    说明  |
 | ------------- |  -------------------- |
+| WifiAdb1 | 有线网络adb |
 |SeetaFaceEngine|开源人脸检测|
 |nodejs/iptools|typescript ip端口扫描|
 |china-pome|唐宋诗词|
 |1bpp-monochrome-bitmap|android bitmap转存单色位图 |
 |天气     |从和风天气获取天气数据，默认福州 |
-|联系人导出    |解决安卓默认导出有500限制| 
-|PDF文件显示    |安卓5.0以上| 
-|行政区划   |基于 xzqh.org网页解析| 
-|JAVA BPDEEP  |java实现的深度神经网络| 
+|联系人导出    |解决安卓默认导出有500限制|
+|PDF文件显示    |安卓5.0以上|
+|行政区划   |基于 xzqh.org网页解析|
+|JAVA BPDEEP  |java实现的深度神经网络|
 |ClearProcesses|后台进程清理|
 |c++chsarp/callback|C++ C# COM组件事件回调|
 |c++chsarp/FireFoxPwdCrack|firefox/chrome密码解析|
