@@ -21,7 +21,13 @@ targetCompatibility = "1.7"
 buildscript {
   ext.kotlin_version = '1.1.4'
   repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+    jcenter()
     mavenCentral()
+
+    google()
+
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -29,7 +35,12 @@ buildscript {
   }
 }
 repositories {
+  maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+  maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+  jcenter()
   mavenCentral()
+
+  google()
 }
 compileKotlin {
   kotlinOptions {
