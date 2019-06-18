@@ -14,4 +14,8 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation  'io.netty:netty-all:4.1.36.Final'
+//    implementation  'com.corundumstudio.socketio:netty-socketio:1.7.12'
+    // https://mvnrepository.com/artifact/com.corundumstudio.socketio/netty-socketio
+    compile group: 'com.corundumstudio.socketio', name: 'netty-socketio', version: '1.7.17'
+
 }
