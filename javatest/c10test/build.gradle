@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+group 'org.github.yippee'
+version '1.0.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation  'io.netty:netty-all:4.1.36.Final'
+}
