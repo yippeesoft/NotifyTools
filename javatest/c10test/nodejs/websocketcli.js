@@ -1,7 +1,7 @@
 'use strict';
 var WebSocketClient = require('websocket').client;
 let option = {
-  length: 12000,      
+  length: 10000,      
   // portMpa: [8009],
   // ip: '127.0.0.1',
   isLogin: false,
@@ -25,8 +25,8 @@ WebSocket.onclose = function(){
   console.log('websocket close');
 }
 WebSocket.onmessage = function(e){
-  console.log(e.data);
-  document.getElementById("recv").innerHTML = e.data;
+  console.log("onmessage "+e.data);
+  // document.getElementById("recv").innerHTML = e.data;
 }
 document.getElementById("sendBtn").onclick = function(){
   var txt = document.getElementById("sendTxt").value;
@@ -67,7 +67,8 @@ const multitudeBoxLogin = async (option) => {
 
       client.on('connect', function(connection) {
         count++;
-        // console.log(` -- 第${i}个 --   -- 连接 -- 目前连接总数 ${count} -- `);
+        console.log(` -- 第${i}个 --   -- 连接 -- 目前连接总数 ${count} -- `);
+        // connection.connected;
         connection.send(i);
           connection.on('error', function(error) {
             console.log(` -- 第${i}个 -- 断开 -- error: ${error} -- ,断开连接数:${discount}`)
@@ -79,7 +80,7 @@ const multitudeBoxLogin = async (option) => {
           });
           connection.on('message', function(message) {
               if (message.type === 'utf8') {
-                  // console.log("Received: '" + message.utf8Data + "'");
+                  console.log("Received: '" + message.utf8Data + "'");
               }
           });
 
