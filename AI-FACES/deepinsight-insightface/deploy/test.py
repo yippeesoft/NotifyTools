@@ -16,6 +16,38 @@ parser.add_argument('--threshold', default=1.24, type=float, help='ver dist thre
 args = parser.parse_args()
 
 model = face_model.FaceModel(args)
+
+lfw_root='Y:\\tmp\mobileFacenet-ncnn-honghuCode\lfw-112X112\lfw-112X112\\'
+pairs_txt='Y:\\tmp\mobileFacenet-ncnn-honghuCode\pairs_1.txt'
+file=open(pairs_txt)
+
+fout=open('y:\\temp\lfw_out.csv','w+')
+
+outlines=''
+lines=file.readlines()
+file.close()
+
+for line in lines:
+	try:
+		path = line.strip('\n').split(',')
+		
+		img = cv2.imread(lfw_root+path[0])
+		img = model.get_input(img)
+		f1 = model.get_feature(img)
+
+		img = cv2.imread(lfw_root+path[1])
+		img = model.get_input(img)
+		f2 = model.get_feature(img)
+		sim = np.dot(f1, f2.T)
+		outlines=outlines+line.strip('\n').strip('\r')+','+str(sim).strip('\n')+'\n'
+	except:
+		print(lfw_root+path[0])
+
+fout.write(outlines)
+print('end!!!!!')
+cv2.waitKey()
+sys.exit(0)
+
 img = cv2.imread('X:\pic\ll2.jpg')
 
 
