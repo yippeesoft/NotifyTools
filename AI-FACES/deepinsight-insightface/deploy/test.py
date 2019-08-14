@@ -1,8 +1,10 @@
+# coding=utf-8
 import face_model
 import argparse
 import cv2
 import sys
 import numpy as np
+import time
 
 parser = argparse.ArgumentParser(description='face model test')
 # general
@@ -105,7 +107,18 @@ def old_src():
 	#diff = np.subtract(source_feature, target_feature)
 	#dist = np.sum(np.square(diff),1)
 
+def test_gcpu_time():
+	img = cv2.imread('y:\ll1.bmp')
+	img = model.get_input(img)
+	now_milli_time = int(time.time() * 1000)
+	for i in range(100):
+		f1 = model.get_feature(img)
+	now_milli_time2 = int(time.time() * 1000)
+	print('1000 get_feature 耗时 {} ms \n'.format(now_milli_time2-now_milli_time))
+	#print(f1[0:10])
+
+
 if __name__ == "__main__":
 	print('main begin')
-	testlfw()
+	test_gcpu_time()
 	print('main end')
