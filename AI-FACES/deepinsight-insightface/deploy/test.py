@@ -1,10 +1,16 @@
-# coding=utf-8
+#coding=utf-8
+# -*- coding: utf-8 -*-
+import os
+import sys
+reload(sys) 
+sys.setdefaultencoding('utf-8')
 import face_model
 import argparse
 import cv2
 import sys
 import numpy as np
 import time
+import json
 
 parser = argparse.ArgumentParser(description='face model test')
 # general
@@ -90,6 +96,10 @@ def old_src():
 	img = model.get_input(img)
 
 	f1 = model.get_feature(img)
+	map={}
+	map['aaa']=f1.tolist()
+	print map
+	print json.dumps(map)
 	print(f1[0:10])
 	#gender, age = model.get_ga(img)
 	#print(gender)
@@ -117,8 +127,67 @@ def test_gcpu_time():
 	print('1000 get_feature 耗时 {} ms \n'.format(now_milli_time2-now_milli_time))
 	#print(f1[0:10])
 
+def GetFileList(dir, fileList):
+	newDir = dir
+	if os.path.isfile(dir):
+		fileList.append(dir.decode('utf-8'))
+	elif os.path.isdir(dir): 
+		for s in os.listdir(dir):
+		#如果需要忽略某些文件夹，使用以下代码
+		#if s == "xxx":	#continue
+			newDir=os.path.join(dir,s)
+		GetFileList(newDir, fileList) 
+	return fileList
+ 
+
+def all_path(dirname):
+	resultall=[]
+	resultsubdir = []#所有的文件
+	resultsubdir=os.listdir(dirname)
+	 
+	for ii in range(len(resultsubdir)):
+		#print('get '+resultsubdir[ii])
+		resultfile=os.listdir(os.path.join(dirname, resultsubdir[ii]))
+		fullname=os.path.join(dirname, resultsubdir[ii])
+		fullnamee=os.path.join(fullname,resultfile[0])
+		resultall.append(fullnamee)
+		#print('get '+fullnamee)
+
+	return resultall
+	#for maindir, subdir, file_name_list in os.walk(dirname):
+
+		#print("1:",maindir) #当前主目录
+		#print("2:",subdir) #当前主目录下的所有目录
+		#print("3:",file_name_list)  #当前主目录下的所有文件
+		#apath = os.path.join(maindir, file_name_list[0])#合并成一个完整路径
+		#print(apath+'\n')
+		#for filename in file_name_list:
+		#	apath = os.path.join(maindir, filename)#合并成一个完整路径
+		#	result.append(apath)
+
+	#return result
+
+
+def get_all_lfw_feature():
+	lst=all_path('X:\\face-data\lfw')
+	map={}
+	for picc in lst:
+		img = cv2.imread('X:\pic\ll2.jpg')
+		img = model.get_input(img)
+		f1 = model.get_feature(img)
+		map[picc]=f1.tolist()
+	with open('y:\\temp\lfw.json', 'w') as json_file:
+		json.dump(map, json_file)
+	jsonn=json.dumps(map)
+	fout=open('y:\\temp\lfw_insi.json','w+')
+	fout.write(jsonn)
+	fout.close()
+	return lst
 
 if __name__ == "__main__":
 	print('main begin')
-	test_gcpu_time()
-	print('main end')
+	#test_gcpu_time()
+	all=[]
+	all=get_all_lfw_feature()
+	#old_src()
+	print('main end ' )
