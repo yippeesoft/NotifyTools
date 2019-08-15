@@ -11,6 +11,7 @@ import sys
 import numpy as np
 import time
 import json
+import threading
 
 parser = argparse.ArgumentParser(description='face model test')
 # general
@@ -138,7 +139,6 @@ def GetFileList(dir, fileList):
 			newDir=os.path.join(dir,s)
 		GetFileList(newDir, fileList) 
 	return fileList
- 
 
 def all_path(dirname):
 	resultall=[]
@@ -170,12 +170,17 @@ def all_path(dirname):
 
 def get_all_lfw_feature():
 	lst=all_path('X:\\face-data\lfw')
+	print 'all_path',len(lst),lst[0]
 	map={}
 	for picc in lst:
-		img = cv2.imread('X:\pic\ll2.jpg')
-		img = model.get_input(img)
-		f1 = model.get_feature(img)
-		map[picc]=f1.tolist()
+		try:
+			img = cv2.imread(picc)
+			img = model.get_input(img)
+			f1 = model.get_feature(img)
+			map[picc]=f1.tolist()
+		except:
+			print 'err',picc
+
 	with open('y:\\temp\lfw.json', 'w') as json_file:
 		json.dump(map, json_file)
 	jsonn=json.dumps(map)
@@ -184,10 +189,213 @@ def get_all_lfw_feature():
 	fout.close()
 	return lst
 
+
+class cmpFeatThread(threading.Thread):
+	def __init__(self, func, args, name=''):
+		threading.Thread.__init__(self)
+		self.name = name
+		self.func = func
+		self.args = args
+		#self.result = self.func(*self.args)
+	
+	def run(self):
+		print 'thread run\n'
+		self.result = self.func(*self.args)
+
+	def __del__(self):
+		print self.name,"线程结束！\n"
+
+	def get_result(self):
+		try:
+			return self.result
+		except:
+			traceback.print_exc()
+			return None
+
+def cmpFeat(srcs,feats,begin,end,name):
+	sims=[]
+	srcss=[]
+	dstss=[]
+	count=0
+	for i in range(begin ,end):
+		filenamesrc=srcs[i]
+		srcss.append(filenamesrc)
+		featsrc=np.array(feats[i])
+		maxsim=0
+		maxsimfile=''
+		for j in range(len(srcs)):
+			filenamedst=srcs[j]
+			featdst=np.array(feats[j])
+			sim = np.dot(featsrc, featdst.T)
+			count=count+1
+			#print j,filenamedst
+			if filenamesrc == filenamedst:
+				#print name,i, filenamesrc,sim,'\n'
+				continue
+			if sim > maxsim:
+				maxsim=sim
+				maxsimfile=filenamedst
+		dstss.append(maxsimfile)
+		sims.append(maxsim)
+	return srcss,dstss,sims,count
+
+def cmp_all_lfw_feat_thread():
+	print '0',int(time.time() * 1000)
+	fin=open('y:\\temp\lfw_insi.json','r')
+	jsons=fin.read()
+	map={}
+	map=json.loads(jsons)
+
+	srcs=map.keys()
+	feats=map.values() 
+	now_milli_time = int(time.time() * 1000)
+	print '1',int(time.time() * 1000)
+	threads = []
+
+	t1srcs=[]
+	t1srcs.extend(srcs)
+	t1feats=[]
+	t1feats.extend(feats)
+	t1=cmpFeatThread(cmpFeat,args=(t1srcs,t1feats,0,2000,'thread1'),name='thread1')
+	threads.append(t1)
+	print '2',int(time.time() * 1000)
+	t1srcs=[]
+	t1srcs.extend(srcs)
+	t1feats=[]
+	t1feats.extend(feats)
+	t=cmpFeatThread(cmpFeat,args=(t1srcs,t1feats,2001,4000,'thread2'),name='thread2')
+	threads.append(t)
+	print '3',int(time.time() * 1000)
+	t1srcs=[]
+	t1srcs.extend(srcs)
+	t1feats=[]
+	t1feats.extend(feats)
+	t=cmpFeatThread(cmpFeat,args=(t1srcs,t1feats,4001,5747,'thread3'),name='thread3')
+	threads.append(t)
+	print '4',int(time.time() * 1000)
+	for i in range(len(threads)):
+		threads[i].start()
+	print '5',int(time.time() * 1000)
+	for i in range(len(threads)):
+		threads[i].join(10*60*1000)
+	print '6',int(time.time() * 1000)
+	
+	srcsall=[]
+	destsall=[]
+	simsall=[]
+	countall=0
+	for i in range(len(threads)):
+		srcss,dstss,sims,count=threads[i].get_result()
+		srcsall.extend(srcss)
+		destsall.extend(dstss)
+		simsall.extend(sims)
+		countall=countall+count
+
+	now_milli_time2 = int(time.time() * 1000)
+	print('{}  sim 耗时 {} ms \n'.format(countall,now_milli_time2-now_milli_time))
+
+	print 'map size ', len(srcsall),len(destsall),len(simsall)
+	fout=open('y:\\temp\lfw_insi_feat_thread.csv','w+')
+	for ii in range(len(srcsall)):
+		fout.write(srcsall[ii]+','+destsall[ii]+','+str(simsall[ii])+'\n')
+	fout.close()
+
+
+def cmp_all_lfw_feat():
+	fin=open('y:\\temp\lfw_insi.json','r')
+	jsons=fin.read()
+	map={}
+	map=json.loads(jsons)
+
+	tests=[0,1,2,3,4,5]
+	for jj in range(len(tests)):
+		print 'tests',jj,tests[jj]
+
+	srcs=[]
+	dsts=[]
+	sims=[]
+
+	now_milli_time = int(time.time() * 1000)
+	simcnt=0
+	for keysrc in map.keys():
+		filenamesrc=keysrc
+		srcs.append(filenamesrc)
+		featsrc=np.array(map[keysrc])
+		maxsim=0
+		maxsimfile=''
+		for keydst in map.keys():
+			filenamedst=keydst
+			featdst=np.array(map[keydst])
+			sim = np.dot(featsrc, featdst.T)
+			simcnt=simcnt+1
+			if filenamesrc == filenamedst:
+				#print filenamesrc,sim
+				continue
+			if sim > maxsim:
+				maxsim=sim
+				maxsimfile=filenamedst
+		dsts.append(maxsimfile)
+		sims.append(maxsim)
+
+	print 'map size ', len(dsts),len(srcs),len(sims)
+	now_milli_time2 = int(time.time() * 1000)
+	print('{} sim 耗时 {} ms \n'.format(simcnt,now_milli_time2-now_milli_time))
+	fout=open('y:\\temp\lfw_insi_feat.csv','w+')
+	for ii in range(len(srcs)-1):
+		fout.write(srcs[ii]+','+dsts[ii]+','+str(sims[ii])+'\n')
+	fout.close()
+
+
+def cmp_2pic():
+	src='X:\\face-data\lfw\Lisa_Stansfield\Lisa_Stansfield_0001.jpg'
+	dst='X:\\face-data\lfw\Kyle_McLaren\Kyle_McLaren_0001.jpg'
+	img = cv2.imread(src)
+	img = model.get_input(img)
+	f1 = model.get_feature(img)
+	map={}
+	map['aaa']=f1.tolist()
+	print map
+	#print json.dumps(map)
+	print(f1[0:10])
+	#gender, age = model.get_ga(img)
+	#print(gender)
+	#print(age)
+	#sys.exit(0)
+	img = cv2.imread(dst)
+	#cv2.imshow('ss',img)
+	img = model.get_input(img)
+	f2 = model.get_feature(img)
+	print(f2[0:10])
+	dist = np.sum(np.square(f1-f2))
+	print(dist)
+	sim = np.dot(f1, f2.T)
+	print(sim)
+
+
+	fin=open('y:\\temp\lfw_insi.json','r')
+	jsons=fin.read()
+	map={}
+	map=json.loads(jsons)
+	featsrc=np.array(map[src])
+	featdst=np.array(map[dst])
+	sim = np.dot(featsrc, featdst.T)
+	print 'json featsrc',featsrc[0:10]
+	print 'json featdst',featdst[0:10]
+	print 'json',sim
+
+	cv2.waitKey(0)
+	#diff = np.subtract(source_feature, target_feature)
+	#dist = np.sum(np.square(diff),1)
+
 if __name__ == "__main__":
 	print('main begin')
 	#test_gcpu_time()
 	all=[]
-	all=get_all_lfw_feature()
+	#all=get_all_lfw_feature()
+	#cmp_all_lfw_feat()
+	cmp_all_lfw_feat_thread()
 	#old_src()
+
+	#cmp_2pic()
+
 	print('main end ' )
