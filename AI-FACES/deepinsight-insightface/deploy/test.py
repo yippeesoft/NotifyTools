@@ -172,6 +172,8 @@ def get_all_lfw_feature():
 	lst=all_path('X:\\face-data\lfw')
 	print 'all_path',len(lst),lst[0]
 	map={}
+	now_milli_time  = int(time.time() * 1000)
+	
 	for picc in lst:
 		try:
 			img = cv2.imread(picc)
@@ -180,6 +182,8 @@ def get_all_lfw_feature():
 			map[picc]=f1.tolist()
 		except:
 			print 'err',picc
+	now_milli_time2 = int(time.time() * 1000)
+	print('{} sim 耗时 {} ms \n'.format(len(lst),now_milli_time2-now_milli_time))
 
 	with open('y:\\temp\lfw.json', 'w') as json_file:
 		json.dump(map, json_file)
@@ -391,9 +395,9 @@ if __name__ == "__main__":
 	print('main begin')
 	#test_gcpu_time()
 	all=[]
-	#all=get_all_lfw_feature()
-	#cmp_all_lfw_feat()
-	cmp_all_lfw_feat_thread()
+	all=get_all_lfw_feature()
+	cmp_all_lfw_feat()
+	#cmp_all_lfw_feat_thread()
 	#old_src()
 
 	#cmp_2pic()
