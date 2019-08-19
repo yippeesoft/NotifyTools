@@ -31,7 +31,7 @@ def testlfw():
 	pairs_txt='.\pairs_label.txt'
 	file=open(pairs_txt)
 
-	fout=open('y:\\temp\lfw_insi_test.csv','w+')
+	fout=open('y:\\temp\lfw_insi_test_y1.csv','w+')
 
 	outlines=''
 	lines=file.readlines()
@@ -63,7 +63,7 @@ def testlfw112():
 	pairs_txt='Y:\\tmp\mobileFacenet-ncnn-honghuCode\pairs_1.txt'
 	file=open(pairs_txt)
 
-	fout=open('y:\\temp\lfw_out.csv','w+')
+	fout=open('y:\\temp\lfw_112_y1_out.csv','w+')
 
 	outlines=''
 	lines=file.readlines()
@@ -392,14 +392,17 @@ def cmp_2pic():
 	#dist = np.sum(np.square(diff),1)
 
 if __name__ == "__main__":
-	print('main begin')
+	print 'main begin ',str(time.time())
 	#test_gcpu_time()
 	all=[]
-	all=get_all_lfw_feature()
-	cmp_all_lfw_feat()
+	#all=get_all_lfw_feature()
+	#cmp_all_lfw_feat()
 	#cmp_all_lfw_feat_thread()
 	#old_src()
 
 	#cmp_2pic()
 
-	print('main end ' )
+	#testlfw112()
+
+	testlfw()
+	print 'main end ',str(time.time())
