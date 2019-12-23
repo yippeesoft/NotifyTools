@@ -7,9 +7,35 @@
 | 网址 | https://github.com/alibaba/MNN |
 |      |                                |
 
+## caffe_retinaface
+
+ https://github.com/xindongzhang/MNN-APPLICATIONS
+
+NDK R20编译
+
+修改 MNN-APPLICATIONS\applications\retinaface\caffe\jni caffe_retinaface.cpp
+
+int forward = MNN_FORWARD_VULKAN;
+	//int forward = MNN_FORWARD_CPU;
+
+VULKAN版本比CPU版本慢··
+
+```
+rk3399_all:/data/tmp/mnn # ./caffe_retinafacev
+duration: 0.040168
+aaa3
+final result 3
+rk3399_all:/data/tmp/mnn # ./caffe_retinaface
+duration: 0.023822
+aaa3
+final result 3
+```
 
 
-Benchmark  git 20191126版本 c36ad97cd8f8b3dff840d57a1630a4fc71bb7ce9
+
+## MNN Benchmark  
+
+git 20191126版本 c36ad97cd8f8b3dff840d57a1630a4fc71bb7ce9
 
 不支持 Metal  OpenGL
 
