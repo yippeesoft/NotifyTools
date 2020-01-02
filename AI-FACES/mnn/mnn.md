@@ -18,7 +18,7 @@ NDK R20编译
 int forward = MNN_FORWARD_VULKAN;
 	//int forward = MNN_FORWARD_CPU;
 
-VULKAN版本比CPU版本慢··NDK版本不同也会有影响。
+VULKAN版本比CPU版本慢··
 
 ```
 rk3399_all:/data/tmp/mnn # ./caffe_retinafacev
