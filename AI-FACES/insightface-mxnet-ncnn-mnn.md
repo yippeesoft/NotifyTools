@@ -11,6 +11,11 @@
 ```
 使用 onnx2ncnn转换后的ncnn model
  ex.extract("fc1", out);导致 Segmentation fault
+ 直接使用mxnet2ncnn转换的ncnn model 正常
+ 官方回复速度惊人：
+  mxnet模型用mxnet2ncnn直接转换
+  onnx主要是用来转pytorch模型的
+
 
 使用MNNConvert转换后的mnn model
 数值相差极大
