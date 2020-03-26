@@ -5,6 +5,7 @@
 
 | 目录    |    说明  |
 | ------------- |  -------------------- |
+| 3guoheros | 三国游戏复刻 |
 | ai-faces | 人脸识别 基于 insightface 的测试 |
 | WifiAdb1 | 有线网络adb |
 |SeetaFaceEngine|源码编译以及增加资料代码|
