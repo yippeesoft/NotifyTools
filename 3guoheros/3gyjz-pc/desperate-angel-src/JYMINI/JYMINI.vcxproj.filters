@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\jymini">
+      <UniqueIdentifier>{0b4d5f72-70cc-4c8e-a997-bd844cfc49dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sdl2_image">
+      <UniqueIdentifier>{bc3bf616-bdc9-493a-a894-4652f997ae17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lua">
+      <UniqueIdentifier>{9bd95c1d-9763-407d-be54-4d5c95b20fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sdl2_ttf">
+      <UniqueIdentifier>{52005ce0-b441-4641-928b-29421196f8c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ft2build.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ftoption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jymain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="miniz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="png.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pngconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pngdebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pnginfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pnglibconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pngpriv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pngstruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lauxlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lcode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lctype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ldebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ldo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lfunc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lgc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="llex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="llimits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lmem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lopcodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lparser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lstate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lstring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ltable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ltm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lua.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="luaconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="luafun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lualib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lundump.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lzio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="charset.c">
+      <Filter>Source Files\jymini</Filter>
+    </ClCompile>
+    <ClCompile Include="IMG.c">
+      <Filter>Source Files\sdl2_image</Filter>
+    </ClCompile>
+    <ClCompile Include="IMG_png.c">
+      <Filter>Source Files\sdl2_image</Filter>
+    </ClCompile>
+    <ClCompile Include="jymain.c">
+      <Filter>Source Files\jymini</Filter>
+    </ClCompile>
+    <ClCompile Include="ltm.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lapi.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lauxlib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lbaselib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lbitlib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lcode.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lcorolib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lctype.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="ldblib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="ldebug.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="ldo.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="ldump.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lfunc.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lgc.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="linit.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="liolib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="llex.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lmathlib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lmem.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="loadlib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lobject.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lopcodes.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="loslib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lparser.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lstate.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lstring.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lstrlib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="ltable.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="ltablib.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lundump.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lvm.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lzio.c">
+      <Filter>Source Files\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="luafun.c">
+      <Filter>Source Files\jymini</Filter>
+    </ClCompile>
+    <ClCompile Include="mainmap.c">
+      <Filter>Source Files\jymini</Filter>
+    </ClCompile>
+    <ClCompile Include="piccache.c">
+      <Filter>Source Files\jymini</Filter>
+    </ClCompile>
+    <ClCompile Include="sdlfun.c">
+      <Filter>Source Files\jymini</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_ttf.c">
+      <Filter>Source Files\sdl2_ttf</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="SDL2main.lib" />
+    <Library Include="freetype2412.lib" />
+    <Library Include="libpng16.lib" />
+    <Library Include="zlib.lib" />
+    <Library Include="bass.lib" />
+    <Library Include="bassmidi.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="JYMINI.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="017-lower-rho.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\Administrator\Pictures\cang.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

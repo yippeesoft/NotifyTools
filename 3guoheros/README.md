@@ -9,7 +9,7 @@
 | 地址    |    说明  |
 | ------------- | -------------------- |
 | https://www.dawuxia.net/thread-1010117-1-1.html | 英杰传复刻版子MOD——纵横天下 42753开源 |
-|  |  |
+| https://bbs.3dmgame.com/thread-5243702-1-1.html | [[原创\]](https://bbs.3dmgame.com/forum.php?mod=forumdisplay&fid=1907&filter=typeid&typeid=26087) 【PC独立游戏发布组】【策略战旗】《战略三国3》开源试玩版 |
 | http://www.libsdl.org/ | sdl库 |
 | http://www.downyi.com/key/tianhuotongrenyouxi/ | **天火同人游戏大全合集专题** |
 
