@@ -19,7 +19,7 @@
 
 
 //定义vsnprintf. vc6并不支持
-#if defined(_MSC_VER) && _MSC_VAR<1400
+#if defined(_MSC_VER) && _MSC_VER<1400
     #define vsnprintf _vsnprintf
 #endif
 
