@@ -34,6 +34,7 @@
 
 | 功能    |    说明  |
 | ------------- |  -------------------- |
+| 3guoheros | 三国游戏复刻 |
 | WifiAdb1 | 有线网络adb |
 |SeetaFaceEngine|开源人脸检测|
 |nodejs/iptools|typescript ip端口扫描|
