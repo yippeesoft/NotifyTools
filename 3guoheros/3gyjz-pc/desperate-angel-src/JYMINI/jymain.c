@@ -479,7 +479,7 @@ int JY_Debug(const char * fmt,...)
 		//    __android_log_print(ANDROID_LOG_INFO, "jy", "%02d:%02d:%02d %s\r\n",newtime->tm_hour,newtime->tm_min,newtime->tm_sec,string);
 		fprintf(fp, "%02d:%02d:%02d %s\r\n", newtime->tm_hour, newtime->tm_min, newtime->tm_sec, string);
 		fclose(fp);
-		printf("%02d:%02d:%02d %s\r\n", newtime->tm_hour, newtime->tm_min, newtime->tm_sec, string);
+		//printf("%02d:%02d:%02d %s\r\n", newtime->tm_hour, newtime->tm_min, newtime->tm_sec, string);
 	}
 	return 0;
 }

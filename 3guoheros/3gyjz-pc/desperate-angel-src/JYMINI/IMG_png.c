@@ -29,7 +29,7 @@
 #define LOAD_PNG_DYNAMIC "libpng16-16.dll"
 #endif
 #ifdef LOAD_PNG
-
+#define LOAD_PNG_DYNAMIC "libpng16-16.dll"
 /*=============================================================================
         File: SDL_png.c
      Purpose: A PNG loader and saver for the SDL library
