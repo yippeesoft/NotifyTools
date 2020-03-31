@@ -1,3 +1,5 @@
+
+
 # MTCNN
 
 ## 说明
@@ -8,6 +10,36 @@
 | 模型库 | det*.                                                        |
 | 目的   | 转换MTCNN模型到MNN测试。网上均多3个模型库版本。              |
 | 问题   | MXNET MTCNN模型库 DET4转换ONNX失败；CAFFE模型转换为MMN模型成功，但有反馈说结果对不上 |
+
+
+
+
+
+```
+https://github.com/hurricanemad/MTCNN_SHELL
+m_matNormalizeMat.size:[17 x 12]
+OpenCV Error: Assertion failed (0 <= roi.x && 0 <= roi.width
+```
+
+
+
+```
+https://github.com/leonardozcm/MTCNN-with-Caffe
+改用该版本，运行基本正常，但是模型库和foreverYoungGitHub/MTCNN的不一样
+prototxt差不多，但是caffemodel差异较大。
+
+```
+
+
+
+
+
+```
+https://github.com/foreverYoungGitHub/MTCNN star比较多
+但是caffe库似乎比较旧
+ caffe::SetMode(caffe::CPU 会提示找不到函数等
+```
+
 
 ```
 曲线救国 CAFFE 编译 环境 docker ubuntu 16.04 
