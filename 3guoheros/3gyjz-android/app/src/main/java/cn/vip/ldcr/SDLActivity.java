@@ -50,7 +50,7 @@ public class SDLActivity extends Activity {
     public static boolean mHasFocus;
     public static boolean mIsPaused;
     public static boolean mIsSurfaceReady;
-//    protected static SDLJoystickHandler mJoystickHandler;
+    protected static SDLJoystickHandler mJoystickHandler;
     protected static ViewGroup mLayout;
     protected static Thread mSDLThread;
     protected static SDLActivity mSingleton;
@@ -183,7 +183,7 @@ public class SDLActivity extends Activity {
         }
         mSurface = new SDLSurface(getApplication());
 //        if (Build.VERSION.SDK_INT >= 12) {
-//            mJoystickHandler = new SDLJoystickHandler_API12();
+            mJoystickHandler = new SDLJoystickHandler_API12();
 //        } else {
 //            mJoystickHandler = new SDLJoystickHandler();
 //        }
@@ -235,6 +235,7 @@ public class SDLActivity extends Activity {
                 Looper.loop();
             }
         } catch (RuntimeException e3) {
+            e3.printStackTrace();
         }
         AudioManager am = (AudioManager) getSystemService("audio");
         int value = (am.getStreamVolume(3) * 100) / am.getStreamMaxVolume(3);
@@ -568,15 +569,15 @@ public class SDLActivity extends Activity {
         return Arrays.copyOf(filtered, used);
     }
 
-//    public static boolean handleJoystickMotionEvent(MotionEvent event) {
-//        return mJoystickHandler.handleMotionEvent(event);
-//    }
-//
-//    public static void pollInputDevices() {
-//        if (mSDLThread != null) {
-//            mJoystickHandler.pollInputDevices();
-//        }
-//    }
+    public static boolean handleJoystickMotionEvent(MotionEvent event) {
+        return mJoystickHandler.handleMotionEvent(event);
+    }
+
+    public static void pollInputDevices() {
+        if (mSDLThread != null) {
+            mJoystickHandler.pollInputDevices();
+        }
+    }
 
     public InputStream openAPKExtensionInputStream(String fileName) throws IOException {
         InputStream fileStream;

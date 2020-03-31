@@ -6,12 +6,15 @@ android {
     defaultConfig {
         applicationId "cn.vip.ldcr"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 17
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
        
     }
+//    apk加载so时，产生has text relocations错误。
+//    经过测试发现和targetSdkVersion有关，这个问题出现在加载so时，编译时sdk小于23 也就是android6.0之前是报warning，6.0之后直接报error。
+
     buildTypes {
         release {
             minifyEnabled false
