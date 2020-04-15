@@ -507,7 +507,6 @@ int InitGame(void)
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);//设置深度缓存大小的，另外如果讲24改成32你会发现性能会下降很多很多很多很多的。
     */
     //
-
 	SDL_GetDisplayBounds(0, &rect);
 	JY_Debug("InitGame start(%d,%d)",g_ScreenW,g_ScreenH);
 	if (rect.h < g_ScreenH ){
@@ -515,7 +514,7 @@ int InitGame(void)
 		device_w = g_ScreenW * device_h / g_ScreenH;
 		g_window = SDL_CreateWindow("JY_LLK",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			device_w, device_h,
+			g_ScreenW,g_ScreenH,
 			0);
 	}
 	else{
@@ -523,7 +522,7 @@ int InitGame(void)
 		device_h = g_ScreenH;
 		g_window = SDL_CreateWindow("JY_LLK",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			g_ScreenW, g_ScreenH,
+			g_ScreenW,g_ScreenH,
 			0);
 	}
 	if(g_window==NULL)
@@ -547,6 +546,35 @@ int InitGame(void)
 	return 0;
 }
 
+int InitGame_bak()
+{
+  int v0; // r0
+  int v1; // r0
+  int v2; // r0
+  int v3; // r1
+  int v4; // r0
+
+  if ( SDL_InitSubSystem(32) < 0 )
+  {
+     
+    __android_log_print(6, "sf", "Couldn't initialize SDL video subsystem: %s\n", "SDL_InitSubSystem");
+    exit(1);
+  }
+  SDL_GL_SetAttribute(6, 0);
+  JY_Debug("InitGame start(%d,%d)", g_ScreenW, g_ScreenH);
+  g_window = SDL_CreateWindow("JY_LLK", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 768, 480, 2);
+  if ( !g_window )
+    JY_Error("Cannot set video mode", v3);
+  g_renderer = SDL_CreateRenderer(g_window, -1, 2);
+  g_screenTex = SDL_CreateTexture(g_renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_TARGET,g_ScreenW,g_ScreenH);
+  SDL_SetTextureBlendMode(g_screenTex, SDL_BLENDMODE_BLEND);
+  SDL_SetRenderTarget(g_renderer, g_screenTex);
+  SDL_SetRenderDrawColor(g_renderer, 0, 0, 0, 255);
+  v4 = SDL_RenderClear(g_renderer);
+  Init_Cache();
+  JY_PicInit("");
+  return 0;
+}
 
 // 释放游戏资源
 int ExitGame(void)
