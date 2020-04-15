@@ -208,6 +208,169 @@ static void GetModes (int *width, int *height)
 
 
 
+
+typedef struct Sprite
+{
+	SDL_Texture* texture;
+	Uint16 w;
+	Uint16 h;
+} Sprite;
+
+
+/* Adapted from SDL's testspriteminimal.c */
+Sprite LoadSprite(const char* file, SDL_Renderer* renderer)
+{
+	Sprite result;
+	result.texture = NULL;
+	result.w = 0;
+	result.h = 0;
+
+	SDL_Surface* temp;
+
+	/* Load the sprite image */
+	//LOGI("SDL SDL_LoadBMP 1");
+	temp = SDL_LoadBMP(file);
+
+	if (temp == NULL)
+	{
+		fprintf(stderr, "Couldn't load %s: %s\n", file, SDL_GetError());
+		return result;
+	}
+ 
+	result.w = temp->w;
+	result.h = temp->h;
+
+	/* Create texture from the image */
+	result.texture = SDL_CreateTextureFromSurface(renderer, temp);
+	if (!result.texture) {
+		fprintf(stderr, "Couldn't create texture: %s\n", SDL_GetError());
+		SDL_FreeSurface(temp);
+		return result;
+	}
+	SDL_FreeSurface(temp);
+
+	return result;
+}
+
+void draw(SDL_Window* window, SDL_Renderer* renderer, const Sprite sprite)
+{
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+	SDL_Rect destRect = { 312,148,142,110 };// {w/2 - sprite.w/2, h/2 - sprite.h/2, sprite.w, sprite.h};
+	JY_SetClip(312, 148, 312 + 142, 148 + 7 + 24 * 7);
+	//{0,0,1920,1024}; //
+	/* Blit the sprite onto the screen */
+	SDL_SetTextureBlendMode(sprite.texture, SDL_BLENDMODE_BLEND);
+	SDL_RenderCopy(renderer, sprite.texture, NULL, &destRect);
+	JY_SetClip( 0, 0, 0, 0);
+	JY_SetClip( 312, 148 + 8 + 24 * 4, 312 + 144, 148 + 8 + 24 * 7 + 8);
+
+	JY_SetClip(renderer, 312, 252, 456, 332);
+	SDL_SetTextureBlendMode(sprite.texture, SDL_BLENDMODE_BLEND);
+	SDL_Rect destRect2 = { 312,220,142,110 };
+	SDL_RenderCopy(renderer, sprite.texture, NULL, &destRect2);
+	JY_SetClip( 0, 0, 0, 0);
+}
+
+
+void draw2(SDL_Window* window, SDL_Renderer* renderer, const Sprite sprite)
+{
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+	SDL_Rect destRect = { 312,148,142,110 };// {w/2 - sprite.w/2, h/2 - sprite.h/2, sprite.w, sprite.h};
+	JY_SetClip( 312, 148, 312 + 142, 148 + 7 + 24 * 7);
+	JY_LoadPicColor(4, 120, 312, 148, 1, 0, -1, 0, 0);
+	//{0,0,1920,1024}; //
+	/* Blit the sprite onto the screen */
+	JY_SetClip(0, 0, 0, 0);
+	JY_SetClip(312, 252, 456, 332);
+	JY_LoadPicColor(4, 120, 312, 220, 1, 0, -1, 0, 0);
+	JY_SetClip( 0, 0, 0, 0);
+}
+
+
+void draw3()
+{
+	int w, h;
+	 
+	SDL_Rect destRect = { 312,148,142,110 };// {w/2 - sprite.w/2, h/2 - sprite.h/2, sprite.w, sprite.h};
+	JY_SetClip(312, 148, 312 + 142, 148 + 7 + 24 * 7);
+	JY_LoadPicColor(4, 120, 312, 148, 1, 0, -1, 0, 0);
+	//{0,0,1920,1024}; //
+	/* Blit the sprite onto the screen */
+	/*JY_SetClip(0, 0, 0, 0);
+	JY_SetClip(312, 252, 456, 332);
+	JY_LoadPicColor(4, 120, 312, 220, 1, 0, -1, 0, 0);
+	JY_SetClip(0, 0, 0, 0);*/
+
+	JY_ShowSurface(0);
+}
+
+
+int main_android()
+{
+	//SDL_Window *window;
+	//SDL_Renderer *renderer;
+
+ 
+	/*av_register_all();*/
+	//LOGI("%s\n", avcodec_configuration());
+
+	/*
+	if(SDL_CreateWindowAndRenderer(768, 480, 0, &window, &renderer) < 0)
+		exit(2);
+	*/
+	device_w = g_ScreenW=768;
+	device_h = g_ScreenH=480;
+	SDL_InitSubSystem(SDL_INIT_VIDEO);
+	g_window = SDL_CreateWindow("JY_LLK",
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		1280, 800,
+		0);
+	g_renderer = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_PRESENTVSYNC);
+	//g_screenTex = SDL_CreateTexture(g_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, g_ScreenW, g_ScreenH);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+	g_screenTex = SDL_CreateTexture(g_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, 1280, 800);
+	SDL_SetTextureBlendMode(g_screenTex, SDL_BLENDMODE_BLEND);
+	SDL_RenderSetScale(g_renderer,1280 / 768, 800 / 480);
+	SDL_SetRenderTarget(g_renderer, g_screenTex);
+	SDL_SetRenderDrawColor(g_renderer, 0, 0, 0, 255);
+	SDL_RenderClear(g_renderer);
+	Sprite sprite = LoadSprite("C:\\Users\\sf\\Desktop\\60.bmp", g_renderer);
+	if (sprite.texture == NULL)
+		exit(2);
+
+	/* Main render loop */
+	Uint8 done = 0;
+	SDL_Event event;
+	while (!done)
+	{
+		/* Check for events */
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN || event.type == SDL_FINGERDOWN)
+			{
+				done = 1;
+			}
+		}
+
+
+		/* Draw a gray background
+		SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
+		SDL_RenderClear(renderer);*/
+
+		draw2(g_window, g_renderer, sprite);
+
+		/* Update the screen! */
+		SDL_RenderPresent(g_renderer);
+
+		SDL_Delay(10);
+	}
+
+	exit(0);
+}
+
+//#define sftest 1
 // 主程序
 int main(int argc, char *argv [])
 {
@@ -216,8 +379,6 @@ int main(int argc, char *argv [])
 
 	//GetModes(&g_ScreenW,&g_ScreenH);
 	//	__android_log_print(ANDROID_LOG_INFO, "jy", "path = %s", JY_CurrentPath);
-
-
 
 	remove(_(DEBUG_FILE));
 	remove(_(ERROR_FILE));    //设置stderr输出到文件
@@ -246,6 +407,22 @@ int main(int argc, char *argv [])
 	JY_Debug("InitSDL();");
 	InitSDL();           //初始化SDL
 
+	
+
+#ifdef sftest
+	
+	JY_PicLoadFile("./data/mmap.idx", "./data/mmap.grp", 0, 100, 100);
+	JY_PicLoadFile("./data/wmap.idx", "./data/wmap.grp", 1, 100, 100);
+	JY_PicLoadFile("./data/hdgrp.idx", "./data/hdgrp.grp", 2, 100, 100);
+
+	JY_PicLoadFile("./data/ui.idx", "./data/ui.grp", 4, 100, 100);
+	JY_PicLoadFile("./data/smap.idx", "./data/smap.grp", 5, 100, 100);
+	JY_PicLoadFile("./data/wmap.idx", "./data/mwmapmap.grp", 11, 200, 200);
+	main_android();
+	exit(0);
+#endif // sftest
+
+
 	JY_Debug("InitGame();");
 	InitGame();          //初始化游戏数据
 
@@ -258,6 +435,44 @@ int main(int argc, char *argv [])
 
 	JY_Debug("LoadMB();");
 	LoadMB(_(HZMB_FILE));  //加载汉字字符集转换码表
+
+
+#if 0
+	JY_PicLoadFile("./data/mmap.idx", "./data/mmap.grp", 0, 100, 100);
+	JY_PicLoadFile("./data/wmap.idx", "./data/wmap.grp", 1, 100, 100);
+	JY_PicLoadFile("./data/hdgrp.idx", "./data/hdgrp.grp", 2, 100, 100);
+
+	JY_PicLoadFile("./data/ui.idx", "./data/ui.grp", 4, 100, 100);
+	JY_PicLoadFile("./data/smap.idx", "./data/smap.grp", 5, 100, 100);
+	JY_PicLoadFile("./data/wmap.idx", "./data/mwmapmap.grp", 11, 200, 200);
+	/* Main render loop */
+	Uint8 done = 0;
+	SDL_Event event;
+	while (!done)
+	{
+		/* Check for events */
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN || event.type == SDL_FINGERDOWN)
+			{
+				done = 1;
+			}
+		}
+
+
+		/* Draw a gray background
+		SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
+		SDL_RenderClear(renderer);*/
+
+		 
+		draw3();
+
+		/* Update the screen! */
+		SDL_RenderPresent(g_renderer);
+
+		SDL_Delay(10);
+	}
+#endif
 
 	JY_Debug("Lua_Main();");
 	Lua_Main(pL_main);          //调用Lua主函数，开始游戏
@@ -476,10 +691,10 @@ int JY_Debug(const char * fmt,...)
 	if (fp){
 		time(&t);
 		newtime = localtime(&t);
-		//    __android_log_print(ANDROID_LOG_INFO, "jy", "%02d:%02d:%02d %s\r\n",newtime->tm_hour,newtime->tm_min,newtime->tm_sec,string);
+		// __android_log_print(ANDROID_LOG_INFO, "jy", "%02d:%02d:%02d %s\r\n",newtime->tm_hour,newtime->tm_min,newtime->tm_sec,string);
 		fprintf(fp, "%02d:%02d:%02d %s\r\n", newtime->tm_hour, newtime->tm_min, newtime->tm_sec, string);
 		fclose(fp);
-		//printf("%02d:%02d:%02d %s\r\n", newtime->tm_hour, newtime->tm_min, newtime->tm_sec, string);
+		printf("%02d:%02d:%02d %s\r\n", newtime->tm_hour, newtime->tm_min, newtime->tm_sec, string);
 	}
 	return 0;
 }
