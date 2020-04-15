@@ -516,7 +516,7 @@ int InitGame(void)
 		device_h = g_ScreenH;
 		g_window = SDL_CreateWindow("JY_LLK",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			g_ScreenW, g_ScreenH,
+				g_ScreenW, g_ScreenH,
 			0);
 	}
 	if(g_window==NULL)
