@@ -1801,6 +1801,8 @@ y1=(CC.ScreenH-h)/2
 end
 end
 
+lib.Debug(string.format("showmenu x=%d,y=%d,width=%d,h =%d isBox=%d",x1,y1,w,8+24*num,isBox))
+
 local function redraw(flag)
 if num~=0 then--ÔÝÇÒÕâÑù¸Ä
 if isBox==1 then
@@ -16329,6 +16331,9 @@ end
 
 function getkey_sp()
 local eventtype,keypress,x,y=lib.GetMouse(1);
+if(eventtype ~= -1) then
+lib.Debug(string.format("getkey_sp eventtype =%d x=%d y=%d",eventtype,x,y))
+end
 if eventtype==0 then
 MOUSE.status='EXIT';
 elseif eventtype==2 then
