@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -28,6 +29,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +53,7 @@ public class SDLActivity extends Activity {
     public static boolean mIsPaused;
     public static boolean mIsSurfaceReady;
     protected static SDLJoystickHandler mJoystickHandler;
-    protected static ViewGroup mLayout;
+    protected static RelativeLayout mLayout;
     protected static Thread mSDLThread;
     protected static SDLActivity mSingleton;
     protected static SDLSurface mSurface;
@@ -187,8 +189,14 @@ public class SDLActivity extends Activity {
 //        } else {
 //            mJoystickHandler = new SDLJoystickHandler();
 //        }
-        mLayout = new AbsoluteLayout(this);
-        mLayout.addView(mSurface);
+        mLayout = new RelativeLayout(this);
+
+        mLayout.setBackgroundColor(Color.RED);
+        RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(768,480);
+        params.topMargin=300;
+        params.leftMargin=300;
+        mLayout.addView(mSurface,params);
+
         setContentView(mLayout);
         try {
             List<String> list = new ArrayList<>();

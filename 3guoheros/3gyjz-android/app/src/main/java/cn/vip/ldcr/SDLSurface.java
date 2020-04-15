@@ -176,6 +176,8 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, View.OnK
         int pointerCount = event.getPointerCount();
         int action = event.getActionMasked();
         int i = -1;
+
+        Log.d("sf","onTouch "+event.toString()+" "+action);
         switch (action) {
             case 0:
             case 1:
