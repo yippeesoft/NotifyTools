@@ -50,7 +50,8 @@ extern "C" {
 
 #define SafeFree(p) free(p)
 
-#define _(f) va("%s%s", JY_CurrentPath, f)
+//#define _(f) va("%s%s", JY_CurrentPath, f)
+#define _(f) va("%s%s", "/sdcard/JY_LLK/", f)
 // jymain.c
 
 

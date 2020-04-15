@@ -41,7 +41,7 @@ int g_KeyRePeatInterval = 30;	//一秒钟重复次数
 
 int g_MAXCacheNum=1000;     //最大缓存数量
 
-static int IsDebug=0;         //是否打开跟踪文件
+static int IsDebug=1;         //是否打开跟踪文件
 int g_LoadFullS=1;          //是否全部加载S文件
 int g_LoadMMapType=0;          //是否全部加载M文件
 int g_LoadMMapScope=0;       
@@ -210,7 +210,162 @@ static void GetModes (int *width, int *height)
 }
 
 
+typedef struct Sprite
+{
+	SDL_Texture* texture;
+	Uint16 w;
+	Uint16 h;
+} Sprite;
 
+
+/* Adapted from SDL's testspriteminimal.c */
+Sprite LoadSprite(const char* file, SDL_Renderer* renderer)
+{
+	Sprite result;
+	result.texture = NULL;
+	result.w = 0;
+	result.h = 0;
+
+	SDL_Surface* temp;
+
+	/* Load the sprite image */
+	//LOGI("SDL SDL_LoadBMP 1");
+	temp = SDL_LoadBMP(file);
+
+	if (temp == NULL)
+	{
+		fprintf(stderr, "Couldn't load %s: %s\n", file, SDL_GetError());
+		return result;
+	}
+ 
+	result.w = temp->w;
+	result.h = temp->h;
+
+	/* Create texture from the image */
+	result.texture = SDL_CreateTextureFromSurface(renderer, temp);
+	if (!result.texture) {
+		fprintf(stderr, "Couldn't create texture: %s\n", SDL_GetError());
+		SDL_FreeSurface(temp);
+		return result;
+	}
+	SDL_FreeSurface(temp);
+
+	return result;
+}
+
+void draw(SDL_Window* window, SDL_Renderer* renderer, const Sprite sprite)
+{
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+	SDL_Rect destRect = { 312,148,142,110 };// {w/2 - sprite.w/2, h/2 - sprite.h/2, sprite.w, sprite.h};
+	JY_SetClip(312, 148, 312 + 142, 148 + 7 + 24 * 7);
+	//{0,0,1920,1024}; //
+	/* Blit the sprite onto the screen */
+	SDL_SetTextureBlendMode(sprite.texture, SDL_BLENDMODE_BLEND);
+	SDL_RenderCopy(renderer, sprite.texture, NULL, &destRect);
+	JY_SetClip( 0, 0, 0, 0);
+	JY_SetClip( 312, 148 + 8 + 24 * 4, 312 + 144, 148 + 8 + 24 * 7 + 8);
+
+	JY_SetClip( 312, 252, 456, 332);
+	SDL_SetTextureBlendMode(sprite.texture, SDL_BLENDMODE_BLEND);
+	SDL_Rect destRect2 = { 312,220,142,110 };
+	SDL_RenderCopy(renderer, sprite.texture, NULL, &destRect2);
+	JY_SetClip( 0, 0, 0, 0);
+}
+
+
+void draw2(SDL_Window* window, SDL_Renderer* renderer, const Sprite sprite)
+{
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+	SDL_Rect destRect = { 312,148,142,110 };// {w/2 - sprite.w/2, h/2 - sprite.h/2, sprite.w, sprite.h};
+	JY_SetClip( 312, 148, 312 + 142, 148 + 7 + 24 * 7);
+	JY_LoadPicColor(4, 120, 312, 148, 1, 0, -1, 0, 0);
+	//{0,0,1920,1024}; //
+	/* Blit the sprite onto the screen */
+	JY_SetClip(0, 0, 0, 0);
+	JY_SetClip(312, 252, 456, 332);
+	JY_LoadPicColor(4, 120, 312, 220, 1, 0, -1, 0, 0);
+	JY_SetClip( 0, 0, 0, 0);
+}
+
+
+
+void draw3()
+{
+	int w, h;
+	 
+	SDL_Rect destRect = { 312,148,142,110 };// {w/2 - sprite.w/2, h/2 - sprite.h/2, sprite.w, sprite.h};
+	JY_SetClip(312, 148, 312 + 142, 148 + 7 + 24 * 7);
+	JY_LoadPicColor(4, 120, 312, 148, 1, 0, -1, 0, 0);
+	//{0,0,1920,1024}; //
+	/* Blit the sprite onto the screen */
+	JY_SetClip(0, 0, 0, 0);
+	JY_SetClip(312, 252, 456, 332);
+	JY_LoadPicColor(4, 120, 312, 220, 1, 0, -1, 0, 0);
+	JY_SetClip(0, 0, 0, 0);
+	JY_ShowSurface(0);
+}
+
+
+int main_android()
+{
+	SDL_Window *window;
+	//SDL_Renderer *renderer;
+
+ 
+	/*av_register_all();*/
+	//LOGI("%s\n", avcodec_configuration());
+
+	
+	if(SDL_CreateWindowAndRenderer(768, 480, 0, &window, &g_renderer) < 0)
+		exit(2);
+	
+#if 0
+	window = SDL_CreateWindow("JY_LLK",
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		1280, 800,
+		0);
+
+	g_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+ #endif
+
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+	Sprite sprite = LoadSprite("/sdcard/60.bmp", g_renderer);
+	if (sprite.texture == NULL)
+		exit(2);
+
+	/* Main render loop */
+	Uint8 done = 0;
+	SDL_Event event;
+	while (!done)
+	{
+		/* Check for events */
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN || event.type == SDL_FINGERDOWN)
+			{
+				done = 1;
+			}
+		}
+
+
+		/* Draw a gray background
+		SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
+		SDL_RenderClear(renderer);*/
+
+		draw(window, g_renderer, sprite);
+
+		/* Update the screen! */
+		SDL_RenderPresent(g_renderer);
+
+		SDL_Delay(10);
+	}
+
+	exit(0);
+}
+
+//#define sftest 1
 // 主程序
 int main(int argc, char *argv [])
 {
@@ -219,6 +374,19 @@ int main(int argc, char *argv [])
 
 	//GetModes(&g_ScreenW,&g_ScreenH);
 	//	__android_log_print(ANDROID_LOG_INFO, "jy", "path = %s", JY_CurrentPath);
+	
+#ifdef sftest
+	// JY_PicLoadFile("./data/mmap.idx", "./data/mmap.grp", 0, 100, 100);
+	// JY_PicLoadFile("./data/wmap.idx", "./data/wmap.grp", 1, 100, 100);
+	// JY_PicLoadFile("./data/hdgrp.idx", "./data/hdgrp.grp", 2, 100, 100);
+
+	// JY_PicLoadFile("./data/ui.idx", "./data/ui.grp", 4, 100, 100);
+	// JY_PicLoadFile("./data/smap.idx", "./data/smap.grp", 5, 100, 100);
+	// JY_PicLoadFile("./data/wmap.idx", "./data/mwmapmap.grp", 11, 200, 200);
+
+	main_android();
+
+#endif // sftest
 
 
 
@@ -243,7 +411,7 @@ int main(int argc, char *argv [])
 	lua_pushvalue(pL_main, -1);
 	lua_setglobal(pL_main, "config");
 
-	JY_Debug("Lua_Config();");
+	JY_Debug("Lua_Config() %s;",_(CONFIG_FILE));
 	Lua_Config(pL_main, _(CONFIG_FILE));        //读取lua配置文件，设置参数
 
 	JY_Debug("InitSDL();");
@@ -261,6 +429,44 @@ int main(int argc, char *argv [])
 
 	JY_Debug("LoadMB();");
 	LoadMB(_(HZMB_FILE));  //加载汉字字符集转换码表
+
+
+#if 0
+	JY_PicLoadFile("/sdcard/JY_LLK/data/mmap.idx", "/sdcard/JY_LLK/data/mmap.grp", 0, 100, 100);
+	JY_PicLoadFile("/sdcard/JY_LLK/data/wmap.idx", "/sdcard/JY_LLK/data/wmap.grp", 1, 100, 100);
+	JY_PicLoadFile("/sdcard/JY_LLK/data/hdgrp.idx", "/sdcard/JY_LLK/data/hdgrp.grp", 2, 100, 100);
+
+	JY_PicLoadFile("/sdcard/JY_LLK/data/ui.idx", "/sdcard/JY_LLK/data/ui.grp", 4, 100, 100);
+	JY_PicLoadFile("/sdcard/JY_LLK/data/smap.idx", "/sdcard/JY_LLK/data/smap.grp", 5, 100, 100);
+	JY_PicLoadFile("/sdcard/JY_LLK/data/wmap.idx", "/sdcard/JY_LLK/data/mwmapmap.grp", 11, 200, 200);
+	/* Main render loop */
+	Uint8 done = 0;
+	SDL_Event event;
+	while (!done)
+	{
+		/* Check for events */
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN || event.type == SDL_FINGERDOWN)
+			{
+				done = 1;
+			}
+		}
+
+
+		/* Draw a gray background
+		SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
+		SDL_RenderClear(renderer);*/
+
+		 
+		draw3();
+
+		/* Update the screen! */
+		SDL_RenderPresent(g_renderer);
+
+		SDL_Delay(10);
+	}
+#endif
 
 	JY_Debug("Lua_Main();");
 	Lua_Main(pL_main);          //调用Lua主函数，开始游戏
@@ -360,7 +566,7 @@ int Lua_Config(lua_State *pL, const char *filename)
 	g_XScale = getfield(pL, "XScale");
 	g_YScale = getfield(pL, "YScale");
 	g_EnableSound = getfield(pL, "EnableSound");
-	IsDebug = getfield(pL, "Debug");
+	IsDebug = 1;//getfield(pL, "Debug");
 	g_MMapAddX = getfield(pL, "MMapAddX");
 	g_MMapAddY = getfield(pL, "MMapAddY");
 	g_SMapAddX = getfield(pL, "SMapAddX");
@@ -522,7 +728,7 @@ int limitX(int x, int xmin, int xmax)
 }
 
 
-JNIEXPORT void JNICALL Java_cn_vip_ldcr_SDLActivity_nativeSetVolume(int a1, int a2, int a3)
+JNIEXPORT void JNICALL Java_cn_vip_ldcr_SDLActivity_nativeSetVolume(JNIEnv* env,  jobject obj,  jint  a3)
 {
   g_MusicVolume = a3;
   g_SoundVolume = a3;
@@ -542,11 +748,11 @@ int FileLength(const char *filename)
 	return ll;
 }
 
-JNIEXPORT int JNICALL Java_cn_vip_ldcr_SDLActivity_nativeSetResolution(JNIEnv* env,  jobject obj, void *a3, void *a4)
+JNIEXPORT int JNICALL Java_cn_vip_ldcr_SDLActivity_nativeSetResolution(JNIEnv* env,  jobject obj,jint  a3, jint a4)
 {
   device_w = a3;
   device_h = a4;
-  return 0;//_android_log_print(4, "jy", "w = %d, h=%d", a3, a4, a2);
+  return __android_log_print(4, "jy", "w = %d, h=%d", a3, a4 );
 }
 int Java_cn_vip_ldcr_SDLActivity_nativeCustomResume(JNIEnv* env,  jobject obj)
 {
@@ -565,6 +771,73 @@ JNIEXPORT int JNICALL Java_org_libsdl_app_SDLActivity_PlayerPrepare(JNIEnv* env,
         strncpy(localFileName, fileString, 1024);
          (*env)->ReleaseStringUTFChars(env,jfileName, fileString);
         return 0;//player_prepare(localFileName);
+}
+
+
+/* Called before SDL_main() to initialize JNI bindings in SDL library */
+extern void SDL_Android_Init(JNIEnv* env, jclass cls);
+
+/* This prototype is needed to prevent a warning about the missing prototype for global function below */
+JNIEXPORT int JNICALL Java_org_libsdl_app_SDLActivity_nativeInit(JNIEnv* env, jclass cls, jobject array);
+
+/* Start up the SDL app */
+JNIEXPORT int JNICALL Java_org_libsdl_app_SDLActivity_nativeInit(JNIEnv* env, jclass cls, jobject array)
+{
+    int i;
+    int argc;
+    int status;
+    int len;
+    char** argv;
+	memset(&JY_CurrentPath, 0, 512);
+	strncpy(JY_CurrentPath, "/sdcard/JY_LLK/", 512);
+    /* This interface could expand with ABI negotiation, callbacks, etc. */
+    SDL_Android_Init(env, cls);
+
+    SDL_SetMainReady();
+
+    /* Prepare the arguments. */
+
+    len = (*env)->GetArrayLength(env, array);
+    argv = SDL_stack_alloc(char*, 1 + len + 1);
+    argc = 0;
+    /* Use the name "app_process" so PHYSFS_platformCalcBaseDir() works.
+       https://bitbucket.org/MartinFelis/love-android-sdl2/issue/23/release-build-crash-on-start
+     */
+    argv[argc++] = SDL_strdup("app_process");
+    for (i = 0; i < len; ++i) {
+        const char* utf;
+        char* arg = NULL;
+        jstring string = (*env)->GetObjectArrayElement(env, array, i);
+        if (string) {
+            utf = (*env)->GetStringUTFChars(env, string, 0);
+            if (utf) {
+                arg = SDL_strdup(utf);
+                (*env)->ReleaseStringUTFChars(env, string, utf);
+            }
+            (*env)->DeleteLocalRef(env, string);
+        }
+        if (!arg) {
+            arg = SDL_strdup("");
+        }
+        argv[argc++] = arg;
+    }
+    argv[argc] = NULL;
+
+
+    /* Run the application. */
+
+    status = SDL_main(argc, argv);
+
+    /* Release the arguments. */
+
+    for (i = 0; i < argc; ++i) {
+        SDL_free(argv[i]);
+    }
+    SDL_stack_free(argv);
+    /* Do not issue an exit or the whole application will terminate instead of just the SDL thread */
+    /* exit(status); */
+
+    return status;
 }
 
 /* Start up the SDL app */
