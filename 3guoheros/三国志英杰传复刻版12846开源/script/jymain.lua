@@ -16300,6 +16300,9 @@ end
 
 function getkey_pc()
 local eventtype,keypress,x,y=lib.GetKey(1);
+if(eventtype ~= -1) then
+lib.Debug(string.format("getkey_pc eventtype =%d x=%d y=%d keypress=%d",eventtype,x,y,keypress))
+end
 if eventtype==0 then
 MOUSE.status='EXIT';
 elseif eventtype==3 then
@@ -16326,11 +16329,14 @@ end
 end
 end
 end
+if(eventtype ~= -1) then
+lib.Debug(string.format("getkey_pc2 eventtype =%d x=%d y=%d keypress=%d",eventtype,x,y,keypress))
+end
 return eventtype,keypress,x,y;
 end
 
 function getkey_sp()
-local eventtype,keypress,x,y=lib.GetMouse(1);
+local eventtype,keypress,x,y=lib.GetKey(1);
 if(eventtype ~= -1) then
 lib.Debug(string.format("getkey_sp eventtype =%d x=%d y=%d",eventtype,x,y))
 end
@@ -16363,6 +16369,9 @@ else
 MOUSE.status='IDLE';
 MOUSE.x,MOUSE.y=x,y;
 end
+end
+if(eventtype ~= -1) then
+lib.Debug(string.format("getkey_sp2 eventtype =%d x=%d y=%d keypress=%d",eventtype,x,y,keypress))
 end
 return eventtype,keypress,x,y;
 end
