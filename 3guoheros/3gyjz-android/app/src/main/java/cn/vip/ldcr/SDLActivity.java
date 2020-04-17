@@ -195,7 +195,7 @@ public class SDLActivity extends Activity {
         RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(768,480);
         params.topMargin=300;
         params.leftMargin=300;
-        mLayout.addView(mSurface,params);
+        mLayout.addView(mSurface);
 
         setContentView(mLayout);
         try {

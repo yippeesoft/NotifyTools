@@ -500,7 +500,7 @@ int InitGame(void)
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);//设置深度缓存大小的，另外如果讲24改成32你会发现性能会下降很多很多很多很多的。
     */
     //
-
+	device_w = 1280; device_h = 800;
 	SDL_GetDisplayBounds(0, &rect);
 	JY_Debug("InitGame start(%d,%d)",g_ScreenW,g_ScreenH);
 	if (rect.h < g_ScreenH ){
@@ -512,11 +512,11 @@ int InitGame(void)
 			0);
 	}
 	else{
-		device_w = g_ScreenW;
-		device_h = g_ScreenH;
+		/*device_w = g_ScreenW;
+		device_h = g_ScreenH;*/
 		g_window = SDL_CreateWindow("JY_LLK",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-				g_ScreenW, g_ScreenH,
+			device_w, device_h,
 			0);
 	}
 	if(g_window==NULL)
