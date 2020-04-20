@@ -510,6 +510,7 @@ int InitGame(void)
 	SDL_GetDisplayBounds(0, &rect);
 	JY_Debug("InitGame SDL_GetDisplayBounds(%d,%d)",rect.w,rect.h);
 	JY_Debug("InitGame start(%d,%d)",g_ScreenW,g_ScreenH);
+	JY_Debug("InitGame SDL_CreateWindow(%d,%d)",device_w, device_h);
 	if (rect.h < g_ScreenH ){
 		device_h = rect.h - 80;
 		device_w = g_ScreenW * device_h / g_ScreenH;
@@ -519,11 +520,11 @@ int InitGame(void)
 			0);
 	}
 	else{
-		device_w = rect.w;//wg_ScreenW;
-		device_h = rect.h;//g_ScreenH;
+		//device_w = rect.w;//wg_ScreenW; android会导致重新赋值，没有获取实际surface大小
+		//device_h = rect.h;//g_ScreenH;
 		g_window = SDL_CreateWindow("JY_LLK",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			g_ScreenW,g_ScreenH, //device_w, device_h, 互换无影响
+			device_w, device_h,// 互换无影响
 			0);
 	}
 	if(g_window==NULL)
@@ -961,9 +962,9 @@ int JY_GetKey(int *EventType, int *keyPress, int *x, int *y)
 				//SDL_GetWindowSize(g_window, &w, &h);
 				//printf("%d %d\n", event.window.data1, event.window.data2);
 				SDL_RenderSetViewport(g_renderer, NULL );  
-				//g_ScreenW = event.window.data1;
-				//g_ScreenH = event.window.data2;
-				JY_Debug("SDL_WINDOWEVENT_SIZE_CHANGED  (%d,%d)",g_ScreenW,g_ScreenH);
+				device_w = event.window.data1;
+				device_h = event.window.data2;
+				JY_Debug("SDL_WINDOWEVENT_SIZE_CHANGED  (%d,%d)",event.window.data1,event.window.data2);
 			//	g_renderer = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_PRESENTVSYNC);
 			//	g_screenTex = SDL_CreateTexture(g_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, g_ScreenW, g_ScreenH);
 			//	SDL_SetTextureBlendMode(g_screenTex, SDL_BLENDMODE_BLEND);
