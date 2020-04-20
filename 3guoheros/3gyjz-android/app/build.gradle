@@ -1,7 +1,15 @@
 apply plugin: 'com.android.application'
- 
+
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias '3gyjz'
+            keyPassword '3gyjz3gyjz'
+            storePassword "3gyjz3gyjz"
+            storeFile file('../3gyjz-android.jks')
+        }
+    }
     compileSdkVersion 25
     defaultConfig {
         applicationId "cn.vip.ldcr"
@@ -10,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-       
+
     }
 //    apk加载so时，产生has text relocations错误。
 //    经过测试发现和targetSdkVersion有关，这个问题出现在加载so时，编译时sdk小于23 也就是android6.0之前是报warning，6.0之后直接报error。
@@ -19,9 +27,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
- 
+
     buildToolsVersion '27.0.3'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -31,7 +40,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     implementation 'com.android.support:appcompat-v7:25.+'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
