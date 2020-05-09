@@ -4,6 +4,121 @@
 
 NCNN  VULKAN 编译：
 
+
+
+===== 20200509
+
+​           采用 commit 85d99c9c6a63c53096e4f027a261d5baab2e97cd  Thu Apr 30 11:27:31 2020 +0800
+
+
+
+rk3399
+
+```
+./benchncnn-ncnn-vulkan 4 4 0 -1 1
+[0 Mali-T860]  queueC=0[2]  queueG=0[2]  queueT=0[2]
+[0 Mali-T860]  buglssc=1  bugihfa=1
+[0 Mali-T860]  fp16p=1  fp16s=0  fp16a=1  int8s=0  int8a=0
+loop_count = 4
+num_threads = 4
+powersave = 0
+gpu_device = -1
+cooling_down = 1
+          squeezenet  min =   54.63  max =   55.28  avg =   54.91
+     squeezenet_int8  min =   84.89  max =   85.55  avg =   85.17
+           mobilenet  min =   70.37  max =   70.69  avg =   70.53
+      mobilenet_int8  min =  174.51  max =  175.41  avg =  174.89
+        mobilenet_v2  min =   58.25  max =   58.68  avg =   58.52
+        mobilenet_v3  min =   55.66  max =   56.41  avg =   55.89
+          shufflenet  min =   42.35  max =   46.31  avg =   43.41
+       shufflenet_v2  min =   35.91  max =   36.15  avg =   36.03
+             mnasnet  min =   56.99  max =   58.00  avg =   57.38
+     proxylessnasnet  min =   64.86  max =   65.35  avg =   65.00
+           googlenet  min =  169.54  max =  170.38  avg =  170.07
+      googlenet_int8  min =  251.63  max =  252.41  avg =  251.99
+            resnet18  min =  183.11  max =  194.01  avg =  186.59
+       resnet18_int8  min =  178.22  max =  178.52  avg =  178.37
+             alexnet  min =  248.08  max =  249.98  avg =  249.41
+               vgg16  min =  927.56  max =  933.73  avg =  930.43
+          vgg16_int8  min = 1602.50  max = 1630.16  avg = 1612.59
+            resnet50  min =  377.35  max =  384.44  avg =  379.65
+       resnet50_int8  min =  436.60  max =  440.20  avg =  437.72
+      squeezenet_ssd  min =  169.85  max =  170.75  avg =  170.30
+ squeezenet_ssd_int8  min =  252.79  max =  253.55  avg =  253.20
+       mobilenet_ssd  min =  153.63  max =  154.17  avg =  153.96
+  mobilenet_ssd_int8  min =  256.69  max =  257.50  avg =  257.06
+      mobilenet_yolo  min =  329.01  max =  330.06  avg =  329.48
+  mobilenetv2_yolov3  min =  193.09  max =  193.42  avg =  193.26
+```
+
+
+
+
+
+```
+./benchncnn-ncnn-vulkan 4 4 0 0 1
+[0 Mali-T860]  queueC=0[2]  queueG=0[2]  queueT=0[2]
+[0 Mali-T860]  buglssc=1  bugihfa=1
+[0 Mali-T860]  fp16p=1  fp16s=0  fp16a=1  int8s=0  int8a=0
+loop_count = 4
+num_threads = 4
+powersave = 0
+gpu_device = 0
+cooling_down = 1
+          squeezenet  min =   45.57  max =   46.31  avg =   45.95
+           mobilenet  min =   44.61  max =   44.75  avg =   44.70
+        mobilenet_v2  min =   50.82  max =   75.87  avg =   66.72
+        mobilenet_v3  min =   53.72  max =   73.22  avg =   67.82
+          shufflenet  min =   43.72  max =  136.64  avg =   91.89
+       shufflenet_v2  min =  118.23  max =  119.42  avg =  118.91
+             mnasnet  min =   44.36  max =   60.62  avg =   50.42
+     proxylessnasnet  min =   56.32  max =   56.56  avg =   56.46
+           googlenet  min =  165.40  max =  206.74  avg =  182.66
+            resnet18  min =  162.86  max =  163.38  avg =  163.08
+             alexnet  min =  188.82  max =  196.81  avg =  191.55
+               vgg16  min = 1254.74  max = 1259.77  avg = 1257.64
+            resnet50  min =  316.12  max =  317.23  avg =  316.66
+      squeezenet_ssd  min =  204.32  max =  214.97  avg =  208.26
+       mobilenet_ssd  min =  102.36  max =  173.92  avg =  129.51
+      mobilenet_yolo  min =  234.07  max =  238.81  avg =  237.39
+  mobilenetv2_yolov3  min =  109.74  max =  127.92  avg =  114.40
+```
+
+
+
+
+
+RK3288  ./benchncnn-ncnn-vulkan  4 4 0 0 1
+
+```
+loop_count = 4
+num_threads = 4
+powersave = 0
+gpu_device = 0
+cooling_down = 1
+          squeezenet  min =   67.52  max =   68.94  avg =   68.08
+           mobilenet  min =   93.34  max =   94.02  avg =   93.68
+        mobilenet_v2  min =   76.59  max =   76.76  avg =   76.66
+        mobilenet_v3  min =   60.19  max =   61.04  avg =   60.45
+          shufflenet  min =   39.79  max =   47.19  avg =   41.76
+       shufflenet_v2  min =   37.51  max =   37.77  avg =   37.60
+             mnasnet  min =   66.30  max =   66.63  avg =   66.45
+     proxylessnasnet  min =   70.14  max =   70.58  avg =   70.41
+           googlenet  min =  193.85  max =  218.35  avg =  200.10
+            resnet18  min =  208.81  max =  219.20  avg =  213.00
+             alexnet  min =  168.55  max =  176.54  avg =  170.72
+               vgg16  min = 1061.62  max = 1077.30  avg = 1069.00
+            resnet50  min =  481.30  max =  501.34  avg =  488.26
+      squeezenet_ssd  min =  181.86  max =  190.15  avg =  184.14
+       mobilenet_ssd  min =  198.09  max =  206.27  avg =  200.44
+      mobilenet_yolo  min =  449.31  max =  460.18  avg =  454.73
+  mobilenetv2_yolov3  min =  254.75  max =  262.99  avg =  257.18
+```
+
+
+
+======
+
 ​      源码包：20191113
 
 ​      基本按照 https://github.com/Tencent/ncnn/wiki/how-to-build#build-for-android 即可。
