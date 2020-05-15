@@ -35,6 +35,64 @@ final result 3
 
 ## MNN Benchmark  
 
+
+
+commit 0df31a8667bdfdbdea084eef43b6812897e75db9 (HEAD -> master, tag: 1.0.0 RK3399
+
+Vulkan MobileNet反而变慢了··
+
+```
+MNN benchmark
+Forward type: **CPU** thread=4** precision=2
+--------> Benchmarking... loop = 10, warmup = 5
+[ - ] MobileNetV2_224.mnn         max =   51.697ms  min =   51.335ms  avg =   51.525ms
+[ - ] resnet-v2-50.mnn            max =  411.201ms  min =  390.782ms  avg =  393.500ms
+[ - ] inception-v3.mnn            max =  565.473ms  min =  552.015ms  avg =  555.583ms
+[ - ] SqueezeNetV1.0.mnn          max =  120.192ms  min =  112.906ms  avg =  114.302ms
+[ - ] mobilenet-v1-1.0.mnn        max =   72.676ms  min =   72.423ms  avg =   72.552ms
+MNN benchmark
+Forward type: **Vulkan** thread=4** precision=2
+--------> Benchmarking... loop = 10, warmup = 5
+[ - ] MobileNetV2_224.mnn         max =  126.224ms  min =   96.522ms  avg =  110.204ms
+[ - ] resnet-v2-50.mnn            max =  397.732ms  min =  385.943ms  avg =  388.119ms
+[ - ] inception-v3.mnn            max =  681.623ms  min =  609.278ms  avg =  642.505ms
+Vulkan don't support 2, ArgMax: ArgMax
+[ - ] SqueezeNetV1.0.mnn          max =  111.955ms  min =  105.839ms  avg =  108.355ms
+[ - ] mobilenet-v1-1.0.mnn        max =  265.161ms  min =   91.872ms  avg =  109.668ms
+MNN benchmark
+Forward type: **N/A** thread=4** precision=2
+--------> Benchmarking... loop = 10, warmup = 5
+Can't Find type=6 backend, use 0 instead
+[ - ] MobileNetV2_224.mnn         max =   51.438ms  min =   51.239ms  avg =   51.365ms
+Can't Find type=6 backend, use 0 instead
+[ - ] resnet-v2-50.mnn            max =  402.690ms  min =  390.657ms  avg =  392.371ms
+Can't Find type=6 backend, use 0 instead
+[ - ] inception-v3.mnn            max =  553.652ms  min =  552.248ms  avg =  553.078ms
+Can't Find type=6 backend, use 0 instead
+[ - ] SqueezeNetV1.0.mnn          max =  115.130ms  min =  113.687ms  avg =  114.082ms
+Can't Find type=6 backend, use 0 instead
+[ - ] mobilenet-v1-1.0.mnn        max =   72.964ms  min =   72.579ms  avg =   72.749ms
+MNN benchmark
+Forward type: **OpenCL** thread=4** precision=2
+--------> Benchmarking... loop = 10, warmup = 5
+Can't Find type=3 backend, use 0 instead
+[ - ] MobileNetV2_224.mnn         max =   51.396ms  min =   50.969ms  avg =   51.228ms
+Can't Find type=3 backend, use 0 instead
+[ - ] resnet-v2-50.mnn            max =  412.190ms  min =  392.089ms  avg =  396.014ms
+Can't Find type=3 backend, use 0 instead
+[ - ] inception-v3.mnn            max =  554.860ms  min =  552.147ms  avg =  553.673ms
+Can't Find type=3 backend, use 0 instead
+[ - ] SqueezeNetV1.0.mnn          max =  115.296ms  min =  113.146ms  avg =  113.880ms
+Can't Find type=3 backend, use 0 instead
+[ - ] mobilenet-v1-1.0.mnn        max =   72.622ms  min =   72.353ms  avg =   72.516ms
+```
+
+
+
+
+
+
+
 git 20191126版本 c36ad97cd8f8b3dff840d57a1630a4fc71bb7ce9
 
 不支持 Metal  OpenGL
