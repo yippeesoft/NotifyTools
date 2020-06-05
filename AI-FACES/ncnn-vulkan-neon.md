@@ -1,8 +1,24 @@
-# NCNN  VULKAN 编译测试
+# NCNN  VULKAN NEON 编译测试
 
 
 
-NCNN  VULKAN 编译：
+NCNN  VULKAN NEON编译：
+
+=====20200604
+
+./benchmark-outneon                                                                                                                                                                                           
+loop_count = 4
+num_threads = 6
+powersave = 0
+gpu_device = -1
+cooling_down = 1
+          squeezenet  min =   17.69  max =   17.97  avg =   17.81
+     squeezenet_int8  min =  237.22  max =  242.12  avg =  239.50
+FATAL ERROR! unlocked pool allocator get wild 0xf1d00000
+FATAL ERROR! unlocked pool allocator get wild 0xf1d00000
+Segmentation fault 
+
+
 
 
 
