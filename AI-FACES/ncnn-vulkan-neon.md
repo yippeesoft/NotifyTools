@@ -4,6 +4,87 @@
 
 NCNN  VULKAN NEON编译：
 
+====20200616
+
+
+
+```
+
+ ./benchncnn-novukan-0616                                                                               
+loop_count = 4
+num_threads = 6
+powersave = 0
+gpu_device = -1
+cooling_down = 1
+          squeezenet  min =   50.32  max =   50.46  avg =   50.38
+     squeezenet_int8  min =   67.57  max =   68.26  avg =   67.92
+           mobilenet  min =   58.19  max =   58.56  avg =   58.33
+      mobilenet_int8  min =  132.89  max =  134.62  avg =  133.83
+        mobilenet_v2  min =   56.85  max =   58.33  avg =   57.38
+        mobilenet_v3  min =   49.34  max =   49.48  avg =   49.42
+          shufflenet  min =   37.04  max =   37.25  avg =   37.16
+       shufflenet_v2  min =   33.72  max =   34.01  avg =   33.86
+             mnasnet  min =   50.04  max =   50.24  avg =   50.16
+     proxylessnasnet  min =   55.62  max =   55.85  avg =   55.73
+     efficientnet_b0  min =   91.62  max =   92.81  avg =   92.03
+        regnety_400m  min =   92.55  max =   93.28  avg =   92.86
+           blazeface  min =   11.10  max =   11.13  avg =   11.11
+           googlenet  min =  148.72  max =  151.21  avg =  149.58
+      googlenet_int8  min =  218.34  max =  224.25  avg =  220.22
+            resnet18  min =  166.89  max =  177.79  avg =  169.71
+       resnet18_int8  min =  165.53  max =  166.40  avg =  165.97
+             alexnet  min =  186.03  max =  186.85  avg =  186.47
+               vgg16  min =  798.02  max =  818.97  avg =  807.84
+          vgg16_int8  min = 1257.05  max = 1284.08  avg = 1271.87
+            resnet50  min =  311.87  max =  314.79  avg =  312.92
+       resnet50_int8  min =  377.85  max =  417.17  avg =  396.23
+      squeezenet_ssd  min =  160.50  max =  161.15  avg =  160.76
+
+ squeezenet_ssd_int8  min =  220.12  max =  221.11  avg =  220.70
+       mobilenet_ssd  min =  129.46  max =  129.77  avg =  129.63
+  mobilenet_ssd_int8  min =  202.58  max =  202.93  avg =  202.76
+      mobilenet_yolo  min =  277.13  max =  277.78  avg =  277.45
+  mobilenetv2_yolov3  min =  170.73  max =  171.18  avg =  171.00
+```
+
+
+
+```
+./benchncnn-vulkan-0616 4 6 0 0 1                                                                      
+[0 Mali-T860]  queueC=0[2]  queueG=0[2]  queueT=0[2]
+[0 Mali-T860]  buglssc=1  bugsbn1=0  buglbia=1  bugihfa=1
+[0 Mali-T860]  fp16p=1  fp16s=0  fp16a=1  int8s=0  int8a=0
+loop_count = 4
+num_threads = 6
+powersave = 0
+gpu_device = 0
+cooling_down = 1
+          squeezenet  min =  119.33  max =  119.70  avg =  119.56
+           mobilenet  min =   45.12  max =   45.46  avg =   45.27
+        mobilenet_v2  min =   44.26  max =   75.34  avg =   54.13
+        mobilenet_v3  min =   49.31  max =   56.91  avg =   54.85
+          shufflenet  min =   78.18  max =  138.40  avg =  108.78
+       shufflenet_v2  min =  119.28  max =  120.88  avg =  119.85
+             mnasnet  min =  116.89  max =  117.71  avg =  117.25
+     proxylessnasnet  min =  129.41  max =  129.84  avg =  129.59
+     efficientnet_b0  min =   88.69  max =  151.11  avg =  119.72
+        regnety_400m  min =   89.84  max =   91.47  avg =   90.80
+           blazeface  min =   23.20  max =   23.39  avg =   23.32
+           googlenet  min =  156.26  max =  216.57  avg =  199.52
+            resnet18  min =  161.15  max =  162.45  avg =  161.57
+             alexnet  min =  190.12  max =  193.74  avg =  192.54
+               vgg16  min = 1244.55  max = 1263.51  avg = 1254.33
+            resnet50  min =  314.62  max =  316.07  avg =  315.41
+      squeezenet_ssd  min =  198.53  max =  267.56  avg =  244.73
+       mobilenet_ssd  min =  103.57  max =  112.02  avg =  107.75
+      mobilenet_yolo  min =  230.87  max =  251.78  avg =  237.14
+
+  mobilenetv2_yolov3  min =  111.59  max =  132.64  avg =  127.00
+```
+
+
+
+
 =====20200604
 
 ./benchmark-outneon                                                                                                                                                                                           
