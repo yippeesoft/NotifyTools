@@ -12,6 +12,7 @@ import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -327,7 +330,8 @@ public class AppListFragment extends BaseFragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (mSelectedApp == null) return false;
-
+        Log.d("onContextItemSelected",item.toString());
+        Log.d("onContextItemSelected2",new Gson().toJson(mSelectedApp));
         switch (item.getItemId()) {
             case MENU_ITEM_CLONE:
                 if (Utility.isMIUI() && !mSelectedApp.isSystem()) {
