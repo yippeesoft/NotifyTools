@@ -12,6 +12,7 @@ import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.ziv.ntptimeservice.SntpClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +45,7 @@ import net.typeblog.shelter.util.ApplicationInfoWrapper;
 import net.typeblog.shelter.util.LocalStorageManager;
 import net.typeblog.shelter.util.Utility;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -153,6 +156,12 @@ public class AppListFragment extends BaseFragment {
                 .unregisterReceiver(mSearchReceiver);
     }
 
+    private String[] ntpServerPool = {"ntp1.aliyun.com", "ntp2.aliyun.com", "ntp3.aliyun.com", "ntp4.aliyun.com", "ntp5.aliyun.com", "ntp6.aliyun.com", "ntp7.aliyun.com",
+            "cn.pool.ntp.org", "cn.ntp.org.cn", "sg.pool.ntp.org", "tw.pool.ntp.org", "jp.pool.ntp.org", "hk.pool.ntp.org", "th.pool.ntp.org",
+            "time.windows.com", "time.nist.gov", "time.apple.com", "time.asia.apple.com",
+            "dns1.synet.edu.cn", "news.neu.edu.cn", "dns.sjtu.edu.cn", "dns2.synet.edu.cn", "ntp.glnet.edu.cn", "s2g.time.edu.cn",
+            "ntp-sz.chl.la", "ntp.gwadar.cn", "3.asia.pool.ntp.org"};
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -164,6 +173,43 @@ public class AppListFragment extends BaseFragment {
         mAdapter = new AppListAdapter(mService, mDefaultIcon);
         mAdapter.setContextMenuHandler((info, v) -> {
             mSelectedApp = info;
+            if(info.getPackageName().toLowerCase().contains("Tencent".toLowerCase())) {
+                Log.i("setContextMenuHandler",info.getPackageName());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SntpClient sntpClient = new SntpClient();
+                        Date current=new Date();
+                        for (String serverHost : ntpServerPool) {
+                            if (sntpClient.requestTime(serverHost, 30000)) {
+                                long ntpTime = sntpClient.getNtpTime();
+                                long elapsedRealtime = SystemClock.elapsedRealtime();
+                                long ntpTimeReference = sntpClient.getNtpTimeReference();
+                                long now = sntpClient.getNtpTime() + SystemClock.elapsedRealtime() - sntpClient.getNtpTimeReference();
+                                Log.d("sntpClient", String.format("Host:%s -> ntpTime = %s, elapsedRealtime = %s, ntpTimeReference = %s.", serverHost, ntpTime, elapsedRealtime, ntpTimeReference));
+                                current = new Date(ntpTime);
+                                Log.d("sntpClient NtpTime", current.toString());
+
+                                break;
+                            }else{
+                                Log.e("sntpClient","err "+serverHost);
+                            }
+                        }
+                        if(current.getHours()>=19) {
+                            Log.e("getHours","err "+current.getHours());
+                            return;
+                        }else{
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mList.showContextMenuForChild(v);
+                                }
+                            });
+                        }
+                    }
+                }).start();
+                return;
+            }
             mList.showContextMenuForChild(v);
         });
         if (mIsRemote) {
