@@ -195,7 +195,7 @@ public class AppListFragment extends BaseFragment {
                                 Log.e("sntpClient","err "+serverHost);
                             }
                         }
-                        if(current.getHours()>=19) {
+                        if(current.getHours()>=19 || current.getHours()<=9 ) {
                             Log.e("getHours","err "+current.getHours());
                             return;
                         }else{
