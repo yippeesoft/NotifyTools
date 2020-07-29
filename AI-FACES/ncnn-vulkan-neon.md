@@ -1,5 +1,78 @@
 # NCNN  VULKAN NEON 编译测试
 
+NCNN X86 avx 优化测试
+
+```
+20200727
+squeezenet  min =   15.65  max =   15.83  avg =   15.71
+     squeezenet_int8  min =   54.65  max =   55.07  avg =   54.85
+           mobilenet  min =   20.77  max =   20.98  avg =   20.84
+      mobilenet_int8  min =  116.62  max =  117.04  avg =  116.78
+        mobilenet_v2  min =   18.87  max =   18.99  avg =   18.94
+        mobilenet_v3  min =   15.71  max =   15.92  avg =   15.80
+          shufflenet  min =   12.29  max =   12.50  avg =   12.39
+       shufflenet_v2  min =    8.10  max =    8.17  avg =    8.14
+             mnasnet  min =   14.55  max =   14.56  avg =   14.55
+     proxylessnasnet  min =   16.47  max =   16.54  avg =   16.49
+     efficientnet_b0  min =   24.70  max =   25.23  avg =   24.88
+        regnety_400m  min =   25.82  max =   25.88  avg =   25.85
+           blazeface  min =    3.32  max =    3.45  avg =    3.38
+           googlenet  min =   52.62  max =   52.98  avg =   52.77
+      googlenet_int8  min =  161.45  max =  161.97  avg =  161.69
+            resnet18  min =   58.29  max =   58.61  avg =   58.42
+       resnet18_int8  min =   99.90  max =  100.21  avg =  100.07
+             alexnet  min =   47.84  max =   48.13  avg =   47.98
+               vgg16  min =  232.98  max =  233.32  avg =  233.10
+          vgg16_int8  min =  490.59  max =  490.96  avg =  490.76
+            resnet50  min =  119.06  max =  119.75  avg =  119.43
+       resnet50_int8  min =  415.50  max =  416.09  avg =  415.88
+      squeezenet_ssd  min =   58.26  max =   58.68  avg =   58.44
+ squeezenet_ssd_int8  min =   89.80  max =   90.11  avg =   89.99
+       mobilenet_ssd  min =   52.21  max =   52.62  avg =   52.37
+  mobilenet_ssd_int8  min =  218.30  max =  218.82  avg =  218.53
+
+      mobilenet_yolo  min =  133.80  max =  134.93  avg =  134.20
+  mobilenetv2_yolov3  min =   71.11  max =   71.24  avg =   71.20
+         yolov4-tiny  min =   91.69  max =   91.95  avg =   91.84
+```
+
+
+
+```
+20200616
+squeezenet  min =   28.09  max =   28.16  avg =   28.13
+     squeezenet_int8  min =   58.52  max =   59.56  avg =   58.91
+           mobilenet  min =   38.28  max =   38.41  avg =   38.36
+      mobilenet_int8  min =  119.36  max =  119.79  avg =  119.57
+        mobilenet_v2  min =   33.20  max =   33.36  avg =   33.27
+        mobilenet_v3  min =   72.83  max =   73.32  avg =   73.03
+          shufflenet  min =   33.79  max =   34.19  avg =   34.00
+       shufflenet_v2  min =   14.62  max =   14.62  avg =   14.62
+             mnasnet  min =   98.98  max =  100.31  avg =   99.42
+     proxylessnasnet  min =  139.05  max =  140.65  avg =  139.68
+     efficientnet_b0  min =  141.06  max =  141.71  avg =  141.46
+        regnety_400m  min =   59.92  max =   60.17  avg =   60.03
+           blazeface  min =   10.06  max =   10.13  avg =   10.09
+           googlenet  min =  110.98  max =  111.47  avg =  111.29
+      googlenet_int8  min =  188.03  max =  188.99  avg =  188.53
+            resnet18  min =   99.04  max =   99.40  avg =   99.15
+       resnet18_int8  min =  117.09  max =  117.83  avg =  117.40
+             alexnet  min =   64.23  max =   64.74  avg =   64.46
+               vgg16  min =  687.05  max =  704.05  avg =  692.92
+          vgg16_int8  min =  535.71  max =  535.83  avg =  535.79
+            resnet50  min =  264.99  max =  265.91  avg =  265.46
+       resnet50_int8  min =  487.37  max =  488.42  avg =  487.89
+      squeezenet_ssd  min =   92.83  max =   93.23  avg =   93.04
+ squeezenet_ssd_int8  min =  112.56  max =  112.74  avg =  112.68
+       mobilenet_ssd  min =   85.12  max =   85.51  avg =   85.24
+
+  mobilenet_ssd_int8  min =  225.25  max =  226.62  avg =  225.75
+      mobilenet_yolo  min =  187.92  max =  188.39  avg =  188.08
+  mobilenetv2_yolov3  min =  115.80  max =  116.76  avg =  116.29
+```
+
+
+
 
 
 NCNN  VULKAN NEON编译：
