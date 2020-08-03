@@ -173,7 +173,7 @@ public class AppListFragment extends BaseFragment {
         mAdapter = new AppListAdapter(mService, mDefaultIcon);
         mAdapter.setContextMenuHandler((info, v) -> {
             mSelectedApp = info;
-            if(info.getPackageName().toLowerCase().contains("Tencent".toLowerCase())) {
+            if(info.getPackageName().toLowerCase().contains("tencent".toLowerCase())) {
                 Log.i("setContextMenuHandler",info.getPackageName());
                 new Thread(new Runnable() {
                     @Override
@@ -195,8 +195,18 @@ public class AppListFragment extends BaseFragment {
                                 Log.e("sntpClient","err "+serverHost);
                             }
                         }
-                        if(current.getHours()>=19 || current.getHours()<=9 ) {
+                        Date finalCurrent = current;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "getHours："+ finalCurrent.getHours(), Toast.LENGTH_LONG).
+
+                                        show();
+                            }
+                        });
+                        if(current.getHours()>=19 || current.getHours()<9 ) {
                             Log.e("getHours","err "+current.getHours());
+
                             return;
                         }else{
                             runOnUiThread(new Runnable() {
