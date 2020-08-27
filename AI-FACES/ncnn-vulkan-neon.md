@@ -1,5 +1,47 @@
 # NCNN  VULKAN NEON 编译测试
 
+NCNN WASM NODE 测试
+
+```
+20200827
+node benchncnn.js
+
+loop_count = 4
+num_threads = 1
+powersave = 0
+gpu_device = -1
+cooling_down = 1
+ /working/squeezenet  min =  414.00  max =  416.00  avg =  414.50
+/working/squeezenet_int8  min =  539.00  max =  545.00  avg =  541.00
+  /working/mobilenet  min =  667.00  max =  669.00  avg =  667.75
+/working/mobilenet_int8  min = 1132.00  max = 1133.00  avg = 1132.75
+/working/mobilenet_v2  min =  394.00  max =  397.00  avg =  395.25
+/working/mobilenet_v3  min =  338.00  max =  340.00  avg =  339.00
+ /working/shufflenet  min =  179.00  max =  179.00  avg =  179.00
+/working/shufflenet_v2  min =  179.00  max =  179.00  avg =  179.00
+    /working/mnasnet  min =  423.00  max =  427.00  avg =  424.25
+/working/proxylessnasnet  min =  485.00  max =  485.00  avg =  485.00
+/working/efficientnet_b0  min =  550.00  max =  551.00  avg =  550.50
+/working/regnety_400m  min =  506.00  max =  507.00  avg =  506.75
+  /working/blazeface  min =   41.00  max =   41.00  avg =   41.00
+  /working/googlenet  min = 1480.00  max = 1483.00  avg = 1481.25
+/working/googlenet_int8  min = 1722.00  max = 1723.00  avg = 1722.75
+   /working/resnet18  min = 1590.00  max = 1594.00  avg = 1592.25
+/working/resnet18_int8  min = 1373.00  max = 1379.00  avg = 1375.75
+    /working/alexnet  min =  756.00  max =  760.00  avg =  757.75
+      /working/vgg16  min = 10964.00  max = 11827.00  avg = 11251.00
+ /working/vgg16_int8  min = 7373.00  max = 7425.00  avg = 7395.25
+   /working/resnet50  min = 3797.00  max = 3801.00  avg = 3799.25
+/working/resnet50_int8  min = 4757.00  max = 4764.00  avg = 4760.25
+/working/squeezenet_ssd  min = 1006.00  max = 1008.00  avg = 1007.25
+/working/squeezenet_ssd_int8  min =  880.00  max =  882.00  avg =  880.50
+/working/mobilenet_ssd  min = 1347.00  max = 1350.00  avg = 1348.50
+/working/mobilenet_ssd_int8  min = 2250.00  max = 2255.00  avg = 2252.25
+/working/mobilenet_yolo  min = 3054.00  max = 3066.00  avg = 3058.50
+/working/mobilenetv2_yolov3  min = 1443.00  max = 1456.00  avg = 1448.00
+/working/yolov4-tiny  min = 2740.00  max = 2746.00  avg = 2742.25
+```
+
 NCNN X86 avx 优化测试
 
 ```
