@@ -1,6 +1,82 @@
 # NCNN  VULKAN NEON 编译测试
 
-NCNN WASM NODE 测试
+NCNN WebAssembly WASM web 测试
+
+```
+20200828 firefox
+
+loop_count = 4 benchncnn.js:1:31507
+num_threads = 4 benchncnn.js:1:31507  //4和1没区别
+powersave = 0 benchncnn.js:1:31507
+gpu_device = -1 benchncnn.js:1:31507
+cooling_down = 1 benchncnn.js:1:31507
+   /param/squeezenet  min =  390.00  max =  391.00  avg =  390.75 benchncnn.js:1:31507
+/param/squeezenet_int8  min =  424.00  max =  427.00  avg =  425.75 benchncnn.js:1:31507
+    /param/mobilenet  min =  424.00  max =  428.00  avg =  425.50 benchncnn.js:1:31507
+/param/mobilenet_int8  min =  873.00  max =  876.00  avg =  874.50 benchncnn.js:1:31507
+ /param/mobilenet_v2  min =  370.00  max =  373.00  avg =  371.75 benchncnn.js:1:31507
+ /param/mobilenet_v3  min =  342.00  max =  344.00  avg =  342.75 benchncnn.js:1:31507
+   /param/shufflenet  min =  161.00  max =  164.00  avg =  162.25 benchncnn.js:1:31507
+/param/shufflenet_v2  min =  167.00  max =  168.00  avg =  167.75 benchncnn.js:1:31507
+      /param/mnasnet  min =  424.00  max =  431.00  avg =  428.75 benchncnn.js:1:31507
+/param/proxylessnasnet  min =  493.00  max =  496.00  avg =  494.50 benchncnn.js:1:31507
+/param/efficientnet_b0  min =  416.00  max =  422.00  avg =  419.25 benchncnn.js:1:31507
+ /param/regnety_400m  min =  345.00  max =  354.00  avg =  348.25 benchncnn.js:1:31507
+    /param/blazeface  min =   27.00  max =   29.00  avg =   28.00 benchncnn.js:1:31507
+    /param/googlenet  min = 1049.00  max = 1060.00  avg = 1056.25 benchncnn.js:1:31507
+/param/googlenet_int8  min = 1400.00  max = 1410.00  avg = 1405.00 benchncnn.js:1:31507
+     /param/resnet18  min = 1460.00  max = 1481.00  avg = 1469.00 benchncnn.js:1:31507
+/param/resnet18_int8  min = 1517.00  max = 1523.00  avg = 1520.00 benchncnn.js:1:31507
+      /param/alexnet  min =  825.00  max =  833.00  avg =  829.00 benchncnn.js:1:31507
+        /param/vgg16  min = 9456.00  max = 11853.00  avg = 11082.75 benchncnn.js:1:31507
+   /param/vgg16_int8  min = 6718.00  max = 6799.00  avg = 6750.50 benchncnn.js:1:31507
+     /param/resnet50  min = 2572.00  max = 2580.00  avg = 2575.50 benchncnn.js:1:31507
+/param/resnet50_int8  min = 3649.00  max = 3765.00  avg = 3720.00 benchncnn.js:1:31507
+/param/squeezenet_ssd  min =  750.00  max =  772.00  avg =  764.75 benchncnn.js:1:31507
+/param/squeezenet_ssd_int8  min = 1019.00  max = 1026.00  avg = 1022.50 benchncnn.js:1:31507
+/param/mobilenet_ssd  min = 1235.00  max = 1236.00  avg = 1235.25 benchncnn.js:1:31507
+/param/mobilenet_ssd_int8  min = 1971.00  max = 1975.00  avg = 1973.00 benchncnn.js:1:31507
+/param/mobilenet_yolo  min = 2789.00  max = 3067.00  avg = 2861.25 benchncnn.js:1:31507
+/param/mobilenetv2_yolov3  min = 1327.00  max = 1331.00  avg = 1329.25 benchncnn.js:1:31507
+  /param/yolov4-tiny  min = 2785.00  max = 2797.00  avg = 2792.50 benchncnn.js:1:31507
+```
+
+
+```
+20200828 chrome 慢了大概三倍
+
+/param/squeezenet  min = 1334.00  max = 1343.00  avg = 1340.00
+ /param/squeezenet_int8  min = 1273.00  max = 1315.00  avg = 1291.50
+     /param/mobilenet  min = 2292.00  max = 2354.00  avg = 2320.75
+ /param/mobilenet_int8  min = 3599.00  max = 3845.00  avg = 3665.50
+  /param/mobilenet_v2  min = 1466.00  max = 1618.00  avg = 1562.50
+  /param/mobilenet_v3  min = 1267.00  max = 1410.00  avg = 1318.75
+    /param/shufflenet  min =  657.00  max =  659.00  avg =  658.25
+ /param/shufflenet_v2  min =  710.00  max =  712.00  avg =  711.00
+       /param/mnasnet  min = 1720.00  max = 1731.00  avg = 1727.75
+ /param/proxylessnasnet  min = 2018.00  max = 2020.00  avg = 2019.25
+ /param/efficientnet_b0  min = 1843.00  max = 1859.00  avg = 1849.50
+  /param/regnety_400m  min = 1771.00  max = 1778.00  avg = 1774.00
+     /param/blazeface  min =  135.00  max =  136.00  avg =  135.50
+     /param/googlenet  min = 5565.00  max = 5667.00  avg = 5616.75
+ /param/googlenet_int8  min = 5642.00  max = 5720.00  avg = 5681.25
+      /param/resnet18  min = 5935.00  max = 5980.00  avg = 5948.25
+ /param/resnet18_int8  min = 4482.00  max = 4517.00  avg = 4498.00
+       /param/alexnet  min = 2841.00  max = 2851.00  avg = 2844.25
+         /param/vgg16  min = 30176.00  max = 30318.00  avg = 30216.75
+    /param/vgg16_int8  min = 14651.00  max = 14692.00  avg = 14672.75
+      /param/resnet50  min = 12324.00  max = 12336.00  avg = 12332.50
+ /param/resnet50_int8  min = 10975.00  max = 11085.00  avg = 11047.25
+ /param/squeezenet_ssd  min = 2908.00  max = 2910.00  avg = 2909.25
+ /param/squeezenet_ssd_int8  min = 1910.00  max = 1917.00  avg = 1912.00
+ /param/mobilenet_ssd  min = 4562.00  max = 4569.00  avg = 4565.50
+ /param/mobilenet_ssd_int8  min = 5336.00  max = 5391.00  avg = 5371.75
+ /param/mobilenet_yolo  min = 10330.00  max = 10624.00  avg = 10410.00
+ /param/mobilenetv2_yolov3  min = 4819.00  max = 4826.00  avg = 4823.00
+/param/yolov4-tiny  min = 7930.00  max = 7953.00  avg = 7941.50
+```
+
+NCNN WebAssembly WASM NODE 测试
 
 ```
 20200827
