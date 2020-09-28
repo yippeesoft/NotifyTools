@@ -204,7 +204,7 @@ public class AppListFragment extends BaseFragment {
                                         show();
                             }
                         });
-                        if(current.getHours()>=19 || current.getHours()<9 ) {
+                        if(current.getHours()>=19 || current.getHours()<8 ) {
                             Log.e("getHours","err "+current.getHours());
 
                             return;
