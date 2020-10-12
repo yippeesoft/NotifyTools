@@ -3,7 +3,7 @@
 
 
 ```shell
-继续努力 跨平台UI 20201012
+跨平台UI 20201012
 本来windows-linux-armlinux就够折腾，rklinux改了不少东西，QT自己也有版本问题。编译个qt应用都麻烦。
 
 一个最简单的标准lxde。准备最简单的qt跑起来。
