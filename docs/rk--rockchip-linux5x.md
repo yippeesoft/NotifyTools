@@ -1,7 +1,62 @@
-# 					rockchip linux 5.x build TODO!
+# rockchip linux 5.x build TODO!
+
+
+
+```shell
+继续努力 跨平台UI 20201012
+本来windows-linux-armlinux就够折腾，rklinux改了不少东西，QT自己也有版本问题。编译个qt应用都麻烦。
+
+一个最简单的标准lxde。准备最简单的qt跑起来。
+还有不少警告错误。。。。
+sudo su
+startx &
+
+https://blog.csdn.net/xgbing/article/details/79969640
+rockchip linux平台的graphic，和以往大家所习惯所不同的是，我们应该是最先全面应用上drm和dmabuf的arm linux平台。
+
+http://dev.t-firefly.com/thread-12739-1-1.html
+http://bbs.icxbk.com/thread-97117-1-1.html
+
+制作文件系统：
+1.下载http://cdimage.ubuntu.com/ubuntu ... 3-base-arm64.tar.gz。我下载的是14.04，这个随意啦。
+2.安装虚拟机apt-get install qemu-user-static
+3.解压文件：
+        mkdir temp
+        tar -xpf ubuntu-base-16.04.1-base-arm64.tar.gz -C temp
+4.运行虚拟机，把下载的ubuntu在虚拟机中跑起来，至少第二步是要做的，否则运行不了：
+        cp -b /etc/resolv.conf temp/etc/resolv.conf
+        cp /usr/bin/qemu-aarch64-static temp/usr/bin/
+    在temp的上级目录中执行chroot temp，此时就是运行在虚拟机中了。
+
+5.配置虚拟机中的ubuntu：
+        apt update
+        apt upgrade
+        #可以安装桌面，如apt install xubuntu-desktop，我偷懒了，这样生成的文件小，制作和烧写的过程快。
+        useradd -s '/bin/bash' -m -G adm,sudo firefly
+        passwd firefly
+        passwd root
+        exit
+退出后就回到主机的系统里了。
+
+6.最后一步，生成rootfs文件：
+        dd if=/dev/zero of=linuxroot.img bs=1M count=2048
+        sudo  mkfs.ext4  linuxroot.img
+        mkdir  rootfs
+        sudo mount linuxroot.img rootfs/
+        sudo cp -rfp temp/*  rootfs/
+        sudo umount rootfs/
+        e2fsck -p -f linuxroot.img
+        resize2fs  -M linuxroot.img
+
+最小lxde
+sudo apt-get install xorg lxde-common lxsession desktop-file-utils openbox
+
+```
+
 
 
 ```
+
 悲惨的结果 20200928
 
 1、原厂删库跑路怎么办。。。在线等。。挺急的。。。
@@ -22,7 +77,7 @@ https://github.com/rockchip-linux 下面只有9个repo了。docs、manifests。�
 7、RK SDK有QT GUI，但是QTWEBengine基于chromium，也忘了从哪里下了74.X，能正常运行。从rk-linux github上更新到83.X后，chromium要求安装GTK相关的组件了。。。
 
 总之，这是一件令人忧伤的故事，嗯，中间还折腾了firefly等等其他的，除了各种分支。。
-我和我的失败，约在股市大跌，大跌的九月 。。。。。。。 ：）
+ ：）
 ```
 
 
