@@ -5,8 +5,10 @@ jobs:
     runs-on: ubuntu-16.04
     steps:
     - uses: actions/checkout@v2
-    #- name: update
-    #  run: sudo apt-get update
+    - name: update
+      run: sudo apt-get update
+    - name: glog
+      run: sudo apt-get install libgoogle-glog-dev
     #- name: protobuf
     #  run: sudo apt-get install libprotobuf-dev protobuf-compiler libopencv-dev
     #- name: path
