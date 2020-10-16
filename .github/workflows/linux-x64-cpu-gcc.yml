@@ -14,7 +14,7 @@ jobs:
     - name: configure
       run: cd ./c++chsarp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON ..
     - name: build
-      run: cd c++chsarp/vscode/test/build && cmake --build build -j 2
+      run: cd c++chsarp/vscode/test/ && cmake --build build -j 2
     - name: test
       run: cd c++chsarp/vscode/test/build && ctest --output-on-failure -j 2
 
