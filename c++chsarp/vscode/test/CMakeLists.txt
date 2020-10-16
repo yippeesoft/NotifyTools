@@ -4,7 +4,7 @@ project(vsc2 VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-find_package (glog 0.4.0 REQUIRED)
+find_package (glog)
 
 add_executable(vsc2 main.cpp)
 target_link_libraries (vsc2 glog::glog)
