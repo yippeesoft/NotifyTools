@@ -1,0 +1,20 @@
+name: linux-x64-cpu-clang
+on: [push, pull_request]
+jobs:
+  linux-clang:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    #- name: update
+    #  run: sudo apt-get update
+    #- name: protobuf
+    #  run: sudo apt-get install libprotobuf-dev protobuf-compiler libopencv-dev
+    - name: configure
+      env:
+        CC: clang
+        CXX: clang++
+      run: cd ./c++chsarp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON ..
+    - name: build
+      run: cd ./c++chsarp/vscode/test && cmake --build build -j 2
+    - name: test
+      run: cd ./c++chsarp/vscode/test/build && ctest --output-on-failure -j 2
