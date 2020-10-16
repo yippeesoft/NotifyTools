@@ -36,12 +36,12 @@ void test_glog()
 int test_glog_main(int argc)
 {
     google::InitGoogleLogging("vsc2");
-    FLAGS_stderrthreshold=google::INFO;
+    FLAGS_stderrthreshold=INFO;
     FLAGS_colorlogtostderr=true;
     google::SetStderrLogging(INFO);//设置级别高于google::INFO的日志同时输出到屏幕
-    google::SetLogDestination(google::ERROR,"./log/error_");//设置google::ERROR级别的日志存储路径和文件名前缀
-    google::SetLogDestination(google::WARNING,"./log/warning_");
-    google::SetLogDestination(google::INFO,"./log/info_");
+    google::SetLogDestination(ERROR,"./log/error_");//设置google::ERROR级别的日志存储路径和文件名前缀
+    google::SetLogDestination(WARNING,"./log/warning_");
+    google::SetLogDestination(INFO,"./log/info_");
     FLAGS_logbufsecs = 0;//缓冲日志输出，默认为30秒，此处改为立刻
     FLAGS_max_log_size = 100;//最大日志大小为100M
     FLAGS_stop_logging_if_full_disk = true;//当磁盘被写满时，停止日志输出
