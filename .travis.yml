@@ -1,0 +1,47 @@
+sudo: false
+
+language: cpp
+
+addons:
+  apt:
+    packages:
+      - cmake
+      #- libprotobuf-dev
+      #- protobuf-compiler
+      #- libopencv-dev
+      #- lcov
+
+matrix:
+  include:
+    - name: "linux-gcc-arm64"
+      os: linux
+      arch: arm64
+      dist: bionic
+      compiler: gcc
+      env:
+        - NAME=linux-gcc
+        - BUILD="cd c++chsarp/vscode/test && mkdir build && cd build && cmake .. && make -j2 && ctest --output-on-failure -j 2"
+
+    - name: "linux-clang-arm64"
+      os: linux
+      arch: arm64
+      dist: bionic
+      compiler: clang
+      env:
+        - NAME=linux-clang
+        - BUILD="cd c++chsarp/vscode/test && mkdir build && cd build && cmake .. && make -j2 && ctest --output-on-failure -j 2"
+
+    - name: "windows-vs2017"
+      os: windows
+      dist: 1803-containers
+      env:
+        - NAME=windows-vs2017
+        - BUILD="cd c++chsarp/vscode/test && mkdir build && cd build && cmake .. && cmake --build . --config Release && ctest -C Release --output-on-failure -j 2"
+
+  
+
+before_install:
+  - eval "${BEFORE_BUILD}"
+
+script:
+  - eval "${BUILD}"
