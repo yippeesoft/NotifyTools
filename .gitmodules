@@ -1,3 +1,5 @@
 [submodule "c++chsarp/vscode/test/submoules/log4cplus"]
 	path = c++chsarp/vscode/test/submoules/log4cplus
 	url = https://github.com/log4cplus/log4cplus
+[submodule "log4cplus"]
+	branch = 2.0.x
