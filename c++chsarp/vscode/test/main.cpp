@@ -1,9 +1,10 @@
 #include <iostream>
 #include <stdlib.h>
-#include "glog/logging.h"
+
 using namespace std;
 
 #if GLOG
+#include "glog/logging.h"
 enum level 
 {
     INFO=0,
