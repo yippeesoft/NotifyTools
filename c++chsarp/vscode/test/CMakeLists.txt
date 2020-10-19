@@ -5,7 +5,7 @@ include(CTest)
 enable_testing()
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/submoules/log4cplus/CMakeLists.txt")
-    message(FATAL_ERROR "The submodules log4cplus were not downloaded! Please update submodules with \"git submodule update --init\" and try again.")
+    message(FATAL_ERROR "The submodules log4cplus were not downloaded! Please update submodules with \"git submodule update --init  --recursive \" and try again.")
 else()
     # glslang requires c++11
     set(CMAKE_CXX_STANDARD 17)
