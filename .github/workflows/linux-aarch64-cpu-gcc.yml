@@ -5,7 +5,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-
+      with:
+        submodules: true
+    - name: git
+      run: cd ./c++chsarp/vscode/test && git submodule update --init  --recursive
     - name: cache-qemu
       id: cache-qemu
       uses: actions/cache@v1
@@ -32,7 +35,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install g++-aarch64-linux-gnu
-
+    
     - name: configure
       run: cd ./c++chsarp/vscode/test && mkdir build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake -DNCNN_ARM82=OFF -DNCNN_BUILD_TOOLS=OFF -DNCNN_BUILD_EXAMPLES=OFF -DNCNN_BUILD_TESTS=ON ..
     - name: build
@@ -48,7 +51,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-
+      with:
+        submodules: true
+    - name: git
+      run: cd ./c++chsarp/vscode/test && git submodule update --init  --recursive
     - name: cache-qemu
       id: cache-qemu
       uses: actions/cache@v1
