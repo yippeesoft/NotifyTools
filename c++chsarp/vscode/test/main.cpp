@@ -3,6 +3,7 @@
 #include "glog/logging.h"
 using namespace std;
 
+#if GLOG
 enum level 
 {
     INFO=0,
@@ -54,10 +55,11 @@ int test_glog_main(int argc)
     google::ShutdownGoogleLogging();//GLOG内存清理，一般与  google::InitGoogleLogging配对使用
     return 0;
 }
+#endif
 
 int main(int, char**) {
     std::cout << "Hello, world!\n";
-	test_glog_main(0);
+	 
 #if __LINUX__
     char path[256];
     sprintf(path, "/sys/devices/system/cpu/cpu%d/cpufreq/cpuinfo_max_freq", 0);
