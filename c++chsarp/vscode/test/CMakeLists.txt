@@ -14,7 +14,7 @@ else()
 endif()
 
 add_executable(vsc2 main.cpp)
-target_link_libraries (vsc2 log4cplus::log4cplus)
+target_link_libraries (vsc2 log4cplus)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
