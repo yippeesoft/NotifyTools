@@ -3,6 +3,8 @@
 
 using namespace std;
 
+#define GLOG 1
+
 #if GLOG
 #include "glog/logging.h"
 enum level 
@@ -59,8 +61,11 @@ int test_glog_main(int argc)
 #endif
 
 int main(int, char**) {
+	int kk = 1;
+	kk++;
     std::cout << "Hello, world!\n";
-	 
+    test_glog_main(1);
+
 #if __LINUX__
     char path[256];
     sprintf(path, "/sys/devices/system/cpu/cpu%d/cpufreq/cpuinfo_max_freq", 0);
