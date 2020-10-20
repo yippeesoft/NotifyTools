@@ -13,6 +13,8 @@ else()
     add_subdirectory(submoules/glog)
 endif()
 
+add_subdirectory(slibs)
+
 add_executable(vsc2 main.cpp)
 target_link_libraries (vsc2 glog)
 
