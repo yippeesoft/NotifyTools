@@ -41,10 +41,10 @@ jobs:
     - name: build
       run: cd ./c++chsarp/vscode/test && cmake --build build -j 2
 
-    #- name: test
-    #  run: |
-    #    export PATH=$GITHUB_WORKSPACE/qemu-install/bin:$PATH
-    #    cd ./c++chsarp/vscode/test && cd build
-    #    TESTS_EXECUTABLE_LOADER=qemu-aarch64 TESTS_EXECUTABLE_LOADER_ARGUMENTS="-L;/usr/aarch64-linux-gnu" ctest --output-on-failure -j 2
+    - name: test
+      run: |
+        export PATH=$GITHUB_WORKSPACE/qemu-install/bin:$PATH
+        cd ./c++chsarp/vscode/test && cd build
+        TESTS_EXECUTABLE_LOADER=qemu-aarch64 TESTS_EXECUTABLE_LOADER_ARGUMENTS="-L;/usr/aarch64-linux-gnu" ctest --output-on-failure -j 2
 
   
