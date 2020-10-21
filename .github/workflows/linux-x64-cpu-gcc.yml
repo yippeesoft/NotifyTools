@@ -16,12 +16,12 @@ jobs:
     #- name: protobuf
     #  run: sudo apt-get install libprotobuf-dev protobuf-compiler libopencv-dev
     #- name: path
-    #  run: cd c++chsarp/vscode/test
+    #  run: cd cplussharp/vscode/test
     - name: configure
       run: cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON ..
     - name: build
-      run: cd c++cplussharp/vscode/test/ && cmake --build build -j 2
+      run: cd ./cplussharp/vscode/test/ && cmake --build build -j 2
     - name: test
-      run: cd c++cplussharp/vscode/test/build && ctest --output-on-failure -j 2
+      run: cd ./cplussharp/vscode/test/build && ctest --output-on-failure -j 2
 
   
