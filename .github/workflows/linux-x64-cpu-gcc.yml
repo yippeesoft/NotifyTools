@@ -10,7 +10,7 @@ jobs:
     - name: update
       run: sudo apt-get update
     - name: git
-      run: cd ./c++chsarp/vscode/test && git submodule update --init  --recursive
+      run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
     #- name: glog
     #  run: sudo apt-get install libgoogle-glog-dev
     #- name: protobuf
