@@ -8,7 +8,7 @@ jobs:
       with:
         submodules: true
     - name: git
-      run: cd ./c++chsarp/vscode/test && git submodule update --init  --recursive
+      run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
     - name: cache-qemu
       id: cache-qemu
       uses: actions/cache@v1
@@ -37,14 +37,14 @@ jobs:
         sudo apt-get install g++-aarch64-linux-gnu
     
     - name: configure
-      run: cd ./c++chsarp/vscode/test && mkdir build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake -DNCNN_ARM82=OFF -DNCNN_BUILD_TOOLS=OFF -DNCNN_BUILD_EXAMPLES=OFF -DNCNN_BUILD_TESTS=ON ..
+      run: cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake -DNCNN_ARM82=OFF -DNCNN_BUILD_TOOLS=OFF -DNCNN_BUILD_EXAMPLES=OFF -DNCNN_BUILD_TESTS=ON ..
     - name: build
-      run: cd ./c++chsarp/vscode/test && cmake --build build -j 2
+      run: cd ./cplussharp/vscode/test && cmake --build build -j 2
 
     #- name: test
     #  run: |
     #    export PATH=$GITHUB_WORKSPACE/qemu-install/bin:$PATH
-    #    cd ./c++chsarp/vscode/test && cd build
+    #    cd ./cplussharp/vscode/test && cd build
     #    TESTS_EXECUTABLE_LOADER=qemu-aarch64 TESTS_EXECUTABLE_LOADER_ARGUMENTS="-L;/usr/aarch64-linux-gnu" ctest --output-on-failure -j 2
 
   
