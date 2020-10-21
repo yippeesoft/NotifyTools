@@ -1,3 +1,6 @@
 [submodule "cplussharp/vscode/test/submoules/glog"]
 	path = cplussharp/vscode/test/submodules/glog
 	url = https://github.com/google/glog
+[submodule "cplussharp/vscode/test/submodules/glog"]
+	path = cplussharp/vscode/test/submodules/glog
+	url = https://github.com/google/glog
