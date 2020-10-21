@@ -11,9 +11,12 @@ else()
     set(CMAKE_CXX_STANDARD 11)
     message("Building with glog")
     add_subdirectory(submoules/glog)
+
+	#add_definitions(-DUSE_SPECIFIED)
+	set(TEST_SUB "0" CACHE INTERNAL "TEST_SUB" )
+	add_subdirectory(slibs)
 endif()
 
-add_subdirectory(slibs)
 
 add_executable(vsc2 main.cpp)
 target_link_libraries (vsc2 glog)
