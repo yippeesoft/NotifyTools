@@ -2,7 +2,7 @@
   "configurations": [
     {
       "name": "x64-Debug",
-      "generator": "Visual Studio 15 2017 Win64",
+      "generator": "Visual Studio 16 2019 Win64",
       "configurationType": "Debug",
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}/debug",
@@ -20,6 +20,11 @@
         {
           "name": "BUILD_TESTING",
           "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "BUILD_SHARED_LIBS",
+          "value": "True",
           "type": "BOOL"
         }
       ]
