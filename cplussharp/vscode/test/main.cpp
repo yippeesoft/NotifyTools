@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
-#include <direct.h>
+ 
 #include <iostream>
 #include <corecrt_io.h>
 #include <iostream>
@@ -66,7 +66,7 @@ int test_glog_main(int argc)
     google::ShutdownGoogleLogging();//GLOG内存清理，一般与  google::InitGoogleLogging配对使用
     return 0;
 }
-#endif
+
 
 int test_dir_main()
 {
@@ -80,7 +80,7 @@ int test_dir_main()
 
 	return 0;
 }
-
+#endif
 int main(int, char**) {
 	int kk = 1;
 	kk++;
