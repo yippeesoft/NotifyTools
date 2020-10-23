@@ -8,21 +8,21 @@ jobs:
       with:
         submodules: true
     - name: install wget unzip curl jq
-        run: |
-          choco install Wget
-          choco install unzip
-          choco install curl
-          choco install jq
+      run: |
+        choco install Wget
+        choco install unzip
+        choco install curl
+        choco install jq
     - name: get boost
-        run: |
-          wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip
+      run: |
+        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip
     - name: build boost
-        run: |
-          unzip boost_1_72_0.zip
-          mkdir build
-          cd build
-          cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
-          cmake --build . --config Release
+      run: |
+        unzip boost_1_72_0.zip
+        mkdir build
+        cd build
+        cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
+        cmake --build . --config Release
     - name: git
       run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
     - name: cache-protobuf
