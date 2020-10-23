@@ -19,8 +19,7 @@ jobs:
     - name: build boost
       run: |
         unzip boost_1_72_0.zip
-        mkdir build
-        cd build
+        cd boost_1_72_0 ; mkdir build ; cd build
         cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
         cmake --build . --config Release
     - name: git
