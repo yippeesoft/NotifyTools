@@ -22,7 +22,7 @@ jobs:
         cd boost_1_72_0  
         #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
         #cmake --build . --config Release
-        call .\bootstrap.bat
+        .\bootstrap.bat
         .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
     - name: git
       run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
