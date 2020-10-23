@@ -1,6 +1,12 @@
 #include <iostream>
 #include <stdlib.h>
  
+
+using namespace std;
+
+
+#if GLOG
+#include "glog/logging.h"
 #include <iostream>
 #include <corecrt_io.h>
 #include <iostream>
@@ -8,12 +14,6 @@
 #include <cstdlib>
 #include <filesystem>
  
-
-using namespace std;
-
-
-#if GLOG
-#include "glog/logging.h"
 
 enum level 
 {
@@ -85,7 +85,7 @@ int main(int, char**) {
 	int kk = 1;
 	kk++;
     std::cout << "Hello, world!\n";
-    test_dir_main();
+    //test_dir_main();
     //test_glog_main(1);
 
 #if __LINUX__
