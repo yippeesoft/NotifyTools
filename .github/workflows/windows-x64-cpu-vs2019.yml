@@ -29,7 +29,7 @@ jobs:
         #cmake --build . --config Release
         .\bootstrap.bat
         .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
-        .\b2.exe install --toolset=msvc-14.2 --build-type=complete --prefix="$env:GITHUB_WORKSPACE\boost-install"  link=shared runtime-link=shared runtime-link=static threading=multi debug release
+        .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE\boost-install"  link=shared runtime-link=shared runtime-link=static threading=multi debug release
     - name: git
       run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
     - name: cache-protobuf
