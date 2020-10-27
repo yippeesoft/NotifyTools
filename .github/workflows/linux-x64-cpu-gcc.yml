@@ -21,8 +21,8 @@ jobs:
       id: cache-boost
       uses: actions/cache@v1
       with:
-        path: "boost-install"
-        key: boost-windows-install
+        path: "boost-linux-install"
+        key: boost-linux-install
     - name: boost
       if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
@@ -33,7 +33,7 @@ jobs:
         #cmake --build . --config Release
         .\bootstrap.sh
         .\b2 -j2 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
-        .\b2 install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE\boost-install"  link=shared runtime-link=shared runtime-link=static threading=multi debug release
+        .\b2 install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE\boost-linux-install"  link=shared runtime-link=shared runtime-link=static threading=multi debug release
     - name: configure
       run: cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON ..
     - name: build
