@@ -18,7 +18,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: "boost-install"
-        key: boost-windows-install
+        key: boost-install
     - name: boost
       if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
