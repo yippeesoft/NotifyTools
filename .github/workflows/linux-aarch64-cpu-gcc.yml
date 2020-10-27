@@ -46,7 +46,7 @@ jobs:
       run: |
         wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip  >/dev/null 2>&1
         unzip boost_1_72_0.zip >/dev/null 2>&1
-        cd boost_1_72_0  && ./bootstrap.sh && echo  “using gcc : arm64 : aarch64-linux-gnu-g++ ; ” >>  project-config.jam && ./b2  -j2 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static         && ./b2   install  architecture=arm  address-model=64 --without-python  --prefix="$env:GITHUB_WORKSPACE/boost-linux-install"  link=static runtime-link=static  threading=multi --toolset=gcc-arm64
+        cd boost_1_72_0  && ./bootstrap.sh && echo  "using gcc : arm64 : aarch64-linux-gnu-g++ ; " >>  project-config.jam && ./b2  -j2 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static         && ./b2   install  architecture=arm  address-model=64 --without-python  --prefix="$env:GITHUB_WORKSPACE/boost-linux-install"  link=static runtime-link=static  threading=multi --toolset=gcc-arm64
     - name: configure
       run: cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake -DNCNN_ARM82=OFF -DNCNN_BUILD_TOOLS=OFF -DNCNN_BUILD_EXAMPLES=OFF -DNCNN_BUILD_TESTS=ON ..
     - name: build
