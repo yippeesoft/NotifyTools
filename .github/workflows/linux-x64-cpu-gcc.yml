@@ -33,9 +33,9 @@ jobs:
         cd boost_1_72_0  
         #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
         #cmake --build . --config Release
-        .\bootstrap.sh
-        .\b2 -j2 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
-        .\b2 install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE\boost-linux-install"  link=shared runtime-link=shared runtime-link=static threading=multi debug release
+        ./bootstrap.sh
+        ./b2 -j2 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
+        ./b2 install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE\boost-linux-install"  link=shared runtime-link=shared runtime-link=static threading=multi debug release
     - name: configure
       run: cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON ..
     - name: build
