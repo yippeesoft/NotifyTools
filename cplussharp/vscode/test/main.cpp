@@ -1,9 +1,14 @@
 #include <iostream>
 #include <stdlib.h>
- 
+
+#include <boost/tuple/tuple.hpp>
+#include <boost/tuple/tuple_comparison.hpp>
+#include <boost/tuple/tuple_io.hpp>
+#include <boost/random.hpp>
+#include <boost/random/random_device.hpp>
 
 using namespace std;
-
+using namespace boost;
 
 #if GLOG
 #include "glog/logging.h"
@@ -81,10 +86,32 @@ int test_dir_main()
 	return 0;
 }
 #endif
+
+int test_boost()
+{
+    boost::tuple<int, char, float> t(2, 'a', 0.9);
+    std::cout << t << std::endl;
+
+    std::time_t now = std::time(0);
+	boost::random::mt19937 gen(now);
+
+		//输出最大值和最小值
+    std::cout << boost::random::mt19937::min() << ":" << boost::random::mt19937::max() << std::endl;
+
+		//产生5个随机数,
+	for (int i = 0; i < 5; ++i)
+	{
+		std::cout << gen() << "-";
+	}
+	std::cout << std::endl;
+
+    return 0;
+}
 int main(int, char**) {
 	int kk = 1;
 	kk++;
     std::cout << "Hello, world!\n";
+    test_boost();
     //test_dir_main();
     //test_glog_main(1);
 
