@@ -11,6 +11,8 @@ jobs:
       run: sudo apt-get update
     - name: git
       run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
+    - name: apt
+      run: sudo apt-get install unzip
     #- name: glog
     #  run: sudo apt-get install libgoogle-glog-dev
     #- name: protobuf
