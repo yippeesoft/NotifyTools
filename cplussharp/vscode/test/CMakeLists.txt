@@ -30,8 +30,15 @@ else()
 	add_subdirectory(slibs)
 endif()
 
-
+set(CMAKE_CXX_STANDARD 11)
+set(BOOST_INCLUDE_DIR "./boost-install/include")
+set(BOOST_LIB_DIR "./boost-install/lib")
+include_directories(${BOOST_INCLUDE_DIR})
+link_directories(${BOOST_LIB_DIR})
 add_executable(vsc2 main.cpp)
+target_include_directories(vsc2
+        PRIVATE
+            ${BOOST_INCLUDE_DIR})
 target_link_libraries (vsc2 glog)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
