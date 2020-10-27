@@ -28,7 +28,7 @@ jobs:
     - name: boost
       if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
-        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip
+        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip  >/dev/null 2>&1
         unzip boost_1_72_0.zip >/dev/null 2>&1
         cd boost_1_72_0  && ./bootstrap.sh  ./b2   --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static         && ./b2   install   address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE/boost-linux-install"  link=static runtime-link=static runtime-link=static threading=multi
     - name: configure
