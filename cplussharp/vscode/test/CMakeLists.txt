@@ -32,6 +32,9 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 set(BOOST_INCLUDE_DIR "./boost-install/include")
+
+#windows install自动加 boost-1_72
+set(BOOST_INCLUDE_DIR "./boost-install/include/boost-1_72")
 set(BOOST_LIB_DIR "./boost-install/lib")
 include_directories(${BOOST_INCLUDE_DIR})
 link_directories(${BOOST_LIB_DIR})
