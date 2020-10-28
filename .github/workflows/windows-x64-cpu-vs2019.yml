@@ -52,7 +52,7 @@ jobs:
         cd ./cplussharp/vscode/test ; mkdir build; cd build
         cmake -DProtobuf_INCLUDE_DIR="$env:GITHUB_WORKSPACE\protobuf-install\include" -DProtobuf_LIBRARIES="$env:GITHUB_WORKSPACE\protobuf-install\lib\libprotobuf.lib" -DProtobuf_PROTOC_EXECUTABLE="$env:GITHUB_WORKSPACE\protobuf-install\bin\protoc.exe" -DNCNN_RUNTIME_CPU=OFF -DNCNN_AVX2=OFF -DNCNN_BUILD_TESTS=ON ..
     - name: build
-      run: cd ./cplussharp/vscode/test ; cmake --build build --config Release -j 2
+      run: cd ./cplussharp/vscode/test ; cmake --build build --config Release
     #- name: test
     #  run: cd ./cplussharp/vscode/test ; cd build; ctest -C Release --output-on-failure -j 2
 
