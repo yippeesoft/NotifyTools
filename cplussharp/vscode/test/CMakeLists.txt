@@ -40,7 +40,7 @@ find_package(Boost  COMPONENTS
     REQUIRED
 )
 if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Not found Boost")
+    message(FATAL_ERROR "Not found Boost  ${BOOST_ROOT}")
 endif()
 set(BOOST_INCLUDE_DIR "./boost-install/include")
 
