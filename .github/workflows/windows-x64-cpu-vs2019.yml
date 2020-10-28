@@ -28,7 +28,7 @@ jobs:
         #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
         #cmake --build . --config Release
         .\bootstrap.bat
-        #.\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
+        .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
         #.\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"   link=static runtime-link=static threading=multi  release
         .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
     - name: git
