@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.10)
 project(vsc2 VERSION 0.1.0)
 if ( CMAKE_SYSTEM_NAME MATCHES "Windows" )
     set( my_std_pre "/std:" )
@@ -31,8 +31,19 @@ else()
 endif()
 
 set(CMAKE_CXX_STANDARD 11)
+
+set(BOOST_ROOT  "./boost-install")
+find_package(Boost  COMPONENTS
+    regex
+#filesystem   #要使用的boost库
+    REQUIRED
+)
+if(NOT Boost_FOUND)
+    message(FATAL_ERROR "Not found Boost")
+endif()
 set(BOOST_INCLUDE_DIR "./boost-install/include")
 
+#begin 操作系统检测
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     MESSAGE(STATUS "current platform: Linux ")
@@ -49,14 +60,14 @@ ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 set(BOOST_LIB_DIR "./boost-install/lib")
 
-
-include_directories(${BOOST_INCLUDE_DIR})
-link_directories(${BOOST_LIB_DIR})
+#begin find_package 标准  Boost变量
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
 add_executable(vsc2 main.cpp)
 target_include_directories(vsc2
         PRIVATE
-            ${BOOST_INCLUDE_DIR})
-target_link_libraries (vsc2 glog)
+            ${BOOST_INCLUDEDIR})
+target_link_libraries (vsc2 glog ${Boost_LIBRARIES})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

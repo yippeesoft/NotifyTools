@@ -88,6 +88,11 @@ int test_dir_main()
 }
 #endif
 
+void test_regx_boost()
+{
+    boost::regex reg("\\d{2,3}");
+	assert(boost::regex_match("234",reg) == true);
+}
 int test_boost()
 {
     boost::tuple<int, char, float> t(2, 'a', 0.9);
@@ -106,6 +111,7 @@ int test_boost()
 	}
 	std::cout << std::endl;
 
+    test_regx_boost();
     return 0;
 }
 int main(int, char**) {
