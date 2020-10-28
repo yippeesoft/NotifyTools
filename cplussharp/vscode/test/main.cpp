@@ -6,6 +6,7 @@
 #include <boost/tuple/tuple_io.hpp>
 #include <boost/random.hpp>
 #include <boost/random/random_device.hpp>
+#include <boost/regex.hpp> 
 
 using namespace std;
 using namespace boost;
