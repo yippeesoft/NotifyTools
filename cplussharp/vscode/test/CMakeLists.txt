@@ -33,6 +33,7 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 
 set(BOOST_ROOT  "./boost-install")
+#find_package(OpenCV 3.1 EXACT REQUIRED PATHS /usr/local/opencv3.1)
 find_package(Boost  COMPONENTS
     regex
 #filesystem   #要使用的boost库
