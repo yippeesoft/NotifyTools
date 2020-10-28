@@ -24,9 +24,9 @@ jobs:
       uses: actions/cache@v1
       with:
         path: "cplussharp/vscode/test/boost-install"
-        key: boost-install
+        key: boost-linux-install
     - name: boost
-      if: steps.cache-boost.outputs.cache-hit != 'true'
+      if: steps.boost-linux-install.outputs.cache-hit != 'true'
       run: |
         wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip  >/dev/null 2>&1
         unzip boost_1_72_0.zip >/dev/null 2>&1
