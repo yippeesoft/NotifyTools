@@ -33,9 +33,23 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 set(BOOST_INCLUDE_DIR "./boost-install/include")
 
-#windows install自动加 boost-1_72
-set(BOOST_INCLUDE_DIR "./boost-install/include/boost-1_72")
+MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    MESSAGE(STATUS "current platform: Linux ")
+    set(BOOST_INCLUDE_DIR "./boost-install/include/")    
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    MESSAGE(STATUS "current platform: Windows")
+    #windows install自动加 boost-1_72
+    set(BOOST_INCLUDE_DIR "./boost-install/include/boost-1_72")    
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+	MESSAGE(STATUS "current platform: FreeBSD")
+ELSE ()
+	MESSAGE(STATUS "other platform: ${CMAKE_SYSTEM_NAME}")
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+
 set(BOOST_LIB_DIR "./boost-install/lib")
+
+
 include_directories(${BOOST_INCLUDE_DIR})
 link_directories(${BOOST_LIB_DIR})
 add_executable(vsc2 main.cpp)
