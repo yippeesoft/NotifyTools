@@ -17,7 +17,7 @@ jobs:
       id: cache-boost
       uses: actions/cache@v1
       with:
-        path: "$env:GITHUB_WORKSPACE/cplussharp/vscode/test/boost-install"
+        path: "cplussharp/vscode/test/boost-install"
         key: boost-install
     - name: boost
       if: steps.cache-boost.outputs.cache-hit != 'true'
