@@ -32,16 +32,23 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 
+
+set(Boost_USE_STATIC_LIBS ON) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
 set(BOOST_ROOT  "./boost-install")
 #find_package(OpenCV 3.1 EXACT REQUIRED PATHS /usr/local/opencv3.1)
 
 #Could NOT find Boost (missing: regex) 
 # remove COMPONENTS  regex
 
-find_package(Boost   REQUIRED)
+find_package(Boost COMPONENTS filesystem regex)
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Not found Boost  ${BOOST_ROOT}")
 endif()
+MESSAGE(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+MESSAGE(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
+MESSAGE(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 set(BOOST_INCLUDE_DIR "./boost-install/include")
 
 #begin 操作系统检测
