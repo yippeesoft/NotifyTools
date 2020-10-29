@@ -34,11 +34,11 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(BOOST_ROOT  "./boost-install")
 #find_package(OpenCV 3.1 EXACT REQUIRED PATHS /usr/local/opencv3.1)
-find_package(Boost  COMPONENTS
-    regex
-#filesystem   #要使用的boost库
-    REQUIRED
-)
+
+#Could NOT find Boost (missing: regex) 
+# remove COMPONENTS  regex
+
+find_package(Boost   REQUIRED)
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Not found Boost  ${BOOST_ROOT}")
 endif()
