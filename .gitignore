@@ -273,3 +273,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+boost-linux-install
+boost_1_72_0
+boost-arm64-install
+boost-install
