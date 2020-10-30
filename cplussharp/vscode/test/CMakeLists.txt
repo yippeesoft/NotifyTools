@@ -29,9 +29,7 @@ else()
     add_subdirectory(submodules/glog)
 
 	#add_definitions(-DUSE_SPECIFIED)
-	set(TEST_SUB "0" CACHE INTERNAL "TEST_SUB" )
-	
-    
+	set(TEST_SUB "0" CACHE INTERNAL "TEST_SUB" )    
 endif()
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/spdlog/CMakeLists.txt")
@@ -86,7 +84,7 @@ add_executable(vsc2 main.cpp)
 target_include_directories(vsc2
         PRIVATE
             ${BOOST_INCLUDEDIR})
-target_link_libraries (vsc2 glog ${Boost_LIBRARIES})
+target_link_libraries (vsc2 glog spdlog::spdlog ${Boost_LIBRARIES})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
