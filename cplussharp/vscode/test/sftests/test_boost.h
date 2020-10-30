@@ -1,10 +1,6 @@
 #ifndef TEST_BOOST_H
 #define TEST_BOOST_H
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 #define BOOST 1
 #if BOOST
@@ -44,7 +40,5 @@ extern "C"
     }
 #endif
 
-#ifdef __cplusplus
-}
-#endif
+
 #endif

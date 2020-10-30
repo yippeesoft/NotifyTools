@@ -21,13 +21,14 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glog/CMakeLists.txt")
     message(FATAL_ERROR "The submodules glog were not downloaded! Please update submodules with \"git submodule update --init  --recursive \" and try again.")
 else()
     # glslang requires c++11
-    #set(CMAKE_CXX_STANDARD 11)
+    set(CMAKE_CXX_STANDARD 11)
     message("Building with glog")
     add_subdirectory(submodules/glog)
 
 	#add_definitions(-DUSE_SPECIFIED)
 	set(TEST_SUB "0" CACHE INTERNAL "TEST_SUB" )
 	add_subdirectory(slibs)
+    add_subdirectory(sftests)
 endif()
 
 set(CMAKE_CXX_STANDARD 11)
@@ -67,7 +68,7 @@ ELSE ()
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 set(BOOST_LIB_DIR "./boost-install/lib")
-
+include_directories("./sftests")
 #begin find_package 标准  Boost变量
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})

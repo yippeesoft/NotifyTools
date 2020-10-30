@@ -1,11 +1,6 @@
 #ifndef TEST_GLOG_H
 #define TEST_GLOG_H
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #define GLOG 1
 
 #if GLOG
@@ -15,7 +10,7 @@ extern "C"
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-
+using namespace std;
     enum level
     {
         INFO = 0,
@@ -38,8 +33,7 @@ extern "C"
             LOG_IF_EVERY_N(WARNING, (i > 50), 10) << "LOG_IF_ERVER_N(INFO,(I>50),10) google::COUNTER=" << google::COUNTER << " i=" << i;
 
             //只打印前5次
-            LOG_FIRST_N(ERROR, 5) << "LOG_FIRST_N(error,5) google::COUNTER="
-                                  << " i=" << i;
+            LOG_FIRST_N(ERROR, 5) << "LOG_FIRST_N(error,5) google::COUNTER=" << " i=" << i;
 
             //每次都打印
             LOG(ERROR) << "TEST BY TOPSLUO" << endl;
@@ -69,7 +63,5 @@ extern "C"
     }
 #endif
 
-#ifdef __cplusplus
-}
-#endif
+
 #endif
