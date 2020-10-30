@@ -37,6 +37,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(Boost_USE_STATIC_LIBS ON) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
+set(BOOST_NO_SYSTEM_PATHS ON)
 set(BOOST_ROOT  "./boost-install")
 #find_package(OpenCV 3.1 EXACT REQUIRED PATHS /usr/local/opencv3.1)
 
