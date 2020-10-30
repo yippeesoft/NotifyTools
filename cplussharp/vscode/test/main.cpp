@@ -28,6 +28,7 @@ int main(int, char **)
     test_boost();
     //test_dir_main();
     test_glog_main(1);
+    test_spdlog_main(1);
 
 #if __LINUX__
     char path[256];
