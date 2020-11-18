@@ -5,6 +5,9 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+
+#include "stbtest.h"
+
 namespace fs = std::filesystem;
 
 //export DISPLAY=localhost:10.0
