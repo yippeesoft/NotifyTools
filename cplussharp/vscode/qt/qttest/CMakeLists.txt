@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
-
-PROJECT(example)
+set(PrjName "example")
+PROJECT(${PrjName})
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_AUTOMOC ON)
@@ -19,6 +19,11 @@ if(WIN32)
     set(CMAKE_WIN32_EXECUTABLE ON)
 endif()
 
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/stb_image/stb_image.h")
+    message(FATAL_ERROR "The submodules stb were not downloaded! Please update submodules with \"git submodule update --init\" and try again.")
+else()
+    include_directories(${PrjName} SYSTEM PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/stb_image/")
+endif()
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 SET(QT_DONT_USE_QTGUI TRUE)
@@ -26,7 +31,7 @@ include_directories( ${QT_USE_FILE} )
 
 
 #INCLUDE(${QT_USE_FILE})
-ADD_EXECUTABLE(example qtmain.cpp MainWidget1.cpp)
-target_link_libraries(example Qt5::Widgets)
+ADD_EXECUTABLE(${PrjName} qtmain.cpp MainWidget1.cpp)
+target_link_libraries(${PrjName} Qt5::Widgets)
 
 
