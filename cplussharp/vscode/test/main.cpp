@@ -20,11 +20,20 @@ int test_dir_main()
 }
 #endif
 
+#define DEFINEE 1
+#ifdef DEFINEE
+#define NCNN_XADD(x, y) x+y
+#endif
+
+#if !(defined NCNN_XADD)
+#define NCNN_XADD(x, y) x*y
+#endif
+
 int main(int, char **)
 {
     int kk = 1;
     kk++;
-    std::cout << "Hello, world!\n";
+    std::cout <<NCNN_XADD(10,20) << " Hello, world!\n";
     test_boost();
     //test_dir_main();
     test_glog_main(1);
