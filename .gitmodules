@@ -4,3 +4,6 @@
 [submodule "cplussharp/vscode/test/submodules/spdlog"]
 	path = cplussharp/vscode/test/submodules/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "cplussharp/vscode/qt/qttest/stb_image"]
+	path = cplussharp/vscode/qt/qttest/stb_image
+	url = https://github.com/nothings/stb
