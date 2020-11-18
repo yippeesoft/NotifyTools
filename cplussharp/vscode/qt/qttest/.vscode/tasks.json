@@ -20,7 +20,10 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "detail": "Generated task by Debugger"
+            "detail": "Generated task by Debugger",
+            "presentation": {
+                "clear": true
+            }
         }
     ],
     "version": "2.0.0"

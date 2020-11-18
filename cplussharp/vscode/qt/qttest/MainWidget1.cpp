@@ -10,5 +10,5 @@ MainWidget1::MainWidget1(QWidget *parent) : QWidget(parent) {
 }
 void MainWidget1::sub_Send(void) {
   // emit Send_Open();
-  MainButton_1->setText("aaaaaaaa");
+  MainButton_1->setText("aaaaaaassa");
 }
