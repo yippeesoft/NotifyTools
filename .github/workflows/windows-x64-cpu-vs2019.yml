@@ -7,7 +7,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: install wget unzip curl jq
+    - name: install wget unzip curl jq tar
       run: |
         choco install Wget
         choco install unzip
@@ -17,19 +17,20 @@ jobs:
       id: cache-boost
       uses: actions/cache@v1
       with:
-        path: "boost-install"
-        key: boost-windows-install
+        path: "cplussharp/vscode/test/boost-install"
+        key: boost-win64-install
     - name: boost
       if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
-        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip
+        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip  | Out-Null
         unzip boost_1_72_0.zip | Out-Null
         cd boost_1_72_0  
         #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
         #cmake --build . --config Release
         .\bootstrap.bat
         .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
-        .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE\boost-install"  link=shared runtime-link=shared runtime-link=static threading=multi debug release
+        #.\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"   link=static runtime-link=static threading=multi  release
+        .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python  --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
     - name: git
       run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
     - name: cache-protobuf
@@ -52,7 +53,7 @@ jobs:
         cd ./cplussharp/vscode/test ; mkdir build; cd build
         cmake -DProtobuf_INCLUDE_DIR="$env:GITHUB_WORKSPACE\protobuf-install\include" -DProtobuf_LIBRARIES="$env:GITHUB_WORKSPACE\protobuf-install\lib\libprotobuf.lib" -DProtobuf_PROTOC_EXECUTABLE="$env:GITHUB_WORKSPACE\protobuf-install\bin\protoc.exe" -DNCNN_RUNTIME_CPU=OFF -DNCNN_AVX2=OFF -DNCNN_BUILD_TESTS=ON ..
     - name: build
-      run: cd ./cplussharp/vscode/test ; cmake --build build --config Release -j 2
+      run: cd ./cplussharp/vscode/test ; cmake --build build --config Release
     #- name: test
     #  run: cd ./cplussharp/vscode/test ; cd build; ctest -C Release --output-on-failure -j 2
 
