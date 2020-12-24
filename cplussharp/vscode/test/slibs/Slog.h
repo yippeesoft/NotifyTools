@@ -1,4 +1,7 @@
 #pragma once
+#ifndef SF_SLOG_H
+#define SF_SLOG_H
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,4 +21,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
+#endif

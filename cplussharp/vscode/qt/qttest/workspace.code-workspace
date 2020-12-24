@@ -1,0 +1,39 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"qapplication": "cpp",
+			"*.moc": "cpp"
+		}
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "(gdb) Launch",
+				"type": "cppdbg",
+				"request": "launch",
+				"program": "${workspaceFolder}/build/example",
+				"preLaunchTask": "export DISPLAY=localhost:10.0",
+				"args": [],
+				"stopAtEntry": false,
+				"cwd": "${workspaceFolder}",
+				"environment": ["DISPLAY","localhost:10.0"],
+				"externalConsole": false,
+				"MIMode": "gdb",
+				"setupCommands": [
+					{
+						"description": "Enable pretty-printing for gdb",
+						"text": "-enable-pretty-printing",
+						"ignoreFailures": true
+					}
+				],
+				"visualizerFile": "/home/sf/.vscode-server/data/User/workspaceStorage/3339a233fa78736d42dc82e4d1e680bf/tonka3000.qtvsctools/qt.natvis.xml"
+			}
+		]
+	}
+}

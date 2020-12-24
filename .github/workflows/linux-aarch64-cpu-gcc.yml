@@ -2,7 +2,7 @@ name: linux-aarch64-cpu-gcc
 on: [push, pull_request]
 jobs:
   linux-gcc:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
       with:
@@ -35,7 +35,18 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install g++-aarch64-linux-gnu
-    
+    - name: cache-boost
+      id: cache-boost
+      uses: actions/cache@v1
+      with:
+        path: "cplussharp/vscode/test/boost-install"
+        key: boost-aarch64-install
+    - name: boost
+      if: steps.cache-boost.outputs.cache-hit != 'true'
+      run: |
+        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip  >/dev/null 2>&1
+        unzip boost_1_72_0.zip >/dev/null 2>&1
+        cd boost_1_72_0  && ./bootstrap.sh && echo  "using gcc : arm64 : aarch64-linux-gnu-g++ ; " >>  project-config.jam &&  ./b2   install  architecture=arm  address-model=64 --without-python  --prefix="../cplussharp/vscode/test/boost-install"  link=static runtime-link=static  threading=multi --toolset=gcc-arm64
     - name: configure
       run: cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake -DNCNN_ARM82=OFF -DNCNN_BUILD_TOOLS=OFF -DNCNN_BUILD_EXAMPLES=OFF -DNCNN_BUILD_TESTS=ON ..
     - name: build
