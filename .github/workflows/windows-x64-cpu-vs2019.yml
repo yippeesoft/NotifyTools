@@ -30,7 +30,7 @@ jobs:
         .\bootstrap.bat
         .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
         #.\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"   link=static runtime-link=static threading=multi  release
-        .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python  --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
+        .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python  --build-type=complete --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
     - name: git
       run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
     - name: cache-protobuf
@@ -51,6 +51,7 @@ jobs:
     - name: configure
       run: |
         cd ./cplussharp/vscode/test ; mkdir build; cd build
+        set BOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"
         cmake -DProtobuf_INCLUDE_DIR="$env:GITHUB_WORKSPACE\protobuf-install\include" -DProtobuf_LIBRARIES="$env:GITHUB_WORKSPACE\protobuf-install\lib\libprotobuf.lib" -DProtobuf_PROTOC_EXECUTABLE="$env:GITHUB_WORKSPACE\protobuf-install\bin\protoc.exe" -DNCNN_RUNTIME_CPU=OFF -DNCNN_AVX2=OFF -DNCNN_BUILD_TESTS=ON ..
     - name: build
       run: cd ./cplussharp/vscode/test ; cmake --build build --config Release
