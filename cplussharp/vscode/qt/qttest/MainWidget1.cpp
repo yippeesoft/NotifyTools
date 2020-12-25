@@ -2,6 +2,7 @@
 #include "MainWidget1.h"
 #include <QtGui>
 #include <QLabel>
+#include <QWebEngineView>
 
 MainWidget1::MainWidget1(QWidget* parent)
     : QWidget(parent)
@@ -9,7 +10,7 @@ MainWidget1::MainWidget1(QWidget* parent)
     MainButton_1 = new QPushButton("MainButton_1", this);
     // setFixedSize(500, 500);
     setWindowTitle("MainWindow");
-    MainButton_1->setFixedSize(200, 100);
+    MainButton_1->setFixedSize(10, 10);
     connect(MainButton_1, &QPushButton::clicked, this, &MainWidget1::sub_Send);
 
     setWindowIcon(QIcon("/home/sf/pose.jpg"));
@@ -28,7 +29,12 @@ MainWidget1::MainWidget1(QWidget* parent)
     QPalette palette = this->palette();                       //创建一个调色板对象
     palette.setBrush(this->backgroundRole(), QBrush(pixmap)); //用调色板的画笔把映射到pixmap上的图片画到frame.backgroundRole()这个背景上
     // this->setPalette(palette);
+
+    QWebEngineView* qwebengineview = new QWebEngineView(this);
+    qwebengineview->load(QUrl("https://www.163.com"));
+    qwebengineview->setFixedSize(400, 400);
 }
+
 void MainWidget1::sub_Send(void)
 {
     // emit Send_Open();
