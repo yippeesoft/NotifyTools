@@ -2,17 +2,19 @@ name: linux-x64-cpu-gcc
 on: [push, pull_request]
 jobs:
   linux-gcc:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: true
     - name: update
       run: sudo apt-get update
-    - name: git
-      run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
     - name: apt
-      run: sudo apt-get install unzip
+      run: sudo apt-get install unzip git
+    - name: git
+      run: |
+        cd ./cplussharp/vscode/test 
+        git submodule update --init  --recursive   
     #- name: glog
     #  run: sudo apt-get install libgoogle-glog-dev
     #- name: protobuf
@@ -23,14 +25,14 @@ jobs:
       id: cache-boost
       uses: actions/cache@v1
       with:
-        path: "cplussharp/vscode/test/boost-install"
+        path: "boost-linux-install"
         key: boost-linux-install
     - name: boost
       if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
-        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip  >/dev/null 2>&1
+        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip >/dev/null 2>&1
         unzip boost_1_72_0.zip >/dev/null 2>&1
-        cd boost_1_72_0  && ./bootstrap.sh  &&  ./b2   install   address-model=64 --without-python  --prefix="../cplussharp/vscode/test/boost-install"  link=static runtime-link=static  threading=multi
+        cd boost_1_72_0  && ./bootstrap.sh           && ./b2 -j2  install   address-model=64   --build-type=complete  --prefix="../cplussharp/vscode/test/boost-install"   link=static runtime-link=static  threading=multi --layout=tagged
     - name: configure
       run: cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON ..
     - name: build
