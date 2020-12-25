@@ -9,10 +9,10 @@ jobs:
         submodules: true
     - name: update
       run: sudo apt-get update
-    - name: git
-      run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
     - name: apt
-      run: sudo apt-get install unzip
+      run: sudo apt-get install unzip git
+    - name: git
+      run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive   
     #- name: glog
     #  run: sudo apt-get install libgoogle-glog-dev
     #- name: protobuf
@@ -30,7 +30,7 @@ jobs:
       run: |
         wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip
         unzip boost_1_72_0.zip >/dev/null 2>&1
-        cd boost_1_72_0  && ./bootstrap.sh  ./b2 -j2 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static         && ./b2 -j2  install   address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE/boost-linux-install"  link=static runtime-link=static runtime-link=static threading=multi
+        cd boost_1_72_0  && ./bootstrap.sh  ./b2  --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static         && ./b2 -j2  install   address-model=64 --without-python --build-type=complete --prefix="$env:GITHUB_WORKSPACE/boost-linux-install"  link=static runtime-link=static runtime-link=static threading=multi
     - name: configure
       run: cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON ..
     - name: build
