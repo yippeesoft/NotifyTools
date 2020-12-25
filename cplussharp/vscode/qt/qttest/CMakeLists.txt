@@ -25,13 +25,13 @@ else()
     include_directories(${PrjName} SYSTEM PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/stb_image/")
 endif()
 
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 SET(QT_DONT_USE_QTGUI TRUE)
 include_directories( ${QT_USE_FILE} )
 
 
 #INCLUDE(${QT_USE_FILE})
 ADD_EXECUTABLE(${PrjName} qtmain.cpp MainWidget1.cpp)
-target_link_libraries(${PrjName} Qt5::Widgets)
+target_link_libraries(${PrjName} Qt5::Widgets Qt5::WebEngineWidgets)
 
 
