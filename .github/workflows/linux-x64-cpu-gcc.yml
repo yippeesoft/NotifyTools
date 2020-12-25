@@ -25,7 +25,7 @@ jobs:
       id: cache-boost
       uses: actions/cache@v1
       with:
-        path: "boost-linux-install"
+        path: "cplussharp/vscode/test/boost-install"
         key: boost-linux-install
     - name: boost
       if: steps.cache-boost.outputs.cache-hit != 'true'
