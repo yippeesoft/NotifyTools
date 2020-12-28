@@ -22,9 +22,9 @@ jobs:
     - name: boost
       # if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
-        wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.zip  | Out-Null
-        unzip boost_1_72_0.zip | Out-Null
-        cd boost_1_72_0  
+        wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip  | Out-Null
+        unzip boost_1_75_0.zip | Out-Null
+        cd boost_1_75_0  
         #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
         #cmake --build . --config Release
         .\bootstrap.bat
