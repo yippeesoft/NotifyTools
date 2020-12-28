@@ -61,7 +61,10 @@ MESSAGE(STATUS "execute_process")
 execute_process(COMMAND "ls" "-l" "../boost-install")
 # set(Boost_USE_STATIC_LIBS ON)
 # set(Boost_DEBUG ON) 
-find_package(Boost COMPONENTS filesystem regex)
+
+# 带毛猪
+
+find_package(Boost)
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Not found Boost  ${BOOST_ROOT}")
 endif()
