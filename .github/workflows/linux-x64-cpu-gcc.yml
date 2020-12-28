@@ -37,7 +37,7 @@ jobs:
       run: |
         cmake --version
         export BOOST_ROOT=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install
-        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON -DBOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install" ..
+        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON -DBOOST_ROOT="$env:GITHUB_WORKSPACE/cplussharp/vscode/test/boost-install" ..
     - name: build
       run: cd ./cplussharp/vscode/test/ && cmake --build build -j 2
     - name: test
