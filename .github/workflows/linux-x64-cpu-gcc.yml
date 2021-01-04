@@ -32,7 +32,7 @@ jobs:
       run: |
         wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip >/dev/null 2>&1
         unzip boost_1_75_0.zip >/dev/null 2>&1
-        cd boost_1_75_0  && ./bootstrap.sh           && ./b2 -j2  install   address-model=64   --build-type=complete  --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install   link=static runtime-link=static  threading=multi --layout=tagged
+        cd boost_1_75_0  && ./bootstrap.sh           && ./b2 -j2  install   address-model=64     --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install   link=static runtime-link=static  threading=multi
     - name: configure
       run: |
         cmake --version
