@@ -28,16 +28,16 @@ jobs:
         path: "cplussharp/vscode/test/boost-install"
         key: boost-linux-install
     - name: boost
-      # if: steps.cache-boost.outputs.cache-hit != 'true'
+      if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
         wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip >/dev/null 2>&1
         unzip boost_1_75_0.zip >/dev/null 2>&1
-        cd boost_1_75_0  && ./bootstrap.sh           && ./b2 -j2  install   address-model=64     --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install   link=static runtime-link=static  threading=multi
+        cd boost_1_75_0  && ./bootstrap.sh           && ./b2 -j2  install   address-model=64   --build-type=complete  --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install   link=static runtime-link=static  threading=multi debug release --layout=tagged
     - name: configure
       run: |
         cmake --version
         export BOOST_ROOT=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install
-        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON ..
+        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON -DBOOST_ROOT="$env:GITHUB_WORKSPACE/cplussharp/vscode/test/boost-install" ..
     - name: build
       run: cd ./cplussharp/vscode/test/ && cmake --build build -j 2
     - name: test
