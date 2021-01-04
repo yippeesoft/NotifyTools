@@ -60,19 +60,12 @@ MESSAGE(STATUS "execute_process")
 #     message(STATUS "${_variableName}=${${_variableName}}")
 # endforeach()
 execute_process(COMMAND "ls" "-l" "../boost-install")
-<<<<<<< HEAD
+
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_DEBUG ON) 
 find_package(Boost COMPONENTS filesystem regex)
-=======
-# set(Boost_USE_STATIC_LIBS ON)
-# set(Boost_DEBUG ON) 
 
-# 带毛猪
-
-find_package(Boost)
->>>>>>> a29401c55bef2010585c409e9ffac9336f4e48a2
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Not found Boost  ${BOOST_ROOT}")
 endif()
