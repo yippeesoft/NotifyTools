@@ -52,7 +52,7 @@ jobs:
       run: |
         cd ./cplussharp/vscode/test ; mkdir build; cd build
         set BOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"
-        cmake -DProtobuf_INCLUDE_DIR="$env:GITHUB_WORKSPACE\protobuf-install\include" -DProtobuf_LIBRARIES="$env:GITHUB_WORKSPACE\protobuf-install\lib\libprotobuf.lib" -DProtobuf_PROTOC_EXECUTABLE="$env:GITHUB_WORKSPACE\protobuf-install\bin\protoc.exe" -DNCNN_RUNTIME_CPU=OFF -DNCNN_AVX2=OFF -DNCNN_BUILD_TESTS=ON ..
+        cmake -DBOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install" -DProtobuf_INCLUDE_DIR="$env:GITHUB_WORKSPACE\protobuf-install\include" -DProtobuf_LIBRARIES="$env:GITHUB_WORKSPACE\protobuf-install\lib\libprotobuf.lib" -DProtobuf_PROTOC_EXECUTABLE="$env:GITHUB_WORKSPACE\protobuf-install\bin\protoc.exe" -DNCNN_RUNTIME_CPU=OFF -DNCNN_AVX2=OFF -DNCNN_BUILD_TESTS=ON ..
     - name: build
       run: cd ./cplussharp/vscode/test ; cmake --build build --config Release
     #- name: test
