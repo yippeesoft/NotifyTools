@@ -1,4 +1,5 @@
-cmake_minimum_required (VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
+
 project(vsc2 VERSION 0.1.0)
 
 if ( CMAKE_SYSTEM_NAME MATCHES "Windows" )
@@ -59,8 +60,9 @@ MESSAGE(STATUS "execute_process")
 #     message(STATUS "${_variableName}=${${_variableName}}")
 # endforeach()
 execute_process(COMMAND "ls" "-l" "../boost-install")
-# set(Boost_USE_STATIC_LIBS ON)
-# set(Boost_DEBUG ON) 
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_STATIC_RUNTIME ON)
+set(Boost_DEBUG ON) 
 find_package(Boost COMPONENTS filesystem regex)
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Not found Boost  ${BOOST_ROOT}")
@@ -68,7 +70,7 @@ endif()
 MESSAGE(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 MESSAGE(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 MESSAGE(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
-set(BOOST_INCLUDE_DIR "./boost-install/include")
+# set(BOOST_INCLUDE_DIR "./boost-install/include")
 
 #begin 操作系统检测
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
