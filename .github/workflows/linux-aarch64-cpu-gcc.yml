@@ -39,18 +39,18 @@ jobs:
       id: cache-boost
       uses: actions/cache@v1
       with:
-        path: "cplussharp/vscode/test/boost-install"
+        path: "cplussharp/vscode/test/boost-install-aarch64"
         key: boost-aarch64-install-1
     - name: boost
       # if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
         wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip >/dev/null 2>&1
         unzip boost_1_75_0.zip >/dev/null 2>&1
-        cd boost_1_75_0  && ./bootstrap.sh && echo  "using gcc : arm64 : aarch64-linux-gnu-g++ ; " >>  project-config.jam &&  ./b2   install  architecture=arm  address-model=64 --without-python  --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install    link=static runtime-link=static  threading=multi --toolset=gcc-arm64
+        cd boost_1_75_0  && ./bootstrap.sh && echo  "using gcc : arm64 : aarch64-linux-gnu-g++ ; " >>  project-config.jam &&  ./b2   install  architecture=arm  address-model=64 --without-python  --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install-aarch64    link=static runtime-link=static  threading=multi --toolset=gcc-arm64
     - name: configure
       run: |
         export BOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install" 
-        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DBOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install"    ..
+        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DBOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install-aarch64"    ..
     - name: build
       run: cd ./cplussharp/vscode/test && cmake --build build -j 2
 
