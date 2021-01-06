@@ -49,8 +49,8 @@ jobs:
         cd boost_1_75_0  && ./bootstrap.sh && echo  "using gcc : arm64 : aarch64-linux-gnu-g++ ; " >>  project-config.jam &&  ./b2   install  architecture=arm  address-model=64 --without-python  --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install    link=static runtime-link=static  threading=multi --toolset=gcc-arm64
     - name: configure
       run: |
-        export BOOST_ROOT="$env:GITHUB_WORKSPACE/cplussharp/vscode/test/boost-install" 
-        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DBOOST_ROOT="$env:GITHUB_WORKSPACE/cplussharp/vscode/test/boost-install"    ..
+        export BOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install" 
+        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DBOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install"    ..
     - name: build
       run: cd ./cplussharp/vscode/test && cmake --build build -j 2
 
