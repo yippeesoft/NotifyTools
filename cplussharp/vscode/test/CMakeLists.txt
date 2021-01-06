@@ -63,6 +63,13 @@ execute_process(COMMAND "ls" "-l" "../boost-install")
 
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
+if(WIN32)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_ARCHITECTURE "-x64")
+set(Boost_VERSION_MACRO 107500)
+set(Boost_COMPILER "-vc142")
+set(Boost_VERSION_STRING "1_75")
+endif()
 set(Boost_DEBUG ON) 
 find_package(Boost COMPONENTS filesystem regex)
 
