@@ -20,7 +20,7 @@ jobs:
         path: "cplussharp/vscode/test/boost-install"
         key: boost-win64-install
     - name: boost
-      if: steps.cache-boost.outputs.cache-hit != 'true'
+      # if: steps.cache-boost.outputs.cache-hit != 'true'
       run: |
         cmd /c rmdir cplussharp\vscode\test\boost-install /s /q
         wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip  | Out-Null
