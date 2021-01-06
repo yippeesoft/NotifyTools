@@ -40,6 +40,13 @@ Platform Name                                   ARM Platform
 运行 ./build/cmake-build/host/test/ccbenchmark/mace_cc_benchmark
 ```
 
+### tnn tengine
+tnn的比较正常cl比较快
+
+分别编译 arm ComputeLibrary 的neon版本和opencl版本
+tengine原版比armCL neon版本快多了。。
+tengine+armCL(OpenCL)版本比原版还是慢
+
 ## Intel Corporation HD Graphics 530 (rev 06) SDK
 
 ```
