@@ -50,7 +50,7 @@ jobs:
     - name: configure
       run: |
         export BOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install" 
-        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DBOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install-aarch64"    ..
+        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DBOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install-aarch64"   -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  ..
     - name: build
       run: cd ./cplussharp/vscode/test && cmake --build build -j 2
 
