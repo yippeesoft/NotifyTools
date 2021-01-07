@@ -25,26 +25,10 @@ endif()
 include(CTest)
 enable_testing()
 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glog/CMakeLists.txt")
-    message(FATAL_ERROR "The submodules glog were not downloaded! Please update submodules with \"git submodule update --init  --recursive \" and try again.")
-else()
-    # glslang requires c++11
-    message("Building with glog")
-    add_subdirectory(submodules/glog)
 
-	#add_definitions(-DUSE_SPECIFIED)
-	set(TEST_SUB "0" CACHE INTERNAL "TEST_SUB" )    
-endif()
 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/spdlog/CMakeLists.txt")
-    message(FATAL_ERROR "The submodules spdlog were not downloaded! Please update submodules with \"git submodule update --init  --recursive \" and try again.")
-else()
-    message("Building with spdlog")   
-    add_subdirectory(submodules/spdlog)
-endif()
-
-add_subdirectory(slibs)
-add_subdirectory(sftests)
+# add_subdirectory(slibs)
+# add_subdirectory(sftests)
 
 set(Boost_USE_STATIC_LIBS ON) 
 set(Boost_USE_MULTITHREADED ON)  
@@ -58,10 +42,7 @@ set(BOOST_NO_SYSTEM_PATHS ON)
 # execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
 # : Print out all accessible variables in a script
 MESSAGE(STATUS "execute_process")
-# get_cmake_property(_variableNames VARIABLES)
-# foreach (_variableName ${_variableNames})
-#     message(STATUS "${_variableName}=${${_variableName}}")
-# endforeach()
+
 execute_process(COMMAND "ls" "-l" "../boost-install")
 
 set(Boost_USE_STATIC_LIBS ON)
