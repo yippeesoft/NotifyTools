@@ -4,3 +4,6 @@
 [submodule "submodels/stb_image"]
 	path = submodels/stb_image
 	url = https://github.com/nothings/stb
+[submodule "submodels/cpp-httplib"]
+	path = submodels/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib
