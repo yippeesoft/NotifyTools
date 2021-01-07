@@ -19,23 +19,23 @@ jobs:
       with:
         path: "cplussharp/vscode/test/boost-install"
         key: boost-win64-install-1
-    - name: boost
-      if: steps.cache-boost.outputs.cache-hit != 'true'
-      run: |
-        # cmd /c rmdir cplussharp\vscode\test\boost-install /s /q
-        wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip  | Out-Null
-        unzip boost_1_75_0.zip | Out-Null
-        cd boost_1_75_0  
-        #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
-        #cmake --build . --config Release
-        .\bootstrap.bat
-        # .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
-        #.\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"   link=static runtime-link=static threading=multi  release
-        # .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python  --build-type=complete --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
-        ./b2 -j2  install   address-model=64   --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"   link=static runtime-link=static  threading=multi debug release  
+    # - name: boost
+    #   if: steps.cache-boost.outputs.cache-hit != 'true'
+    #   run: |
+    #     # cmd /c rmdir cplussharp\vscode\test\boost-install /s /q
+    #     wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip  | Out-Null
+    #     unzip boost_1_75_0.zip | Out-Null
+    #     cd boost_1_75_0  
+    #     #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
+    #     #cmake --build . --config Release
+    #     .\bootstrap.bat
+    #     # .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
+    #     #.\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"   link=static runtime-link=static threading=multi  release
+    #     # .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python  --build-type=complete --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
+    #     ./b2 -j2  install   address-model=64   --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"   link=static runtime-link=static  threading=multi debug release  
 
     - name: git
-      run: cd ./cplussharp/vscode/test && git submodule update --init  --recursive
+      run:  git submodule update --init  --recursive
     - name: cache-protobuf
       id: cache-protobuf
       uses: actions/cache@v1
@@ -51,13 +51,19 @@ jobs:
     #    mkdir build-vs2019; cd build-vs2019; cmake -DCMAKE_INSTALL_PREFIX="$env:GITHUB_WORKSPACE\protobuf-install" -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_MSVC_STATIC_RUNTIME=OFF -DNCNN_BUILD_TESTS=ON ../cmake
     #    cmake --build . --config Release -j 2
     #    cmake --build . --config Release --target install
+    # - name: configure
+    #   run: |
+    #     cd ./cplussharp/vscode/test ; mkdir build; cd build
+    #     set BOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"
+    #     cmake -DBOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  -DBoost_INCLUDE_DIR="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install\include\boost-1_75" ..
+    # - name: build
+    #   run: cd ./cplussharp/vscode/test ; cmake --build build --config Release
     - name: configure
       run: |
-        cd ./cplussharp/vscode/test ; mkdir build; cd build
-        set BOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"
-        cmake -DBOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  -DBoost_INCLUDE_DIR="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install\include\boost-1_75" ..
+        mkdir build; cd build
+        cmake ..
     - name: build
-      run: cd ./cplussharp/vscode/test ; cmake --build build --config Release
+      run: cmake --build build --config Release
     #- name: test
     #  run: cd ./cplussharp/vscode/test ; cd build; ctest -C Release --output-on-failure -j 2
 

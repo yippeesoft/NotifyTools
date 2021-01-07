@@ -12,35 +12,42 @@ jobs:
     - name: apt
       run: sudo apt-get install unzip git cmake
     - name: git
-      run: |
-        cd ./cplussharp/vscode/test 
+      run: |      
         git submodule update --init  --recursive   
+    # cd ./cplussharp/vscode/test 
     #- name: glog
     #  run: sudo apt-get install libgoogle-glog-dev
     #- name: protobuf
     #  run: sudo apt-get install libprotobuf-dev protobuf-compiler libopencv-dev
     #- name: path
     #  run: cd cplussharp/vscode/test
-    - name: cache-boost
-      id: cache-boost
-      uses: actions/cache@v1
-      with:
-        path: "cplussharp/vscode/test/boost-install"
-        key: boost-linux-install
-    - name: boost
-      if: steps.cache-boost.outputs.cache-hit != 'true'
-      run: |
-        wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip >/dev/null 2>&1
-        unzip boost_1_75_0.zip >/dev/null 2>&1
-        cd boost_1_75_0  && ./bootstrap.sh           && ./b2 -j2  install   address-model=64   --build-type=complete  --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install   link=static runtime-link=static  threading=multi debug release --layout=tagged
+    # - name: cache-boost
+    #   id: cache-boost
+    #   uses: actions/cache@v1
+    #   with:
+    #     path: "cplussharp/vscode/test/boost-install"
+    #     key: boost-linux-install
+    # - name: boost
+    #   if: steps.cache-boost.outputs.cache-hit != 'true'
+    #   run: |
+    #     wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip >/dev/null 2>&1
+    #     unzip boost_1_75_0.zip >/dev/null 2>&1
+    #     cd boost_1_75_0  && ./bootstrap.sh           && ./b2 -j2  install   address-model=64   --build-type=complete  --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install   link=static runtime-link=static  threading=multi debug release --layout=tagged
+    # - name: configure
+    #   run: |
+    #     cmake --version
+    #     export BOOST_ROOT=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install
+    #     cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON -DBOOST_ROOT="$env:GITHUB_WORKSPACE/cplussharp/vscode/test/boost-install" ..
+    # - name: build
+    #   run: cd ./cplussharp/vscode/test/ && cmake --build build -j 2
+    # - name: test
+    #   run: cd ./cplussharp/vscode/test/build && ctest --output-on-failure -j 2
     - name: configure
       run: |
         cmake --version
-        export BOOST_ROOT=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install
-        cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DNCNN_BUILD_TESTS=ON -DBOOST_ROOT="$env:GITHUB_WORKSPACE/cplussharp/vscode/test/boost-install" ..
+        mkdir build && cd build && cmake  ..
     - name: build
-      run: cd ./cplussharp/vscode/test/ && cmake --build build -j 2
+      run:  cmake --build build -j 2
     - name: test
-      run: cd ./cplussharp/vscode/test/build && ctest --output-on-failure -j 2
-
+      run:  ctest --output-on-failure -j 2
   
