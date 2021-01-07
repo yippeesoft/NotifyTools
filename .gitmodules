@@ -1,3 +1,9 @@
 [submodule "submodules/spdlog"]
 	path = submodules/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "submodules/stb_image"]
+	path = submodules/stb_image
+	url = https://github.com/nothings/stb
+[submodule "submodules/cpp-httplib"]
+	path = submodules/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib
