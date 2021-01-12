@@ -1,4 +1,5 @@
 aux_source_directory(. DIR_LIBS_SRCS)
+LINK_DIRECTORIES(lib /usr/local/lib)
 include_directories(include /usr/local/include)
 # set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
