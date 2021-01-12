@@ -27,7 +27,7 @@ jobs:
     - name: googletest     
       run: |
         cd googletest
-        mkdir build && cd build && cmake  ..
+        cd build && cmake  ..
         cmake --build . -j 2
         sudo make install
     # cd ./cplussharp/vscode/test 
