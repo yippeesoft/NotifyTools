@@ -7,7 +7,7 @@ include_directories(include /usr/local/include)
 include(CTest)
 enable_testing()
 add_executable(slibs ${DIR_LIBS_SRCS})
-target_link_libraries (slibs spdlog::spdlog -fsanitize=address -lgtest -lpthread)
+target_link_libraries (slibs spdlog::spdlog -fsanitize=address gtest pthread)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
