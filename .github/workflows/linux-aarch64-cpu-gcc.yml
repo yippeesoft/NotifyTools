@@ -41,6 +41,7 @@ jobs:
       with:
         path: "cplussharp/vscode/test/boost-install-aarch64"
         key: boost-aarch64-install-1
+    
     # - name: boost
     #   # if: steps.cache-boost.outputs.cache-hit != 'true'
     #   run: |
@@ -53,6 +54,23 @@ jobs:
     #     cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DBOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install-aarch64"   -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  ..
     # - name: build
     #   run: cd ./cplussharp/vscode/test && cmake --build build -j 2
+
+    - name: cache-googletest
+      id: cache-googletest
+      uses: actions/cache@v1
+      with:
+        path: "googletest"
+        key: googletest
+    - name: googletest-git
+      if: steps.cache-googletest.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/google/googletest
+    - name: googletest     
+      run: |
+        cd googletest
+        mkdir build && cd build && cmake  ..
+        cmake --build . -j 2
+        sudo make install
     - name: configure
       run: |       
         mkdir build && cd build && cmake -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  ..
