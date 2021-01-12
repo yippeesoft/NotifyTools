@@ -11,7 +11,7 @@ auto console = spdlog::stdout_color_mt("console");
 #include <iostream>
 #include <signal.h>
 #include <execinfo.h>
-
+#include <gtest/gtest.h>
 /* include <execinfo.h> to use this macro */
 #define DBG_ASSERT(x)                                                                                 \
     do                                                                                                \
@@ -45,6 +45,16 @@ void sigsegvhandle(int signo)
     /* will receive SIGSEGV again and exit app */
 }
 
+int add(int a, int b)
+{
+    return a + b;
+}
+#define CATCH_CONFIG_CONSOLE_WIDTH 300
+TEST(testCase, test0)
+{
+    EXPECT_EQ(add(2, 3), 5);
+}
+
 void testLibs(std::string ss)
 {
     printf("test lib cmake %d\n", 1);
@@ -57,8 +67,11 @@ void testLibs(std::string ss)
     // system(cmd);
 }
 const int a[] = {SIGHUP, SIGINT, SIGQUIT, SIGILL, SIGTRAP, SIGABRT, SIGFPE, SIGKILL, SIGSEGV};
-int main()
+GTEST_API_ int main(int argc, char** argv)
 {
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+
     for (unsigned int i = 0; i < sizeof(a) / sizeof(int); i++)
     {
         signal(a[i], sigsegvhandle);
