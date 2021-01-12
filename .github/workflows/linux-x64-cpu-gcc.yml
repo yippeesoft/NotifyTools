@@ -20,10 +20,12 @@ jobs:
       with:
         path: "googletest"
         key: googletest
-    - name: googletest
+    - name: googletest-git
       if: steps.cache-googletest.outputs.cache-hit != 'true'
       run: |
         git clone https://github.com/google/googletest
+    - name: googletest     
+      run: |
         cd googletest
         mkdir build && cd build && cmake  ..
         cmake --build . -j 2
