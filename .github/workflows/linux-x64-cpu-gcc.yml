@@ -13,7 +13,21 @@ jobs:
       run: sudo apt-get install unzip git cmake
     - name: git
       run: |      
-        git submodule update --init  --recursive   
+        git submodule update --init  --recursive
+    - name: cache-googletest
+      id: cache-googletest
+      uses: actions/cache@v1
+      with:
+        path: "googletest"
+        key: googletest
+    - name: googletest
+      if: steps.cache-googletest.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/google/googletest
+        cd googletest
+        mkdir build && cd build && cmake  ..
+        cmake --build . -j 2
+        sudo make install
     # cd ./cplussharp/vscode/test 
     #- name: glog
     #  run: sudo apt-get install libgoogle-glog-dev
