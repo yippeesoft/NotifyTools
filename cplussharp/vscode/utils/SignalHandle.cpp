@@ -2,16 +2,17 @@
 
 namespace sfutils {
 SignalHandle SignalHandle::_instance;
+int SignalHandle::signals[] = {SIGHUP, SIGINT, SIGQUIT, SIGILL, SIGTRAP, SIGABRT, SIGFPE, SIGKILL, SIGSEGV};
 SignalHandle::SignalHandle(/* args */)
-{
-}
-
-SignalHandle::~SignalHandle()
 {
     for (unsigned int i = 0; i < sizeof(signals) / sizeof(int); i++)
     {
         signal(signals[i], sigsegvhandle);
     }
+}
+
+SignalHandle::~SignalHandle()
+{
 }
 SignalHandle& SignalHandle::GetInstance()
 {
