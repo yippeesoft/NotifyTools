@@ -7,3 +7,6 @@
 [submodule "submodules/cpp-httplib"]
 	path = submodules/cpp-httplib
 	url = https://github.com/yhirose/cpp-httplib
+[submodule "submodules/googletest"]
+	path = submodules/googletest
+	url = https://github.com/google/googletest
