@@ -4,6 +4,7 @@
 #include <iostream>
 #include <signal.h>
 #include <execinfo.h>
+#include <string.h>
 namespace sfutils {
 
 #define DBG_ASSERT(x)                                                                                 \
