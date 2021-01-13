@@ -10,7 +10,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/../utils)
 include(CTest)
 enable_testing()
 add_executable(utilstest ${DIR_UTILTEST_SRCS})
-target_link_libraries (utilstest spdlog::spdlog -fsanitize=address gtest pthread)
+target_link_libraries (utilstest spdlog::spdlog -fsanitize=address gtest pthread utils)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

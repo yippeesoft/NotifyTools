@@ -27,7 +27,7 @@ public:
 
 private:
     static SignalHandle _instance;
-    constexpr static const int signals[] = {SIGHUP, SIGINT, SIGQUIT, SIGILL, SIGTRAP, SIGABRT, SIGFPE, SIGKILL, SIGSEGV};
+    static int signals[9];
     static void sigsegvhandle(int signo);
 
 protected:
