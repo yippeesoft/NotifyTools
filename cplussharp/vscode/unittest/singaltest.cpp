@@ -3,7 +3,11 @@
 using namespace sfutils;
 TEST(testCase, test0)
 {
-    int i = 100 / 0;
+    int i, j, sum;
+    sum = 0;
+    j = 0;
+    i = 6;
+    sum = i / j;
     EXPECT_EQ(2 + 3, 5);
 }
 void sigsegv_test()
@@ -17,6 +21,7 @@ GTEST_API_ int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);
     SignalHandle::GetInstance();
+    RUN_ALL_TESTS();
     sigsegv_test();
-    return RUN_ALL_TESTS();
+    return 0;
 }

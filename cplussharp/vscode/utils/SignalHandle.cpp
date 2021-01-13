@@ -22,7 +22,8 @@ SignalHandle& SignalHandle::GetInstance()
 
 void SignalHandle::sigsegvhandle(int signo)
 {
-    std::cout << "sigsegvhandle received signal: " << signo << std::endl;
+    // https://blog.csdn.net/halazi100/article/details/84037452
+    std::cout << "sigsegvhandle received signal: " << signo << "\t" << strsignal(signo) << std::endl;
     /* output callstack */
     DBG_ASSERT(0);
     /* reset signal handle to default */
