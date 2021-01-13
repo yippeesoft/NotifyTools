@@ -14,5 +14,4 @@ else()
     add_subdirectory(submodules/spdlog)
 endif()
 
-
-add_subdirectory(cplussharp/vscode/tests)
+add_subdirectory(cplussharp/vscode)
