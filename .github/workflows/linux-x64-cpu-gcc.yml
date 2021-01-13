@@ -58,6 +58,11 @@ jobs:
     #   run: cd ./cplussharp/vscode/test/ && cmake --build build -j 2
     # - name: test
     #   run: cd ./cplussharp/vscode/test/build && ctest --output-on-failure -j 2
+
+    - name: checkout-log4cplus-submodules
+      run: |
+        cd log4cplus
+        git submodule update --init --recursive
     - name: configure
       run: |
         cmake --version
