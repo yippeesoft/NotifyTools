@@ -14,6 +14,7 @@ else()
   message("Building with spdlog")
   add_subdirectory(submodules/spdlog)
   add_subdirectory(submodules/googletest)
+  add_subdirectory(submodules/log4cplus)
 endif()
 
 add_subdirectory(cplussharp/vscode)
