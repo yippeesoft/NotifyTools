@@ -68,7 +68,7 @@ jobs:
     - name: googletest     
       run: |
         cd googletest
-        cd build && cmake  ..
+        cd build && cmake  -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ ..
         cmake --build . -j 2
         sudo make install
     - name: configure
