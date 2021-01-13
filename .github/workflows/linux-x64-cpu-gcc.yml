@@ -61,7 +61,7 @@ jobs:
 
     - name: checkout-log4cplus-submodules
       run: |
-        cd log4cplus
+        cd submodules/log4cplus
         git submodule update --init --recursive
     - name: configure
       run: |
