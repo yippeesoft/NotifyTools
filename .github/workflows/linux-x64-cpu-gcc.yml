@@ -14,22 +14,22 @@ jobs:
     - name: git
       run: |      
         git submodule update --init  --recursive
-    - name: cache-googletest
-      id: cache-googletest
-      uses: actions/cache@v1
-      with:
-        path: "googletest"
-        key: googletest
-    - name: googletest-git
-      if: steps.cache-googletest.outputs.cache-hit != 'true'
-      run: |
-        git clone https://github.com/google/googletest
-    - name: googletest     
-      run: |
-        cd googletest
-        cd build && cmake  ..
-        cmake --build . -j 2
-        sudo make install
+    # - name: cache-googletest
+    #   id: cache-googletest
+    #   uses: actions/cache@v1
+    #   with:
+    #     path: "googletest"
+    #     key: googletest
+    # - name: googletest-git
+    #   if: steps.cache-googletest.outputs.cache-hit != 'true'
+    #   run: |
+    #     git clone https://github.com/google/googletest
+    # - name: googletest     
+    #   run: |
+    #     cd googletest
+    #     cd build && cmake  ..
+    #     cmake --build . -j 2
+    #     sudo make install
     # cd ./cplussharp/vscode/test 
     #- name: glog
     #  run: sudo apt-get install libgoogle-glog-dev

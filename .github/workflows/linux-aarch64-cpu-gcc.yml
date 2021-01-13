@@ -55,22 +55,22 @@ jobs:
     # - name: build
     #   run: cd ./cplussharp/vscode/test && cmake --build build -j 2
 
-    - name: cache-googletest
-      id: cache-googletest
-      uses: actions/cache@v1
-      with:
-        path: "googletest"
-        key: googletest
-    - name: googletest-git
-      if: steps.cache-googletest.outputs.cache-hit != 'true'
-      run: |
-        git clone https://github.com/google/googletest
-    - name: googletest     
-      run: |
-        cd googletest
-        cd build && cmake  -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ ..
-        cmake --build . -j 2
-        sudo make install
+    # - name: cache-googletest
+    #   id: cache-googletest
+    #   uses: actions/cache@v1
+    #   with:
+    #     path: "googletest"
+    #     key: googletest
+    # - name: googletest-git
+    #   if: steps.cache-googletest.outputs.cache-hit != 'true'
+    #   run: |
+    #     git clone https://github.com/google/googletest
+    # - name: googletest     
+    #   run: |
+    #     cd googletest
+    #     cd build && cmake  -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ ..
+    #     cmake --build . -j 2
+    #     sudo make install
     - name: configure
       run: |       
         mkdir build && cd build && cmake -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  ..
