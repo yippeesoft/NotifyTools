@@ -25,7 +25,7 @@ GTEST_API_ int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);
     SignalHandle::GetInstance();
-    RUN_ALL_TESTS();
+    int rtn = RUN_ALL_TESTS();
     sigsegv_test();
-    return 0;
+    return rtn;
 }
