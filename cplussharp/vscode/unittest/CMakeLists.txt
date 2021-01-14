@@ -2,15 +2,8 @@
 macro(sf_add_unittest name)
   add_executable(${name} ${name}.cpp)
   target_include_directories(${name} PRIVATE)
-  target_link_libraries(
-    ${name}
-    PRIVATE spdlog::spdlog
-            utils
-            -fsanitize=address
-            gtest
-            pthread
-            -rdynamic
-            log4cplus)
+  target_link_libraries(${name} PRIVATE spdlog::spdlog utils -fsanitize=address
+                                        gtest pthread -rdynamic)
 
   # add test to a virtual project group
   set_property(TARGET ${name} PROPERTY FOLDER "examples")
@@ -33,5 +26,5 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
 
-sf_add_unittest(singaltest)
-sf_add_unittest(log4cplustest)
+# sf_add_unittest(singaltest) sf_add_unittest(log4cplustest)
+sf_add_unittest(sloghandletest)
