@@ -1,4 +1,20 @@
-aux_source_directory(. DIR_UTILTEST_SRCS)
+# aux_source_directory(. DIR_UTILTEST_SRCS)
+macro(sf_add_unittest name)
+  add_executable(${name} ${name}.cpp)
+  target_include_directories(${name} PRIVATE)
+  target_link_libraries(
+    ${name}
+    PRIVATE spdlog::spdlog
+            utils
+            -fsanitize=address
+            gtest
+            pthread
+            -rdynamic
+            log4cplus)
+
+  # add test to a virtual project group
+  set_property(TARGET ${name} PROPERTY FOLDER "examples")
+endmacro()
 link_directories("/usr/local/lib")
 include_directories(include /usr/local/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utils)
@@ -10,16 +26,12 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/../utils)
 # add_definitions(-fsanitize=address -g3 -fno-omit-frame-pointer)
 include(CTest)
 enable_testing()
-add_executable(utilstest ${DIR_UTILTEST_SRCS})
-target_link_libraries(
-  utilstest
-  spdlog::spdlog
-  utils
-  -fsanitize=address
-  gtest
-  pthread
-  -rdynamic)
+# add_executable(utilstest ${DIR_UTILTEST_SRCS}) target_link_libraries(
+# utilstest spdlog::spdlog utils -fsanitize=address gtest pthread -rdynamic)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
+
+sf_add_unittest(singaltest)
+sf_add_unittest(log4cplustest)

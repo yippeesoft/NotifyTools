@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.15)
 # ${_variableNames}) message(STATUS "${_variableName}=${${_variableName}}")
 # endforeach()
 project(vscc VERSION 0.1.0)
-
+set(CMAKE_CXX_STANDARD 17)
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/spdlog/CMakeLists.txt")
   message(
     FATAL_ERROR
