@@ -7,14 +7,18 @@
 #include <log4cplus/log4cplus.h>
 using namespace log4cplus;
 // LOG4CPLUS_INFO(SlogHandle::GetInstance().getLogger(), LOG4CPLUS_TEXT(x));
-// #define Slog(log, x) LOG4CPLUS_WARN(log._logger, LOG4CPLUS_TEXT(x));
+
 #define SlogW(log, x) LOG4CPLUS_WARN(log._logger, LOG4CPLUS_TEXT(std::to_string(__LINE__).append("\t").append(__FUNCTION__).append("\t").append(x)));
 #define SlogI(log, x) LOG4CPLUS_INFO(log._logger, LOG4CPLUS_TEXT(std::to_string(__LINE__).append("\t").append(__FUNCTION__).append("\t").append(x)));
 #define SlogE(log, x) LOG4CPLUS_ERROR(log._logger, LOG4CPLUS_TEXT(std::to_string(__LINE__).append("\t").append(__FUNCTION__).append("\t").append(x)));
+#define SlogD(log, x) LOG4CPLUS_DEBUG(log._logger, LOG4CPLUS_TEXT(std::to_string(__LINE__).append("\t").append(__FUNCTION__).append("\t").append(x)));
+#define SlogT(log, x) LOG4CPLUS_TRACE(log._logger, LOG4CPLUS_TEXT(std::to_string(__LINE__).append("\t").append(__FUNCTION__).append("\t").append(x)));
 #else
 #define SlogW(log, x)
 #define SlogI(log, x)
 #define SlogE(log, x)
+#define SlogD(log, x)
+#define SlogT(log, x)
 #endif
 namespace sfutils {
 
