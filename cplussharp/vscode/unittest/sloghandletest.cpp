@@ -8,16 +8,43 @@ TEST(testCase, test0)
     sum = 0;
     j = 0;
     i = 6;
-    Slog("AAAAAAAAAAAAAAA");
+
     // sum = i / j;
     EXPECT_EQ(2 + 3, 5);
-}
+};
+class Test1
+{
+    SlogHandle s1 = SlogHandle::getLogger("test1");
 
-GTEST_API_ int main(int argc, char** argv)
+public:
+    void test11()
+    {
+        SlogW(s1, "aaaaa");
+    }
+};
+class Test2
+{
+    SlogHandle s2 = SlogHandle::getLogger("test2");
+
+public:
+    void test22()
+    {
+        SlogE(s2, "bbbb");
+    }
+};
+int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);
-    SlogHandle::GetInstance().init();
-    int rtn = RUN_ALL_TESTS();
 
+    Test1 t1;
+    Test2 t2;
+    printf("%s %d\n", __FUNCTION__, __LINE__);
+    printf("%s\n", (std::to_string(__LINE__).append("\t").append(__FUNCTION__)).c_str());
+    SlogHandle::Configure("llog.txt");
+    for (int i = 0; i < 200; i++)
+    {
+        t1.test11();
+        t2.test22();
+    }
     return 0;
 }
