@@ -2,7 +2,7 @@
 #ifndef SF_SLOGHANDLES_H
 #define SF_SLOGHANDLES_H
 #include <iostream>
-// #define SFLOG_LOG4CPLUS
+#define SFLOG_LOG4CPLUS
 #ifdef SFLOG_LOG4CPLUS
 #include <log4cplus/log4cplus.h>
 #define Slog(x) LOG4CPLUS_INFO(SlogHandle::GetInstance().getLogger(), LOG4CPLUS_TEXT(x));

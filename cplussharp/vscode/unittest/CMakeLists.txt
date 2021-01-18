@@ -26,5 +26,6 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
 
-# sf_add_unittest(singaltest) sf_add_unittest(log4cplustest)
+# sf_add_unittest(singaltest)
+sf_add_unittest(log4cplustest)
 sf_add_unittest(sloghandletest)
