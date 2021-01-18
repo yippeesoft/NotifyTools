@@ -15,6 +15,7 @@ else()
   add_subdirectory(submodules/spdlog)
   add_subdirectory(submodules/googletest)
   add_subdirectory(submodules/log4cplus)
+  add_subdirectory(submodules/cpp-httplib)
 endif()
 
 add_subdirectory(cplussharp/vscode)
