@@ -2,8 +2,17 @@
 macro(sf_add_unittest name)
   add_executable(${name} ${name}.cpp)
   target_include_directories(${name} PRIVATE)
-  target_link_libraries(${name} PRIVATE spdlog::spdlog utils -fsanitize=address
-                                        gtest pthread -rdynamic)
+  target_link_libraries(
+    ${name}
+    PRIVATE spdlog::spdlog
+            log4cplus
+            utils
+            -fsanitize=address
+            gtest
+            pthread
+            -rdynamic
+            -g3
+            -fno-omit-frame-pointer)
 
   # add test to a virtual project group
   set_property(TARGET ${name} PROPERTY FOLDER "examples")
