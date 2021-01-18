@@ -1,22 +1,25 @@
 # aux_source_directory(. DIR_UTILTEST_SRCS)
 macro(sf_add_unittest name)
+  set(CMAKE_CXX_STANDARD 17)
   add_executable(${name} ${name}.cpp)
   target_include_directories(${name} PRIVATE)
   target_link_libraries(
     ${name}
-    PRIVATE spdlog::spdlog
+    PRIVATE utils
+            spdlog::spdlog
             log4cplus
-            utils
+            httplib
             -fsanitize=address
+            -g3
+            -fno-omit-frame-pointer
             gtest
             pthread
-            -rdynamic
-            -g3
-            -fno-omit-frame-pointer)
+            -rdynamic)
 
   # add test to a virtual project group
   set_property(TARGET ${name} PROPERTY FOLDER "examples")
 endmacro()
+
 link_directories("/usr/local/lib")
 include_directories(include /usr/local/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utils)
@@ -38,3 +41,4 @@ include(CPack)
 # sf_add_unittest(singaltest)
 sf_add_unittest(log4cplustest)
 sf_add_unittest(sloghandletest)
+sf_add_unittest(shttphandletest)
