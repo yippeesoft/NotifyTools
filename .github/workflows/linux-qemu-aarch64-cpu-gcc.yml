@@ -15,6 +15,32 @@ jobs:
       with:
         path: ubuntu-rootfs
         key: cache-ubuntu-rootfs
+    - name: aarch64-ansi-wl-pprint-0_6_9
+      run: |
+        mkdir rootfs
+        curl -s -L "https://github.com/arm4rpi/pandoc-deps/releases/download/v0.1/aarch64-ansi-wl-pprint-0.6.9.tar.gz" -o rootfs/aarch64-ansi-wl-pprint-0.6.9.tar.gz
+        MIME=`file -b --mime-type rootfs/aarch64-ansi-wl-pprint-0.6.9.tar.gz`
+        echo $MIME
+        [ "$MIME"x == "application/gzip"x ] && echo "Already exists" && exit 0 || echo "Not exists"
+        sudo apt-get update
+        sudo apt-get install -y qemu-user-static aria2
+        aria2c -x 16 http://cdimage.ubuntu.com/ubuntu-base/releases/19.10/release/ubuntu-base-19.10-base-arm64.tar.gz
+        cd rootfs
+        echo "decompression rootfs"
+        tar xvf ../ubuntu-base-19.10-base-arm64.tar.gz &>/dev/null && echo "decompression rootfs successfull"
+        cp /usr/bin/qemu-aarch64-static usr/bin
+        cp /etc/resolv.conf etc
+        cp ../build.sh ansi-wl-pprint-0.6.9
+        sudo mount -t devtmpfs devtmpfs dev
+        sudo mount -t devpts devpts dev/pts
+        sudo mount -t sysfs sysfs sys
+        sudo mount -t tmpfs tmpfs tmp
+        sudo mount -t proc proc proc
+        echo "chroot to arm"
+        sudo chroot . /ansi-wl-pprint-0.6.9
+        echo "Upload Asset"
+        ls
+        sudo apt-get update
     - name: ubuntu-rootfs
       if: steps.cache-ubuntu-rootfs.outputs.cache-hit != 'true'
       run: |
