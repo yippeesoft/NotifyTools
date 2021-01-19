@@ -22,13 +22,13 @@ jobs:
           mkdir ubuntu-rootfs
           tar -xvf ubuntu-base-18.04.5-base-arm64.tar.gz -C ubuntu-rootfs  >/dev/null 2>&1
           cd ubuntu-rootfs
-          ls usr/bin
+          # ls usr/bin
           cp /usr/bin/qemu-aarch64-static  usr/bin
           cp -b /etc/resolv.conf etc/
     - name: ch-mount
       run:  |
-        sudo mkdir -p ubuntu-rootfs/$PWD
-        sudo mount --bind . ubuntu-rootfs/$PWD
+        mkdir -p ubuntu-rootfs/$PWD
+        mount --bind . ubuntu-rootfs/$PWD
         DEBIAN_FRONTEND=noninteractive $CHROOT apt-get -y --no-install-recommends install libgl-dev
     # - name: git
     #   run: git submodule update --init  --recursive
