@@ -93,10 +93,10 @@ jobs:
     #     cmake --build . -j 2
     #     sudo make install
 
-    # - name: checkout-log4cplus-submodules
-    #   run: |
-    #     cd submodules/log4cplus
-    #     git submodule update --init --recursive
+    - name: checkout-log4cplus-submodules
+      run: |
+        cd submodules/log4cplus
+        git submodule update --init --recursive
     - name: configure
       run: |       
         mkdir build && cd build && cmake -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  ..
