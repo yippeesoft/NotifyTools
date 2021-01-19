@@ -1,4 +1,4 @@
-name: linux-qemu-aarch64-cpu-gcc
+name: linux-aarch64-cpu-gcc
 on: [push, pull_request]
 jobs:
   linux-gcc:
@@ -17,10 +17,9 @@ jobs:
         key: cache-ubuntu-rootfs
     - name: ubuntu-rootfs
       if: steps.cache-ubuntu-rootfs.outputs.cache-hit != 'true'
-      uses: actions/checkout@v2
       with:
         run: |
-          wget http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-16.04.2-base-arm64.tar.gz
+          wget http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz
           mkdir ubuntu-rootfs
           tar -xvf ubuntu-base-16.04.2-base-arm64.tar.gz -C ubuntu-rootfs
           cd ubuntu-rootfs
