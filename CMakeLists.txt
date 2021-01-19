@@ -11,10 +11,11 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/spdlog/CMakeLists.txt")
       "The submodules spdlog were not downloaded! Please update submodules with \"git submodule update --init  --recursive \" and try again."
   )
 else()
-  message("Building with spdlog")
+
   add_subdirectory(submodules/spdlog)
   add_subdirectory(submodules/googletest)
   add_subdirectory(submodules/log4cplus)
+  message("Building with cpp-httplib")
   add_subdirectory(submodules/cpp-httplib)
 endif()
 
