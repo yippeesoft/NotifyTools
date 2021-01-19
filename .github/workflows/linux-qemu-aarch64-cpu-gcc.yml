@@ -28,7 +28,8 @@ jobs:
     - name: ch-mount
       run:  |
         mkdir -p ubuntu-rootfs/$PWD
-        mount --bind . ubuntu-rootfs/$PWD
+        ls ubuntu-rootfs
+        sudo mount --bind . ubuntu-rootfs/$PWD
         DEBIAN_FRONTEND=noninteractive $CHROOT apt-get -y --no-install-recommends install libgl-dev
     # - name: git
     #   run: git submodule update --init  --recursive
