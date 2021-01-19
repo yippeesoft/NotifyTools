@@ -22,6 +22,10 @@ endmacro()
 
 link_directories("/usr/local/lib")
 include_directories(include /usr/local/include)
+
+link_directories("${workspaceFolder}/openssl-1.1.1i/install/lib")
+include_directories(include ${workspaceFolder}/openssl-1.1.1i/install/include)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utils)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../utils
                     ${workspaceFolder}/submodules/cpp-httplib)
