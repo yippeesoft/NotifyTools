@@ -25,6 +25,12 @@ jobs:
           tar -xvf ubuntu-base-16.04.2-base-arm64.tar.gz -C ubuntu-rootfs
           cd ubuntu-rootfs
           ls
+          cp /usr/bin/qemu-aarch64-static  usr/bin
+          cp -b /etc/resolv.conf etc/
+    - name: ch-mount
+      run:  |
+        ./ch-mount.sh -m ubuntu-rootfs
+        ls
     # - name: git
     #   run: git submodule update --init  --recursive
     # - name: cache-qemu
