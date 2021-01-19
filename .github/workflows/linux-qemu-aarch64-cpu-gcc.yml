@@ -9,55 +9,18 @@ jobs:
         submodules: true
     - name: qemu
       run: sudo apt-get install qemu-user-static curl wget
-    - name: cache-ubuntu-rootfs
-      id: cache-ubuntu-rootfs
-      uses: actions/cache@v1
-      with:
-        path: ubuntu-rootfs
-        key: cache-ubuntu-rootfs
-    - name: aarch64-ansi-wl-pprint-0_6_9
+    - name: aarch64-gnu-toolchain
       run: |
-        mkdir rootfs
-        wget https://github.com/arm4rpi/pandoc-arm/blob/master/build.sh
-        curl -s -L "https://github.com/arm4rpi/pandoc-deps/releases/download/v0.1/aarch64-ansi-wl-pprint-0.6.9.tar.gz" -o rootfs/aarch64-ansi-wl-pprint-0.6.9.tar.gz
-        MIME=`file -b --mime-type rootfs/aarch64-ansi-wl-pprint-0.6.9.tar.gz`
-        echo $MIME
         sudo apt-get update
-        sudo apt-get install -y qemu-user-static aria2
-        aria2c -x 16 http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz
-        cd rootfs
-        echo "decompression rootfs"
-        tar xvf ../ubuntu-base-18.04.5-base-arm64.tar.gz &>/dev/null && echo "decompression rootfs successfull"
-        cp ../build.sh buildd
-        cp /usr/bin/qemu-aarch64-static usr/bin
-        cp /etc/resolv.conf etc
-        sudo mount -t devtmpfs devtmpfs dev
-        sudo mount -t devpts devpts dev/pts
-        sudo mount -t sysfs sysfs sys
-        sudo mount -t tmpfs tmpfs tmp
-        sudo mount -t proc proc proc
-        echo "chroot to arm"
-        sudo chroot .
-        echo "Upload Asset"
-        ls
-        sudo apt-get update
-    - name: ubuntu-rootfs
-      if: steps.cache-ubuntu-rootfs.outputs.cache-hit != 'true'
+        sudo apt-get install g++-aarch64-linux-gnu
+    - name: openssl-aarch64
       run: |
-          wget http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz  >/dev/null 2>&1
-          mkdir ubuntu-rootfs
-          tar -xvf ubuntu-base-18.04.5-base-arm64.tar.gz -C ubuntu-rootfs  >/dev/null 2>&1
-          cd ubuntu-rootfs
-          # ls usr/bin
-          cp /usr/bin/qemu-aarch64-static  usr/bin
-          cp -b /etc/resolv.conf etc/
-    - name: ch-mount
-      run:  |
-        mkdir -p ubuntu-rootfs/$PWD
-        ls ubuntu-rootfs
-        sudo mount --bind . ubuntu-rootfs/$PWD
-        sudo DEBIAN_FRONTEND=noninteractive chroot ubuntu-rootfs
-        sudo apt-get -y --no-install-recommends install libgl-dev
+        wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz
+        tar xvzf openssl-1.1.1i.tar.gz
+        cd openssl-1.1.1i/
+        ./Configure linux-aarch64 --prefix=$PWD/install no-asm shared no-async  --cross-compile-prefix=aarch64-linux-gnu-
+        make -j4
+        make install
     # - name: git
     #   run: git submodule update --init  --recursive
     # - name: cache-qemu
