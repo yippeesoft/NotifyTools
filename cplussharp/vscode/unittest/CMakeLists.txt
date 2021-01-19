@@ -8,6 +8,7 @@ macro(sf_add_unittest name)
     PRIVATE utils
             spdlog::spdlog
             log4cplus
+            httplib
             -fsanitize=address
             -g3
             -fno-omit-frame-pointer
