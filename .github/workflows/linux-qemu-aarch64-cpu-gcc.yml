@@ -27,8 +27,12 @@ jobs:
           cp -b /etc/resolv.conf etc/
     - name: ch-mount
       run:  |
-        ls
-        sudo ./ch-mount.sh -m ubuntu-rootfs
+        sudo mount -t proc /proc ubuntu-rootfs/proc
+        sudo mount -t sysfs /sys ubuntu-rootfs/sys
+        sudo mount -o bind /dev ubuntu-rootfs/dev
+        sudo mount -o bind /dev/pts ubuntu-rootfs/dev/pts		
+        sudo chroot ubuntu-rootfs
+        sudo apt update
     # - name: git
     #   run: git submodule update --init  --recursive
     # - name: cache-qemu
