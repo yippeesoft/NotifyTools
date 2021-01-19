@@ -30,7 +30,8 @@ jobs:
         mkdir -p ubuntu-rootfs/$PWD
         ls ubuntu-rootfs
         sudo mount --bind . ubuntu-rootfs/$PWD
-        sudo DEBIAN_FRONTEND=noninteractive chroot apt-get -y --no-install-recommends install libgl-dev
+        sudo DEBIAN_FRONTEND=noninteractive chroot ubuntu-rootfs
+        sudo apt-get -y --no-install-recommends install libgl-dev
     # - name: git
     #   run: git submodule update --init  --recursive
     # - name: cache-qemu
