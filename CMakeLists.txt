@@ -29,7 +29,7 @@ else()
   else()
     message(WARNING "OPENSSL_NOT_FOUND")
   endif()
-  add_subdirectory(submodules/cpp-httplib)
+  # add_subdirectory(submodules/cpp-httplib)
 endif()
 
 add_subdirectory(cplussharp/vscode)
