@@ -21,7 +21,7 @@ else()
   # "${workspaceFolder}/openssl-1.1.1i/install/include")
   # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
   find_package(
-    OpenSSL "1.1.1"
+    OpenSSL
     COMPONENTS Crypto SSL
     REQUIRED)
   if(OPENSSL_FOUND)
