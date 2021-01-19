@@ -37,7 +37,7 @@ jobs:
         sudo mount -t tmpfs tmpfs tmp
         sudo mount -t proc proc proc
         echo "chroot to arm"
-        sudo chroot . /buildd
+        sudo chroot .
         echo "Upload Asset"
         ls
         sudo apt-get update
