@@ -18,15 +18,16 @@ jobs:
     - name: ubuntu-rootfs
       if: steps.cache-ubuntu-rootfs.outputs.cache-hit != 'true'
       run: |
-          wget http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz
+          wget http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz  >/dev/null 2>&1
           mkdir ubuntu-rootfs
-          tar -xvf ubuntu-base-18.04.5-base-arm64.tar.gz -C ubuntu-rootfs
+          tar -xvf ubuntu-base-18.04.5-base-arm64.tar.gz -C ubuntu-rootfs  >/dev/null 2>&1
           cd ubuntu-rootfs
           ls
           cp /usr/bin/qemu-aarch64-static  usr/bin
           cp -b /etc/resolv.conf etc/
     - name: ch-mount
       run:  |
+        cd ..
         sudo ./ch-mount.sh -m ubuntu-rootfs
         ls
     # - name: git
