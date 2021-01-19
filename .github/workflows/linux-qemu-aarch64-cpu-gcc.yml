@@ -101,7 +101,7 @@ jobs:
       run: |       
         mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake -DOPENSSL_ROOT_DIR=../openssl-1.1.1i/install -DOPENSSL_CRYPTO_LIBRARY=../openssl-1.1.1i/install/lib -DOPENSSL_INCLUDE_DIR=../openssl-1.1.1i/install/include ..
     - name: build
-      run: cmake --build build-aarch64 -j 2
+      run: cmake --build build-aarch64  
     #- name: test
     #  run: |
     #    export PATH=$GITHUB_WORKSPACE/qemu-install/bin:$PATH
