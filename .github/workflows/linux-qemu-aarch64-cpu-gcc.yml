@@ -35,7 +35,7 @@ jobs:
         sudo mount -t tmpfs tmpfs tmp
         sudo mount -t proc proc proc
         echo "chroot to arm"
-        sudo chroot . /ansi-wl-pprint-0.6.9
+        sudo chroot ./ansi-wl-pprint-0.6.9
         echo "Upload Asset"
         ls
         sudo apt-get update
