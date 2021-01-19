@@ -17,8 +17,7 @@ jobs:
         key: cache-ubuntu-rootfs
     - name: ubuntu-rootfs
       if: steps.cache-ubuntu-rootfs.outputs.cache-hit != 'true'
-      with:
-        run: |
+      run: |
           wget http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz
           mkdir ubuntu-rootfs
           tar -xvf ubuntu-base-16.04.2-base-arm64.tar.gz -C ubuntu-rootfs
