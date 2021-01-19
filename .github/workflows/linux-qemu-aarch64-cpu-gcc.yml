@@ -35,7 +35,7 @@ jobs:
         sudo mount -t proc proc proc
         echo "chroot to arm"
         mkdir nnnn
-        sudo chroot ./
+        chroot ./
         sudo apt update
     # - name: git
     #   run: git submodule update --init  --recursive
