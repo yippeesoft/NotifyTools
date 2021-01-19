@@ -28,8 +28,8 @@ jobs:
     - name: ch-mount
       run:  |
         cd ..
-        sudo ./ch-mount.sh -m ubuntu-rootfs
         ls
+        sudo ./ch-mount.sh -m ubuntu-rootfs
     # - name: git
     #   run: git submodule update --init  --recursive
     # - name: cache-qemu
