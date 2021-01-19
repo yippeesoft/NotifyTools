@@ -98,8 +98,7 @@ jobs:
         cd submodules/log4cplus
         git submodule update --init --recursive
     - name: configure
-      run: |       
-        # mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake       -DHTTPLIB_REQUIRE_OPENSSL=OFF  -DOPENSSL_ROOT_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install    -DOPENSSL_INCLUDE_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/include     -DOPENSSL_CRYPTO_LIBRARY=../openssl-1.1.1i/install/lib/libcrypto.a    -DOPENSSL_SSL_LIBRARY=../openssl-1.1.1i/install/lib/libssl.a ..
+      run: |               
         mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake    ..
     - name: build
       run: cmake --build build-aarch64  
@@ -108,5 +107,5 @@ jobs:
     #    export PATH=$GITHUB_WORKSPACE/qemu-install/bin:$PATH
     #    cd ./cplussharp/vscode/test && cd build
     #    TESTS_EXECUTABLE_LOADER=qemu-aarch64 TESTS_EXECUTABLE_LOADER_ARGUMENTS="-L;/usr/aarch64-linux-gnu" ctest --output-on-failure -j 2
-
+    ## mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake       -DHTTPLIB_REQUIRE_OPENSSL=OFF  -DOPENSSL_ROOT_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install    -DOPENSSL_INCLUDE_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/include     -DOPENSSL_CRYPTO_LIBRARY=../openssl-1.1.1i/install/lib/libcrypto.a    -DOPENSSL_SSL_LIBRARY=../openssl-1.1.1i/install/lib/libssl.a ..
   
