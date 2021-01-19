@@ -29,7 +29,6 @@ jobs:
         tar xvf ../ubuntu-base-18.04.5-base-arm64.tar.gz &>/dev/null && echo "decompression rootfs successfull"
         cp /usr/bin/qemu-aarch64-static usr/bin
         cp /etc/resolv.conf etc
-        cp ../build.sh ansi-wl-pprint-0.6.9
         sudo mount -t devtmpfs devtmpfs dev
         sudo mount -t devpts devpts dev/pts
         sudo mount -t sysfs sysfs sys
