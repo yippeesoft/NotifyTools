@@ -8,7 +8,7 @@ jobs:
       with:
         submodules: true
     - name: qemu
-      run: sudo apt-get install  curl wget
+      run: sudo apt-get install libssl-dev curl wget
     - name: aarch64-gnu-toolchain
       run: |
         sudo apt-get update
