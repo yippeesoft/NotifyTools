@@ -27,7 +27,6 @@ jobs:
           cp -b /etc/resolv.conf etc/
     - name: ch-mount
       run:  |
-        cd ..
         ls
         sudo ./ch-mount.sh -m ubuntu-rootfs
     # - name: git
