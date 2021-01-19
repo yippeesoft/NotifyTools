@@ -14,3 +14,6 @@ set(CMAKE_CXX_FLAGS "-march=armv8-a")
 # cache flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "c flags")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "c++ flags")
+set(OPENSSL_ROOT_DIR  "${workspaceFolder}/openssl-1.1.1i/install") 
+set(OPENSSL_INCLUDE_DIR "${workspaceFolder}/openssl-1.1.1i/install/include")
+set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
