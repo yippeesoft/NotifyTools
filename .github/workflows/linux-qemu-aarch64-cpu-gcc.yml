@@ -27,16 +27,9 @@ jobs:
           cp -b /etc/resolv.conf etc/
     - name: ch-mount
       run:  |
-        cd ubuntu-rootfs
-        sudo mount -t devtmpfs devtmpfs dev
-        sudo mount -t devpts devpts dev/pts
-        sudo mount -t sysfs sysfs sys
-        sudo mount -t tmpfs tmpfs tmp
-        sudo mount -t proc proc proc
-        echo "chroot to arm"
-        mkdir nnnn
-        chroot ./
-        sudo apt update
+        sudo mkdir -p ubuntu-rootfs/$PWD
+        sudo mount --bind . ubuntu-rootfs/$PWD
+        DEBIAN_FRONTEND=noninteractive $CHROOT apt-get -y --no-install-recommends install libgl-dev
     # - name: git
     #   run: git submodule update --init  --recursive
     # - name: cache-qemu
