@@ -23,10 +23,10 @@ jobs:
         echo $MIME
         sudo apt-get update
         sudo apt-get install -y qemu-user-static aria2
-        aria2c -x 16 http://cdimage.ubuntu.com/ubuntu-base/releases/19.10/release/ubuntu-base-19.10-base-arm64.tar.gz
+        aria2c -x 16 http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz
         cd rootfs
         echo "decompression rootfs"
-        tar xvf ../ubuntu-base-19.10-base-arm64.tar.gz &>/dev/null && echo "decompression rootfs successfull"
+        tar xvf ../ubuntu-base-18.04.5-base-arm64.tar.gz &>/dev/null && echo "decompression rootfs successfull"
         cp /usr/bin/qemu-aarch64-static usr/bin
         cp /etc/resolv.conf etc
         cp ../build.sh ansi-wl-pprint-0.6.9
