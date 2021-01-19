@@ -36,8 +36,8 @@ link_directories("/usr/local/lib")
 include_directories(include /usr/local/include)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utils)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/../utils
-                    ${CMAKE_CURRENT_BINARY_DIR}/../submodules/cpp-httplib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utils
+                    ${CMAKE_CURRENT_SOURCE_DIR}/../submodules/cpp-httplib)
 
 # set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fno-omit-frame-pointer
 # -fsanitize=address") set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}
