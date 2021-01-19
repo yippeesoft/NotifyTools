@@ -11,24 +11,20 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/spdlog/CMakeLists.txt")
       "The submodules spdlog were not downloaded! Please update submodules with \"git submodule update --init  --recursive \" and try again."
   )
 else()
-
+   
+  # set(SPDLOG_BUILD_TESTS OFF)
   add_subdirectory(submodules/spdlog)
+  # set(INSTALL_GTEST OFF)
   add_subdirectory(submodules/googletest)
+  # set(LOG4CPLUS_BUILD_TESTING OFF)
+  # set(WITH_UNIT_TESTS OFF)
   add_subdirectory(submodules/log4cplus)
   # message("Building with cpp-httplib
   # ${workspaceFolder}/openssl-1.1.1i/install") set(OPENSSL_ROOT_DIR
   # "${workspaceFolder}/openssl-1.1.1i/install") set(OPENSSL_INCLUDE_DIR
   # "${workspaceFolder}/openssl-1.1.1i/install/include")
   # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
-  find_package(
-    OpenSSL
-    COMPONENTS Crypto SSL
-    REQUIRED)
-  if(OPENSSL_FOUND)
-    message(WARNING "OPENSSL_FOUND")
-  else()
-    message(WARNING "OPENSSL_NOT_FOUND")
-  endif()
+  # set(HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF)
   add_subdirectory(submodules/cpp-httplib)
 endif()
 
