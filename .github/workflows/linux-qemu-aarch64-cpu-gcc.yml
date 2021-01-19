@@ -12,7 +12,7 @@ jobs:
     - name: aarch64-gnu-toolchain
       run: |
         sudo apt-get update
-        sudo apt-get install g++-aarch64-linux-gnu libssl-dev
+        sudo apt-get install g++-aarch64-linux-gnu 
     - name: cache-openssl
       id: cache-openssl
       uses: actions/cache@v1

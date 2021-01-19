@@ -19,12 +19,10 @@ macro(sf_add_unittest name)
   # add test to a virtual project group
   set_property(TARGET ${name} PROPERTY FOLDER "examples")
 endmacro()
-
+link_directories("${workspaceFolder}/openssl-1.1.1i/install/lib")
+include_directories(${workspaceFolder}/openssl-1.1.1i/install/include)
 link_directories("/usr/local/lib")
 include_directories(include /usr/local/include)
-
-link_directories("${workspaceFolder}/openssl-1.1.1i/install/lib")
-include_directories(include ${workspaceFolder}/openssl-1.1.1i/install/include)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utils)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../utils
