@@ -8,7 +8,7 @@ jobs:
       with:
         submodules: true
     - name: qemu
-      run: sudo apt-get install libssl-dev curl wget
+      run: sudo apt-get install  curl wget
     - name: aarch64-gnu-toolchain
       run: |
         sudo apt-get update
@@ -99,11 +99,8 @@ jobs:
         git submodule update --init --recursive
     - name: configure
       run: |       
-        mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake ^
-         -DHTTPLIB_REQUIRE_OPENSSL=OFF  -DOPENSSL_ROOT_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install ^
-          -DOPENSSL_INCLUDE_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/include ^
-           -DOPENSSL_CRYPTO_LIBRARY=../openssl-1.1.1i/install/lib/libcrypto.a ^
-          -DOPENSSL_SSL_LIBRARY=../openssl-1.1.1i/install/lib/libssl.a ..
+        # mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake       -DHTTPLIB_REQUIRE_OPENSSL=OFF  -DOPENSSL_ROOT_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install    -DOPENSSL_INCLUDE_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/include     -DOPENSSL_CRYPTO_LIBRARY=../openssl-1.1.1i/install/lib/libcrypto.a    -DOPENSSL_SSL_LIBRARY=../openssl-1.1.1i/install/lib/libssl.a ..
+        mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake    ..
     - name: build
       run: cmake --build build-aarch64  
     #- name: test

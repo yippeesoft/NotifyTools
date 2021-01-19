@@ -14,8 +14,12 @@ set(CMAKE_CXX_FLAGS "-march=armv8-a")
 # cache flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "c flags")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "c++ flags")
-
-# set(OPENSSL_ROOT_DIR  "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install") 
-# set(OPENSSL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/include")
-# set(OPENSSL_CRYPTO_LIBRARY "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/lib")
+#-DHTTPLIB_REQUIRE_OPENSSL=OFF  -DOPENSSL_ROOT_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install    
+#-DOPENSSL_INCLUDE_DIR=${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/include     
+#-DOPENSSL_CRYPTO_LIBRARY=../openssl-1.1.1i/install/lib/libcrypto.a    
+#-DOPENSSL_SSL_LIBRARY=../openssl-1.1.1i/install/lib/libssl.a
+set(OPENSSL_ROOT_DIR  "../openssl-1.1.1i/install") 
+set(OPENSSL_INCLUDE_DIR "../openssl-1.1.1i/install/include")
+set(OPENSSL_CRYPTO_LIBRARY "../openssl-1.1.1i/install/lib/libcrypto.a")
+set(DOPENSSL_SSL_LIBRARY "../openssl-1.1.1i/install/lib/libssl.a")
 set(HTTPLIB_REQUIRE_OPENSSL OFF)
