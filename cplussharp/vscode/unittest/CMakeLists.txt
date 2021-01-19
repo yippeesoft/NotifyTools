@@ -1,6 +1,16 @@
 # aux_source_directory(. DIR_UTILTEST_SRCS)
 macro(sf_add_unittest name)
   set(CMAKE_CXX_STANDARD 17)
+  find_package(
+  OpenSSL
+  COMPONENTS Crypto SSL
+  REQUIRED)
+if(OPENSSL_FOUND)
+  message(  "OPENSSL_FOUND ${name} ${OPENSSL_ROOT_DIR}  ${OPENSSL_SSL_LIBRARY}")
+else()
+  message(  "OPENSSL_NOT_FOUND")
+endif()
+
   add_executable(${name} ${name}.cpp)
   target_include_directories(${name} PRIVATE)
   target_link_libraries(
@@ -14,6 +24,7 @@ macro(sf_add_unittest name)
             -fno-omit-frame-pointer
             gtest
             pthread
+            ${OPENSSL_SSL_LIBRARY}
             -rdynamic)
 
   # add test to a virtual project group
@@ -23,15 +34,7 @@ endmacro()
 # set(OPENSSL_ROOT_DIR "${workspaceFolder}/openssl-1.1.1i/install")
 # set(OPENSSL_INCLUDE_DIR "${workspaceFolder}/openssl-1.1.1i/install/include")
 # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
-find_package(
-  OpenSSL
-  COMPONENTS Crypto SSL
-  REQUIRED)
-if(OPENSSL_FOUND)
-  message(WARNING "OPENSSL_FOUND ${OPENSSL_ROOT_DIR}")
-else()
-  message(WARNING "OPENSSL_NOT_FOUND")
-endif()
+
 include_directories(${workspaceFolder}/openssl-1.1.1i/install/include)
 link_directories("/usr/local/lib")
 include_directories(include /usr/local/include)
