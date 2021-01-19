@@ -28,7 +28,7 @@ find_package(
   COMPONENTS Crypto SSL
   REQUIRED)
 if(OPENSSL_FOUND)
-  message(WARNING "OPENSSL_FOUND")
+  message(WARNING "OPENSSL_FOUND ${OPENSSL_ROOT_DIR}")
 else()
   message(WARNING "OPENSSL_NOT_FOUND")
 endif()
