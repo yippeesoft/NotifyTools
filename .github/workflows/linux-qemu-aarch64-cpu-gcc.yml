@@ -8,11 +8,11 @@ jobs:
       with:
         submodules: true
     - name: qemu
-      run: sudo apt-get install qemu-user-static curl wget
+      run: sudo apt-get install  curl wget
     - name: aarch64-gnu-toolchain
       run: |
         sudo apt-get update
-        sudo apt-get install g++-aarch64-linux-gnu
+        sudo apt-get install g++-aarch64-linux-gnu libssl-dev
     - name: cache-openssl
       id: cache-openssl
       uses: actions/cache@v1
