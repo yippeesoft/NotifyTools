@@ -99,7 +99,7 @@ jobs:
         git submodule update --init --recursive
     - name: configure
       run: |       
-        mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  ..
+        mkdir build-aarch64 && cd build-aarch64 && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/aarch64-linux-gnu.toolchain.cmake  ..
     - name: build
       run: cmake --build build-aarch64 -j 2
     #- name: test
