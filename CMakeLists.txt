@@ -15,10 +15,11 @@ else()
   add_subdirectory(submodules/spdlog)
   add_subdirectory(submodules/googletest)
   add_subdirectory(submodules/log4cplus)
-  message("Building with cpp-httplib ${workspaceFolder}/openssl-1.1.1i/install")
-  set(OPENSSL_ROOT_DIR "${workspaceFolder}/openssl-1.1.1i/install")
-  set(OPENSSL_INCLUDE_DIR "${workspaceFolder}/openssl-1.1.1i/install/include")
-  set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
+  # message("Building with cpp-httplib
+  # ${workspaceFolder}/openssl-1.1.1i/install") set(OPENSSL_ROOT_DIR
+  # "${workspaceFolder}/openssl-1.1.1i/install") set(OPENSSL_INCLUDE_DIR
+  # "${workspaceFolder}/openssl-1.1.1i/install/include")
+  # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
   find_package(
     OpenSSL "1.1.1"
     COMPONENTS Crypto SSL
