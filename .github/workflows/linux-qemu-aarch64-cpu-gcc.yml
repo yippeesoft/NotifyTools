@@ -1,0 +1,92 @@
+name: linux-aarch64-cpu-gcc
+on: [push, pull_request]
+jobs:
+  linux-gcc:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: qemu
+      run: sudo apt-get install qemu-user-static
+    # - name: git
+    #   run: git submodule update --init  --recursive
+    # - name: cache-qemu
+    #   id: cache-qemu
+    #   uses: actions/cache@v1
+    #   with:
+    #     path: qemu-install
+    #     key: qemu-aarch64-install-1
+    # - name: checkout-qemu
+    #   if: steps.cache-qemu.outputs.cache-hit != 'true'
+    #   uses: actions/checkout@v2
+    #   with:
+    #     repository: qemu/qemu
+    #     path: qemu
+    #     ref: 8746309137ba470d1b2e8f5ce86ac228625db940
+    # - name: qemu
+    #   if: steps.cache-qemu.outputs.cache-hit != 'true'
+    #   run: |
+    #     cd qemu
+    #     ./configure --prefix=install --target-list=aarch64-linux-user --disable-system
+    #     make -j2
+    #     make install
+    #     cp -r aarch64-linux-user/install $GITHUB_WORKSPACE/qemu-install
+
+    # - name: aarch64-gnu-toolchain
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install g++-aarch64-linux-gnu
+    # - name: cache-boost
+    #   id: cache-boost
+    #   uses: actions/cache@v1
+    #   with:
+    #     path: "cplussharp/vscode/test/boost-install-aarch64"
+    #     key: boost-aarch64-install-1
+    
+    # - name: boost
+    #   # if: steps.cache-boost.outputs.cache-hit != 'true'
+    #   run: |
+    #     wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip >/dev/null 2>&1
+    #     unzip boost_1_75_0.zip >/dev/null 2>&1
+    #     cd boost_1_75_0  && ./bootstrap.sh && echo  "using gcc : arm64 : aarch64-linux-gnu-g++ ; " >>  project-config.jam &&  ./b2   install  architecture=arm  address-model=64 --without-python  --prefix=${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install-aarch64    link=static runtime-link=static  threading=multi --toolset=gcc-arm64
+    # - name: configure
+    #   run: |
+    #     export BOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install" 
+    #     cd ./cplussharp/vscode/test && mkdir build && cd build && cmake -DBOOST_ROOT="${GITHUB_WORKSPACE}/cplussharp/vscode/test/boost-install-aarch64"   -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  ..
+    # - name: build
+    #   run: cd ./cplussharp/vscode/test && cmake --build build -j 2
+
+    # - name: cache-googletest
+    #   id: cache-googletest
+    #   uses: actions/cache@v1
+    #   with:
+    #     path: "googletest"
+    #     key: googletest
+    # - name: googletest-git
+    #   if: steps.cache-googletest.outputs.cache-hit != 'true'
+    #   run: |
+    #     git clone https://github.com/google/googletest
+    # - name: googletest     
+    #   run: |
+    #     cd googletest
+    #     cd build && cmake  -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ ..
+    #     cmake --build . -j 2
+    #     sudo make install
+
+    # - name: checkout-log4cplus-submodules
+    #   run: |
+    #     cd submodules/log4cplus
+    #     git submodule update --init --recursive
+    # - name: configure
+    #   run: |       
+    #     mkdir build && cd build && cmake -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  ..
+    # - name: build
+    #   run: cmake --build build -j 2
+    #- name: test
+    #  run: |
+    #    export PATH=$GITHUB_WORKSPACE/qemu-install/bin:$PATH
+    #    cd ./cplussharp/vscode/test && cd build
+    #    TESTS_EXECUTABLE_LOADER=qemu-aarch64 TESTS_EXECUTABLE_LOADER_ARGUMENTS="-L;/usr/aarch64-linux-gnu" ctest --output-on-failure -j 2
+
+  
