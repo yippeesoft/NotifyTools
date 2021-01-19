@@ -13,10 +13,17 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install g++-aarch64-linux-gnu
+    - name: cache-openssl
+      id: cache-openssl
+      uses: actions/cache@v1
+      with:
+        path: openssl-1.1.1i/install
+        key: openssl-aarch64-install
     - name: openssl-aarch64
+      if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: |
-        wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz
-        tar xvzf openssl-1.1.1i.tar.gz
+        wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz >/dev/null 2>&1
+        tar xvzf openssl-1.1.1i.tar.gz >/dev/null 2>&1
         cd openssl-1.1.1i/
         ./Configure linux-aarch64 --prefix=$PWD/install no-asm shared no-async  --cross-compile-prefix=aarch64-linux-gnu-
         make -j4
