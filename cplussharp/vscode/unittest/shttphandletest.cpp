@@ -41,7 +41,7 @@ C:\Users\Administrator\Desktop\RWtes
 }
 int main(int argc, char** argv)
 {
-    httplib::SSLServer srv;
+    httplib::Server srv;
     srv.Get("/", helloword1);
     srv.Get("^/.*$", helloword);
 
