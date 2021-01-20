@@ -22,7 +22,7 @@ jobs:
         tar xvzf openssl-1.1.1i.tar.gz | Out-Null
         cd openssl-1.1.1i/
         perl l configure VC-WIN64A --prefix=%CD%\install no-asm 
-        Invoke-Environment  'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"'
+        cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" && nmake -j4'
         nmake -j4
         nmake install
     # - name: cache-boost
