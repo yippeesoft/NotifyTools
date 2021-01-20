@@ -13,7 +13,7 @@ jobs:
         choco install unzip
         choco install curl
         choco install jq
-        choco install perl
+        choco install activeperl
         choco install nasm
     # - name: cache-boost
     #   id: cache-boost
