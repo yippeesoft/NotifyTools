@@ -29,6 +29,7 @@ std::string dump_headers(const Headers& headers)
 void helloword(const httplib::Request& req, httplib::Response& rsp)
 {
     printf("httplib server recv a req: %s %s\n ", req.path.c_str(), req.remote_addr.c_str());
+    printf("dump_headers:%s\n",dump_headers(req.headers).c_str());
     // std::string str = R "( <html  lang= ><h1> 武汉, 加油！</h1></html>)";
     // std::string s1 = R "a(C:\Users\Administrator\Desktop\RWtest\write.txt)a";
     std::string s= R"foo(
@@ -47,7 +48,7 @@ C:\Users\Administrator\Desktop\RWtes
 void helloword1(const httplib::Request& req, httplib::Response& rsp)
 {
     printf("httplib server recv a req: %s %s\n ", req.path.c_str(), req.remote_addr.c_str());
-    dump_headers(req.headers);
+    printf("dump_headers:%s\n",dump_headers(req.headers).c_str());
     // std::string str = R "( <html  lang= ><h1> 武汉, 加油！</h1></html>)";
     // std::string s1 = R "a(C:\Users\Administrator\Desktop\RWtest\write.txt)a";
     std::string s= R"foo(
