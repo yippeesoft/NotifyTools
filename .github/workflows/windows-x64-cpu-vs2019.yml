@@ -15,6 +15,15 @@ jobs:
         choco install jq
         choco install activeperl
         choco install nasm
+    - name: openssl-vs2019
+      if: steps.cache-openssl.outputs.cache-hit != 'true'
+      run: |
+        wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz >/dev/null 2>&1
+        tar xvzf openssl-1.1.1i.tar.gz >/dev/null 2>&1
+        cd openssl-1.1.1i/
+        perl l configure VC-WIN64A --prefix=%CD%\install no-asm 
+        nmake -j4
+        nmake install
     # - name: cache-boost
     #   id: cache-boost
     #   uses: actions/cache@v1
