@@ -13,12 +13,14 @@ jobs:
         choco install unzip
         choco install curl
         choco install jq
-    - name: cache-boost
-      id: cache-boost
-      uses: actions/cache@v1
-      with:
-        path: "cplussharp/vscode/test/boost-install"
-        key: boost-win64-install-1
+        choco install perl
+        choco install nasm
+    # - name: cache-boost
+    #   id: cache-boost
+    #   uses: actions/cache@v1
+    #   with:
+    #     path: "cplussharp/vscode/test/boost-install"
+    #     key: boost-win64-install-1
     # - name: boost
     #   if: steps.cache-boost.outputs.cache-hit != 'true'
     #   run: |
@@ -36,12 +38,12 @@ jobs:
 
     - name: git
       run:  git submodule update --init  --recursive
-    - name: cache-protobuf
-      id: cache-protobuf
-      uses: actions/cache@v1
-      with:
-        path: "protobuf-install"
-        key: protobuf-windows-install
+    # - name: cache-protobuf
+    #   id: cache-protobuf
+    #   uses: actions/cache@v1
+    #   with:
+    #     path: "protobuf-install"
+    #     key: protobuf-windows-install
     #- name: protobuf
     #  if: steps.cache-protobuf.outputs.cache-hit != 'true'
     #  run: |
