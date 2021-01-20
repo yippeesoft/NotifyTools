@@ -18,10 +18,12 @@ jobs:
     - name: openssl-vs2019
       if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: |
-        wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz >/dev/null 2>&1
-        tar xvzf openssl-1.1.1i.tar.gz >/dev/null 2>&1
+        wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz | Out-Null
+        tar xvzf openssl-1.1.1i.tar.gz | Out-Null
         cd openssl-1.1.1i/
-        perl l configure VC-WIN64A --prefix=%CD%\install no-asm 
+        perl l configure VC-WIN64A --prefix=%CD%\installw no-asm 
+        cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake -j4'
+        cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake install'
         nmake -j4
         nmake install
     # - name: cache-boost
