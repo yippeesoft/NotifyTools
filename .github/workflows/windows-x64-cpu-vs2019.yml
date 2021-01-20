@@ -15,6 +15,12 @@ jobs:
         choco install jq
         choco install activeperl
         choco install nasm
+    - name: cache-openssl
+      id: cache-openssl
+      uses: actions/cache@v1
+      with:
+        path: "openssl-1.1.1i/installw"
+        key: openssl-win64-install-1
     - name: openssl-vs2019
       if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: |
@@ -24,8 +30,6 @@ jobs:
         perl l configure VC-WIN64A --prefix=%CD%\installw no-asm 
         cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake'
         cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake install'
-        nmake -j4
-        nmake install
     # - name: cache-boost
     #   id: cache-boost
     #   uses: actions/cache@v1
