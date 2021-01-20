@@ -39,15 +39,25 @@ else()
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/lib/libcrypto.a")
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/lib/libssl.a")
+  endif()
+  if(MSVC)
+    message(STATUS "MSVC_FOUND")
+    set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw")
+    set(OPENSSL_INCLUDE_DIR
+        "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/include")
+    set(OPENSSL_CRYPTO_LIBRARY
+        "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libcrypto.lib")
+    set(DOPENSSL_SSL_LIBRARY
+        "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libssl.lib")
   else()
-    message("${CMAKE_C_COMPILER} err")
+    message(WARNING "${CMAKE_C_COMPILER} err")
   endif()
   find_package(
     OpenSSL
     COMPONENTS Crypto SSL
     REQUIRED)
   if(OPENSSL_FOUND)
-    message(WARNING "OPENSSL_FOUND")
+    message(STATUS "OPENSSL_FOUND")
   else()
     message(WARNING "OPENSSL_NOT_FOUND")
   endif()
