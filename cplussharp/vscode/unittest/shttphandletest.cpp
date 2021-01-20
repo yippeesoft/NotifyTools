@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#define CPPHTTPLIB_OPENSSL_SUPPORT
+// #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "httplib.h"
 using namespace std;
 void helloword(const httplib::Request& req, httplib::Response& rsp)
