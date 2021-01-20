@@ -22,7 +22,7 @@ jobs:
         tar xvzf openssl-1.1.1i.tar.gz | Out-Null
         cd openssl-1.1.1i/
         perl l configure VC-WIN64A --prefix=%CD%\installw no-asm 
-        cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake -j4'
+        cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake'
         cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake install'
         nmake -j4
         nmake install
