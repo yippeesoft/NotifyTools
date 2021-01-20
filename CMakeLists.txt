@@ -25,6 +25,15 @@ else()
   # "${workspaceFolder}/openssl-1.1.1i/install/include")
   # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
   # set(HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF)
+  find_package(
+    OpenSSL
+    COMPONENTS Crypto SSL
+    REQUIRED)
+  if(OPENSSL_FOUND)
+    message(WARNING "OPENSSL_FOUND")
+  else()
+    message(WARNING "OPENSSL_NOT_FOUND")
+  endif()
   add_subdirectory(submodules/cpp-httplib)
 endif()
 
