@@ -1,6 +1,7 @@
 {
     "cmake.configureOnOpen": true,
-    "cmake.configureSettings":{"SPDLOG_BUILD_TESTS":"OFF","INSTALL_GTEST":"OFF","LOG4CPLUS_BUILD_TESTING":"OFF","WITH_UNIT_TESTS":"OFF"},
+    "cmake.configureSettings":{"SPDLOG_BUILD_TESTS":"OFF","INSTALL_GTEST":"OFF","LOG4CPLUS_BUILD_TESTING":"OFF","WITH_UNIT_TESTS":"OFF"
+    , },
     // "cmake.environment":{"SPDLOG_BUILD_TESTS":"OFF"},
     "files.associations": {
         "any": "cpp",

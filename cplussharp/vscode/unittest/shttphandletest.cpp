@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "httplib.h"
 using namespace std;
 void helloword(const httplib::Request& req, httplib::Response& rsp)
@@ -28,19 +29,19 @@ void helloword1(const httplib::Request& req, httplib::Response& rsp)
     std::string s= R"foo(
 C:\Users\Administrator\Desktop\RWtes
     )foo";
-    const char* s1 = R"foo(
+    const char* s1 = R"AAA(
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
 </head>
 <h1> 武汉, 加油！</h1></html>
-)foo";
+)AAA";
     rsp.set_content(s1, "text/html"); //最后一个参数是正文类型
     rsp.status = 200;
 }
 int main(int argc, char** argv)
 {
-    httplib::Server srv;
+    httplib::SSLServer srv;
     srv.Get("/", helloword1);
     srv.Get("^/.*$", helloword);
 
