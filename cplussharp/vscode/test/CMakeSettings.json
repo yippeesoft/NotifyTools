@@ -21,12 +21,7 @@
           "name": "BUILD_TESTING",
           "value": "False",
           "type": "BOOL"
-        },
-        {
-          "name": "BUILD_SHARED_LIBS",
-          "value": "True",
-          "type": "BOOL"
-        }
+        } 
       ]
     }
   ]

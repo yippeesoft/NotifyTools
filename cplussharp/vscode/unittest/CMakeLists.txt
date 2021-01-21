@@ -16,14 +16,11 @@ endif()
   target_link_libraries(
     ${name}
     PRIVATE utils
-            spdlog::spdlog
-            log4cplus
-            httplib
+             
             -fsanitize=address
             -g3
             -fno-omit-frame-pointer
-            gtest
-            pthread
+          
             ${OPENSSL_SSL_LIBRARY}
             -rdynamic)
 
