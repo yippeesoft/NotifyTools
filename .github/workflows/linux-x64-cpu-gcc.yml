@@ -19,6 +19,7 @@ jobs:
         key: submodules-win64-install-1
     - name: git
       if: steps.cache-submodules.outputs.cache-hit != 'true'
+      run: |    
         git clone https://github.com/log4cplus/log4cplus      submodules/log4cplus
         git clone https://github.com/google/googletest  submodules/googletest
         git clone https://github.com/yhirose/cpp-httplib submodules/cpp-httplib
