@@ -21,7 +21,9 @@ else()
   add_subdirectory(submodules/spdlog)
   # set(INSTALL_GTEST OFF)
   add_subdirectory(submodules/googletest)
-  # set(LOG4CPLUS_BUILD_TESTING OFF) set(WITH_UNIT_TESTS OFF)
+  set(LOG4CPLUS_BUILD_TESTING OFF) 
+  set(WITH_UNIT_TESTS OFF)
+  set(BUILD_SHARED_LIBS FALSE)
   add_subdirectory(submodules/log4cplus)
   # message("Building with cpp-httplib
   # ${workspaceFolder}/openssl-1.1.1i/install") set(OPENSSL_ROOT_DIR
@@ -49,6 +51,7 @@ else()
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libcrypto.lib")
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libssl.lib")
+        include_directories(include submodules/log4cplus/include)
   else()
     message(WARNING "${CMAKE_C_COMPILER} err")
   endif()

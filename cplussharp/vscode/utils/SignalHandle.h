@@ -3,10 +3,12 @@
 #define SF_SINGLEHANDLE_H
 #include <iostream>
 #include <signal.h>
+#ifdef linux
 #include <execinfo.h>
+#endif
 #include <string.h>
 namespace sfutils {
-
+#ifdef LINUX
 #define DBG_ASSERT(x)                                                                                 \
     do                                                                                                \
     {                                                                                                 \
@@ -20,7 +22,9 @@ namespace sfutils {
         for (iloop = 0; iloop < trace_num; iloop++) { std::cout << pptrace_str[iloop] << std::endl; } \
         if (pptrace_str) { delete pptrace_str; }                                                      \
     } while (0);
-
+#else
+#define DBG_ASSERT(x)  
+#endif
 class SignalHandle
 {
 public:
