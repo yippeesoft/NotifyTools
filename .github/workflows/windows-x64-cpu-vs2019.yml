@@ -50,14 +50,21 @@ jobs:
     #     #.\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"   link=static runtime-link=static threading=multi  release
     #     # .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python  --build-type=complete --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
     #     ./b2 -j2  install   address-model=64   --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"   link=static runtime-link=static  threading=multi debug release  
-
+    - name: cache-submodules
+      id: cache-submodules
+      uses: actions/cache@v1
+      with:
+        path: "submodules"
+        key: submodules-win64-install-1
     - name: git
+      if: steps.cache-submodules.outputs.cache-hit != 'true'
       run:  |
         git clone https://github.com/log4cplus/log4cplus      submodules/log4cplus
         git clone https://github.com/google/googletest  submodules/googletest
         git clone https://github.com/yhirose/cpp-httplib submodules/cpp-httplib
         git clone https://github.com/nothings/stb submodules/stb_image
         git clone https://github.com/gabime/spdlog submodules/spdlog
+        cd submodules/log4cplus
         git submodule update --init  --recursive
     # - name: cache-protobuf
     #   id: cache-protobuf
