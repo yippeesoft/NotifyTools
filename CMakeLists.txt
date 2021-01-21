@@ -21,13 +21,18 @@ else()
   add_subdirectory(submodules/spdlog)
   # set(INSTALL_GTEST OFF)
   add_subdirectory(submodules/googletest)
-  set(LOG4CPLUS_BUILD_TESTING OFF) 
+  set(LOG4CPLUS_BUILD_TESTING OFF)
   set(WITH_UNIT_TESTS OFF)
-  # set(LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME OFF)
-  # set(UNICODE OFF)
-  set(LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME OFF CACHE BOOL 
-  "Turns on resulting file name decoration for static and UNICODE builds." FORCE)
-  set(UNICODE OFF CACHE BOOL "Build with tchar = wchar_t" FORCE)
+  # set(LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME OFF) set(UNICODE OFF)
+  set(LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME
+      OFF
+      CACHE
+        BOOL
+        "Turns on resulting file name decoration for static and UNICODE builds."
+        FORCE)
+  set(UNICODE
+      OFF
+      CACHE BOOL "Build with tchar = wchar_t" FORCE)
   set(BUILD_SHARED_LIBS FALSE)
   add_subdirectory(submodules/log4cplus)
   # message("Building with cpp-httplib
@@ -55,7 +60,7 @@ else()
     set(OPENSSL_CRYPTO_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libcrypto.lib")
     set(DOPENSSL_SSL_LIBRARY
-        "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libssl.lib")        
+        "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libssl.lib")
   else()
     message(WARNING "${CMAKE_C_COMPILER} err")
   endif()
