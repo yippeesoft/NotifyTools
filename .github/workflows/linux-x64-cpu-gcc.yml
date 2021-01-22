@@ -10,7 +10,9 @@ jobs:
     - name: update
       run: sudo apt-get update
     - name: apt
-      run: sudo apt-get install unzip git cmake qt5-default qtcreator libqt5webkit5-dev libqt5webview5-dev libqt5webengine5 libqt5webenginewidgets5
+      run: |
+        sudo apt-get install unzip git cmake qt5-default qtcreator libqt5webkit5-dev libqt5webview5-dev libqt5webengine5 libqt5webenginewidgets5
+        ls /usr/lib/x86_64-linux-gnu/cmake/Qt5WebEngineWidgets
     - name: cache-submodules
       id: cache-submodules
       uses: actions/cache@v1
