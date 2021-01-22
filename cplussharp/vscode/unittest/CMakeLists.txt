@@ -2,27 +2,20 @@
 macro(sf_add_unittest name)
   set(CMAKE_CXX_STANDARD 17)
   find_package(
-  OpenSSL
-  COMPONENTS Crypto SSL
-  REQUIRED)
-if(OPENSSL_FOUND)
-  message(  "OPENSSL_FOUND ${name} ${OPENSSL_ROOT_DIR}  ${OPENSSL_SSL_LIBRARY}")
-else()
-  message(  "OPENSSL_NOT_FOUND")
-endif()
+    OpenSSL
+    COMPONENTS Crypto SSL
+    REQUIRED)
+  if(OPENSSL_FOUND)
+    message("OPENSSL_FOUND ${name} ${OPENSSL_ROOT_DIR}  ${OPENSSL_SSL_LIBRARY}")
+  else()
+    message("OPENSSL_NOT_FOUND")
+  endif()
 
   add_executable(${name} ${name}.cpp)
   target_include_directories(${name} PRIVATE)
   target_link_libraries(
-    ${name}
-    PRIVATE utils
-             
-            -fsanitize=address
-            -g3
-            -fno-omit-frame-pointer
-          
-            ${OPENSSL_SSL_LIBRARY}
-            -rdynamic)
+    ${name} PRIVATE utils -fsanitize=address -g3 -fno-omit-frame-pointer
+                    ${OPENSSL_SSL_LIBRARY} -rdynamic)
 
   # add test to a virtual project group
   set_property(TARGET ${name} PROPERTY FOLDER "examples")
@@ -31,7 +24,12 @@ endmacro()
 # set(OPENSSL_ROOT_DIR "${workspaceFolder}/openssl-1.1.1i/install")
 # set(OPENSSL_INCLUDE_DIR "${workspaceFolder}/openssl-1.1.1i/install/include")
 # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
-
+find_package(Qt5 REQUIRED COMPONENTS Widgets WebEngineWidgets)
+if(Qt5_FOUND)
+    message("Qt5_FOUND")
+  else()
+    message("Qt5_NOT_FOUND")
+  endif()
 include_directories(${workspaceFolder}/openssl-1.1.1i/install/include)
 link_directories("/usr/local/lib")
 include_directories(include /usr/local/include)
