@@ -15,6 +15,7 @@ jobs:
         choco install jq
         choco install activeperl
         choco install nasm
+        choco install 7zip
     - name: cache-qt-src
       id: cache-qt-src
       uses: actions/cache@v1
@@ -24,9 +25,9 @@ jobs:
     - name: Install Qt
       if: steps.cache-qt-src.outputs.cache-hit != 'true'
       run: |
-        wget https://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.tar.xz  | Out-Null
-        7z.exe x .\qt-everywhere-src-5.14.2.tar.xz  | Out-Null
-        7z.exe x .\qt-everywhere-src-5.14.2.tar  | Out-Null
+        $null = wget https://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.tar.xz
+        $null = 7z  x .\qt-everywhere-src-5.14.2.tar.xz  | Out-Null
+        $null = 7z  x .\qt-everywhere-src-5.14.2.tar  | Out-Null
     # - name: Install Qt
     #   uses: jurplel/install-qt-action@v2.0.0
     #   with:
