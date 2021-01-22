@@ -27,6 +27,17 @@ jobs:
         git clone https://github.com/gabime/spdlog submodules/spdlog
         cd submodules/log4cplus
         git submodule update --init  --recursive
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../QtLinux
+        key: Linux-QtCache
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
     # - name: cache-googletest
     #   id: cache-googletest
     #   uses: actions/cache@v1
