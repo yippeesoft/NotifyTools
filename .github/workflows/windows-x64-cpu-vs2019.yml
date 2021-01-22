@@ -18,6 +18,8 @@ jobs:
         choco install activeperl
         choco install nasm
         choco install 7zip
+        echo on
+        7z --version
     - name: cache-qt-src
       id: cache-qt-src
       uses: actions/cache@v1
@@ -29,12 +31,11 @@ jobs:
       shell: cmd
       run: |
         echo off
-        wget https://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.tar.xz
+        wget https://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.zip > null
         echo on
-        dir qt-everywhere-src-5.14.2.tar.xz
+        dir qt-everywhere-src-5.14.2.zip
         echo off
-        7z  x qt-everywhere-src-5.14.2.tar.xz 
-        7z  x qt-everywhere-src-5.14.2.tar
+        unzip qt-everywhere-src-5.14.2.zip
     # - name: Install Qt
     #   uses: jurplel/install-qt-action@v2.0.0
     #   with:
