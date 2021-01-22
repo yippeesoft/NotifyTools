@@ -7,7 +7,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: install wget unzip curl jq tar
+    - name: install wget unzip curl jq tar 7zip
       run: |
         choco install Wget
         choco install unzip
@@ -15,24 +15,36 @@ jobs:
         choco install jq
         choco install activeperl
         choco install nasm
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2.0.0
+    - name: cache-qt-src
+      id: cache-qt-src
+      uses: actions/cache@v1
       with:
-        version: '5.14.2'
-        host: 'windows'
-        target: 'desktop'
-        arch: 'win64_msvc2017_64'
-        dir: '${{ github.workspace }}/example/'
-        install-deps: 'true'
-        modules: 'Widgets qtcharts qtwebengine'
-        cached: 'false'
-        setup-python: 'true'
-        tools: 'tools_ifw,4.0,qt.tools.ifw.40 tools_qtcreator,4.13.2-0,qt.tools.qtcreator'
-        set-env: 'false'
-        tools-only: 'false'
-        aqtversion: '==0.11.1'
-        py7zrversion: '==0.11.3'
-        extra: '--external 7z'
+        path: "qt-everywhere-src-5.14.2"
+        key: qt-src
+    - name: Install Qt
+      if: steps.cache-qt-src.outputs.cache-hit != 'true'
+      run: |
+        wget https://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.tar.xz  | Out-Null
+        7z.exe x .\qt-everywhere-src-5.14.2.tar.xz  | Out-Null
+        7z.exe x .\qt-everywhere-src-5.14.2.tar  | Out-Null
+    # - name: Install Qt
+    #   uses: jurplel/install-qt-action@v2.0.0
+    #   with:
+    #     version: '5.14.2'
+    #     host: 'windows'
+    #     target: 'desktop'
+    #     arch: 'win64_msvc2017_64'
+    #     dir: '${{ github.workspace }}/example/'
+    #     install-deps: 'true'
+    #     modules: 'Widgets qtcharts qtwebengine'
+    #     cached: 'false'
+    #     setup-python: 'true'
+    #     tools: 'tools_ifw,4.0,qt.tools.ifw.40 tools_qtcreator,4.13.2-0,qt.tools.qtcreator'
+    #     set-env: 'false'
+    #     tools-only: 'false'
+    #     aqtversion: '==0.11.1'
+    #     py7zrversion: '==0.11.3'
+    #     extra: '--external 7z'
     - name: cache-openssl
       id: cache-openssl
       uses: actions/cache@v1
