@@ -61,7 +61,7 @@ else()
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libcrypto.lib")
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libssl.lib")
-    set(Qt5_Dir "${CMAKE_SOURCE_DIR}/qtvs2019/Qt")
+    set(Qt5_Dir "${CMAKE_SOURCE_DIR}/qtvs2019/Qt/5.14.2")
   else()
     message(STATUS "${CMAKE_C_COMPILER} err")
   endif()
