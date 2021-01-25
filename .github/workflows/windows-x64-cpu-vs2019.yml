@@ -15,9 +15,9 @@ jobs:
         choco install unzip
         choco install curl
         choco install jq
-        choco install activeperl
-        choco install nasm
-        choco install 7zip
+        # choco install activeperl
+        # choco install nasm
+        # choco install 7zip
     # - name: cache-qt-src
     #   id: cache-qt-src
     #   uses: actions/cache@v1
@@ -42,24 +42,24 @@ jobs:
     #     cd qt-everywhere-src-5.14.2
     #     "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2.0.0
-      with:
-        version: '5.14.2'
-        host: 'windows'
-        target: 'desktop'
-        arch: 'win64_msvc2017_64'
-        dir: '${{ github.workspace }}/example/'
-        install-deps: 'true'
-        modules: 'Widgets qtcharts qtwebengine'
-        cached: 'false'
-        setup-python: 'true'
-        tools: 'tools_ifw,4.0,qt.tools.ifw.40 tools_qtcreator,4.13.2-0,qt.tools.qtcreator'
-        set-env: 'false'
-        tools-only: 'false'
-        aqtversion: '==0.11.1'
-        py7zrversion: '==0.11.3'
-        extra: '--external 7z'
+    # - name: Install Qt
+    #   uses: jurplel/install-qt-action@v2.0.0
+    #   with:
+    #     version: '5.14.2'
+    #     host: 'windows'
+    #     target: 'desktop'
+    #     arch: 'win64_msvc2017_64'
+    #     dir: '${{ github.workspace }}/example/'
+    #     install-deps: 'true'
+    #     modules: 'Widgets qtcharts qtwebengine'
+    #     cached: 'false'
+    #     setup-python: 'true'
+    #     tools: 'tools_ifw,4.0,qt.tools.ifw.40 tools_qtcreator,4.13.2-0,qt.tools.qtcreator'
+    #     set-env: 'false'
+    #     tools-only: 'false'
+    #     aqtversion: '==0.11.1'
+    #     py7zrversion: '==0.11.3'
+    #     extra: '--external 7z'
     - name: cache-openssl
       id: cache-openssl
       uses: actions/cache@v1
