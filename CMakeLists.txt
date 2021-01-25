@@ -62,7 +62,7 @@ else()
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libssl.lib")
   else()
-    message(WARNING "${CMAKE_C_COMPILER} err")
+    message(STATUS "${CMAKE_C_COMPILER} err")
   endif()
   include_directories(include submodules/log4cplus/include)
   link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
