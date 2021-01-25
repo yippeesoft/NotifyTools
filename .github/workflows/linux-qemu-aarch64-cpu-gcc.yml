@@ -13,7 +13,14 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install g++-aarch64-linux-gnu 
+    - name: cache-qt-src
+      id: cache-qt-src
+      uses: actions/cache@v1
+      with:
+        path: "qt-everywhere-src-5.14.2"
+        key: qt-src
     - name: qt5
+      if: steps.cache-qt-src.outputs.cache-hit != 'true'
       run: |
         wget https://mirror.tuna.tsinghua.edu.cn/qt/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.zip >/dev/null 2>&1
         unzip qt-everywhere-src-5.14.2.zip >/dev/null 2>&1
