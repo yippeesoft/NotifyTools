@@ -57,7 +57,9 @@ jobs:
         QtPath: "qtvs2019"
       run: |
         $qt_Path=${env:QtPath}
+        ::set-env name=Qt5_Dir::$qt_Path
         echo "::set-env name=Qt5_Dir::$qt_Path"
+        ::add-path::$qt_Path/bin
         echo "::add-path::$qt_Path/bin"
     - name: Install Qt
       if: steps.cache-qtvs2019.outputs.cache-hit != 'true'
