@@ -94,7 +94,7 @@ jobs:
         set Qt5_Dir="${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
         setx Qt5_Dir  "${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
         set path=%path%;"${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
-        setx path %path%;"${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
+        setx "path" "%path%;${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
     - name: openssl-vs2019
       if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: |
