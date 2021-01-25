@@ -50,6 +50,15 @@ jobs:
       with:
         path: "qtvs2019"
         key: qtvs2019
+    - name: setupQt
+      if: steps.cache-qtvs2019.outputs.cache-hit == 'true'
+      shell: pwsh
+      env:
+        QtPath: "qtvs2019"
+      run: |
+        $qt_Path=${env:QtPath}
+        echo "::set-env name=Qt5_Dir::$qt_Path"
+        echo "::add-path::$qt_Path/bin"
     - name: Install Qt
       if: steps.cache-qtvs2019.outputs.cache-hit != 'true'
       uses: jurplel/install-qt-action@v2.0.0
