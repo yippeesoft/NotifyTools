@@ -1,2 +1,5 @@
 add_subdirectory(utils)
 add_subdirectory(unittest)
+if(BUILD_WITH_QT)
+  add_subdirectory(qt/qttest)
+endif()

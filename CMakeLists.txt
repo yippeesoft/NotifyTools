@@ -41,9 +41,12 @@ else()
   # "${workspaceFolder}/openssl-1.1.1i/install/include")
   # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
   # set(HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF)
-  message("CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_C_COMPILER}")
+  set(BUILD_WITH_QT ON)
+  message(
+    "CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_C_COMPILER}")
   if(CMAKE_C_COMPILER MATCHES ".*arm|aarch64.*")
-    message("CMAKE_C_COMPILER aarch64")
+    set(BUILD_WITH_QT OFF)
+    message("CMAKE_C_COMPILER aarch64 ${BUILD_WITH_QT}")
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install")
     set(OPENSSL_INCLUDE_DIR
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/include")
@@ -52,6 +55,7 @@ else()
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/lib/libssl.a")
   endif()
+
   if(MSVC)
     message(STATUS "MSVC_FOUND")
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw")
@@ -61,9 +65,11 @@ else()
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libcrypto.lib")
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libssl.lib")
-    set(Qt5_DIR "${CMAKE_SOURCE_DIR}/qtvs2019/Qt/5.14.2/msvc2017_64/lib/cmake/Qt5")
+    set(Qt5_DIR
+        "${CMAKE_SOURCE_DIR}/qtvs2019/Qt/5.14.2/msvc2017_64/lib/cmake/Qt5")
   else()
-    message(STATUS "${CMAKE_C_COMPILER} err")
+    message(STATUS "${CMAKE_C_COMPILER} NOT MSVC")
+
   endif()
   include_directories(include submodules/log4cplus/include)
   link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
