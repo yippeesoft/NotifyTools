@@ -12,10 +12,7 @@ jobs:
     - name: aarch64-gnu-toolchain
       run: |
         sudo apt-get update
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-        sudo apt update
-        sudo apt install gcc-10 g++-10 
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 60 --slave /usr/bin/g++ g++ /usr/bin/g++-10
+        sudo apt-get install g++-aarch64-linux-gnu 
     - name: cache-qt-src
       id: cache-qt-src
       uses: actions/cache@v1
