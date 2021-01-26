@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
+set(CMAKE_CXX_STANDARD 17)
 set(PrjName "Qt5Test")
 PROJECT(${PrjName})
-set(CMAKE_CXX_STANDARD 17)
+
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
