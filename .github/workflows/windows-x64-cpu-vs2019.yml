@@ -24,7 +24,6 @@ jobs:
       shell: cmd 
       run: |
         git clone https://github.com/microsoft/vcpkg
-        cd vcpkg
         .\vcpkg\bootstrap-vcpkg.bat
         .\vcpkg\vcpkg install curl
     # - name: cache-qt-src
