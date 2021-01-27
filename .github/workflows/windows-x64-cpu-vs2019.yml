@@ -25,8 +25,8 @@ jobs:
       run: |
         git clone https://github.com/microsoft/vcpkg
         cd vcpkg
-        bootstrap-vcpkg.bat
-        vcpkg install curl
+        .\vcpkg\bootstrap-vcpkg.bat
+        .\vcpkg\vcpkg install curl
     # - name: cache-qt-src
     #   id: cache-qt-src
     #   uses: actions/cache@v1
