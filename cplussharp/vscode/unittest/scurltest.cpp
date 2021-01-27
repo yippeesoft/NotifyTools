@@ -64,7 +64,7 @@ int main(void)
      * You better replace the URL with one that works!
      */
         curl_easy_setopt(curl, CURLOPT_URL,
-                         "ftp://ftp.example.com/curl/curl-7.9.2.tar.gz");
+                         "ftp://192.168.65.142/gghc.mp4");
         /* Define our callback to get called when there's data to be written */
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, my_fwrite);
         /* Set a pointer to our struct to pass to the callback */
@@ -72,7 +72,7 @@ int main(void)
 
         /* Switch on full protocol/debug output */
         curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
+        curl_easy_setopt(curl, CURLOPT_USERPWD, "a:a");
         res = curl_easy_perform(curl);
 
         /* always cleanup */
