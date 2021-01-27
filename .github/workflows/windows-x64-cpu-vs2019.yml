@@ -20,11 +20,16 @@ jobs:
         choco install unzip
         choco install curl
         choco install jq
-    - name: vcpkgtest
+    - name: vcpkgtest1
       shell: cmd 
       run: |
         git clone https://github.com/microsoft/vcpkg
         .\vcpkg\bootstrap-vcpkg.bat
+        dir vcpkg\toolsrc\windows-bootstrap\msbuild.x86.release\vcpkg.exe
+        .\vcpkg\toolsrc\windows-bootstrap\msbuild.x86.release\vcpkg.exe install curl
+    - name: vcpkgtest2
+      shell: cmd 
+      run: |
         dir vcpkg\toolsrc\windows-bootstrap\msbuild.x86.release\vcpkg.exe
         .\vcpkg\toolsrc\windows-bootstrap\msbuild.x86.release\vcpkg.exe install curl
     # - name: cache-qt-src
