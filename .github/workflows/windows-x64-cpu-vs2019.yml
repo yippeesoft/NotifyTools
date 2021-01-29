@@ -26,8 +26,7 @@ jobs:
         git clone https://github.com/microsoft/vcpkg
         cmd /c .\vcpkg\bootstrap-vcpkg.bat
         dir /s *.exe
-        dir vcpkg\toolsrc\windows-bootstrap\msbuild.x86.release\vcpkg.exe
-        .\vcpkg\toolsrc\windows-bootstrap\msbuild.x86.release\vcpkg.exe install curl
+        .\vcpkg\vcpkg.exe install curl
     - name: vcpkgtest2
       shell: cmd 
       run: |
@@ -92,12 +91,7 @@ jobs:
         aqtversion: '==0.11.1'
         py7zrversion: '==0.11.3'
         extra: '--external 7z'
-    - name: cache-openssl
-      id: cache-openssl
-      uses: actions/cache@v1
-      with:
-        path: "openssl-1.1.1i/installw"
-        key: openssl-win64-install-1
+    
     - name: setupQt
       if: steps.cache-qtvs2019.outputs.cache-hit == 'true'
       shell: cmd
@@ -108,6 +102,12 @@ jobs:
         setx Qt5_DIR  "${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
         set path=%path%;"${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
         setx "path" "%path%;${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
+    - name: cache-openssl
+      id: cache-openssl
+      uses: actions/cache@v1
+      with:
+        path: "openssl-1.1.1i/installw"
+        key: openssl-win64-install-1
     - name: openssl-vs2019
       if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: |
