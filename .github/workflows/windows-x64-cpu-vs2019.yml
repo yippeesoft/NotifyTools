@@ -20,14 +20,7 @@ jobs:
         choco install unzip
         choco install curl
         choco install jq
-        choco install ActivePerl
-    # - name: vcpkgtest1
-    #   shell: cmd 
-    #   run: |
-    #     git clone https://github.com/microsoft/vcpkg
-    #     cmd /c .\vcpkg\bootstrap-vcpkg.bat
-    #     dir /s *.exe
-    #     .\vcpkg\vcpkg.exe install curl[tool]
+
     # - name: cache-qt-src
     #   id: cache-qt-src
     #   uses: actions/cache@v1
@@ -86,7 +79,12 @@ jobs:
         aqtversion: '==0.11.1'
         py7zrversion: '==0.11.3'
         extra: '--external 7z'
-    
+    - name: cache-openssl
+      id: cache-openssl
+      uses: actions/cache@v1
+      with:
+        path: "openssl-1.1.1i/installw"
+        key: openssl-win64-install-1
     - name: setupQt
       if: steps.cache-qtvs2019.outputs.cache-hit == 'true'
       shell: cmd
@@ -97,12 +95,6 @@ jobs:
         setx Qt5_DIR  "${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
         set path=%path%;"${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
         setx "path" "%path%;${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
-    - name: cache-openssl
-      id: cache-openssl
-      uses: actions/cache@v1
-      with:
-        path: "openssl-1.1.1i/installw"
-        key: openssl-win64-install-1
     - name: openssl-vs2019
       if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: |
@@ -112,20 +104,6 @@ jobs:
         cmd /c perl configure VC-WIN64A --prefix=%CD%\installw no-asm 
         cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake'
         cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake install'
-    - name: cache-libcurl
-      id: cache-libcurl
-      uses: actions/cache@v1
-      with:
-        path: "curl-7.74.0/installw"
-        key: curl-7.74.0-win64-install-1
-    - name: curl-7.74.0-vs2019
-      if: steps.cache-libcurl.outputs.cache-hit != 'true'
-      run: |
-        wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz | Out-Null
-        tar xvzf curl-7.74.0.tar.gz | Out-Null
-        cd curl-7.74.0/
-        mkdir build; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=..\installw .. ; cd ..
-        cmake --build .\build --config "Release" --target install 
     # - name: cache-boost
     #   id: cache-boost
     #   uses: actions/cache@v1

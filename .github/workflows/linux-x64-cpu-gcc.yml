@@ -11,13 +11,8 @@ jobs:
       run: sudo apt-get update
     - name: apt
       run: |
-        sudo apt-get install unzip git cmake qt5-default qtcreator libqt5webkit5-dev qtwebengine5-dev libqt5web* libcurl4-openssl-dev
+        sudo apt-get install unzip git cmake qt5-default qtcreator libqt5webkit5-dev qtwebengine5-dev libqt5web*
         ls /usr/lib/x86_64-linux-gnu/cmake/
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-        sudo apt update
-        sudo apt install gcc-10 g++-10 
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 60 --slave /usr/bin/g++ g++ /usr/bin/g++-10
-        gcc --version
     - name: cache-submodules
       id: cache-submodules
       uses: actions/cache@v1
