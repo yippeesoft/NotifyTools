@@ -7,7 +7,6 @@ foreach(_variableName ${_variableNames})
 endforeach()
 message("打印变量结束 ")
 # execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
-execute_process(COMMAND "gcc" "--version")
 message("打印环境变量结束 ")
 project(vscc VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 17)
@@ -44,6 +43,7 @@ else()
   # set(HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF)
   set(BUILD_WITH_QT ON)
   if(CMAKE_C_COMPILER MATCHES ".*arm|aarch64.*")
+<<<<<<< HEAD
     set(ARM ON)
   endif()
   message(
@@ -52,6 +52,8 @@ else()
 
   # OPENSSL
   if(ARM)
+=======
+>>>>>>> 2d3130b20bb16cf342aefc6a8f140cf95e6ce3ee
     set(BUILD_WITH_QT OFF)
     message("CMAKE_C_COMPILER aarch64 ${BUILD_WITH_QT}")
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install")
@@ -62,6 +64,7 @@ else()
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/lib/libssl.a")
   endif()
+
   if(MSVC)
     message(STATUS "MSVC_FOUND")
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw")
@@ -75,7 +78,10 @@ else()
         "${CMAKE_SOURCE_DIR}/qtvs2019/Qt/5.14.2/msvc2017_64/lib/cmake/Qt5")
   else()
     message(STATUS "${CMAKE_C_COMPILER} NOT MSVC")
+
   endif()
+  include_directories(include submodules/log4cplus/include)
+  link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
   find_package(
     OpenSSL
     COMPONENTS Crypto SSL
@@ -92,9 +98,7 @@ else()
     message(STATUS "MSVC_FOUND")
     set(CURL_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw")
     set(CURL_LIBRARY "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw/lib")
-    set(CURL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw/include")
-  else()
-    message(STATUS "${CMAKE_C_COMPILER} NOT MSVC")
+    set(CURL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw/include")     
   endif()
   if(ARM)
     set(CURL_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installa")
@@ -112,6 +116,8 @@ else()
   include_directories(include submodules/log4cplus/include)
   link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
 
+=======
+>>>>>>> 2d3130b20bb16cf342aefc6a8f140cf95e6ce3ee
   add_subdirectory(submodules/cpp-httplib)
   include_directories(include submodules/cpp-httplib/)
 endif()

@@ -12,7 +12,7 @@ jobs:
     - name: aarch64-gnu-toolchain
       run: |
         sudo apt-get update
-        sudo apt-get install g++-aarch64-linux-gnu libcurl4-openssl-dev
+        sudo apt-get install g++-aarch64-linux-gnu 
     - name: cache-qt-src
       id: cache-qt-src
       uses: actions/cache@v1
