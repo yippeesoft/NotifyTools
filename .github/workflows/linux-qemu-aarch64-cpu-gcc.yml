@@ -47,7 +47,7 @@ jobs:
         path: "curl-7.74.0/installa"
         key: curl-7.74.0-aarch64-install-1
     - name: curl-7.74.0-aarch64
-      # if: steps.cache-libcurl.outputs.cache-hit != 'true'
+      if: steps.cache-libcurl.outputs.cache-hit != 'true'
       run: |
         wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz >/dev/null 2>&1
         tar xvzf curl-7.74.0.tar.gz >/dev/null 2>&1
