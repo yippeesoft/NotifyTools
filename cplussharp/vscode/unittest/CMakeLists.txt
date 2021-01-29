@@ -34,7 +34,7 @@ if(BUILD_WITH_QT)
     message("Qt5_NOT_FOUND")
   endif()
 endif()
-include_directories(${workspaceFolder}/openssl-1.1.1i/install/include)
+
 link_directories("/usr/local/lib")
 include_directories(include /usr/local/include)
 
