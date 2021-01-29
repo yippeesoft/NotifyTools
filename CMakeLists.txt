@@ -43,13 +43,14 @@ else()
   # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
   # set(HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF)
   set(BUILD_WITH_QT ON)
-  message(
-    "CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_C_COMPILER}")
   if(CMAKE_C_COMPILER MATCHES ".*arm|aarch64.*")
     set(ARM ON)
   endif()
+  message(
+    "CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_C_COMPILER} ${ARM}"
+  )
 
-  #OPENSSL
+  # OPENSSL
   if(ARM)
     set(BUILD_WITH_QT OFF)
     message("CMAKE_C_COMPILER aarch64 ${BUILD_WITH_QT}")
@@ -84,9 +85,9 @@ else()
   else()
     message("OPENSSL_NOT_FOUND")
   endif()
-  #OPENSSL
+  # OPENSSL
 
-  #CURL
+  # CURL
   if(MSVC)
     message(STATUS "MSVC_FOUND")
     set(CURL_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw")
@@ -95,18 +96,22 @@ else()
   else()
     message(STATUS "${CMAKE_C_COMPILER} NOT MSVC")
   endif()
-  find_package(
-    CURL)
+  if(ARM)
+    set(CURL_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installa")
+    set(CURL_LIBRARY "${CMAKE_SOURCE_DIR}/curl-7.74.0/installa/lib")
+    set(CURL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installa/include")
+  endif()
+  find_package(CURL)
   if(CURL_FOUND)
     message("CURL_FOUND ${name} ${CURL_INCLUDE_DIR} ${CURL_LIBRARY}")
   else()
     message("CURL_NOT_FOUND")
   endif()
-  #CURL
+  # CURL
 
   include_directories(include submodules/log4cplus/include)
   link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
-  
+
   add_subdirectory(submodules/cpp-httplib)
   include_directories(include submodules/cpp-httplib/)
 endif()
