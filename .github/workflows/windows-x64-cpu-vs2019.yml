@@ -25,6 +25,7 @@ jobs:
       run: |
         git clone https://github.com/microsoft/vcpkg
         cmd /c .\vcpkg\bootstrap-vcpkg.bat
+        dir /s *.exe
         dir vcpkg\toolsrc\windows-bootstrap\msbuild.x86.release\vcpkg.exe
         .\vcpkg\toolsrc\windows-bootstrap\msbuild.x86.release\vcpkg.exe install curl
     - name: vcpkgtest2
