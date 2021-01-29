@@ -28,7 +28,7 @@ jobs:
       #     git clone https://github.com/microsoft/vcpkg
       #     cmd /c .\vcpkg\bootstrap-vcpkg.bat
       #     dir /s *.exe
-      #     .\vcpkg\vcpkg.exe install curl[tool]      
+      #     .\vcpkg\vcpkg.exe install curl[tool]
 
       # - name: cache-qt-src
       #   id: cache-qt-src
@@ -88,7 +88,7 @@ jobs:
           aqtversion: "==0.11.1"
           py7zrversion: "==0.11.3"
           extra: "--external 7z"
-      
+
       - name: setupQt
         if: steps.cache-qtvs2019.outputs.cache-hit == 'true'
         shell: cmd
@@ -129,7 +129,7 @@ jobs:
           tar xvzf curl-7.74.0.tar.gz | Out-Null
           cd curl-7.74.0/
           mkdir build; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=..\installw .. ; cd ..
-            cmake --build .\build --config "Release" --target install 
+          cmake --build .\build --config "Release" --target install
       # - name: cache-boost
       #   id: cache-boost
       #   uses: actions/cache@v1
