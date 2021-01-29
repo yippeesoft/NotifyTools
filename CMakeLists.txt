@@ -46,6 +46,11 @@ else()
   message(
     "CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_C_COMPILER}")
   if(CMAKE_C_COMPILER MATCHES ".*arm|aarch64.*")
+    set(ARM ON)
+  endif()
+
+  #OPENSSL
+  if(ARM)
     set(BUILD_WITH_QT OFF)
     message("CMAKE_C_COMPILER aarch64 ${BUILD_WITH_QT}")
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install")
@@ -56,7 +61,6 @@ else()
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/lib/libssl.a")
   endif()
-
   if(MSVC)
     message(STATUS "MSVC_FOUND")
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw")
@@ -80,27 +84,29 @@ else()
   else()
     message("OPENSSL_NOT_FOUND")
   endif()
-  find_package(
-    OpenSSL
-    COMPONENTS Crypto SSL
-    REQUIRED)
-  if(OPENSSL_FOUND)
-    message("OPENSSL_FOUND ${name} ${OPENSSL_ROOT_DIR}  ${OPENSSL_SSL_LIBRARY}")
+  #OPENSSL
+
+  #CURL
+  if(MSVC)
+    message(STATUS "MSVC_FOUND")
+    set(CURL_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw")
+    set(CURL_LIBRARY "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw/lib")
+    set(CURL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw/include")
   else()
-    message("OPENSSL_NOT_FOUND")
+    message(STATUS "${CMAKE_C_COMPILER} NOT MSVC")
   endif()
+  find_package(
+    CURL)
+  if(CURL_FOUND)
+    message("CURL_FOUND ${name} ${CURL_INCLUDE_DIR} ${CURL_LIBRARY}")
+  else()
+    message("CURL_NOT_FOUND")
+  endif()
+  #CURL
 
   include_directories(include submodules/log4cplus/include)
   link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
-  find_package(
-    OpenSSL
-    COMPONENTS Crypto SSL
-    REQUIRED)
-  if(OPENSSL_FOUND)
-    message(STATUS "OPENSSL_FOUND")
-  else()
-    message(WARNING "OPENSSL_NOT_FOUND")
-  endif()
+  
   add_subdirectory(submodules/cpp-httplib)
   include_directories(include submodules/cpp-httplib/)
 endif()
