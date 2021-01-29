@@ -124,7 +124,7 @@ jobs:
         wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz | Out-Null
         tar xvzf curl-7.74.0.tar.gz | Out-Null
         cd curl-7.74.0/
-        mkdir build; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=.\installw .. ; cd ..
+        mkdir build; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=..\installw .. ; cd ..
         cmake --build .\build --config "Release" --target install 
     # - name: cache-boost
     #   id: cache-boost

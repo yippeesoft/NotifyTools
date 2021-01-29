@@ -80,8 +80,16 @@ else()
   else()
     message("OPENSSL_NOT_FOUND")
   endif()
+  find_package(
+    OpenSSL
+    COMPONENTS Crypto SSL
+    REQUIRED)
+  if(OPENSSL_FOUND)
+    message("OPENSSL_FOUND ${name} ${OPENSSL_ROOT_DIR}  ${OPENSSL_SSL_LIBRARY}")
+  else()
+    message("OPENSSL_NOT_FOUND")
+  endif()
 
-  
   include_directories(include submodules/log4cplus/include)
   link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
   find_package(
