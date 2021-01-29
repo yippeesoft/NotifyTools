@@ -44,7 +44,7 @@ jobs:
       id: cache-libcurl
       uses: actions/cache@v1
       with:
-        path: "curl-7.74.0/installw"
+        path: "curl-7.74.0/installa"
         key: curl-7.74.0-win64-install-1
     - name: curl-7.74.0-vs2019
       if: steps.cache-libcurl.outputs.cache-hit != 'true'
