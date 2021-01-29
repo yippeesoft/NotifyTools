@@ -14,7 +14,7 @@ macro(sf_add_unittest name)
   add_executable(${name} ${name}.cpp)
   target_include_directories(${name} PRIVATE)
   target_link_libraries(
-    ${name} PRIVATE utils -fsanitize=address -g3 -fno-omit-frame-pointer curl curl_imp
+    ${name} PRIVATE utils -fsanitize=address -g3 -fno-omit-frame-pointer ${CURL_LIB_NAME} 
                     ${OPENSSL_SSL_LIBRARY} -rdynamic)
 
   # add test to a virtual project group
