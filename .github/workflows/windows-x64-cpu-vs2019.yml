@@ -9,166 +9,190 @@ jobs:
   windows-vs2019-sse2:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-    - name: install wget unzip curl jq tar 7zip
-      shell: cmd
-      run: |
-        echo off
-        choco install Wget
-        choco install unzip
-        choco install curl
-        choco install jq
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: install wget unzip curl jq tar 7zip
+        shell: cmd
+        run: |
+          echo off
+          choco install Wget
+          choco install unzip
+          choco install curl
+          choco install jq
+          choco install ActivePerl
 
-    # - name: cache-qt-src
-    #   id: cache-qt-src
-    #   uses: actions/cache@v1
-    #   with:
-    #     path: "qt-everywhere-src-5.14.2"
-    #     key: qt-src
-    # - name: wget Qt
-    #   if: steps.cache-qt-src.outputs.cache-hit != 'true'
-    #   shell: cmd
-    #   run: |
-    #     echo off
-    #     wget https://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.zip > null
-    #     echo on
-    #     dir qt-everywhere-src-5.14.2.zip
-    #     echo off
-    #     unzip qt-everywhere-src-5.14.2.zip
-    # - name: build Qt
-    #   # if: steps.cache-qt-src.outputs.cache-hit != 'true'
-    #   shell: cmd
-    #   run: |
-    #     echo off
-    #     cd qt-everywhere-src-5.14.2
-    #     "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-    - name: cache-qtvs2019
-      id: cache-qtvs2019
+      # - name: vcpkgtest1
+      #   shell: cmd
+      #   run: |
+      #     git clone https://github.com/microsoft/vcpkg
+      #     cmd /c .\vcpkg\bootstrap-vcpkg.bat
+      #     dir /s *.exe
+      #     .\vcpkg\vcpkg.exe install curl[tool]      
+
+      # - name: cache-qt-src
+      #   id: cache-qt-src
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: "qt-everywhere-src-5.14.2"
+      #     key: qt-src
+      # - name: wget Qt
+      #   if: steps.cache-qt-src.outputs.cache-hit != 'true'
+      #   shell: cmd
+      #   run: |
+      #     echo off
+      #     wget https://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.zip > null
+      #     echo on
+      #     dir qt-everywhere-src-5.14.2.zip
+      #     echo off
+      #     unzip qt-everywhere-src-5.14.2.zip
+      # - name: build Qt
+      #   # if: steps.cache-qt-src.outputs.cache-hit != 'true'
+      #   shell: cmd
+      #   run: |
+      #     echo off
+      #     cd qt-everywhere-src-5.14.2
+      #     "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+      - name: cache-qtvs2019
+        id: cache-qtvs2019
+        uses: actions/cache@v1
+        with:
+          path: "qtvs2019"
+          key: qtvs2019
+      # - name: setupQt
+      #   if: steps.cache-qtvs2019.outputs.cache-hit == 'true'
+      #   shell: pwsh
+      #   env:
+      #     QtPath: "qtvs2019"
+      #   run: |
+      #     $qt_Path=${env:QtPath}
+      #     echo "::set-env name=Qt5_Dir::$qt_Path"
+      #     add-path::$qt_Path/bin
+      #     echo "::add-path::$qt_Path/bin"
+      - name: Install Qt
+        if: steps.cache-qtvs2019.outputs.cache-hit != 'true'
+        uses: jurplel/install-qt-action@v2.0.0
+        with:
+          version: "5.14.2"
+          host: "windows"
+          target: "desktop"
+          arch: "win64_msvc2017_64"
+          dir: "${{ github.workspace }}/qtvs2019/"
+          install-deps: "true"
+          modules: "Widgets qtcharts qtwebengine"
+          cached: "false"
+          setup-python: "true"
+          tools: "tools_ifw,4.0,qt.tools.ifw.40 tools_qtcreator,4.13.2-0,qt.tools.qtcreator"
+          set-env: "false"
+          tools-only: "false"
+          aqtversion: "==0.11.1"
+          py7zrversion: "==0.11.3"
+          extra: "--external 7z"
+      
+      - name: setupQt
+        if: steps.cache-qtvs2019.outputs.cache-hit == 'true'
+        shell: cmd
+        env:
+          QtPath: "${{ github.workspace }}/qtvs2019/"
+        run: |
+          set Qt5_DIR="${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
+          setx Qt5_DIR  "${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
+          set path=%path%;"${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
+          setx "path" "%path%;${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
+
+      - name: cache-openssl
+        id: cache-openssl
+        uses: actions/cache@v1
+        with:
+          path: "openssl-1.1.1i/installw"
+          key: openssl-win64-install-1
+      - name: openssl-vs2019
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: |
+          wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz | Out-Null
+          tar xvzf openssl-1.1.1i.tar.gz | Out-Null
+          cd openssl-1.1.1i/
+          cmd /c perl configure VC-WIN64A --prefix=%CD%\installw no-asm 
+          cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake'
+          cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake install'
+
+      - name: cache-libcurl
+      id: cache-libcurl
       uses: actions/cache@v1
       with:
-        path: "qtvs2019"
-        key: qtvs2019
-    # - name: setupQt
-    #   if: steps.cache-qtvs2019.outputs.cache-hit == 'true'
-    #   shell: pwsh
-    #   env:
-    #     QtPath: "qtvs2019"
-    #   run: |
-    #     $qt_Path=${env:QtPath}        
-    #     echo "::set-env name=Qt5_Dir::$qt_Path"
-    #     add-path::$qt_Path/bin
-    #     echo "::add-path::$qt_Path/bin"
-    - name: Install Qt
-      if: steps.cache-qtvs2019.outputs.cache-hit != 'true'
-      uses: jurplel/install-qt-action@v2.0.0
-      with:
-        version: '5.14.2'
-        host: 'windows'
-        target: 'desktop'
-        arch: 'win64_msvc2017_64'
-        dir: '${{ github.workspace }}/qtvs2019/'
-        install-deps: 'true'
-        modules: 'Widgets qtcharts qtwebengine'
-        cached: 'false'
-        setup-python: 'true'
-        tools: 'tools_ifw,4.0,qt.tools.ifw.40 tools_qtcreator,4.13.2-0,qt.tools.qtcreator'
-        set-env: 'false'
-        tools-only: 'false'
-        aqtversion: '==0.11.1'
-        py7zrversion: '==0.11.3'
-        extra: '--external 7z'
-    - name: cache-openssl
-      id: cache-openssl
-      uses: actions/cache@v1
-      with:
-        path: "openssl-1.1.1i/installw"
-        key: openssl-win64-install-1
-    - name: setupQt
-      if: steps.cache-qtvs2019.outputs.cache-hit == 'true'
-      shell: cmd
-      env:
-        QtPath: '${{ github.workspace }}/qtvs2019/'
-      run: |
-        set Qt5_DIR="${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
-        setx Qt5_DIR  "${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
-        set path=%path%;"${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
-        setx "path" "%path%;${{ github.workspace }}/qtvs2019/Qt/5.14.2/msvc2017_64"
-    - name: openssl-vs2019
-      if: steps.cache-openssl.outputs.cache-hit != 'true'
-      run: |
-        wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz | Out-Null
-        tar xvzf openssl-1.1.1i.tar.gz | Out-Null
-        cd openssl-1.1.1i/
-        cmd /c perl configure VC-WIN64A --prefix=%CD%\installw no-asm 
-        cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake'
-        cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake install'
-    # - name: cache-boost
-    #   id: cache-boost
-    #   uses: actions/cache@v1
-    #   with:
-    #     path: "cplussharp/vscode/test/boost-install"
-    #     key: boost-win64-install-1
-    # - name: boost
-    #   if: steps.cache-boost.outputs.cache-hit != 'true'
-    #   run: |
-    #     # cmd /c rmdir cplussharp\vscode\test\boost-install /s /q
-    #     wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip  | Out-Null
-    #     unzip boost_1_75_0.zip | Out-Null
-    #     cd boost_1_75_0  
-    #     #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
-    #     #cmake --build . --config Release
-    #     .\bootstrap.bat
-    #     # .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
-    #     #.\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"   link=static runtime-link=static threading=multi  release
-    #     # .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python  --build-type=complete --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
-    #     ./b2 -j2  install   address-model=64   --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"   link=static runtime-link=static  threading=multi debug release  
-    - name: cache-submodules
-      id: cache-submodules
-      uses: actions/cache@v1
-      with:
-        path: "submodules"
-        key: submodules-win64-install-1
-    - name: git
-      if: steps.cache-submodules.outputs.cache-hit != 'true'
-      run:  |
-        git clone https://github.com/log4cplus/log4cplus      submodules/log4cplus
-        git clone https://github.com/google/googletest  submodules/googletest
-        git clone https://github.com/yhirose/cpp-httplib submodules/cpp-httplib
-        git clone https://github.com/nothings/stb submodules/stb_image
-        git clone https://github.com/gabime/spdlog submodules/spdlog
-        cd submodules/log4cplus
-        git submodule update --init  --recursive
-    # - name: cache-protobuf
-    #   id: cache-protobuf
-    #   uses: actions/cache@v1
-    #   with:
-    #     path: "protobuf-install"
-    #     key: protobuf-windows-install
-    #- name: protobuf
-    #  if: steps.cache-protobuf.outputs.cache-hit != 'true'
-    #  run: |
-    #    Invoke-WebRequest -Uri https://github.com/protocolbuffers/protobuf/archive/v3.11.2.zip -OutFile protobuf-3.11.2.zip
-    #    7z x ./protobuf-3.11.2.zip
-    #    cd protobuf-3.11.2
-    #    mkdir build-vs2019; cd build-vs2019; cmake -DCMAKE_INSTALL_PREFIX="$env:GITHUB_WORKSPACE\protobuf-install" -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_MSVC_STATIC_RUNTIME=OFF -DNCNN_BUILD_TESTS=ON ../cmake
-    #    cmake --build . --config Release -j 2
-    #    cmake --build . --config Release --target install
-    # - name: configure
-    #   run: |
-    #     cd ./cplussharp/vscode/test ; mkdir build; cd build
-    #     set BOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"
-    #     cmake -DBOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  -DBoost_INCLUDE_DIR="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install\include\boost-1_75" ..
-    # - name: build
-    #   run: cd ./cplussharp/vscode/test ; cmake --build build --config Release
-    - name: configure
-      run: |
-        mkdir build; cd build
-        cmake ..
-    - name: build
-      run: cmake --build build --config Release
+       path: "curl-7.74.0/installw"
+         key: curl-7.74.0-win64-install-1
+    - name: curl-7.74.0-vs2019
+      if: steps.cache-libcurl.outputs.cache-hit != 'true'
+     run: |
+         wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz | Out-Null
+       tar xvzf curl-7.74.0.tar.gz | Out-Null
+      cd curl-7.74.0/
+       mkdir build; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=..\installw .. ; cd ..
+        cmake --build .\build --config "Release" --target install 
+      # - name: cache-boost
+      #   id: cache-boost
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: "cplussharp/vscode/test/boost-install"
+      #     key: boost-win64-install-1
+      # - name: boost
+      #   if: steps.cache-boost.outputs.cache-hit != 'true'
+      #   run: |
+      #     # cmd /c rmdir cplussharp\vscode\test\boost-install /s /q
+      #     wget https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.zip  | Out-Null
+      #     unzip boost_1_75_0.zip | Out-Null
+      #     cd boost_1_75_0
+      #     #cmake .. -G "Visual Studio 16 2019" -DTARGET="windows"
+      #     #cmake --build . --config Release
+      #     .\bootstrap.bat
+      #     # .\b2.exe -j5 --with-date_time --with-filesystem --with-system --with-thread --with-regex link=static runtime-link=static
+      #     #.\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python --build-type=complete --prefix="..\cplussharp\vscode\test\boost-install"   link=static runtime-link=static threading=multi  release
+      #     # .\b2.exe install --toolset=msvc-14.2 address-model=64 --without-python  --build-type=complete --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  link=static runtime-link=shared  threading=multi debug release
+      #     ./b2 -j2  install   address-model=64   --prefix="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"   link=static runtime-link=static  threading=multi debug release
+      - name: cache-submodules
+        id: cache-submodules
+        uses: actions/cache@v1
+        with:
+          path: "submodules"
+          key: submodules-win64-install-1
+      - name: git
+        if: steps.cache-submodules.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/log4cplus/log4cplus      submodules/log4cplus
+          git clone https://github.com/google/googletest  submodules/googletest
+          git clone https://github.com/yhirose/cpp-httplib submodules/cpp-httplib
+          git clone https://github.com/nothings/stb submodules/stb_image
+          git clone https://github.com/gabime/spdlog submodules/spdlog
+          cd submodules/log4cplus
+          git submodule update --init  --recursive
+      # - name: cache-protobuf
+      #   id: cache-protobuf
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: "protobuf-install"
+      #     key: protobuf-windows-install
+      #- name: protobuf
+      #  if: steps.cache-protobuf.outputs.cache-hit != 'true'
+      #  run: |
+      #    Invoke-WebRequest -Uri https://github.com/protocolbuffers/protobuf/archive/v3.11.2.zip -OutFile protobuf-3.11.2.zip
+      #    7z x ./protobuf-3.11.2.zip
+      #    cd protobuf-3.11.2
+      #    mkdir build-vs2019; cd build-vs2019; cmake -DCMAKE_INSTALL_PREFIX="$env:GITHUB_WORKSPACE\protobuf-install" -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_MSVC_STATIC_RUNTIME=OFF -DNCNN_BUILD_TESTS=ON ../cmake
+      #    cmake --build . --config Release -j 2
+      #    cmake --build . --config Release --target install
+      # - name: configure
+      #   run: |
+      #     cd ./cplussharp/vscode/test ; mkdir build; cd build
+      #     set BOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"
+      #     cmake -DBOOST_ROOT="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install"  -DBoost_INCLUDE_DIR="$env:GITHUB_WORKSPACE\cplussharp\vscode\test\boost-install\include\boost-1_75" ..
+      # - name: build
+      #   run: cd ./cplussharp/vscode/test ; cmake --build build --config Release
+      - name: configure
+        run: |
+          mkdir build; cd build
+          cmake ..
+      - name: build
+        run: cmake --build build --config Release
     #- name: test
     #  run: cd ./cplussharp/vscode/test ; cd build; ctest -C Release --output-on-failure -j 2
-
-  
