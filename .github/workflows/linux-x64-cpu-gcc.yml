@@ -11,7 +11,7 @@ jobs:
         run: sudo apt-get update
       - name: apt
         run: |
-          sudo apt-get install unzip git cmake qt5-default qtcreator libqt5webkit5-dev qtwebengine5-dev libqt5web*
+          sudo apt-get install unzip git cmake qt5-default qtcreator libqt5webkit5-dev qtwebengine5-dev libqt5web* libcurl4-openssl-dev
           ls /usr/lib/x86_64-linux-gnu/cmake/
           sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
           sudo apt update
