@@ -43,17 +43,6 @@ else()
   # set(HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF)
   set(BUILD_WITH_QT ON)
   if(CMAKE_C_COMPILER MATCHES ".*arm|aarch64.*")
-<<<<<<< HEAD
-    set(ARM ON)
-  endif()
-  message(
-    "CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_C_COMPILER} ${ARM}"
-  )
-
-  # OPENSSL
-  if(ARM)
-=======
->>>>>>> 2d3130b20bb16cf342aefc6a8f140cf95e6ce3ee
     set(BUILD_WITH_QT OFF)
     message("CMAKE_C_COMPILER aarch64 ${BUILD_WITH_QT}")
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install")

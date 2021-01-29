@@ -117,19 +117,19 @@ jobs:
           cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && nmake install'
 
       - name: cache-libcurl
-      id: cache-libcurl
-      uses: actions/cache@v1
-      with:
-       path: "curl-7.74.0/installw"
-         key: curl-7.74.0-win64-install-1
-    - name: curl-7.74.0-vs2019
-      if: steps.cache-libcurl.outputs.cache-hit != 'true'
-     run: |
-         wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz | Out-Null
-       tar xvzf curl-7.74.0.tar.gz | Out-Null
-      cd curl-7.74.0/
-       mkdir build; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=..\installw .. ; cd ..
-        cmake --build .\build --config "Release" --target install 
+        id: cache-libcurl
+        uses: actions/cache@v1
+        with:
+          path: "curl-7.74.0/installw"
+          key: curl-7.74.0-win64-install-1
+      - name: curl-7.74.0-vs2019
+        if: steps.cache-libcurl.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz | Out-Null
+          tar xvzf curl-7.74.0.tar.gz | Out-Null
+          cd curl-7.74.0/
+          mkdir build; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=..\installw .. ; cd ..
+            cmake --build .\build --config "Release" --target install 
       # - name: cache-boost
       #   id: cache-boost
       #   uses: actions/cache@v1
