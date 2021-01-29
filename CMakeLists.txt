@@ -70,7 +70,7 @@ else()
 
   endif()
   include_directories(include submodules/log4cplus/include)
-  link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
+  link_directories("submodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
   find_package(
     OpenSSL
     COMPONENTS Crypto SSL
@@ -99,6 +99,7 @@ else()
   if(CURL_FOUND)
     message("CURL_FOUND ${name} ${CURL_INCLUDE_DIR} ${CURL_LIBRARY}")    
     include_directories(${CURL_INCLUDE_DIR})
+    link_directories("${CURL_LIBRARY}")
   else()
     message("CURL_NOT_FOUND")
   endif()
