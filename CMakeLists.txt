@@ -105,8 +105,6 @@ else()
   include_directories(include submodules/log4cplus/include)
   link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
 
-=======
->>>>>>> 2d3130b20bb16cf342aefc6a8f140cf95e6ce3ee
   add_subdirectory(submodules/cpp-httplib)
   include_directories(include submodules/cpp-httplib/)
 endif()
