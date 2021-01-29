@@ -49,8 +49,8 @@ jobs:
     - name: curl-7.74.0-aarch64
       # if: steps.cache-libcurl.outputs.cache-hit != 'true'
       run: |
-        wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz | Out-Null
-        tar xvzf curl-7.74.0.tar.gz | Out-Null
+        wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz >/dev/null 2>&1
+        tar xvzf curl-7.74.0.tar.gz >/dev/null 2>&1
         cd curl-7.74.0/
         ./configure   --target=aarch64-linux-gnu   --host=aarch64-linux-gnu   --prefix=${PWD}/installa   --disable-threaded-resolver  CC=aarch64-linux-gnu-gcc --without-zlib  --without-ssl
         make && make install    
