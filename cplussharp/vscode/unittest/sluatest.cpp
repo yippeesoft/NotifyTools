@@ -59,21 +59,23 @@ void TestLua2()
 
     string str;
 
-    while (true)
-
+    // while (true)
+    luaL_loadstring(L, "print('c++ = ' .. valueCPP)");
+    lua_pcall(L, 0, 0, 0);
     {
         cout << "输入lua文件路径:" << endl;
 
-        getline(cin, str, '\n');
+        // getline(cin, str, '\n');
 
-        if (luaL_loadfile(L, str.c_str())
+        // if (luaL_loadfile(L, str.c_str())
 
-            || lua_pcall(L, 0, 0, 0))
+        //     || lua_pcall(L, 0, 0, 0))
 
-        {
-            const char* error = lua_tostring(L, -1);
+        // {
+        //     const char* error = lua_tostring(L, -1);
 
-            cout << string(error) << endl;
-        }
+        //     cout << string(error) << endl;
+        // }
     }
+    lua_close(L);
 }
