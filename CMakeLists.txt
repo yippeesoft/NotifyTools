@@ -118,3 +118,4 @@ else()
 endif()
 
 add_subdirectory(cplussharp/vscode)
+add_subdirectory(lua-5.3.6)
