@@ -86,7 +86,9 @@
         "variant": "cpp",
         "filesystem": "cpp",
         "*.cmake": "cpp",
-        "netfwd": "cpp"
+        "netfwd": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp"
     },
     "editor.tokenColorCustomizations": {
         "textMateRules": [

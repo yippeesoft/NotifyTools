@@ -22,7 +22,10 @@
 #include <stdio.h>
 
 #include <curl/curl.h>
+#include <iostream>
 #include <math.h>
+#include <thread>
+using namespace std;
 /* <DESC>
  * Get a single file from an FTP server.
  * </DESC>
@@ -58,7 +61,7 @@ static size_t my_fwrite(void* buffer, size_t size, size_t nmemb, void* stream)
 #else
 #define TIMETYPE                                double
 #define TIMEOPT                                 CURLINFO_TOTAL_TIME
-#define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL 3
+#define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL 1
 #endif
 
 #define STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES 6000
@@ -68,6 +71,7 @@ struct myprogress
     double lastruntime;
     CURL* curl;
 };
+bool ftp=true;
 int progress_func(void* p,
                   curl_off_t dltotal, curl_off_t dlnow,
                   curl_off_t ultotal, curl_off_t ulnow)
@@ -83,18 +87,20 @@ int progress_func(void* p,
         fprintf(stderr, "TOTAL TIME: %" CURL_FORMAT_CURL_OFF_T ".%06ld\r\n",
                 (curtime / 1000000), (long)(curtime % 1000000));
 #else
-        fprintf(stderr, "TOTAL TIME: %f \r\n", curtime);
+        fprintf(stderr, "TOTAL TIME: .%06ld\r\n", curtime);
 #endif
     }
-    fprintf(stderr, "TOTAL TIME: %" CURL_FORMAT_CURL_OFF_T ".%06ld\r\n",
-            (curtime / 1000000), (long)(curtime % 1000000));
+    // fprintf(stderr, "TOTAL TIME: %" CURL_FORMAT_CURL_OFF_T ".%06ld\r\n",
+    //         (curtime / 1000000), (long)(curtime % 1000000));
+    fprintf(stderr, "TOTAsssL TIME: %f\r\n", myp->lastruntime);
     fprintf(stderr, "UP: %" CURL_FORMAT_CURL_OFF_T " of %" CURL_FORMAT_CURL_OFF_T "  DOWN: %" CURL_FORMAT_CURL_OFF_T " of %" CURL_FORMAT_CURL_OFF_T "\n",
             ulnow, ultotal, dlnow, dltotal);
-    if (dlnow > 700000)
+    if (ftp==false)
         return 1;
     return 0;
 }
-int main(void)
+
+void curl_ftp_down()
 {
     CURL* curl;
     CURLcode res;
@@ -132,8 +138,8 @@ int main(void)
         curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, 1);
         curl_easy_setopt(curl, CURLOPT_LOW_SPEED_LIMIT, 500);
 
-		//这里限速 100KB/s
-		curl_easy_setopt (curl, CURLOPT_MAX_RECV_SPEED_LARGE, (curl_off_t) 20 * 1024);
+        //这里限速 100KB/s
+        curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, (curl_off_t)20 * 1024);
 
         res = curl_easy_perform(curl);
 
@@ -151,6 +157,30 @@ int main(void)
         fclose(ftpfile.stream); /* close the local file */
 
     curl_global_cleanup();
+}
+void fun(int& a)
+{
+    a = 1;
+}
 
+void fun2(int* a)
+{
+    *a = 1;
+}
+
+int main(void)
+{
+    int a = 0;
+    int* b = &a;
+    std::thread t(fun2, b);
+    t.join();
+    cout << a << endl;
+
+    thread curl(curl_ftp_down);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    cout<<"end 1"<<endl;
+    ftp=false;
+    curl.join();
+    cout<<"end 2"<<endl;
     return 0;
 }
