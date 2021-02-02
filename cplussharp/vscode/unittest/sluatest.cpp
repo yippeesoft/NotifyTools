@@ -29,6 +29,32 @@ int main()
 
     return 0;
 }
+LUALIB_API int fun(lua_State* l)
+{
+    if (l == nullptr)
+        return 0;
+    cout << "cpp fun print " << endl;
+    return 0;
+}
+
+LUALIB_API int add(lua_State* l)
+{
+    if (l == nullptr)
+        return 0;
+    int n=lua_gettop(l);
+    if(n!=2)
+    {
+        lua_pushstring(l,"参数错误！");
+        lua_error(l);
+        return 0;
+    }
+    int a=luaL_checkinteger(l,-2);
+    int b=luaL_checkinteger(l,-1);
+    cout << "add print " << endl;
+    lua_pushnumber(l,a+b);
+    lua_pushnumber(l,a-b);
+    return 2;
+}
 
 void TestLua2()
 
@@ -61,6 +87,16 @@ void TestLua2()
 
     // while (true)
     luaL_loadstring(L, "print('c++ = ' .. valueCPP)");
+    lua_pcall(L, 0, 0, 0);
+
+    lua_pushcfunction(L,fun);
+    lua_setglobal(L,"aaaaffunc");
+    luaL_loadstring(L, "print('c++ = ' .. aaaaffunc())");
+    lua_pcall(L, 0, 0, 0);
+
+    lua_pushcfunction(L,add);
+    lua_setglobal(L,"add");
+    luaL_loadstring(L, "local a,b =add(99,88) \n print('c++ = ' .. a .. b)");
     lua_pcall(L, 0, 0, 0);
     {
         cout << "输入lua文件路径:" << endl;
