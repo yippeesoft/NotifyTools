@@ -117,5 +117,7 @@ else()
   include_directories(include submodules/cpp-httplib/)
 endif()
 
+include_directories(include lua-5.3.6/src)
+link_directories("lua-5.3.6")
 add_subdirectory(cplussharp/vscode)
 add_subdirectory(lua-5.3.6)
