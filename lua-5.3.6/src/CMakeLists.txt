@@ -34,11 +34,12 @@ set(lua_lib
         ltablib.c 
         loadlib.c
         linit.c
+        lutf8lib.c
     )
 add_library(lua STATIC ${lua_core} ${lua_lib})
 
 
 add_executable(luac luac.c)
-target_link_libraries(luac lua)
+target_link_libraries(luac lua m)
 add_executable(luaexe lua.c)
-target_link_libraries(luaexe lua)
+target_link_libraries(luaexe lua m)
