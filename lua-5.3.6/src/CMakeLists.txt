@@ -40,6 +40,11 @@ add_library(lua STATIC ${lua_core} ${lua_lib})
 
 
 add_executable(luac luac.c)
-target_link_libraries(luac lua m)
 add_executable(luaexe lua.c)
+if(MSVC)
+target_link_libraries(luac lua)
+target_link_libraries(luaexe lua)
+else()
+target_link_libraries(luac lua m)
 target_link_libraries(luaexe lua m)
+endif()
