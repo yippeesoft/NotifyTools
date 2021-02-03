@@ -7,6 +7,18 @@
 
 根据 https://xerces.apache.org/xerces-c/build-3.html 交叉编译似乎有些麻烦。。暂时放弃。
 
+备注：都2021了，找个c++的好库还是那么不容易。。。
+https://docs.oracle.com/cd/B12037_01/appdev.101/b10794/adx19cpp.htm oracle看上去很强大。。
+
+https://stackoverflow.com/questions/45254497/how-to-use-boost-xml-parser
+boost 有 xml xml_oarchive xml_iarchive 
+
+https://stackoverflow.com/questions/445905/xml-schema-to-c-classes
+ CodeSynthesis XmlPlus-xsd2cpp  gSOAP Toolkit 其它收费
+
+https://www.genivia.com/downloads.html gSOAP
+
+
 一 vs csd
 
 https://www.cnblogs.com/qq260250932/p/4245376.html
