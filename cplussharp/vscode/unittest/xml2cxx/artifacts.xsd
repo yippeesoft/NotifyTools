@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="repository">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="properties">
+          <xs:sequence>
+            <xs:element ref="mappings"/>
+            <xs:element ref="artifacts"/>
+          </xs:sequence>
+          <xs:attribute name="name" use="required" type="xs:NCName"/>
+          <xs:attribute name="type" use="required"/>
+          <xs:attribute name="version" use="required" type="xs:integer"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mappings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="rule"/>
+      </xs:sequence>
+      <xs:attribute name="size" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rule">
+    <xs:complexType>
+      <xs:attribute name="filter" use="required"/>
+      <xs:attribute name="output" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="artifacts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="artifact"/>
+      </xs:sequence>
+      <xs:attribute name="size" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="artifact">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="properties">
+          <xs:attribute name="classifier" use="required" type="xs:NCName"/>
+          <xs:attribute name="id" use="required"/>
+          <xs:attribute name="version" use="required" type="xs:NMTOKEN"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="properties">
+    <xs:sequence>
+      <xs:element ref="properties"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="properties">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="property"/>
+      </xs:sequence>
+      <xs:attribute name="size" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="property">
+    <xs:complexType>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="value" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
