@@ -2,6 +2,10 @@
 
 随便找了个 artifacts MyEclipse \Uninstaller\settings\uninstaller\artifacts.xml
 
+1.1
+编译 codesynthesis demo 需要 xerces
+
+根据 https://xerces.apache.org/xerces-c/build-3.html 交叉编译似乎有些麻烦。。暂时放弃。
 
 一 vs csd
 
@@ -34,3 +38,4 @@ https://www.codesynthesis.com/products/xsd/download.xhtml
 ./xsd cxx-parser artifacts.xsd
 
 生成各hxx cxx 文件
+
