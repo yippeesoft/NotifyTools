@@ -117,6 +117,10 @@ else()
   include_directories(include submodules/cpp-httplib/)
 endif()
 
+# include_directories(include xsd-4.0.0-x86_64-linux-gnu/libxsd)
+# include_directories(include xerces-c-3.2.3/install/include)
+# link_directories("xerces-c-3.2.3/install/lib")
+
 include_directories(include submodules/lua-5.3.6/src)
 link_directories("submodules/lua-5.3.6")
 add_subdirectory(cplussharp/vscode)
