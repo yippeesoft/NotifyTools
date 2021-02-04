@@ -2,6 +2,7 @@
 #include "pugixml.hpp"
 #include "tinyxml2.h"
 using namespace tinyxml2;
+using namespace std;
 void pugixml()
 {
     pugi::xml_document doc;
@@ -23,6 +24,7 @@ void pugixml()
 
 //Support for XPath & XQuery are not planned for TinyXML-2.
 //https://github.com/leethomason/tinyxml2/issues/704
+
 void tinyxmll2()
 {
     XMLDocument doc;
@@ -41,13 +43,21 @@ void tinyxmll2()
 
     // Text is just another Node to TinyXML-2. The more
     // general way to get to the XMLText:
-    XMLText* textNode = doc.FirstChildElement("repository")->FirstChildElement("mappings")->FirstChild()->ToText();
-    title = textNode->Value();
+    // XMLNode* textNode = doc.FirstChildElement("repository")->FirstChildElement("mappings")->FirstChild();
+    XMLElement* e = doc.FirstChildElement("repository")->FirstChildElement("mappings")->FirstChildElement("rule");
+    title = e->Attribute("output");
     printf("Name of play (2): %s\n", title);
+
+    title = e->NextSiblingElement()->Attribute("output");
+    printf("Name of play (3): %s\n", title);
+
+    title = e->NextSiblingElement()->NextSiblingElement()->Attribute("output");
+    printf("Name of play (4): %s\n", title);
+
 }
 int main()
 {
     pugixml();
-    // tinyxmll2(); 放弃
+    tinyxmll2(); //放弃
     return 0;
 }
