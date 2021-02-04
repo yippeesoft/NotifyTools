@@ -2,6 +2,16 @@
 
 随便找了个 artifacts MyEclipse \Uninstaller\settings\uninstaller\artifacts.xml
 
+1.2 不折腾xsd了 警告冲突太多
+https://github.com/Yadykin/xsde-cmake
+
+https://zhuanlan.zhihu.com/p/93844153
+
+例子 
+https://www.artima.com/cppsource/xml_data_binding.html
+
+https://www-sop.inria.fr/dream/pmwiki/uploads/Public/Labs/xsdcpp.pdf
+
 1.1
 编译 codesynthesis demo 需要 xerces
 
