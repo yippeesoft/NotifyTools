@@ -2,6 +2,13 @@
 
 随便找了个 artifacts MyEclipse \Uninstaller\settings\uninstaller\artifacts.xml
 
+1.3
+http://www.grinninglizard.com/tinyxml/ 推荐 TinyXML-2. 
+https://sourceforge.net/projects/tinyxml/files/tinyxml/2.6.2/ 2011年，据说速度慢 内存大 UTF8？
+http://www.grinninglizard.com/tinyxml2/index.html
+TinyXML-2 不支持xpath
+https://sourceforge.net/projects/rapidxml/ 1.13 2009年 不过和tinyxml一样，周下载还是可观
+
 1.2 不折腾xsd了 警告冲突太多
 https://github.com/Yadykin/xsde-cmake
 
