@@ -127,7 +127,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: "submodules"
-        key: submodules-win64-install-1
+        key: submodules-win64-install-2
     - name: git
       if: steps.cache-submodules.outputs.cache-hit != 'true'
       run: |    
