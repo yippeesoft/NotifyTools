@@ -136,6 +136,7 @@ jobs:
         git clone https://github.com/yhirose/cpp-httplib submodules/cpp-httplib
         git clone https://github.com/nothings/stb submodules/stb_image
         git clone https://github.com/gabime/spdlog submodules/spdlog
+        git clone https://github.com/zeux/pugixml submodules/pugixml
         cd submodules/log4cplus
         git submodule update --init  --recursive
     - name: configure

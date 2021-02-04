@@ -15,7 +15,7 @@ macro(sf_add_unittest name)
   target_include_directories(${name} PRIVATE)
   target_link_libraries(
     ${name} PRIVATE utils -fsanitize=address -g3 -fno-omit-frame-pointer ${CURL_LIB_NAME} 
-                    ${OPENSSL_SSL_LIBRARY} -rdynamic lua)
+                    ${OPENSSL_SSL_LIBRARY} -rdynamic lua pugixml)
 
   # add test to a virtual project group
   set_property(TARGET ${name} PROPERTY FOLDER "examples")
@@ -62,4 +62,4 @@ sf_add_unittest(sloghandletest)
 sf_add_unittest(shttphandletest)
 sf_add_unittest(scurltest)
 sf_add_unittest(sluatest)
-# sf_add_unittest(sxmltest)
+sf_add_unittest(sxmltest)
