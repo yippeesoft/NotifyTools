@@ -128,4 +128,7 @@ add_subdirectory(submodules/lua-5.3.6)
 include_directories(include submodules/pugixml/src)
 add_subdirectory(submodules/pugixml)
 
+include_directories(include submodules/tinyxml2)
+add_subdirectory(submodules/tinyxml2)
+
 add_subdirectory(cplussharp/vscode)
