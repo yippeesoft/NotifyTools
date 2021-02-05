@@ -131,4 +131,7 @@ add_subdirectory(submodules/pugixml)
 include_directories(include submodules/tinyxml2)
 add_subdirectory(submodules/tinyxml2)
 
+include_directories(include submodules/jsoncpp/include)
+add_subdirectory(submodules/jsoncpp)
+
 add_subdirectory(cplussharp/vscode)
