@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: "submodules"
-          key: submodules-win64-install-4
+          key: submodules-win64-install-5
       - name: git
         if: steps.cache-submodules.outputs.cache-hit != 'true'
         run: |
@@ -35,6 +35,7 @@ jobs:
           git clone https://github.com/zeux/pugixml submodules/pugixml
           git clone https://github.com/leethomason/tinyxml2 submodules/tinyxml2
           git clone https://github.com/open-source-parsers/jsoncpp submodules/jsoncpp
+          git clone https://github.com/nlohmann/json submodules/json
           cd submodules/log4cplus
           git submodule update --init  --recursive
 

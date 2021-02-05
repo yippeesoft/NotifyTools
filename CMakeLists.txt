@@ -148,4 +148,7 @@ set(JSONCPP_WITH_POST_BUILD_UNITTEST
 include_directories(include submodules/jsoncpp/include)
 add_subdirectory(submodules/jsoncpp)
 
+include_directories(include submodules/json/single_include/nlohmann/)
+add_subdirectory(submodules/json)
+
 add_subdirectory(cplussharp/vscode)
