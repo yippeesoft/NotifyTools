@@ -2,6 +2,14 @@
 
 随便找了个 artifacts MyEclipse \Uninstaller\settings\uninstaller\artifacts.xml
 
+1.4 20210205
+https://app.quicktype.io/ json==> c++
+https://github.com/xyz347/xpack convert json/xml/bson to c++ struct 
+https://blog.csdn.net/xyz347/article/details/79338202 json与C++结构体互相转换
+
+https://github.com/ck123pm/json2cppTool //2年前
+https://www.dazhuanlan.com/2019/12/19/5dfae1c86a673/
+
 1.3
 http://www.grinninglizard.com/tinyxml/ 推荐 TinyXML-2. 
 https://sourceforge.net/projects/tinyxml/files/tinyxml/2.6.2/ 2011年，据说速度慢 内存大 UTF8？
