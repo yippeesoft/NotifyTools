@@ -128,9 +128,23 @@ add_subdirectory(submodules/lua-5.3.6)
 include_directories(include submodules/pugixml/src)
 add_subdirectory(submodules/pugixml)
 
+# option(BUILD_TESTS "build xmltest (deprecated: Use BUILD_TESTING)" ON)
+set(BUILD_TESTS
+    OFF
+    CACHE BOOL "build xmltest (deprecated: Use BUILD_TESTING)" FORCE)
 include_directories(include submodules/tinyxml2)
 add_subdirectory(submodules/tinyxml2)
 
+# option(JSONCPP_WITH_TESTS "Compile and (for jsoncpp_check) run JsonCpp test
+# executables" ON) option(JSONCPP_WITH_POST_BUILD_UNITTEST "Automatically run
+# unit-tests as a post build step" ON)
+set(JSONCPP_WITH_TESTS
+    OFF
+    CACHE BOOL "Compile and (for jsoncpp_check) run JsonCpp test executables"
+          FORCE)
+set(JSONCPP_WITH_POST_BUILD_UNITTEST
+    OFF
+    CACHE BOOL "Automatically run unit-tests as a post build step" FORCE)
 include_directories(include submodules/jsoncpp/include)
 add_subdirectory(submodules/jsoncpp)
 
