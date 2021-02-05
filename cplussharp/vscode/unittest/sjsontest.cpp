@@ -42,7 +42,7 @@ parameters_1 parse_1(const Json::Value& parameters)
 
     return p;
 }
-int main()
+int main1()
 {
     const std::string rawJson = R"~(
         {"Age": 20, "Name": " colin "})~"; //格式化会可能导致自动加前后空格
@@ -91,4 +91,172 @@ int main()
         break;
     }
     return EXIT_SUCCESS;
+}
+
+//  To parse this JSON data, first install
+//
+//      json.hpp  https://github.com/nlohmann/json
+//
+//  Then include this file, and then do
+//
+//     Welcome data = nlohmann::json::parse(jsonString);
+// https://app.quicktype.io/
+// #pragma once
+
+#include "json.hpp"
+
+#include <optional>
+#include <stdexcept>
+#include <regex>
+
+namespace quicktype {
+using nlohmann::json;
+
+inline json get_untyped(const json& j, const char* property)
+{
+    if (j.find(property) != j.end())
+    {
+        return j.at(property).get<json>();
+    }
+    return json();
+}
+
+inline json get_untyped(const json& j, std::string property)
+{
+    return get_untyped(j, property.data());
+}
+
+class Parameters
+{
+public:
+    Parameters() = default;
+    virtual ~Parameters() = default;
+
+private:
+    std::string var1;
+    int64_t var2;
+    std::string var3;
+
+public:
+    const std::string& get_var1() const
+    {
+        return var1;
+    }
+    std::string& get_mutable_var1()
+    {
+        return var1;
+    }
+    void set_var1(const std::string& value)
+    {
+        this->var1 = value;
+    }
+
+    const int64_t& get_var2() const
+    {
+        return var2;
+    }
+    int64_t& get_mutable_var2()
+    {
+        return var2;
+    }
+    void set_var2(const int64_t& value)
+    {
+        this->var2 = value;
+    }
+
+    const std::string& get_var3() const
+    {
+        return var3;
+    }
+    std::string& get_mutable_var3()
+    {
+        return var3;
+    }
+    void set_var3(const std::string& value)
+    {
+        this->var3 = value;
+    }
+};
+
+class Welcome
+{
+public:
+    Welcome() = default;
+    virtual ~Welcome() = default;
+
+private:
+    int64_t id;
+    Parameters parameters;
+
+public:
+    const int64_t& get_id() const
+    {
+        return id;
+    }
+    int64_t& get_mutable_id()
+    {
+        return id;
+    }
+    void set_id(const int64_t& value)
+    {
+        this->id = value;
+    }
+
+    const Parameters& get_parameters() const
+    {
+        return parameters;
+    }
+    Parameters& get_mutable_parameters()
+    {
+        return parameters;
+    }
+    void set_parameters(const Parameters& value)
+    {
+        this->parameters = value;
+    }
+};
+} // namespace quicktype
+
+namespace nlohmann {
+void from_json(const json& j, quicktype::Parameters& x);
+void to_json(json& j, const quicktype::Parameters& x);
+
+void from_json(const json& j, quicktype::Welcome& x);
+void to_json(json& j, const quicktype::Welcome& x);
+
+inline void from_json(const json& j, quicktype::Parameters& x)
+{
+    x.set_var1(j.at("var1").get<std::string>());
+    x.set_var2(j.at("var2").get<int64_t>());
+    x.set_var3(j.at("var3").get<std::string>());
+}
+
+inline void to_json(json& j, const quicktype::Parameters& x)
+{
+    j = json::object();
+    j["var1"] = x.get_var1();
+    j["var2"] = x.get_var2();
+    j["var3"] = x.get_var3();
+}
+
+inline void from_json(const json& j, quicktype::Welcome& x)
+{
+    x.set_id(j.at("id").get<int64_t>());
+    x.set_parameters(j.at("parameters").get<quicktype::Parameters>());
+}
+
+inline void to_json(json& j, const quicktype::Welcome& x)
+{
+    j = json::object();
+    j["id"] = x.get_id();
+    j["parameters"] = x.get_parameters();
+}
+} // namespace nlohmann
+
+int main()
+{
+    nlohmann::json jj = nlohmann::json::parse(json_data);
+    quicktype::Welcome w;
+    nlohmann::from_json(jj, w);
+    std::cout << w.get_id() << w.get_parameters().get_var1() << std::endl;
 }
