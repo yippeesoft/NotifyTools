@@ -11,11 +11,29 @@ macro(sf_add_unittest name)
     message("OPENSSL_NOT_FOUND")
   endif()
 
+  if(MSVC_VERSION GREATER_EQUAL "1900")
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("/std:c++latest" _cpp_latest_flag_supported)
+    if(_cpp_latest_flag_supported)
+      add_compile_options("/std:c++latest")
+    endif()
+  endif()
+
   add_executable(${name} ${name}.cpp)
   target_include_directories(${name} PRIVATE)
   target_link_libraries(
-    ${name} PRIVATE utils -fsanitize=address -g3 -fno-omit-frame-pointer ${CURL_LIB_NAME} 
-                    ${OPENSSL_SSL_LIBRARY} -rdynamic lua pugixml tinyxml2 jsoncpp_static)
+    ${name}
+    PRIVATE utils
+            -fsanitize=address
+            -g3
+            -fno-omit-frame-pointer
+            ${CURL_LIB_NAME}
+            ${OPENSSL_SSL_LIBRARY}
+            -rdynamic
+            lua
+            pugixml
+            tinyxml2
+            jsoncpp_static)
 
   # add test to a virtual project group
   set_property(TARGET ${name} PROPERTY FOLDER "examples")
