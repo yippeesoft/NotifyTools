@@ -89,7 +89,8 @@
         "netfwd": "cpp",
         "hash_map": "cpp",
         "hash_set": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "xutility": "cpp"
     },
     "editor.tokenColorCustomizations": {
         "textMateRules": [
