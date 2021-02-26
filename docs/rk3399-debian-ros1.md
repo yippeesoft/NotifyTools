@@ -1,4 +1,4 @@
-# rockchip debian 安装 ros
+# rockchip debian10 安装 ros
 
 获得不可访问的ip
 
@@ -17,7 +17,7 @@ sudo sh -c 'echo "deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_relea
 
 sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-sudo apt updates
+sudo apt update
 
 https://mirrors.tuna.tsinghua.edu.cn/help/ros/
 ```
@@ -50,15 +50,15 @@ rosdep update
 ```
 
 ```
-source /opt/ros/kinetic/setup.bash
+source /opt/ros/noetic/setup.bash
 roscore
 
 新tab 
-source /opt/ros/kinetic/setup.bash
+source /opt/ros/noetic/setup.bash
 rosrun turtlesim turtlesim_node 出现乌龟
 
 新tab 
-source /opt/ros/kinetic/setup.bash
+source /opt/ros/noetic/setup.bash
 rosrun turtlesim turtle_teleop_key 控制乌龟
 
 新tab 
@@ -70,5 +70,14 @@ https://www.jianshu.com/p/18af3ea856a4
 
 ```
 test token 4 
+```
+
+
+
+```
+20210226
+ubuntu 18.04 
+sudo apt install ros-melodic-desktop
+sudo apt-get install python-rosdep2
 ```
 
