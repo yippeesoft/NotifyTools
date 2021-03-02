@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  cv_bridge image_transport sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -204,8 +205,8 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-
+find_package(OpenCV)
+include_directories(include ${OpenCV_INCLUDE_DIRS})
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(talker src/talker.cpp)
@@ -215,3 +216,10 @@ target_link_libraries(talker ${catkin_LIBRARIES})
 add_executable(listener src/listener.cpp)
 target_link_libraries(listener ${catkin_LIBRARIES})
 # add_dependencies(listener hello_generate_messages_cpp) //没有自定义msg
+
+add_executable(img_pub src/img_pub.cpp)
+target_link_libraries(img_pub ${catkin_LIBRARIES}  ${OpenCV_LIBS} ${OpenCV_LIBRARIES})
+# add_dependencies(talker hello_generate_messages_cpp)
+
+add_executable(img_sub src/img_sub.cpp)
+target_link_libraries(img_sub ${catkin_LIBRARIES}  ${OpenCV_LIBS} ${OpenCV_LIBRARIES})
