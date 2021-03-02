@@ -4,16 +4,6 @@ project(hello)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-  cv_bridge image_transport sensor_msgs
-)
-
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -95,20 +85,7 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ###################################
-## catkin specific configuration ##
-###################################
-## The catkin_package macro generates cmake config files for your package
-## Declare things to be passed to dependent projects
-## INCLUDE_DIRS: uncomment this if your package contains header files
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES hello
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
-)
+
 
 ###########
 ## Build ##
@@ -205,9 +182,86 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+# find_package(OpenCV REQUIRED COMPONENTS
+#   core highgui imgproc imgcodecs
+# )
+add_compile_options(-std=c++11 -DUSE_AVX_INSTRUCTIONS=ON)
+
+option(GPU_SUPPORT "Enable GPU support (Vulkan)" OFF)
+
+
+## Find catkin macros and libraries
+## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+## is used, also find other catkin packages
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+  cv_bridge image_transport sensor_msgs message_generation
+)
+
+
+add_message_files(
+  FILES
+  Vector2D.msg
+  Rectangle.msg
+  FaceObject.msg
+  Object.msg
+  Euler.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+## generate_messages() must be called before catkin_package()
+## catkin specific configuration ##
+###################################
+## The catkin_package macro generates cmake config files for your package
+## Declare things to be passed to dependent projects
+## INCLUDE_DIRS: uncomment this if your package contains header files
+## LIBRARIES: libraries you create in this project that dependent projects also need
+## CATKIN_DEPENDS: catkin_packages dependent projects also need
+## DEPENDS: system dependencies of this project that dependent projects also need
+catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES hello
+#  CATKIN_DEPENDS roscpp rospy std_msgs
+#  DEPENDS system_lib
+)
+
+
+set(ncnn_DIR "~/ncnn/build/install/lib/cmake/ncnn")
+find_package(ncnn REQUIRED)
+if (${ncnn_FOUND})
+  message("-- NCNN found.")
+  message("-- NCNN_VULKAN flag is ${NCNN_VULKAN}")
+  if (${NCNN_VULKAN})
+    message("-- AUTO-ENABLING GPU_SUPPORT")
+    set(GPU_SUPPORT ON)
+  endif()
+  include_directories(${ncnn_INCLUDE})
+endif()
+
 find_package(OpenCV)
-include_directories(include ${OpenCV_INCLUDE_DIRS})
+message(STATUS "OpenCV library: ${OpenCV_INSTALL_PATH}")
+message(STATUS "    version: ${OpenCV_VERSION}")
+message(STATUS "    libraries: ${OpenCV_LIBS}")
+message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
+
+include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(
+  "include"
+  ${catkin_INCLUDE_DIRS}
+)
+
+# NCNN config header exports GPU_SUPPORT definition towards source files
+configure_file("include/ros_ncnn/ncnn_config.h.in" "ros_ncnn/ncnn_config.h")
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
 
 add_executable(talker src/talker.cpp)
 target_link_libraries(talker ${catkin_LIBRARIES})
@@ -223,3 +277,9 @@ target_link_libraries(img_pub ${catkin_LIBRARIES}  ${OpenCV_LIBS} ${OpenCV_LIBRA
 
 add_executable(img_sub src/img_sub.cpp)
 target_link_libraries(img_sub ${catkin_LIBRARIES}  ${OpenCV_LIBS} ${OpenCV_LIBRARIES})
+
+
+# RETINAFACE
+add_executable(retinaface_node src/retinaface_node.cpp src/ncnn_retinaface.cpp)
+add_dependencies( retinaface_node hello_generate_messages_cpp)
+target_link_libraries(retinaface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
