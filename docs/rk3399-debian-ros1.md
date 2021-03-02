@@ -76,8 +76,41 @@ test token 4
 
 ```
 20210226
-ubuntu 18.04 
+ubuntu 18.04 未继续
 sudo apt install ros-melodic-desktop
 sudo apt-get install python-rosdep2
+```
+
+```
+应用开发：
+
+https://blog.csdn.net/weixin_43836778/article/details/103150571 ROS通讯
+$ mkdir -p ~/catkin_ws/src
+$ cd ~/catkin_ws/src
+$ catkin_init_workspace
+$ catkin_create_pkg beginner_tutorials std_msgs rospy roscpp
+
+写cpp cmakelists.txt
+$ cd ~/catkin_ws
+$ catkin_make
+
+tab1
+$ roscore
+
+tab2
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+
+tab3
+$ rosrun beginner_tutorials talker 
+$ rosrun beginner_tutorials listener
+
+```
+
+```
+20210302
+
+https://blog.csdn.net/u010925447/article/details/80033288 img传输显示
+
 ```
 
