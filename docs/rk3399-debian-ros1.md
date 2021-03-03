@@ -100,9 +100,11 @@ $ roscore
 tab2
 $ cd ~/catkin_ws
 $ source ./devel/setup.bash
+$ rosrun beginner_tutorials talker 
 
 tab3
-$ rosrun beginner_tutorials talker 
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
 $ rosrun beginner_tutorials listener
 
 ```
@@ -111,6 +113,44 @@ $ rosrun beginner_tutorials listener
 20210302
 
 https://blog.csdn.net/u010925447/article/details/80033288 img传输显示
-
+https://github.com/nilseuropa/ros_ncnn 测试retinaface
 ```
 
+
+
+```
+20210303
+ros直接catkin_make bechncnn并直接./benchncnn 4 4 1 运行，结果比clang直接编译慢，并且int8非常明显
+```
+
+| |master|a53|master ros编译，bash 直接运行|
+|----|----|----|----|
+|         squeezenet|    62.54 |   59.31|   76.97     |
+|    squeezenet_int8|    87.82 |   84.29|  141.97     |
+|          mobilenet|    78.57 |   74.14|   80.98     |
+|     mobilenet_int8|   153.44 |  150.37|  312.68     |
+|       mobilenet_v2|    70.91 |   67.15|   75.89     |
+|       mobilenet_v3|    63.66 |   60.85|  109.03     |
+|         shufflenet|    50.17 |   47.73|  130.40     |
+|      shufflenet_v2|    40.88 |   38.37|   93.25     |
+|            mnasnet|    65.89 |   65.01|   98.68     |
+|    proxylessnasnet|    75.13 |   75.54|  158.49     |
+|    efficientnet_b0|   119.17 |  114.20|  358.81     |
+|       regnety_400m|   124.92 |  119.33|  166.62     |
+|          blazeface|    16.57 |   16.54|   60.13     |
+|          googlenet|   274.60 |  177.38|  289.39     |
+|     googlenet_int8|   265.65 |  271.07|  552.39     |
+|           resnet18|   155.89 |  152.27|  202.49     |
+|      resnet18_int8|   230.46 |  223.11|  698.25     |
+|            alexnet|   208.81 |  205.54|  676.58     |
+|              vgg16|   834.62 |  837.80| 1323.10     |
+|         vgg16_int8|  1469.65 | 1490.75| 2321.72     |
+|           resnet50|   364.70 |  355.36|  443.83     |
+|      resnet50_int8|   506.58 |  507.76|  774.15     |
+|     squeezenet_ssd|   169.60 |  170.34|  253.03     |
+|squeezenet_ssd_int8|   245.81 |  247.83|  425.82     |
+|      mobilenet_ssd|   160.64 |  158.52|  171.52     |
+| mobilenet_ssd_int8|   240.03 |  236.69|  499.69     |
+|     mobilenet_yolo|   335.53 |  342.61|  411.96     |
+| mobilenetv2_yolov3|   222.85 |  219.92|  291.36     |
+|        yolov4-tiny|   326.58 |  305.95|  640.79     |
