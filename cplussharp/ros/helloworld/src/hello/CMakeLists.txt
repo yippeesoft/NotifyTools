@@ -283,3 +283,7 @@ target_link_libraries(img_sub ${catkin_LIBRARIES}  ${OpenCV_LIBS} ${OpenCV_LIBRA
 add_executable(retinaface_node src/retinaface_node.cpp src/ncnn_retinaface.cpp)
 add_dependencies( retinaface_node hello_generate_messages_cpp)
 target_link_libraries(retinaface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+
+# benchncnn
+add_executable(benchncnn_pub src/benchncnn_pub.cpp)
+target_link_libraries(benchncnn_pub ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
