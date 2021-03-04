@@ -251,6 +251,15 @@ message(STATUS "    version: ${OpenCV_VERSION}")
 message(STATUS "    libraries: ${OpenCV_LIBS}")
 message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 
+
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
+
+
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(include ${catkin_INCLUDE_DIRS})
 include_directories(
@@ -284,6 +293,10 @@ add_executable(retinaface_node src/retinaface_node.cpp src/ncnn_retinaface.cpp)
 add_dependencies( retinaface_node hello_generate_messages_cpp)
 target_link_libraries(retinaface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
-# benchncnn
+# benchncnn_pub
 add_executable(benchncnn_pub src/benchncnn_pub.cpp)
 target_link_libraries(benchncnn_pub ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+
+# benchncnn
+add_executable(benchncnn src/benchncnn.cpp)
+target_link_libraries(benchncnn ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS} OpenMP::OpenMP_CXX)
