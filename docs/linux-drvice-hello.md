@@ -12,6 +12,8 @@ linux 驱动开发 hello
 
 5、CONFIG_MODULE_SIG=n 去除module verification failed
 
+6、查看信息 modinfo 驱动信息  cat /proc/devices 节点信息
+
 ```
 
 ```
