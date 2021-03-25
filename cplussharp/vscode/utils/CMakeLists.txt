@@ -11,7 +11,7 @@ include_directories(include /usr/local/include)
 include(CTest)
 enable_testing()
 add_library(utils ${DIR_UTILS_SRCS})
-target_link_libraries(utils spdlog::spdlog gtest pthread log4cplus
+target_link_libraries(utils spdlog::spdlog gtest  log4cplus
                       -fsanitize=address)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

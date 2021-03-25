@@ -13,6 +13,17 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install g++-aarch64-linux-gnu 
+    - name: cache-qt-src
+      id: cache-qt-src
+      uses: actions/cache@v1
+      with:
+        path: "qt-everywhere-src-5.14.2"
+        key: qt-src
+    - name: qt5
+      if: steps.cache-qt-src.outputs.cache-hit != 'true'
+      run: |
+        wget https://mirror.tuna.tsinghua.edu.cn/qt/archive/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.zip >/dev/null 2>&1
+        unzip qt-everywhere-src-5.14.2.zip >/dev/null 2>&1
     - name: cache-openssl
       id: cache-openssl
       uses: actions/cache@v1
@@ -28,6 +39,24 @@ jobs:
         ./Configure linux-aarch64 --prefix=$PWD/install no-asm shared no-async  --cross-compile-prefix=aarch64-linux-gnu-
         make -j4
         make install
+
+    - name: cache-libcurl
+      id: cache-libcurl
+      uses: actions/cache@v1
+      with:
+        path: "curl-7.74.0/installa"
+        key: curl-7.74.0-aarch64-install-1
+    - name: curl-7.74.0-aarch64
+      if: steps.cache-libcurl.outputs.cache-hit != 'true'
+      run: |
+        wget https://github.com/curl/curl/releases/download/curl-7_74_0/curl-7.74.0.tar.gz >/dev/null 2>&1
+        tar xvzf curl-7.74.0.tar.gz >/dev/null 2>&1
+        cd curl-7.74.0/
+        ./configure   --target=aarch64-linux-gnu   --host=aarch64-linux-gnu   --prefix=${PWD}/installa   --disable-threaded-resolver  CC=aarch64-linux-gnu-gcc --without-zlib  --without-ssl
+        make && make install    
+    
+    #    mkdir build; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=..\installa  -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/aarch64-linux-gnu-g++ .. ; cd ..
+    #    cmake --build .\build --config "Release" --target install
     # - name: git
     #   run: git submodule update --init  --recursive
     # - name: cache-qemu
@@ -93,18 +122,29 @@ jobs:
     #     cmake --build . -j 2
     #     sudo make install
 
-    - name: checkout-log4cplus-submodules
-      run: |
+    - name: cache-submodules
+      id: cache-submodules
+      uses: actions/cache@v1
+      with:
+        path: "submodules"
+        key: submodules-win64-install-5
+    - name: git
+      if: steps.cache-submodules.outputs.cache-hit != 'true'
+      run: |    
         git clone https://github.com/log4cplus/log4cplus      submodules/log4cplus
         git clone https://github.com/google/googletest  submodules/googletest
         git clone https://github.com/yhirose/cpp-httplib submodules/cpp-httplib
         git clone https://github.com/nothings/stb submodules/stb_image
         git clone https://github.com/gabime/spdlog submodules/spdlog
+        git clone https://github.com/zeux/pugixml submodules/pugixml
+        git clone https://github.com/leethomason/tinyxml2 submodules/tinyxml2
+        git clone https://github.com/open-source-parsers/jsoncpp submodules/jsoncpp
+        git clone https://github.com/nlohmann/json submodules/json
         cd submodules/log4cplus
-        git submodule update --init --recursive
+        git submodule update --init  --recursive
     - name: configure
       run: |               
-        mkdir build-aarch64 && cd build-aarch64 && cmake     ..
+        mkdir build-aarch64 && cd build-aarch64 && cmake  -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc  -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++     ..
     - name: build
       run: cmake --build build-aarch64  
     #- name: test

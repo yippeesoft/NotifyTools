@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.15)
 message("打印变量开始")
 get_cmake_property(_variableNames VARIABLES)
 foreach(_variableName ${_variableNames})
-  message(STATUS"${_variableName}=${${_variableName}}")
+  # message(STATUS"${_variableName}=${${_variableName}}")
 endforeach()
 message("打印变量结束 ")
-execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
+# execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
 message("打印环境变量结束 ")
 project(vscc VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 17)
@@ -21,7 +21,19 @@ else()
   add_subdirectory(submodules/spdlog)
   # set(INSTALL_GTEST OFF)
   add_subdirectory(submodules/googletest)
-  # set(LOG4CPLUS_BUILD_TESTING OFF) set(WITH_UNIT_TESTS OFF)
+  set(LOG4CPLUS_BUILD_TESTING OFF)
+  set(WITH_UNIT_TESTS OFF)
+  # set(LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME OFF) set(UNICODE OFF)
+  set(LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME
+      OFF
+      CACHE
+        BOOL
+        "Turns on resulting file name decoration for static and UNICODE builds."
+        FORCE)
+  set(UNICODE
+      OFF
+      CACHE BOOL "Build with tchar = wchar_t" FORCE)
+  set(BUILD_SHARED_LIBS FALSE)
   add_subdirectory(submodules/log4cplus)
   # message("Building with cpp-httplib
   # ${workspaceFolder}/openssl-1.1.1i/install") set(OPENSSL_ROOT_DIR
@@ -29,9 +41,13 @@ else()
   # "${workspaceFolder}/openssl-1.1.1i/install/include")
   # set(OPENSSL_CRYPTO_LIBRARY "${workspaceFolder}/openssl-1.1.1i/install/lib")
   # set(HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF)
-  message("CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR}")
+  set(BUILD_WITH_QT ON)
   if(CMAKE_C_COMPILER MATCHES ".*arm|aarch64.*")
-    message("CMAKE_C_COMPILER aarch64")
+    set(ARM ON)
+    message("CMAKE_C_COMPILER aarch64 ${ARM}")
+  endif()
+  if(ARM)
+    set(BUILD_WITH_QT OFF)
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install")
     set(OPENSSL_INCLUDE_DIR
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/include")
@@ -40,6 +56,7 @@ else()
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/install/lib/libssl.a")
   endif()
+
   if(MSVC)
     message(STATUS "MSVC_FOUND")
     set(OPENSSL_ROOT_DIR "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw")
@@ -49,19 +66,89 @@ else()
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libcrypto.lib")
     set(DOPENSSL_SSL_LIBRARY
         "${CMAKE_SOURCE_DIR}/openssl-1.1.1i/installw/lib/libssl.lib")
+    set(Qt5_DIR
+        "${CMAKE_SOURCE_DIR}/qtvs2019/Qt/5.14.2/msvc2017_64/lib/cmake/Qt5")
   else()
-    message(WARNING "${CMAKE_C_COMPILER} err")
+    message(STATUS "${CMAKE_C_COMPILER} NOT MSVC")
+
   endif()
+  include_directories(include submodules/log4cplus/include)
+  link_directories("submodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
   find_package(
     OpenSSL
     COMPONENTS Crypto SSL
     REQUIRED)
   if(OPENSSL_FOUND)
-    message(STATUS "OPENSSL_FOUND")
+    message("OPENSSL_FOUND ${name} ${OPENSSL_ROOT_DIR}  ${OPENSSL_SSL_LIBRARY}")
+    include_directories(${workspaceFolder}/openssl-1.1.1i/install/include)
   else()
-    message(WARNING "OPENSSL_NOT_FOUND")
+    message("OPENSSL_NOT_FOUND")
   endif()
+  # OPENSSL
+
+  # CURL
+  set(CURL_LIB_NAME curl)
+  if(MSVC)
+    message(STATUS "MSVC_FOUND")
+    set(CURL_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw")
+    set(CURL_LIBRARY "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw/lib")
+    set(CURL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installw/include")
+    set(CURL_LIB_NAME libcurl_imp)
+  endif()
+  if(ARM)
+    set(CURL_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installa")
+    set(CURL_LIBRARY "${CMAKE_SOURCE_DIR}/curl-7.74.0/installa/lib")
+    set(CURL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/curl-7.74.0/installa/include")
+  endif()
+  find_package(CURL)
+  if(CURL_FOUND)
+    message("CURL_FOUND ${name} ${CURL_INCLUDE_DIR} ${CURL_LIBRARY}")
+    include_directories(${CURL_INCLUDE_DIR})
+    link_directories("${CURL_LIBRARY}")
+  else()
+    message("CURL_NOT_FOUND")
+  endif()
+  # CURL
+
+  include_directories(include submodules/log4cplus/include)
+  link_directories("ubmodules/log4cplus/src/${CMAKE_BUILD_TYPE}")
+
   add_subdirectory(submodules/cpp-httplib)
+  include_directories(include submodules/cpp-httplib/)
 endif()
+
+# include_directories(include xsd-4.0.0-x86_64-linux-gnu/libxsd)
+# include_directories(include xerces-c-3.2.3/install/include)
+# link_directories("xerces-c-3.2.3/install/lib")
+
+include_directories(include submodules/lua-5.3.6/src)
+link_directories("submodules/lua-5.3.6")
+add_subdirectory(submodules/lua-5.3.6)
+
+include_directories(include submodules/pugixml/src)
+add_subdirectory(submodules/pugixml)
+
+# option(BUILD_TESTS "build xmltest (deprecated: Use BUILD_TESTING)" ON)
+set(BUILD_TESTS
+    OFF
+    CACHE BOOL "build xmltest (deprecated: Use BUILD_TESTING)" FORCE)
+include_directories(include submodules/tinyxml2)
+add_subdirectory(submodules/tinyxml2)
+
+# option(JSONCPP_WITH_TESTS "Compile and (for jsoncpp_check) run JsonCpp test
+# executables" ON) option(JSONCPP_WITH_POST_BUILD_UNITTEST "Automatically run
+# unit-tests as a post build step" ON)
+set(JSONCPP_WITH_TESTS
+    OFF
+    CACHE BOOL "Compile and (for jsoncpp_check) run JsonCpp test executables"
+          FORCE)
+set(JSONCPP_WITH_POST_BUILD_UNITTEST
+    OFF
+    CACHE BOOL "Automatically run unit-tests as a post build step" FORCE)
+include_directories(include submodules/jsoncpp/include)
+add_subdirectory(submodules/jsoncpp)
+
+include_directories(include submodules/json/single_include/nlohmann/)
+add_subdirectory(submodules/json)
 
 add_subdirectory(cplussharp/vscode)
