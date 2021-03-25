@@ -1,7 +1,9 @@
 {
     "cmake.configureOnOpen": true,
-    "cmake.configureSettings":{"SPDLOG_BUILD_TESTS":"OFF","INSTALL_GTEST":"OFF","LOG4CPLUS_BUILD_TESTING":"OFF","WITH_UNIT_TESTS":"OFF"
-    , },
+    "cmake.configureSettings":{"SPDLOG_BUILD_TESTS":"OFF","INSTALL_GTEST":"OFF",
+        "LOG4CPLUS_BUILD_TESTING":"OFF","WITH_UNIT_TESTS":"OFF",
+        // "UNICODE":"OFF","LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME":"OFF"
+    },
     // "cmake.environment":{"SPDLOG_BUILD_TESTS":"OFF"},
     "files.associations": {
         "any": "cpp",
@@ -84,7 +86,11 @@
         "variant": "cpp",
         "filesystem": "cpp",
         "*.cmake": "cpp",
-        "netfwd": "cpp"
+        "netfwd": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "span": "cpp",
+        "xutility": "cpp"
     },
     "editor.tokenColorCustomizations": {
         "textMateRules": [
@@ -107,5 +113,6 @@
                 }
             }
         ]
-    }
+    },
+    "clang-format.executable": "clang-format-10"
 }
