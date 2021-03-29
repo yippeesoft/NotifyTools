@@ -35,7 +35,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
+    compileOptions {
+        encoding "UTF-8"
+    }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
