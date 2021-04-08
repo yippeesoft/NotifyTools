@@ -1,0 +1,15 @@
+[package]
+name = "greeting"
+version = "0.1.0"
+authors = [""]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+json               = "0.4"
+pretty_env_logger = "0.3"
+#time             = "1.0"
+
+#opencv = "0.52"
+opencv = {version = "0.52", default-features = false, features = ["opencv-32", "buildtime-bindgen"]}
