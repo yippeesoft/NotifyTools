@@ -9,6 +9,7 @@ edition = "2018"
 [dependencies]
 json               = "0.4"
 pretty_env_logger = "0.3"
+libc = "*"
 #time             = "1.0"
 
 #opencv = "0.52"
