@@ -8,12 +8,14 @@ use autocxx::include_cpp;
 include_cpp! {
     // C++ headers we want to include.
     #include "tengine_c_api.h"
+    #include "bob.h"
     // Safety policy. We are marking that this whole C++ inclusion is unsafe
     // which means the functions themselves do not need to be marked
     // as unsafe. Other policies are possible.
     safety!(unsafe)
     // What types and functions we want to generate
     generate!("init_tengine")
+    generate!("base::Bob")
 }
 
 extern "C" {
@@ -29,5 +31,6 @@ fn main() {
     unsafe {
         printf("hello world %d\n".as_ptr() as *const i8,_ii);
     }
-    // LD_LIBRARY_PATH=. ./autocxxtest 
+    let bb=ffi::base::Bob::make_unique(":::");
+    // LD_LIBRARY_PATH=.   ./autocxxtest  ;//cp target/debug/autocxxtest 
 }
