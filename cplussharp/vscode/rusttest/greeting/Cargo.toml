@@ -14,3 +14,16 @@ libc = "*"
 
 #opencv = "0.52"
 opencv = {version = "0.52", default-features = false, features = ["opencv-32", "buildtime-bindgen"]}
+
+[build-dependencies]
+# bindgen = "0.58.1" 和 opencv 冲突 会  thread 'main' panicked at 'a `libclang` shared library is not loaded on this thread'
+
+
+#:~/.cargo$ nano config
+# [source.crates-io]
+# replace-with = 'tuna'
+
+# [source.tuna]
+# registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
+
+#实在不行手工下载 cargo install
