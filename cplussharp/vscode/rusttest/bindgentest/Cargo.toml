@@ -1,0 +1,21 @@
+[package]
+name = "bindgentest"
+version = "0.1.0"
+authors = ["yippeesoft <yippeesoft@gmail.com>"]
+edition = "2018"
+# build = "build.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# bindgen = "0.58.1"
+# cc = "1.0"
+# opencv = {version = "0.52", default-features = false, features = ["opencv-32", "buildtime-bindgen"]} 别问我为什么
+# opencv = "0.52" # bindgen = "0.58.1" 和 opencv 冲突 会  thread 'main' panicked at 'a `libclang` shared library is not loaded on this thread'
+json               = "0.4"
+pretty_env_logger = "0.3"
+libc = "*"
+
+[build-dependencies]
+bindgen = "0.58.1"
+# cc = "1.0"

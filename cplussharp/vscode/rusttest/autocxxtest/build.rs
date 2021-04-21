@@ -14,10 +14,13 @@
 
 // https://zhuanlan.zhihu.com/p/218662208
 #[link(name="tengine-lite")]
+#[link(name="ncnn")]
 fn main() {
     // It's necessary to use an absolute path here because the
     // C++ codegen and the macro codegen appears to be run from different
     // working directories.
+    // println!("cargo:rustc-link-lib=ncnn");
+    println!("cargo:rustc-link-search=native=./src");
     let path = std::path::PathBuf::from(".");
     let path2 = std::path::PathBuf::from("src");
     let defs: Vec<String> = Vec::new();
@@ -25,9 +28,12 @@ fn main() {
     // println!("cargo:rustc-link-lib=tengine-lite");
     let mut b = autocxx_build::build("src/main.rs", &[&path, &path2], &defs).unwrap();
     b.flag_if_supported("-std=c++14")
+ 
         .compile("autocxx-s2-example");
     println!("cargo:rerun-if-changed=src/main.rs");
     // println!("cargo:rustc-link-search=native=src");
     // This is supposed to link the generated/compiled .lib file
     println!("cargo:rustc-link-lib=dylib=tengine-lite"); //不要问我为什么放后面，前面的注释掉，我也不知道。反正这样能过。
+    println!("cargo:rustc-link-lib=dylib=ncnn");
+
 }
