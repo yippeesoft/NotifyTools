@@ -1,16 +1,16 @@
 package main
 
+// #cgo LDFLAGS:-L./ -lncnn
 // #include <stdio.h>
 // #include <stdlib.h>
-// #include "greeter.h"
+// #include "c_api.h"
 import "C"
-import (
-	"fmt"
-	"unsafe"
-)
+import "fmt"
 
 func main() {
-
+	ver := C.ncnn_version()
+	fmt.Println(C.GoString(ver))
+	/* #include "greet.h"
 	name := C.CString("Gopher")
 	defer C.free(unsafe.Pointer(name))
 
@@ -23,7 +23,10 @@ func main() {
 
 	b := C.GoBytes(ptr, size)
 	fmt.Println(string(b))
+	*/
 }
+
+//LD_LIBRARY_PATH=. ./m
 
 //https://blog.csdn.net/u014633283/article/details/52225274
 // go mod init example.com/m/v
