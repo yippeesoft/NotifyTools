@@ -1388,10 +1388,10 @@ extern "C" {
 extern "C" {
     pub fn ncnn_version() -> *const ::std::os::raw::c_char;
 }
-pub type ncnn_allocator_t = *mut _ncnn_allocator_t;
+pub type ncnn_allocator_t = *mut __ncnn_allocator_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_allocator_t {
+pub struct __ncnn_allocator_t {
     pub pthis: *mut ::std::os::raw::c_void,
     pub fast_malloc: ::std::option::Option<
         unsafe extern "C" fn(
@@ -1404,43 +1404,43 @@ pub struct _ncnn_allocator_t {
     >,
 }
 #[test]
-fn bindgen_test_layout__ncnn_allocator_t() {
+fn bindgen_test_layout___ncnn_allocator_t() {
     assert_eq!(
-        ::std::mem::size_of::<_ncnn_allocator_t>(),
+        ::std::mem::size_of::<__ncnn_allocator_t>(),
         24usize,
-        concat!("Size of: ", stringify!(_ncnn_allocator_t))
+        concat!("Size of: ", stringify!(__ncnn_allocator_t))
     );
     assert_eq!(
-        ::std::mem::align_of::<_ncnn_allocator_t>(),
+        ::std::mem::align_of::<__ncnn_allocator_t>(),
         8usize,
-        concat!("Alignment of ", stringify!(_ncnn_allocator_t))
+        concat!("Alignment of ", stringify!(__ncnn_allocator_t))
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_allocator_t>())).pthis as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_allocator_t>())).pthis as *const _ as usize },
         0usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_allocator_t),
+            stringify!(__ncnn_allocator_t),
             "::",
             stringify!(pthis)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_allocator_t>())).fast_malloc as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_allocator_t>())).fast_malloc as *const _ as usize },
         8usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_allocator_t),
+            stringify!(__ncnn_allocator_t),
             "::",
             stringify!(fast_malloc)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_allocator_t>())).fast_free as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_allocator_t>())).fast_free as *const _ as usize },
         16usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_allocator_t),
+            stringify!(__ncnn_allocator_t),
             "::",
             stringify!(fast_free)
         )
@@ -1457,10 +1457,10 @@ extern "C" {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_option_t {
+pub struct __ncnn_option_t {
     _unused: [u8; 0],
 }
-pub type ncnn_option_t = *mut _ncnn_option_t;
+pub type ncnn_option_t = *mut __ncnn_option_t;
 extern "C" {
     pub fn ncnn_option_create() -> ncnn_option_t;
 }
@@ -1484,10 +1484,17 @@ extern "C" {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_mat_t {
+pub struct __ncnn_mat_t {
     _unused: [u8; 0],
 }
-pub type ncnn_mat_t = *mut _ncnn_mat_t;
+pub type ncnn_mat_t = *mut __ncnn_mat_t;
+extern "C" {
+    pub fn ncnn_mat_create(
+        w: ::std::os::raw::c_int,
+        h: ::std::os::raw::c_int,
+        c: ::std::os::raw::c_int,
+    ) -> ncnn_mat_t;
+}
 extern "C" {
     pub fn ncnn_mat_create_1d(w: ::std::os::raw::c_int, allocator: ncnn_allocator_t) -> ncnn_mat_t;
 }
@@ -1740,10 +1747,10 @@ extern "C" {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_blob_t {
+pub struct __ncnn_blob_t {
     _unused: [u8; 0],
 }
-pub type ncnn_blob_t = *mut _ncnn_blob_t;
+pub type ncnn_blob_t = *mut __ncnn_blob_t;
 extern "C" {
     pub fn ncnn_blob_get_name(blob: ncnn_blob_t) -> *const ::std::os::raw::c_char;
 }
@@ -1764,10 +1771,10 @@ extern "C" {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_paramdict_t {
+pub struct __ncnn_paramdict_t {
     _unused: [u8; 0],
 }
-pub type ncnn_paramdict_t = *mut _ncnn_paramdict_t;
+pub type ncnn_paramdict_t = *mut __ncnn_paramdict_t;
 extern "C" {
     pub fn ncnn_paramdict_create() -> ncnn_paramdict_t;
 }
@@ -1814,10 +1821,10 @@ extern "C" {
 extern "C" {
     pub fn ncnn_paramdict_set_array(pd: ncnn_paramdict_t, id: ::std::os::raw::c_int, v: ncnn_mat_t);
 }
-pub type ncnn_datareader_t = *mut _ncnn_datareader_t;
+pub type ncnn_datareader_t = *mut __ncnn_datareader_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_datareader_t {
+pub struct __ncnn_datareader_t {
     pub pthis: *mut ::std::os::raw::c_void,
     pub scan: ::std::option::Option<
         unsafe extern "C" fn(
@@ -1835,43 +1842,43 @@ pub struct _ncnn_datareader_t {
     >,
 }
 #[test]
-fn bindgen_test_layout__ncnn_datareader_t() {
+fn bindgen_test_layout___ncnn_datareader_t() {
     assert_eq!(
-        ::std::mem::size_of::<_ncnn_datareader_t>(),
+        ::std::mem::size_of::<__ncnn_datareader_t>(),
         24usize,
-        concat!("Size of: ", stringify!(_ncnn_datareader_t))
+        concat!("Size of: ", stringify!(__ncnn_datareader_t))
     );
     assert_eq!(
-        ::std::mem::align_of::<_ncnn_datareader_t>(),
+        ::std::mem::align_of::<__ncnn_datareader_t>(),
         8usize,
-        concat!("Alignment of ", stringify!(_ncnn_datareader_t))
+        concat!("Alignment of ", stringify!(__ncnn_datareader_t))
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_datareader_t>())).pthis as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_datareader_t>())).pthis as *const _ as usize },
         0usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_datareader_t),
+            stringify!(__ncnn_datareader_t),
             "::",
             stringify!(pthis)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_datareader_t>())).scan as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_datareader_t>())).scan as *const _ as usize },
         8usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_datareader_t),
+            stringify!(__ncnn_datareader_t),
             "::",
             stringify!(scan)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_datareader_t>())).read as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_datareader_t>())).read as *const _ as usize },
         16usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_datareader_t),
+            stringify!(__ncnn_datareader_t),
             "::",
             stringify!(read)
         )
@@ -1884,6 +1891,9 @@ extern "C" {
     pub fn ncnn_datareader_create_from_stdio(fp: *mut FILE) -> ncnn_datareader_t;
 }
 extern "C" {
+    pub fn ncnn_DataReader_read_empty() -> ncnn_datareader_t;
+}
+extern "C" {
     pub fn ncnn_datareader_create_from_memory(
         mem: *mut *const ::std::os::raw::c_uchar,
     ) -> ncnn_datareader_t;
@@ -1891,10 +1901,10 @@ extern "C" {
 extern "C" {
     pub fn ncnn_datareader_destroy(dr: ncnn_datareader_t);
 }
-pub type ncnn_modelbin_t = *mut _ncnn_modelbin_t;
+pub type ncnn_modelbin_t = *mut __ncnn_modelbin_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_modelbin_t {
+pub struct __ncnn_modelbin_t {
     pub pthis: *mut ::std::os::raw::c_void,
     pub load_1d: ::std::option::Option<
         unsafe extern "C" fn(
@@ -1922,53 +1932,53 @@ pub struct _ncnn_modelbin_t {
     >,
 }
 #[test]
-fn bindgen_test_layout__ncnn_modelbin_t() {
+fn bindgen_test_layout___ncnn_modelbin_t() {
     assert_eq!(
-        ::std::mem::size_of::<_ncnn_modelbin_t>(),
+        ::std::mem::size_of::<__ncnn_modelbin_t>(),
         32usize,
-        concat!("Size of: ", stringify!(_ncnn_modelbin_t))
+        concat!("Size of: ", stringify!(__ncnn_modelbin_t))
     );
     assert_eq!(
-        ::std::mem::align_of::<_ncnn_modelbin_t>(),
+        ::std::mem::align_of::<__ncnn_modelbin_t>(),
         8usize,
-        concat!("Alignment of ", stringify!(_ncnn_modelbin_t))
+        concat!("Alignment of ", stringify!(__ncnn_modelbin_t))
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_modelbin_t>())).pthis as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_modelbin_t>())).pthis as *const _ as usize },
         0usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_modelbin_t),
+            stringify!(__ncnn_modelbin_t),
             "::",
             stringify!(pthis)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_modelbin_t>())).load_1d as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_modelbin_t>())).load_1d as *const _ as usize },
         8usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_modelbin_t),
+            stringify!(__ncnn_modelbin_t),
             "::",
             stringify!(load_1d)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_modelbin_t>())).load_2d as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_modelbin_t>())).load_2d as *const _ as usize },
         16usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_modelbin_t),
+            stringify!(__ncnn_modelbin_t),
             "::",
             stringify!(load_2d)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_modelbin_t>())).load_3d as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_modelbin_t>())).load_3d as *const _ as usize },
         24usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_modelbin_t),
+            stringify!(__ncnn_modelbin_t),
             "::",
             stringify!(load_3d)
         )
@@ -1986,10 +1996,10 @@ extern "C" {
 extern "C" {
     pub fn ncnn_modelbin_destroy(mb: ncnn_modelbin_t);
 }
-pub type ncnn_layer_t = *mut _ncnn_layer_t;
+pub type ncnn_layer_t = *mut __ncnn_layer_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_layer_t {
+pub struct __ncnn_layer_t {
     pub pthis: *mut ::std::os::raw::c_void,
     pub load_param: ::std::option::Option<
         unsafe extern "C" fn(layer: ncnn_layer_t, pd: ncnn_paramdict_t) -> ::std::os::raw::c_int,
@@ -2038,103 +2048,107 @@ pub struct _ncnn_layer_t {
     >,
 }
 #[test]
-fn bindgen_test_layout__ncnn_layer_t() {
+fn bindgen_test_layout___ncnn_layer_t() {
     assert_eq!(
-        ::std::mem::size_of::<_ncnn_layer_t>(),
+        ::std::mem::size_of::<__ncnn_layer_t>(),
         72usize,
-        concat!("Size of: ", stringify!(_ncnn_layer_t))
+        concat!("Size of: ", stringify!(__ncnn_layer_t))
     );
     assert_eq!(
-        ::std::mem::align_of::<_ncnn_layer_t>(),
+        ::std::mem::align_of::<__ncnn_layer_t>(),
         8usize,
-        concat!("Alignment of ", stringify!(_ncnn_layer_t))
+        concat!("Alignment of ", stringify!(__ncnn_layer_t))
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).pthis as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_layer_t>())).pthis as *const _ as usize },
         0usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(pthis)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).load_param as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_layer_t>())).load_param as *const _ as usize },
         8usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(load_param)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).load_model as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_layer_t>())).load_model as *const _ as usize },
         16usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(load_model)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).create_pipeline as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_layer_t>())).create_pipeline as *const _ as usize },
         24usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(create_pipeline)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).destroy_pipeline as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_layer_t>())).destroy_pipeline as *const _ as usize },
         32usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(destroy_pipeline)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).forward_1 as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_layer_t>())).forward_1 as *const _ as usize },
         40usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(forward_1)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).forward_n as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_layer_t>())).forward_n as *const _ as usize },
         48usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(forward_n)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).forward_inplace_1 as *const _ as usize },
+        unsafe {
+            &(*(::std::ptr::null::<__ncnn_layer_t>())).forward_inplace_1 as *const _ as usize
+        },
         56usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(forward_inplace_1)
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_layer_t>())).forward_inplace_n as *const _ as usize },
+        unsafe {
+            &(*(::std::ptr::null::<__ncnn_layer_t>())).forward_inplace_n as *const _ as usize
+        },
         64usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_layer_t),
+            stringify!(__ncnn_layer_t),
             "::",
             stringify!(forward_inplace_n)
         )
@@ -2247,119 +2261,119 @@ pub type ncnn_layer_creator_t = ::std::option::Option<
 pub type ncnn_layer_destroyer_t = ::std::option::Option<
     unsafe extern "C" fn(layer: ncnn_layer_t, userdata: *mut ::std::os::raw::c_void),
 >;
-pub type ncnn_net_custom_layer_factory_t = *mut _ncnn_net_custom_layer_factory_t;
+pub type ncnn_net_custom_layer_factory_t = *mut __ncnn_net_custom_layer_factory_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_net_custom_layer_factory_t {
+pub struct __ncnn_net_custom_layer_factory_t {
     pub creator: ncnn_layer_creator_t,
     pub destroyer: ncnn_layer_destroyer_t,
     pub userdata: *mut ::std::os::raw::c_void,
     pub next: ncnn_net_custom_layer_factory_t,
 }
 #[test]
-fn bindgen_test_layout__ncnn_net_custom_layer_factory_t() {
+fn bindgen_test_layout___ncnn_net_custom_layer_factory_t() {
     assert_eq!(
-        ::std::mem::size_of::<_ncnn_net_custom_layer_factory_t>(),
+        ::std::mem::size_of::<__ncnn_net_custom_layer_factory_t>(),
         32usize,
-        concat!("Size of: ", stringify!(_ncnn_net_custom_layer_factory_t))
+        concat!("Size of: ", stringify!(__ncnn_net_custom_layer_factory_t))
     );
     assert_eq!(
-        ::std::mem::align_of::<_ncnn_net_custom_layer_factory_t>(),
+        ::std::mem::align_of::<__ncnn_net_custom_layer_factory_t>(),
         8usize,
         concat!(
             "Alignment of ",
-            stringify!(_ncnn_net_custom_layer_factory_t)
+            stringify!(__ncnn_net_custom_layer_factory_t)
         )
     );
     assert_eq!(
         unsafe {
-            &(*(::std::ptr::null::<_ncnn_net_custom_layer_factory_t>())).creator as *const _
+            &(*(::std::ptr::null::<__ncnn_net_custom_layer_factory_t>())).creator as *const _
                 as usize
         },
         0usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_net_custom_layer_factory_t),
+            stringify!(__ncnn_net_custom_layer_factory_t),
             "::",
             stringify!(creator)
         )
     );
     assert_eq!(
         unsafe {
-            &(*(::std::ptr::null::<_ncnn_net_custom_layer_factory_t>())).destroyer as *const _
+            &(*(::std::ptr::null::<__ncnn_net_custom_layer_factory_t>())).destroyer as *const _
                 as usize
         },
         8usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_net_custom_layer_factory_t),
+            stringify!(__ncnn_net_custom_layer_factory_t),
             "::",
             stringify!(destroyer)
         )
     );
     assert_eq!(
         unsafe {
-            &(*(::std::ptr::null::<_ncnn_net_custom_layer_factory_t>())).userdata as *const _
+            &(*(::std::ptr::null::<__ncnn_net_custom_layer_factory_t>())).userdata as *const _
                 as usize
         },
         16usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_net_custom_layer_factory_t),
+            stringify!(__ncnn_net_custom_layer_factory_t),
             "::",
             stringify!(userdata)
         )
     );
     assert_eq!(
         unsafe {
-            &(*(::std::ptr::null::<_ncnn_net_custom_layer_factory_t>())).next as *const _ as usize
+            &(*(::std::ptr::null::<__ncnn_net_custom_layer_factory_t>())).next as *const _ as usize
         },
         24usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_net_custom_layer_factory_t),
+            stringify!(__ncnn_net_custom_layer_factory_t),
             "::",
             stringify!(next)
         )
     );
 }
-pub type ncnn_net_t = *mut _ncnn_net_t;
+pub type ncnn_net_t = *mut __ncnn_net_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_net_t {
+pub struct __ncnn_net_t {
     pub pthis: *mut ::std::os::raw::c_void,
     pub custom_layer_factory: ncnn_net_custom_layer_factory_t,
 }
 #[test]
-fn bindgen_test_layout__ncnn_net_t() {
+fn bindgen_test_layout___ncnn_net_t() {
     assert_eq!(
-        ::std::mem::size_of::<_ncnn_net_t>(),
+        ::std::mem::size_of::<__ncnn_net_t>(),
         16usize,
-        concat!("Size of: ", stringify!(_ncnn_net_t))
+        concat!("Size of: ", stringify!(__ncnn_net_t))
     );
     assert_eq!(
-        ::std::mem::align_of::<_ncnn_net_t>(),
+        ::std::mem::align_of::<__ncnn_net_t>(),
         8usize,
-        concat!("Alignment of ", stringify!(_ncnn_net_t))
+        concat!("Alignment of ", stringify!(__ncnn_net_t))
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_ncnn_net_t>())).pthis as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<__ncnn_net_t>())).pthis as *const _ as usize },
         0usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_net_t),
+            stringify!(__ncnn_net_t),
             "::",
             stringify!(pthis)
         )
     );
     assert_eq!(
         unsafe {
-            &(*(::std::ptr::null::<_ncnn_net_t>())).custom_layer_factory as *const _ as usize
+            &(*(::std::ptr::null::<__ncnn_net_t>())).custom_layer_factory as *const _ as usize
         },
         8usize,
         concat!(
             "Offset of field: ",
-            stringify!(_ncnn_net_t),
+            stringify!(__ncnn_net_t),
             "::",
             stringify!(custom_layer_factory)
         )
@@ -2451,10 +2465,10 @@ extern "C" {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct _ncnn_extractor_t {
+pub struct __ncnn_extractor_t {
     _unused: [u8; 0],
 }
-pub type ncnn_extractor_t = *mut _ncnn_extractor_t;
+pub type ncnn_extractor_t = *mut __ncnn_extractor_t;
 extern "C" {
     pub fn ncnn_extractor_create(net: ncnn_net_t) -> ncnn_extractor_t;
 }

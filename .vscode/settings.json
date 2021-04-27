@@ -114,5 +114,6 @@
             }
         ]
     },
-    "clang-format.executable": "clang-format-10"
+    "clang-format.executable": "clang-format-10",
+    "python.pythonPath": "/usr/bin/python3.7"
 }

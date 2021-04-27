@@ -13,7 +13,7 @@ print(buffer)
 mydata = bytearray([65, 66, 67, 68, 69, 70, 71])
 print(mydata)
 
-test.printt.argtypes = [ctypes.POINTER(ctypes.c_ubyte), ctypes.c_size_t]
+# test.printt.argtypes = [ctypes.POINTER(ctypes.c_ubyte), ctypes.c_size_t]
 # b = (c_ubyte * 2)(b'\x02', b'\x01')
 # cast(buffer, POINTER(buffer))
 return_value = (c_ubyte * 3)()
@@ -30,11 +30,17 @@ print(b_result)
 
 result = (ctypes.c_ubyte * 20)(*(b_result))
 test.printt(result, 3)
+
+print("byref test")
+test.printt(byref(result), 3)
+
 # pdata = bytearray(pdata, 'utf-8')
 # result = (ctypes.c_ubyte * 20)(*(pdata))
 # test.printt(pdata, 3)
 
 
+# https://www.cnblogs.com/fendou-999/p/3527449.html?utm_source=tuicool&utm_medium=referral
+# 应该还可以用byref
 def aaa():
     ccc = 1
     print("aaa " + str(ccc))
