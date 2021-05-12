@@ -1,4 +1,4 @@
-# 					android bild
+# 					android build
 
 环境
 
