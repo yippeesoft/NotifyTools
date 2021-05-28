@@ -6,6 +6,64 @@
 
 ​       build-rk3399-all.sh
 
+## 增加自定义代码 （20210528
+
+### 参考资料
+
+```
+https://blog.csdn.net/xqhrs232/article/details/6253453
+
+https://blog.csdn.net/e_one/article/details/80736068
+```
+
+### 修改基本如博客
+
+```
+external 下新建 mytest，增加Android.mk,mytest.c。
+
+暂时还不清楚Makefile和Android.mk区别。
+
+```
+
+### 代码基本如博客
+
+Android.mk
+```
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES := mytest.c
+
+LOCAL_MODULE := mytest
+
+LOCAL_MODULE_TAGS := optional
+
+LOCAL_MODULE_PATH := $(TARGET_OUT_EXECUTABLES)
+
+include $(BUILD_EXECUTABLE)
+```
+
+```
+#include <stdio.h>
+
+int main()
+{
+    printf("hello mytest !");
+    return 0;
+}
+```
+
+###测试基本如博客
+
+```
+source build/envsetup.sh
+lunch xxx
+mmm ./external/mytest
+adb push $OUT/system/bin/mytest /system/bin
+
+```
+
 ## 参考资料
 
 ```
