@@ -1,0 +1,5 @@
+config DEMO
+    tristate "Demo Register Driver"
+    default y
+    help
+    This is the demo driver for android system.
