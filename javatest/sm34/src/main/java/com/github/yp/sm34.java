@@ -24,12 +24,16 @@ public class sm34 {
         String s = new String(Hex.toHexString(md));
         System.out.println(s.toUpperCase());
     }
- 
+
     public static void sm4() {
         Cipher cipher;
         try {
-            Security.addProvider(new BouncyCastleProvider());
-            cipher = Cipher.getInstance(ALGORITHM_NAME_ECB_PADDING);
+            // Security.addProvider(new BouncyCastleProvider());
+            // if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            //     System.out.println("security provider BC not found");
+            //     Security.addProvider(new BouncyCastleProvider());
+            // }
+            cipher = Cipher.getInstance(ALGORITHM_NAME_ECB_PADDING,new BouncyCastleProvider());
             Key sm4Key = new SecretKeySpec(Hex.decode("11111111111111111111111111111111"), ALGORITHM_NAME);
             cipher.init(Cipher.ENCRYPT_MODE, sm4Key);
             byte[] sm4 = cipher.doFinal("abc".getBytes());
@@ -46,10 +50,10 @@ public class sm34 {
 
     public static void main(String[] args) {
         sm3();
-        for(int i=0;i<100;i++){
+        for (int i = 0; i < 10000000; i++) {
             sm4();
             sm4();
         }
-       
+
     }
 }
