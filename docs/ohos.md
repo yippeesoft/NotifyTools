@@ -38,3 +38,15 @@ https://github.com/rockchip-linux/manifests 这里也有个4.19
 
 
 
+悲剧就是买的开发板卡都是没什么后续支持的。。。。
+
+| 名称                        | url                                                 | 备注                                                         |
+| --------------------------- | --------------------------------------------------- | ------------------------------------------------------------ |
+| RockchipOpensourceCommunity | https://github.com/orgs/RockchipOpensourceCommunity | 看上去像官方，链接官网，但是最新更新2017                     |
+| rockchip-toybrick           | https://github.com/orgs/rockchip-toybrick           | 链接：https://t.rock-chips.com/ ；rk的开源板卡网站；目前只有android11，原有的版本似乎清理过了；板卡类型支持也不全 |
+| rockchip-linux              | https://github.com/rockchip-linux                   | 似乎对应： http://opensource.rock-chips.com ；linux 4.19；但是同样板卡类型支持也不全 |
+| rockchip-android            | https://github.com/rockchip-android                 | 这个好像rk android 7.1，应该没有维护了。                     |
+| rockchip-software           | https://github.com/orgs/rockchip-software           | 就一个twrp了。。。                                           |
+
+
+
