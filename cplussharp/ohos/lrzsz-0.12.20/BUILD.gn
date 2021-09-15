@@ -1,0 +1,202 @@
+# Copyright (c) Huawei Technologies Co., Ltd. 2019-2019. All rights reserved.
+
+import("//build/ohos.gni")
+
+# Lets callers do '#include <sqlite3.h>'
+config("lrzsz_config") {
+  include_dirs = [
+    "include",
+    "//utils/native/base/include",
+  ]
+}
+
+# This is the configuration used to build sqlite itself.
+# It should not be needed outside of this library.
+# config("sqlite3_private_config") {
+#   visibility = [ ":*" ]
+#   include_dirs = [
+#     "include",
+#   ]
+# }
+
+group("lrzsz") {
+  public_deps = [ ":libintl",":libzmodem" ,":sz",":rz"]
+}
+
+declare_args() {
+  werror = false
+}
+
+
+ohos_executable("rz") {
+  sources = [
+    # "src/ansi2knr.c",
+    "src/canit.c",
+    "src/crctab.c",
+    # "src/lrz.c",
+    "src/lsyslog.c",
+    "src/lrz.c",
+    "src/protname.c",
+    "src/rbsb.c",
+    "src/tcp.c",
+    "src/timing.c",
+    "src/zm.c",
+    "src/zperr.c",
+    "src/zreadline.c",
+  ]
+  include_dirs = [
+    ".",
+    "./lib",
+  ]
+  deps = [
+    ":libintl",
+    ":libzmodem",
+    # "//third_party/bounds_checking_function:libsec_static",
+  ]
+  defines = [
+    "LOCALEDIR=\"/usr/local/share/local\"",
+    "GNULOCALEDIR=\"/usr/local/share/local\"",
+    "LOCALE_ALIAS_PATH=\"/usr/local/share/local\"",
+    "HAVE_CONFIG_H",
+    "__GNU_LIBRARY__",
+    "NFGVMIN",
+  ]
+  # symlink_target_name = [
+  #   "start_service",
+  #   "stop_service",
+  # ]
+  install_images = [ "system" ]
+  install_enable = true
+  # part_name = "init"
+}
+
+ohos_executable("sz") {
+  sources = [
+    # "src/ansi2knr.c",
+    "src/canit.c",
+    "src/crctab.c",
+    # "src/lrz.c",
+    "src/lsyslog.c",
+    "src/lsz.c",
+    "src/protname.c",
+    "src/rbsb.c",
+    "src/tcp.c",
+    "src/timing.c",
+    "src/zm.c",
+    "src/zperr.c",
+    "src/zreadline.c",
+  ]
+  include_dirs = [
+    ".",
+    "./lib",
+  ]
+  deps = [
+    ":libintl",
+    ":libzmodem",
+    # "//third_party/bounds_checking_function:libsec_static",
+  ]
+  defines = [
+    "LOCALEDIR=\"/usr/local/share/local\"",
+    "GNULOCALEDIR=\"/usr/local/share/local\"",
+    "LOCALE_ALIAS_PATH=\"/usr/local/share/local\"",
+    "HAVE_CONFIG_H",
+    "__GNU_LIBRARY__",
+    "NFGVMIN",
+  ]
+  # symlink_target_name = [
+  #   "start_service",
+  #   "stop_service",
+  # ]
+  install_images = [ "system" ]
+  install_enable = true
+  # part_name = "init"
+}
+
+ohos_static_library("libzmodem") {
+  # install_enable = true
+  # install_images = [ "system" ]
+  include_dirs = [
+    ".",
+  ]
+  sources = [
+    # "lib/alloca.c",
+    "lib/ansi2knr.c",
+    "lib/error.c",
+    "lib/getopt1.c",
+    "lib/getopt.c",
+    "lib/long-options.c",
+    "lib/mkdir.c",
+    "lib/mktime.c",
+    "lib/stpcpy.c",
+    "lib/strdup.c",
+    # "lib/strerror.c",
+    "lib/strftime.c",
+    "lib/strpbrk.c",
+    # "lib/strstr.c",
+    # "lib/strtol.c",
+    # # "lib/strtoul.c",
+    # "lib/vasprintf.c",
+    "lib/xstrtol.c",
+    "lib/xstrtoul.c",
+  ]
+
+  defines = [
+    "LOCALEDIR=\"/usr/local/share/local\"",
+    "GNULOCALEDIR=\"/usr/local/share/local\"",
+    "LOCALE_ALIAS_PATH=\"/usr/local/share/local\"",
+    "HAVE_CONFIG_H",
+    "__GNU_LIBRARY__",
+  ]
+
+  cflags = [
+    "-Wno-error=implicit-function-declaration",
+    "-Wno-error=missing-braces",
+    "-Wno-error=implicit-int",
+  ]
+}
+
+
+ohos_shared_library("libintl") {
+  install_enable = true
+  install_images = [ "system" ]
+  include_dirs = [
+    ".",
+  ]
+  sources = [
+    "intl/bindtextdom.c",
+    "intl/cat-compat.c",
+    "intl/dcgettext.c",
+    "intl/dgettext.c",
+    "intl/explodename.c",
+    "intl/finddomain.c",
+    "intl/gettext.c",
+    "intl/intl-compat.c",
+    "intl/l10nflist.c",
+    "intl/loadmsgcat.c",
+    "intl/localealias.c",
+    "intl/textdomain.c",
+    "intl/cat-id-tbl.c",
+  ]
+
+  defines = [
+    # "NDEBUG=1",
+    "HAVE_STRING_H",
+    "STDC_HEADERS",
+    "HAVE_STPCPY",
+    # "HAVE___ARGZ_COUNT",
+    "HAVE_NL_TYPES_H",
+    "ENABLE_NLS",
+    "HAVE_CATGETS",
+    "HAVE_UNISTD_H",
+    "LOCALEDIR=\"/usr/local/share/local\"",
+    "GNULOCALEDIR=\"/usr/local/share/local\"",
+    "LOCALE_ALIAS_PATH=\"/usr/local/share/local\"",
+    "HAVE_CONFIG_H",
+  ]
+
+  cflags = [
+    "-Wno-error=implicit-function-declaration",
+    "-Wno-error=missing-braces",
+    "-Wno-error=implicit-int",
+  ]
+}

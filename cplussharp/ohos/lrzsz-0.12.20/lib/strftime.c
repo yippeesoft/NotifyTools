@@ -274,7 +274,13 @@ strftime (s, maxsize, format, tp)
   const char *const f_month = month_name[tp->tm_mon];
   const char *const a_wkday = f_wkday;
   const char *const a_month = f_month;
-  const char *const ampm = "AMPM" + 2 * (hour12 > 11);
+  char *ampm="";
+  if(hour12>11){
+	  ampm="PM";
+  }else{
+	  ampm="AM";
+  }
+//   const char *const ampm = "AMPM" + 2 * (hour12 > 11);
   size_t aw_len = 3;
   size_t am_len = 3;
   size_t ap_len = 2;

@@ -216,14 +216,11 @@ main(argc, argv)
 	    continue;
 	  }
 	  fprintf(stderr, "Unrecognized switch: %s\n", argv[1]);
-	  fprintf(stderr, usage);
+	  fprintf(stderr, "usage: %s\n",usage);
 	  exit(1);
 	}
 	switch ( argc )
-	   {
-	default:
-		fprintf(stderr, usage);
-		exit(0);
+	   {	
 	case 2:
 		out = fopen(argv[1], "w");
 		if ( out == NULL ) {
@@ -233,6 +230,9 @@ main(argc, argv)
 		/* falls through */
 	case 1:
 		break;
+	default:
+		fprintf(stderr, "usage: %s\n",usage);
+		exit(0);
 	   }
 	if ( filename )
 	  fprintf(out, "#line 1 \"%s\"\n", filename);

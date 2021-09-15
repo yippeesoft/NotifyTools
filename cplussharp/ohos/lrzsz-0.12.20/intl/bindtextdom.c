@@ -133,7 +133,7 @@ BINDTEXTDOMAIN (domainname, dirname)
   else
     {
       /* We have to create a new binding.  */
-      size_t len;
+      // size_t len;
       struct binding *new_binding =
 	(struct binding *) malloc (sizeof (*new_binding));
 

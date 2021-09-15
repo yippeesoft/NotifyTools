@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #undef textdomain
 #undef bindtextdomain
 
-
+/*
 char *
 bindtextdomain (domainname, dirname)
      const char *domainname;
@@ -39,7 +39,7 @@ bindtextdomain (domainname, dirname)
 {
   return bindtextdomain__ (domainname, dirname);
 }
-
+*/
 
 char *
 dcgettext (domainname, msgid, category)
@@ -59,7 +59,7 @@ dgettext (domainname, msgid)
   return dgettext__ (domainname, msgid);
 }
 
-
+/*
 char *
 gettext (msgid)
      const char *msgid;
@@ -74,3 +74,4 @@ textdomain (domainname)
 {
   return textdomain__ (domainname);
 }
+*/

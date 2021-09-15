@@ -34,6 +34,10 @@ extern int errno;
 #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h> 
 /* mkdir adapted from GNU tar.  */
 
 /* Make directory DPATH, with permission mode DMODE.
@@ -48,7 +52,7 @@ extern int errno;
    subroutine didn't return EEXIST.  It does now.  */
 
 int
-mkdir (dpath, dmode)
+mkdir1 (dpath, dmode)
      char *dpath;
      int dmode;
 {
@@ -94,4 +98,5 @@ mkdir (dpath, dmode)
 	}
       return chmod (dpath, dmode);
     }
+    return -1;
 }

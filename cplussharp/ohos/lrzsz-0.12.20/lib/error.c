@@ -69,7 +69,8 @@ unsigned int error_message_count;
 
 /* The calling program should define program_name and set it to the
    name of the executing program.  */
-extern char *program_name;
+// extern char *program_name;
+extern const char *program_name;        /* the name by which we were called */
 
 # if HAVE_STRERROR
 #  ifndef strerror		/* On some systems, strerror is a macro */

@@ -34,7 +34,9 @@
 # endif
 #endif
 
+#ifndef NDEBUG
 #define NDEBUG
+#endif
 #include <assert.h>
 
 #include <errno.h>

@@ -22,6 +22,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <getopt.h>
 #include "long-options.h"
 
@@ -58,12 +59,12 @@ parse_long_options (argc, argv,version, usage)
 	{
 	case 'h':
 	  (*usage) (0);
-
+    break;
 	case 'v':
 	  (*version) (0);
 	  /* printf ("%s (%s) %s\n", command_name, package, version_string); */
 	  exit (0);
-
+    break;
 	default:
 	  /* Don't process any other long-named options.  */
 	  break;

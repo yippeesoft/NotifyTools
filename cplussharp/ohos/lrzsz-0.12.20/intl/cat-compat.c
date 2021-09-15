@@ -49,6 +49,15 @@ char *getenv ();
 # define HAVE_LOCALE_NULL
 #endif
 
+/* Define to the name of the distribution.  */
+#define PACKAGE "lrzsz"
+
+/* The concatenation of the strings PACKAGE, "-", and VERSION.  */
+#define PACKAGE_VERSION "lrzsz-0.12.20"
+
+/* Define to the version of the distribution.  */
+#define VERSION "0.12.20"
+
 /* The catalog descriptor.  */
 static nl_catd catalog = (nl_catd) -1;
 
@@ -68,7 +77,7 @@ static char *stpcpy PARAMS ((char *dest, const char *src));
 
 
 /* Set currently used domain/catalog.  */
-char *
+char*
 textdomain (domainname)
      const char *domainname;
 {
