@@ -6,7 +6,7 @@
  */
 
 char *Copyr = "Copyright 1994 Omen Technology Inc All Rights Reserved";
-
+#define POSIX 1
 #ifdef V7
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -400,7 +400,7 @@ sendbrk()
 }
 
 /* Initialize tty device for serial file xfer */
-inittty()
+void inittty()
 {
 	if ((Nametty = ttyname(2)) && *Nametty) {
 		Tty = open(Nametty, 2);
