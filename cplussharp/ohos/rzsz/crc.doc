@@ -1,0 +1,66 @@
+
+
+
+     CCCCRRRRCCCC((((1111))))		OOOOmmmmeeeennnn TTTTeeeecccchhhhnnnnoooollllooooggggyyyy	IIIINNNNCCCC ((((OOOOMMMMEEEENNNN))))		CCCCRRRRCCCC((((1111))))
+
+
+
+     NNNNAAAAMMMMEEEE
+	  crc -	checksum files
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+	  ccccrrrrcccc file ...
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+	  For each file, _c_r_c calculates	and prints a 32-bit CRC, the
+	  byte count, and the file name.  It is	typically used to
+	  validate files transferred between different systems,	and is
+	  useful in detecting subtle disk corruption.  _C_r_c uses	a
+	  checksum compatible with the DOS version of crc, the 32 bit
+	  CRC used by PKZIP, as	well as	the "crc" command in ZCOMM and
+	  Professional-YAM (high reliability communications programs).
+
+	  The 32-bit CRC used is the frame check sequence in ADCCP
+	  (ANSI	X3.66, also known as FIPS PUB 71 and FED-STD-1003, the
+	  U.S. versions	of CCITT's X.25	link-level protocol).
+
+	  32 bit CRC code courtesy Gary	S. Brown.
+
+     BBBBUUUUGGGGSSSS
+	  Although extremely unlikely, files with different data may
+	  still	produce	the same crc value.
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+	  undos(OMEN), todos(OMEN), tocpm(OMEN), sum(1), wc(1).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 1					     (printed 1/20/94)
+
+
+

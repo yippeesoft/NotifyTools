@@ -1,0 +1,20 @@
+Rz ans Sz are Copyrighted shareware programs.  Commercial Use of
+these programs is subject to licensing conditions detailed in
+the sz.c source code.  "Commercial Use" includes use of this
+program to transfer files to/from any commercial or shareware
+program not published by Omen Technology INC.  Please print the
+"mailer.rz" file, fill out the form and return it with your
+registration.
+
+It is a violation of this program's Copyright to distribute
+binaries without the accompanying *.doc, README, and COPYING
+files.
+
+This software may be freely used to support file transfer
+operations to or from duly licensed Omen Technology products.
+This includes DSZ, GSZ, ZCOMM, Professional-YAM and PowerCom.
+Those desiring to use rz/sz this way must add the
+following to the sz compile line: -DCOMPL
+
+Use with other commercial or shareware programs
+(Crosstalk, Procomm, etc.) REQUIRES REGISTRATION.

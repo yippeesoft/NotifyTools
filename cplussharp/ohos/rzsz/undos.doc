@@ -1,0 +1,132 @@
+
+
+
+     UUUUNNNNDDDDOOOOSSSS((((1111))))		OOOOmmmmeeeennnn TTTTeeeecccchhhhnnnnoooollllooooggggyyyy	IIIINNNNCCCC ((((OOOOMMMMEEEENNNN))))	      UUUUNNNNDDDDOOOOSSSS((((1111))))
+
+
+
+     NNNNAAAAMMMMEEEE
+	  undos,tounix,todos,tocpm,tomac,unmac,unparity	- Change ASCII
+	  file format for target operating system
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+	  uuuunnnnddddoooossss	[ ----ssss ] [ file ...]
+	  ttttoooouuuunnnniiiixxxx [ ----ssss ]	[ file ...]
+	  ttttooooddddoooossss	[ ----ssss ] [ file ...]
+	  ttttooooccccppppmmmm	[ ----ssss ] [ file ...]
+	  uuuunnnnmmmmaaaacccc	[ ----ssss ] [ file ...]
+	  ttttoooommmmaaaacccc	[ ----ssss ] [ file ...]
+	  uuuunnnnppppaaaarrrriiiittttyyyy [ file ...]
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+	  UUUUnnnnddddoooossss	and ttttoooouuuunnnniiiixxxx convert DOS or CP/M format source files to
+	  Unix format by deleting carriage returns preceding linefeeds
+	  and eliminating characters starting with CPMEOF (^Z).
+
+	  TTTTooooddddoooossss	converts Unix format source files to DOS format	by
+	  adding a carriage return (if not already present) before
+	  each linefeed, and eliminates	characters starting with
+	  CPMEOF (^Z).	TTTTooooccccppppmmmm additionally appends CPMEOF (^Z)
+	  characters to	the resulting file to make the file length a
+	  multiple of the 128 byte CP/M	record length.
+
+	  Any combination of uuuunnnnddddoooossss,,,, ttttooooddddoooossss,,,, or ttttooooccccppppmmmm (without flags)
+	  may be applied to a proper ASCII file	without	destroying
+	  information.	Lone carriage returns used to force
+	  overprinting are not translated to CR/LF pairs.
+
+	  UUUUnnnnmmmmaaaacccc	converts files with lines terminated only by carriage
+	  return to Unix format.  UUUUnnnnmmmmaaaacccc	should only be used to
+	  translate files whose	lines are terminated by	lone carriage
+	  returns.
+
+	  TTTToooommmmaaaacccc	converts Unix format files to Macintosh	format (lines
+	  terminated by	carriage return	only).
+
+	  The optional flag ----ssss Strips the parity bit on	all characters
+	  and discards all resulting characters	with values less than
+	  7.
+
+	  UUUUnnnnppppaaaarrrriiiittttyyyy strips the parity bit from each character and
+	  writes the result unconditionally.
+
+	  The access and modification times of the modified files are
+	  set to those of the original files.
+
+	  Without filenames, the programs act as filters.
+
+     DDDDIIIIAAAAGGGGNNNNOOOOSSSSTTTTIIIICCCCSSSS
+	  Refuses to translate files in	which "binary" characters
+
+
+
+     Page 1					      (printed 7/4/97)
+
+
+
+
+
+
+     UUUUNNNNDDDDOOOOSSSS((((1111))))		OOOOmmmmeeeennnn TTTTeeeecccchhhhnnnnoooollllooooggggyyyy	IIIINNNNCCCC ((((OOOOMMMMEEEENNNN))))	      UUUUNNNNDDDDOOOOSSSS((((1111))))
+
+
+
+	  (less	than 7 or greater than 127) are	seen before EOF	or
+	  CPMEOF unless	the ----ssss option is used.	Refuses	to translate
+	  files	with ultra long	lines.	Refuses	to translate special
+	  files.
+
+     NNNNOOOOTTTTEEEESSSS
+	  Should be executed with the current directory	in the same
+	  filesystem as	the target files for minimum disk i/o.	An
+	  extra	copy operation is required for files with multiple
+	  links.
+
+     BBBBUUUUGGGGSSSS
+	  Does not detect short	files without linefeeds.  UUUUnnnnmmmmaaaacccc	and
+	  ttttoooommmmaaaacccc	cannot handle files with CR-only overprinting.	(ASCII
+	  allows either	LF or CR/LF to delimit lines, but not CR.)
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+	  yam(omen), zcomm(omen), rz(omen), sz(omen)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 2					      (printed 7/4/97)
+
+
+

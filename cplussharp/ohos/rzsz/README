@@ -1,0 +1,139 @@
+Unix Rz and sz support XMODEM, YMODEM, and ZMODEM transfers via
+the dial-in controlling TTY (or PTY) port.  Also included is the
+"undos" program which converts between Unix, MSDOS, CP/M, and
+Macintosh text file end of line conventions.
+
+The contents of this archive can be uploaded to a remote Unix or
+Xenix system by ZCOMM or Professional-YAM using the supplied
+zupl.t script.  Connect to your Unix/Xenix system, select an
+empty directory, and then give the YAM/ZCOMM command: "source
+zupl.t".  This will upload minirb.c, compile it, and then use
+minirb to bootstrap upload the rz/sz files.
+
+Once these files are on your Unix system, you can type "make".
+The Makefile will list the various systems it knows how to
+compile the programs for, and the command to do so (e.g.,
+"make bsd").
+
+The Makefile is self explanatory; just say "make".
+
+Unregistered users can obtain support on a consulting basis.
+Please call 503-614-0430 to arrange consulting support.
+
+Registered users can obtain free support for problems not
+involving terminal servers or third party software using email
+or the regular Omen Technology phone number.
+
+Rz and sz work best with comm programs that properly support
+ZMODEM command and file AutoDownload (Pro-YAM and ZCOMM).
+
+The "GSZ" shareware program allows ZMODEM file transfers with
+DOS comm programs.  GSZ provides a "mini term function" that
+supports ZMODEM AutoDownload.  GSZ (part of GSZ.ZIP) and ZCOMM
+(ZCOMMEXE.ZIP, ZCOMMDOC.ZIP, ZCOMMHLP.ZIP) are available on
+TeleGodzilla and other fine bulletin boards.
+
+This software may be freely used to support file transfer
+operations to or from duly licensed Omen Technology products.
+This includes DSZ, GSZ, ZCOMM, Professional-YAM and PowerCom.
+Institutions desiring to use rz/sz this way should add the
+following to the sz compile line: -DCOMPL
+Programs based on stolen or public domain ZMODEM materials are
+not included.  Use with other commercial or shareware programs
+(Crosstalk, Procomm, etc.) REQUIRES REGISTRATION.
+
+Rz ans Sz are Copyrighted shareware programs.  Commercial Use of
+these programs is subject to licensing conditions detailed in
+the sz.c source code.  "Commercial Use" includes use of this
+program to transfer files to/from any commercial or shareware
+program not published by Omen Technology INC.  Please print the
+"mailer.rz" file, fill out the form and return same with your
+registration.
+
+1.xx and 2.xx versions of rz and sz (April 1988) are Public Domain,
+but lack recent enhancements and bug fixes.
+
+The Man pages are formatted for those without Unix nroff.  For
+best results, use less(1) (available on comp.sources.misc) as
+your manual page reader.  The troff sources for the rz/sz man pages
+are included with copies of Unix Professional-YAM, and are provided
+to registered sites as described in the mailer.rz file.
+
+Please check our web page www.omen.com for the latest information.
+
+FTP access is now available at ftp.cs.pdx.edu pub/zmodem
+directory.  This account has the latest and greatest selection
+of OMEN files available for FTP.  The files in this direcotryy
+are uploaded with ZMODEM directly from the Omen home system,
+preserving modification dates and file contents.
+
+Apr 30 1997: Rz handling of -N fixed.  Sz buffering fixed
+to prevent spurious Bad Seek errors.
+
+Aug 2 1996: The paranoid can now disable command uploads: see rz.doc
+
+Mar 19 1996: Rz can now write its output to standard output
+(see rz.doc).
+
+Jan 28 1995: Sz now accepts standard input: "ls -l | sz -"
+See sz.doc.  Sz is now compiled with buffering to support
+input from sources that do not allow seeks (pipes, etc.).
+<<When sendng from a pipe>> the ZMODEM window size is set to
+guarantee error recovery will fit within the buffer.  In
+some applications it may be desireable to increase the
+buffer size in the sz.c source code.
+
+June 22 1994: sz -e now escapes the all ones character (0xFF).
+This is useful in some terminal server applications.
+Sz now understands receiver specified control character
+prefixing (ZCOMM/Professional-YAM zmresc string parameter).
+
+Apr 23 1994: Added -DOLD compiler flag for antique SYSV
+compilers without a standard /usr/include/stdlib.h header file.
+This causes rbsb.c to define char *getenv() etc. instead of
+getting these definitons from stdlib.h.  You may have to fiddle
+with the declarations in rbsb.c #ifdef OLD to get a clean compile.
+
+Registration and support has been clarified and simplified
+(see mailer.rz).
+
+Feb 18 94: A bug in sz that caused constipation at the end of a
+file under certain options was corrected.
+
+Jan 27 1994: Minor bugfixes and improvements, documentation
+improved.
+
+May 16 1993: More bugfixes, POSIX support.  Tested on SCO Unix,
+BSDI 1.0, and SunOS 4.1.2.  Code simplified to avoid certain
+compiler brain damage.  (Some complaints about redefinitons
+with some POSIX compiles.) (Void and Unsigned Long are required.)
+
+Jan 2 1992: Documentation on the sz -T command has been
+improved.  Please use this command and Professional-YAM to
+diagnose file transfer problems before calling for support.
+
+
+VMS systems are now supported with native VMS versions in
+RZSZ.TLB.  The rz and sz in RZSZ.TLB support wild cards and
+VMS record types.
+
+New for 1989: ZMODEM compression and other compatible
+extensions have been added to the rz and sz programs.
+Please read the comments in the rz.c and sz.c source code
+for licensing information.
+
+
+In order for us to handle problem reports, we must have the
+exact error messages displayed by Professional-YAM.  If
+transfers do not work at all, we must have complete results of
+the sz -T test procedure!  If you are not using an Omen
+Technology product to talk to rz/sz and have not registered
+rz/sz, contact the author of the communications program you have
+purchased for support.  Some heavily marketed programs do not
+properly support the XMODEM, YMODEM, and/orZMODEM protocols.
+
+Chuck Forsberg WA7KGX     caf@omen.COM     http://www.omen.com
+   Omen Technology Inc      "The High Reliability Software"
+Author of YMODEM, ZMODEM, Professional-YAM, ZCOMM, GSZ and DSZ
+TeleGodzilla BBS: 503-617-1698  FTP: ftp.cs.pdx.edu pub/zmodem
+POB 4681 Portland OR 97208     503-614-0430   FAX:503-629-0665
