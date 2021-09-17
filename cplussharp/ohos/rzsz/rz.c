@@ -125,6 +125,13 @@ char Zsendmask[33];	/* Additional control chars to mask */
 char *substr();
 FILE *fout;
 
+#define __DEBUG__  
+#ifdef __DEBUG__  
+#define dbg(format,...) printf("File: "__FILE__", Line: %05d: "format"/n", __LINE__, ##__VA_ARGS__)  
+#else  
+#define dbg(format,...)  
+#endif  
+
 /*
  * Routine to calculate the free bytes on the current file system
  *  ~0 means many free bytes (unknown)
@@ -234,6 +241,7 @@ char *argv[];
 	char *virgin, **patts;
 	int exitcode = 0;
 
+	dbg("main\n");
 	Rxtimeout = 100;
 	setbuf(stderr, NULL);
 	if (((cp = getenv("RESTRICTED")) != 0)  &&  *cp == '1')
