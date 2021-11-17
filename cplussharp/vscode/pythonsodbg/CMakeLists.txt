@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.10)
+ 
+set(SHUFACV_VERSION_MAJOR 0)
+set(SHUFACV_VERSION_MINOR 0)
+#set(SHUFACV_VERSION_PATCH ${SHUFACV_VERSION})
+set(SHUFACV_VERSION_PATCH 0)
+set(SHUFACV_VERSION_STRING ${SHUFACV_VERSION_MAJOR}.${SHUFACV_VERSION_MINOR}.${SHUFACV_VERSION_PATCH}) 
+project(shufacv)
+add_compile_options(-fPIC)
+
+# Build NN shared library
+add_library(
+  ${PROJECT_NAME}
+  SHARED
+  addd.cpp
+)

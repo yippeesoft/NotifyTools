@@ -1,0 +1,49 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+
+    //安装 python c++ debugger
+    //https://github.com/microsoft/vscode-cpptools/issues/861
+    // 运行 sudo sysctl -w kernel.yama.ptrace_scope=0
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python C++ Debugger",
+            "type": "pythoncpp",
+            "request": "launch",
+            "pythonLaunchName": "Python: Current File",
+            "cppAttachName": "(gdb) Attach",
+            "console": "integratedTerminal",
+            "sudo": true
+        },
+        {
+            "name": "(gdb) Attach",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "/usr/bin/python3",
+            "processId": "",
+            "MIMode": "gdb",
+            "externalConsole": true,
+            "miDebuggerPath": "/home/g/pyso/gdb.sh",   //sudo /usr/bin/gdb "$@"
+          
+
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "sudo": true
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "sudo": true
+        }
+    ]
+}
