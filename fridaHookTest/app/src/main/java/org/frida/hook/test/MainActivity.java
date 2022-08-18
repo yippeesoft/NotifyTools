@@ -9,11 +9,15 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.IWindowManager;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -25,6 +29,7 @@ import org.frida.hook.test.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.android.internal.app.LocalePicker;
@@ -59,7 +64,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, android.os.Build.VERSION.RELEASE_OR_CODENAME + "   " + android.os.Build.MODEL + add(1, 1), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                rebooot();
+//                rebooot();
+                WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+//                manager.
+                IWindowManager mWindowManager = IWindowManager.Stub.asInterface(
+                        ServiceManager.getService(Context.WINDOW_SERVICE));
+                try {
+                    mWindowManager.freezeRotation(Surface.ROTATION_270);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -69,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 testJump(1);
             }
         }).start();
-      
+
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
@@ -93,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
 //        this.onStop();
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Log.d("AAA", "onTouchEvent");
-        while (true) {
-        }
-//        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        Log.d("AAA", "onTouchEvent");
+//        while (true) {
+//        }
+////        return true;
+//    }
 
 //    protected void onStop() {
 //
