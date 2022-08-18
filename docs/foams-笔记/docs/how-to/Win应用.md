@@ -20,9 +20,25 @@ bcdedit /set testsigning on 打开
 开始 - 运行（输入gpedit.msc） 用户配置 - 管理模板 - 系统 -驱动程序安装， 设备驱动的代码签名 设置忽略/禁用
 找个realtek rtl8168/8111 找到个[驱动](https://driverpack.io/en/hwids/PCI%5CVEN_10EC%26DEV_8168?os=windows-7-x64)2021微软硬件兼容签名的(Microsoft Windows Hardware Compatibility Publisher),然后WIN7一直不认,改了设置也没用,直到最后找了个老版本的realtek签名的
 
-<<<<<<< HEAD
+### 查看某个命令所在的路径
+linux环境下的which命令就能看到某个命令的绝对路径,
+windows环境下,通过where命令也能看到命令所在的位置
+
 ### win10 ssh-add 
 win10不用git bash(出现ssh -T 成功,但是git失败,应该是ssh;ssh-agent;ssh-add等配套问题)
+调试:
+```shell
+set GIT_SSH_COMMAND=ssh -vvv 查看调试信息
+新的ssh客户端不支持ssh-rsa算法，要修改本地配置重新使用ssh-rsa算法。
+~/.ssh/config
+增加:
+
+Host *
+HostkeyAlgorithms +ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
+
+```
+
 linux正常
 [OpenSSH key management](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement)
 [Original answer using git's start-ssh-agent](https://stackoverflow.com/questions/18683092/how-to-run-ssh-add-on-windows)

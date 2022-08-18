@@ -37,6 +37,32 @@ function qninja()
     $cmdline
 
 ```
+
+[使用 Ninja 提升模块编译速度](https://blog.csdn.net/shensky711/article/details/103480730/)
+[使用ninja命令提高单模块编译效率](https://www.cnblogs.com/szsky/articles/10812959.html)
+[[AOSP][Android]查看某个模块编译原始指令](https://blog.csdn.net/u014175785/article/details/115319550)
+```powershell
+使用前需把对应模块编译一遍，用于生产 ninja 文件（全编或 mmm 都可以）
+全编后，生成的 ninja 文件为：./out/combined-[TARGET-PRODUCT].ninja
+mmm 编译后，生成的 ninja 文件为：./out/combined-[TARGET-PRODUCT]-_[path_to_your_module_makefile].ninja，比如：./out/combined-aosp_walleye-_packages_apps_Launcher3_Android.mk.ninja
+如果修改了 Android.mk 或 Android.bp，需使用传统的 make 命令进行编译以重新生成包含新依赖规则的 ninja 文件
+可以把 ninja 放到 PATH 环境变量中，这样就不用每次都敲 ./prebuilts/build-tools/linux-x86/bin/ninja 这个路径了
+4. 最后
+为 Launcher 和 SystemUI 准备一份开箱即用的指令，尽情玩耍吧~
+
+使用方法
+
+./prebuilts/build-tools/linux-x86/bin/ninja -f out/combined-xxx.ninja相当于make，xxx为对应的lunch项，
+
+Launcher：
+
+./prebuilts/build-tools/linux-x86/bin/ninja -f out/combined-qssi-_packages_apps_Launcher3_Android.mk.ninja Launcher3QuickStep
+1
+SystemUI：
+
+./prebuilts/build-tools/linux-x86/bin/ninja -f out/combined-qssi-_frameworks_base_packages_SystemUI_Android.mk.ninja SystemUI
+```
+
 ### 编译错误
 
 #### android 7.1
