@@ -169,6 +169,14 @@ git config --global http.lowSpeedLimit 0
 git config --global http.lowSpeedTime 999999 #单位/秒
 ```
 
+
+remote: Enumerating objects: 4931411, done.
+remote: Counting objects: 100% (1/1), done.
+fatal: the remote end hung up unexpectedly 1.01 GiB | 4.53 MiB/s   
+fatal: early EOF
+fatal: index-pack failed
+
+
 #### git拉取冲突
 [Pulling is not possible because you have unmerged files](https://blog.csdn.net/mango_love/article/details/87261529)
 基本按照git的提示执行,解决冲突后再次合并提交. 应该有个push前检查冲突,需要合并再push的设置的.
