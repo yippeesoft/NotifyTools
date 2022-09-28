@@ -21,11 +21,21 @@ bcdedit /set testsigning on 打开
 找个realtek rtl8168/8111 找到个[驱动](https://driverpack.io/en/hwids/PCI%5CVEN_10EC%26DEV_8168?os=windows-7-x64)2021微软硬件兼容签名的(Microsoft Windows Hardware Compatibility Publisher),然后WIN7一直不认,改了设置也没用,直到最后找了个老版本的realtek签名的
 
 ### VCPKG
-默认改为编译64位
+#### 默认改为编译64位
+
 ```dotnetcli
+环境变量:
 VCPKG_DEFAULT_TRIPLET=x64-windows
 ```
-cmake集成
+
+```shell
+vcpkg.bat
+
+@echo off
+IF "%1"=="install" ( set TRIPLET=--triplet x64-windows ) ELSE ( set TRIPLET= )
+vcpkg-x86.exe %* %TRIPLET%
+```
+#### cmake集成
 ```bash
 set(CMAKE_TOOLCHAIN_FILE "E:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake")
 ```
@@ -39,8 +49,18 @@ vscode(必需)
     "VCPKG_TARGET_TRIPLET": "x64-windows"
 }
 ```
+#### 清理
+vcpkg remove --purge -recurse
+删除 AppData\Local\vcpkg\archives 对应包
+vcpkg\installed\x64-windows 对应目录
+vcpkg\buildtrees 对应目录
 
-###clangd
+### vscode
+#### cmake-format
+安装插件
+pip3 install cmakelang
+
+#### clangd
 clangd的设置主要是通过设置编译参数的来实现的。
 1.在vscode编辑中键入ctrl+shift+p打开命令输入框
 2. 在命令输入框中输setting.json
@@ -92,6 +112,28 @@ linux正常
 ### 在 Visual Studio Code 中安装 CodeRunner 插件后，直接运行 Java 代码的时候，输出窗口中的中文出现了乱码
 打开 首选项 - 设置，在用户设置 
 "code-runner.runInTerminal":true
+
+### vs code
+#### 括号对 设置颜色 启动匹对指示线
+
+```dotnetcli
+ settings.json  
+
+ 
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs":"active",
+ 
+
+  "workbench.colorCustomizations": {
+        "editorBracketHighlight.foreground1": "#b49900",
+        "editorBracketHighlight.foreground2": "#c71fc1",
+        "editorBracketHighlight.foreground3": "#2cbd0f",
+        "editorBracketHighlight.foreground4": "#0e96f8",
+        "editorBracketHighlight.foreground5": "#01cece",
+        "editorBracketHighlight.foreground6": "#a3023b"
+    },
+```
+
 
 ## 吐槽
 1. 现在更新真是没什么好写的了么,什么改个图标啊,改个记事本啊 都月月发
