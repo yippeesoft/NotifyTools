@@ -14,15 +14,23 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(benchmark CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+find_package(LibreSSL REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(libhv CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 
 add_executable(main main.cpp)
-message(STATUS "OPENSSL_LIBRARIES =  ${OPENSSL_LIBRARIES}.")
-target_link_libraries(main PRIVATE fmt::fmt ${OPENSSL_LIBRARIES}
-                                   nlohmann_json::nlohmann_json hv Boost::boost)
+message(STATUS "LibreSSL _LIBRARIES =  ${LibreSSL_LIBRARIES}.")
+target_link_libraries(
+  main
+  PRIVATE fmt::fmt
+          ${OPENSSL_LIBRARIES}
+          nlohmann_json::nlohmann_json
+          hv
+          Boost::boost
+          LibreSSL::Crypto
+          LibreSSL::SSL
+          LibreSSL::TLS)
 
 # fetchcontent重点来了
 # -------------------------------------------------------------------

@@ -1,3 +1,4 @@
+
 #include <fmt/core.h>
 #include <ios>
 #include <nlohmann/json_fwd.hpp>
@@ -6,8 +7,7 @@
 #include <string>
 #include <iostream>
 #include <fmt/format.h>
-#include <openssl/ssl.h>
-#include <openssl/hmac.h>
+
 #include <iostream>
 #include <iostream>
 #include <string>
@@ -18,18 +18,25 @@
 #include <optional>
 #include "hv/requests.h"
 #include "hv/hthread.h" // import hv_gettid
+
+#include <boost/beast/ssl.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
+#include <boost/beast.hpp>
 #include <boost/beast/version.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <boost/beast/ssl.hpp>
+
 #include <boost/asio/ssl/error.hpp>
 #include <boost/asio/ssl/stream.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include "root_certificates.hpp"
+
+#include <openssl/ssl.h>
+#include <openssl/hmac.h>
+
 using namespace nlohmann;
 using namespace std;
 void testFmt();
@@ -41,15 +48,46 @@ void testhvhttp();
 void testboosthttp();
 int main()
 {
+    testHMAC();
     // testStd();
     // testjson();
     // testjsoncls();
     // testhvhttp();
-    testboosthttp();
+    // testboosthttp();
     return 0;
 }
 
 #pragma region boosthttp
+template<bool isRequest, class SyncReadStream, class DynamicBuffer>
+auto read_and_print_body(
+    std::ostream& os,
+    SyncReadStream& stream,
+    DynamicBuffer& buffer,
+    boost::beast::error_code& ec)
+{
+    namespace net = boost::asio;
+    namespace beast = boost::beast;
+    namespace http = beast::http;
+    using net::ip::tcp;
+    struct
+    {
+        size_t hbytes = 0, bbytes = 0;
+    } ret;
+    http::parser<isRequest, http::buffer_body> p;
+    ret.hbytes = http::read_header(stream, buffer, p, ec);
+
+    while (!p.is_done())
+    {
+        char buf[512];
+        p.get().body().data = buf;
+        p.get().body().size = sizeof(buf);
+        ret.bbytes += http::read_some(stream, buffer, p, ec);
+        if (ec)
+            return ret;
+        os.write(buf, sizeof(buf) - p.get().body().size);
+    }
+    return ret;
+}
 //https://www.boost.org/doc/libs/develop/libs/beast/example/http/client/sync/http_client_sync.cpp
 //C++ 使用boost实现http客户端——同步、异步、协程
 void testboosthttp()
@@ -116,22 +154,25 @@ void testboosthttp()
 
         // Declare a container to hold the response
         http::response<http::dynamic_body> res;
-
-        // Receive the HTTP response
-        http::read(stream, buffer, res);
-
-        // Write the message to standard out
-        std::cout << res.body().size() << std::endl;
-
         // Gracefully close the socket
         boost::system::error_code ec;
-        stream.shutdown(ec);
+        read_and_print_body<false>(std::cout, stream, buffer, ec);
+        // Receive the HTTP response
+        // http::read(stream, buffer, res);
+
+        // Write the message to standard out
+        // std::cout << res.body().size() << std::endl;
+        std::cerr << " shutdown 0: " << std::endl;
+        socket.close(ec);
+        // socket.shutdown(boost::asio::socket_base::shutdown_type::shutdown_both, ec);
+        // socket.lowest_layer().cancel(ec);
         if (ec == net::error::eof)
         {
             // Rationale:
             // http://stackoverflow.com/questions/25587403/boost-asio-ssl-async-shutdown-always-finishes-with-an-error
             ec = {};
         }
+        std::cerr << " shutdown 1: " << ec << std::endl;
         // not_connected happens sometimes
         // so don't bother reporting it.
         //
@@ -376,12 +417,42 @@ void testHMAC()
     unsigned char result[20] = {0};
     unsigned int resultlen = 20;
 
+    string strtest = "abcdabcd";
+    const unsigned char* sss = (unsigned char*)strtest.data(); // reinterpret_cast<unsigned char*>(const_cast<char*>(strtest.c_str()));
+
     //可参照 https://github.com/qiniu/c-sdk/ 判断ssl版本
-    unsigned char* ss = HMAC(EVP_sha1(), key, strlen(key), data, sizeof(data), result, &resultlen);
-    std::cout << OPENSSL_VERSION_NUMBER << " ret " << OPENSSL_API_LEVEL << std::endl;
-    for (int i = 0; i < strlen((char*)ss); i++)
-        printf("%02x", ss[i]);
-    fmt::print("\n\n");
+    unsigned char* ss = HMAC(EVP_sha1(), key, strlen(key), sss, sizeof(sss), result, &resultlen);
+    fmt::print("HMAC\n\n");
     for (int i = 0; i < resultlen; i++)
         printf("%02x", result[i]);
+    // ss = HMAC(EVP_sha1(), key, strlen(key), sss, sizeof(sss) / 2, result, &resultlen);
+    {
+        //改用libressl
+        //复制FindLibreSSL.cmake到 ....\cmake\share\cmake-3.22\Modules\FindLibreSSL.cmake
+        //https://github.com/openssl/openssl/issues/1093
+        /* Under Win32 these are defined in wincrypt.h */
+        /* 修改 x509.h 
+#ifdef OPENSSL_SYS_WIN32
+
+#include <windows.h>
+#undef X509_NAME
+#undef X509_EXTENSIONS
+#endif
+        */
+        HMAC_CTX* ctx = HMAC_CTX_new();
+        HMAC_Init(ctx, key, strlen(key), EVP_sha1());
+        HMAC_Update(ctx, sss, sizeof(sss) / 2);
+        HMAC_Update(ctx, sss, sizeof(sss) / 2);
+        HMAC_Final(ctx, result, &resultlen);
+        fmt::print("\n\nHMAC_Final\n\n");
+        for (int i = 0; i < resultlen; i++)
+            printf("%02x", result[i]);
+    }
+
+    // std::cout << OPENSSL_VERSION_NUMBER << " ret " << OPENSSL_API_LEVEL << std::endl;
+    // for (int i = 0; i < strlen((char*)ss); i++)
+    //     printf("%02x", ss[i]);
+    fmt::print("\n\n");
+    // for (int i = 0; i < resultlen; i++)
+    //     printf("%02x", result[i]);
 }
