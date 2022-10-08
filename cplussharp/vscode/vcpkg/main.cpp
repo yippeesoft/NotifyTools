@@ -1,4 +1,7 @@
 
+
+#include <boost/beast/http/field.hpp>
+#include <boost/beast/http/string_body.hpp>
 #include <fmt/core.h>
 #include <ios>
 #include <nlohmann/json_fwd.hpp>
@@ -19,6 +22,7 @@
 #include "hv/requests.h"
 #include "hv/hthread.h" // import hv_gettid
 
+#include <boost/asio.hpp>
 #include <boost/beast/ssl.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
@@ -26,14 +30,17 @@
 #include <boost/beast/version.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
-
+#include <boost/asio/strand.hpp>
 #include <boost/asio/ssl/error.hpp>
 #include <boost/asio/ssl/stream.hpp>
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include "root_certificates.hpp"
+#include <openssl/configuration.h>
 
+#include <openssl/macros.h>
 #include <openssl/ssl.h>
 #include <openssl/hmac.h>
 
@@ -45,15 +52,15 @@ void testStd();
 void testjson();
 void testjsoncls();
 void testhvhttp();
-void testboosthttp();
+void testboosthttpSync();
 int main()
 {
-    testHMAC();
+    // testHMAC();
     // testStd();
     // testjson();
     // testjsoncls();
     // testhvhttp();
-    // testboosthttp();
+    testboosthttpSync();
     return 0;
 }
 
@@ -73,24 +80,198 @@ auto read_and_print_body(
     {
         size_t hbytes = 0, bbytes = 0;
     } ret;
+
+#ifdef readstream
+    // Read the response status line. The response streambuf will automatically
+    // grow to accommodate the entire line. The growth may be limited by passing
+    // a maximum size to the streambuf constructor.
+    boost::asio::streambuf response;
+    boost::asio::read_until(stream, response, "\r\n");
+
+    // Check that response is OK.
+    std::istream response_stream(&response);
+    std::string http_version;
+    response_stream >> http_version;
+    unsigned int status_code;
+    response_stream >> status_code;
+    std::string status_message;
+    std::getline(response_stream, status_message);
+    string srespcode = fmt::format("ver:{0} ; code: {1} ;status:{2}\n", http_version, status_code, status_message);
+    fmt::print(srespcode + "\nheader\n");
+    // 传说中的包头可以读下来了
+    std::string header;
+    std::vector<string> headers;
+    while (std::getline(response_stream, header) && header != "\r")
+    {
+        fmt::print(header);
+        fmt::print("\n");
+        headers.push_back(header);
+    }
+#endif
+
+#ifdef emptybody
+    // // Start with an empty_body parser
+    boost::beast::http::response<boost::beast::http::file_body> req0;
+    req0.body().open("body.html", beast::file_mode::write_new, ec);
+    http::read(stream, buffer, req0);
+    std::cout << "file_body:" << req0.result_int() << req0.has_content_length() << ";ver:" << req0.reason();
+
+#endif
+#define bufferbodyparser
+#ifdef bufferbodyparser
     http::parser<isRequest, http::buffer_body> p;
     ret.hbytes = http::read_header(stream, buffer, p, ec);
+    std::cout << p.get().result() << p.get().result_int() << p.get().has_content_length() << " ;content_length: " << p.get()[boost::beast::http::field::content_length] << std::endl;
 
     while (!p.is_done())
     {
         char buf[512];
         p.get().body().data = buf;
         p.get().body().size = sizeof(buf);
-        ret.bbytes += http::read_some(stream, buffer, p, ec);
+        int trns = http::read_some(stream, buffer, p, ec);
+        ret.bbytes += trns;
         if (ec)
             return ret;
         os.write(buf, sizeof(buf) - p.get().body().size);
+        std::cout << trns << "\n"
+                  << p.get().body().size << "\n"
+                  << std::endl;
     }
+#endif
     return ret;
 }
 //https://www.boost.org/doc/libs/develop/libs/beast/example/http/client/sync/http_client_sync.cpp
 //C++ 使用boost实现http客户端——同步、异步、协程
-void testboosthttp()
+
+#pragma region async -boost-beast
+namespace beast = boost::beast;   // from <boost/beast.hpp>
+namespace http = beast::http;     // from <boost/beast/http.hpp>
+namespace net = boost::asio;      // from <boost/asio.hpp>
+using tcp = boost::asio::ip::tcp; // from <boost/asio/ip/tcp.hpp>
+// Performs an HTTP GET and prints the response
+class session : public std::enable_shared_from_this<session>
+{
+    // Report a failure
+    void fail(beast::error_code ec, char const* what)
+    {
+        std::cerr << what << ": " << ec.message() << "\n";
+    }
+
+    tcp::resolver resolver_;
+    beast::tcp_stream stream_;
+    beast::flat_buffer buffer_; // (Must persist between reads)
+    http::request<http::empty_body> req_;
+    http::response<http::string_body> res_;
+
+public:
+    // Objects are constructed with a strand to
+    // ensure that handlers do not execute concurrently.
+    explicit session(net::io_context& ioc)
+        : resolver_(net::make_strand(ioc)), stream_(net::make_strand(ioc))
+    {
+    }
+
+    // Start the asynchronous operation
+    void
+    run(
+        char const* host,
+        char const* port,
+        char const* target,
+        int version)
+    {
+        // Set up an HTTP GET request message
+        req_.version(version);
+        req_.method(http::verb::get);
+        req_.target(target);
+        req_.set(http::field::host, host);
+        req_.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+
+        // Look up the domain name
+        resolver_.async_resolve(
+            host,
+            port,
+            beast::bind_front_handler(
+                &session::on_resolve,
+                shared_from_this()));
+    }
+
+    void
+    on_resolve(
+        beast::error_code ec,
+        tcp::resolver::results_type results)
+    {
+        if (ec)
+            return fail(ec, "resolve");
+
+        // Set a timeout on the operation
+        stream_.expires_after(std::chrono::seconds(30));
+
+        // Make the connection on the IP address we get from a lookup
+        stream_.async_connect(
+            results,
+            beast::bind_front_handler(
+                &session::on_connect,
+                shared_from_this()));
+    }
+
+    void
+    on_connect(beast::error_code ec, tcp::resolver::results_type::endpoint_type)
+    {
+        if (ec)
+            return fail(ec, "connect");
+
+        // Set a timeout on the operation
+        stream_.expires_after(std::chrono::seconds(30));
+
+        // Send the HTTP request to the remote host
+        http::async_write(stream_, req_,
+                          beast::bind_front_handler(
+                              &session::on_write,
+                              shared_from_this()));
+    }
+
+    void
+    on_write(
+        beast::error_code ec,
+        std::size_t bytes_transferred)
+    {
+        boost::ignore_unused(bytes_transferred);
+
+        if (ec)
+            return fail(ec, "write");
+
+        // Receive the HTTP response
+        http::async_read(stream_, buffer_, res_,
+                         beast::bind_front_handler(
+                             &session::on_read,
+                             shared_from_this()));
+    }
+
+    void
+    on_read(
+        beast::error_code ec,
+        std::size_t bytes_transferred)
+    {
+        boost::ignore_unused(bytes_transferred);
+
+        if (ec)
+            return fail(ec, "read");
+
+        // Write the message to standard out
+        std::cout << res_ << std::endl;
+
+        // Gracefully close the socket
+        stream_.socket().shutdown(tcp::socket::shutdown_both, ec);
+
+        // not_connected happens sometimes so don't bother reporting it.
+        if (ec && ec != beast::errc::not_connected)
+            return fail(ec, "shutdown");
+
+        // If we get here then the connection is closed gracefully
+    }
+};
+#pragma endregion
+void testboosthttpSync()
 {
     using tcp = boost::asio::ip::tcp;    // from <boost/asio/ip/tcp.hpp>
     namespace http = boost::beast::http; // from <boost/beast/http.hpp>
@@ -99,9 +280,9 @@ void testboosthttp()
     namespace beast = boost::beast;      // from <boost/beast.hpp>
     try
     {
-        auto const host = "www.163.com"; //要访问的主机名
-        auto const port = "443";         //http服务端口
-        auto const target = "/";         //要获取的文档
+        auto const host = "www.baidu.com"; //要访问的主机名
+        auto const port = "443";           //http服务端口
+        auto const target = "/";           //要获取的文档
         // auto const url = "https://www.baidu.com";
         int version = 11;
 
@@ -184,8 +365,9 @@ void testboosthttp()
     catch (std::exception const& e)
     {
         std::cerr << " Error: " << e.what() << std::endl;
-        return; //EXIT_FAILURE;
     }
+    std::cerr << "\n std::this_thread::get_id() : " << std::this_thread::get_id() << std::endl;
+    return; //EXIT_FAILURE;
 }
 #pragma endregion
 
@@ -427,11 +609,11 @@ void testHMAC()
         printf("%02x", result[i]);
     // ss = HMAC(EVP_sha1(), key, strlen(key), sss, sizeof(sss) / 2, result, &resultlen);
     {
-        //改用libressl
-        //复制FindLibreSSL.cmake到 ....\cmake\share\cmake-3.22\Modules\FindLibreSSL.cmake
-        //https://github.com/openssl/openssl/issues/1093
-        /* Under Win32 these are defined in wincrypt.h */
-        /* 修改 x509.h 
+//改用libressl
+//复制FindLibreSSL.cmake到 ....\cmake\share\cmake-3.22\Modules\FindLibreSSL.cmake
+//https://github.com/openssl/openssl/issues/1093
+/* Under Win32 these are defined in wincrypt.h */
+/* 修改 x509.h 
 #ifdef OPENSSL_SYS_WIN32
 
 #include <windows.h>
@@ -439,14 +621,18 @@ void testHMAC()
 #undef X509_EXTENSIONS
 #endif
         */
+#if libressl
         HMAC_CTX* ctx = HMAC_CTX_new();
-        HMAC_Init(ctx, key, strlen(key), EVP_sha1());
+        EVP_MAC_init
+            HMAC_Init(ctx, key, strlen(key), EVP_sha1());
         HMAC_Update(ctx, sss, sizeof(sss) / 2);
         HMAC_Update(ctx, sss, sizeof(sss) / 2);
         HMAC_Final(ctx, result, &resultlen);
         fmt::print("\n\nHMAC_Final\n\n");
         for (int i = 0; i < resultlen; i++)
             printf("%02x", result[i]);
+        HMAC_CTX_free(ctx);
+#endif
     }
 
     // std::cout << OPENSSL_VERSION_NUMBER << " ret " << OPENSSL_API_LEVEL << std::endl;

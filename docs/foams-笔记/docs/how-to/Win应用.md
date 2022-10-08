@@ -73,6 +73,7 @@ openssl 3.x 取消了\*_\_update 等,怀疑处理大数据会有问题
 //https://github.com/openssl/openssl/issues/1093
 /_ Under Win32 these are defined in wincrypt.h _/
 /_ 修改 x509.h \*/
+
 ```powershell
 #ifdef OPENSSL_SYS_WIN32
 
@@ -81,6 +82,24 @@ openssl 3.x 取消了\*_\_update 等,怀疑处理大数据会有问题
 #undef X509_EXTENSIONS
 #endif
 ```
+
+### stunnel
+
+hfs+stunnel 模拟 https 服务
+感觉直接 nodejs 还省事一些.
+软件下载
+https://www.stunnel.org/downloads.html
+
+```powershell
+[http2https]
+accept = 443
+; ##转出端口
+connect =80
+; ###代理端口
+cert = stunnel.pem
+```
+
+也可以考虑弄个免费 ssl 证书
 
 ### vscode
 
