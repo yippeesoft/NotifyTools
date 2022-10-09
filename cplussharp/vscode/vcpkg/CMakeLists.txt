@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
-
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 cmake_policy(SET CMP0003 NEW)
 project(TEST_VCPKG)
 # 设置VCPKG_ROOT所在的位置

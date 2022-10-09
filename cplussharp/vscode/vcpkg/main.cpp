@@ -53,24 +53,52 @@ void testjson();
 void testjsoncls();
 void testhvhttp();
 void testboosthttpSync();
+void testNullPtr();
+void test_http_async_client();
 int main()
 {
+    std::cout << "main begin" << std::endl;
     // testHMAC();
     // testStd();
     // testjson();
     // testjsoncls();
     // testhvhttp();
-    testboosthttpSync();
+    // testboosthttpSync();
+    // testNullPtr();
+    test_http_async_client();
+    std::cout << "main end" << std::endl;
     return 0;
 }
 
+#pragma region testNullPtr
+class Test
+{
+public:
+    void Say()
+    {
+        std::cout << "Say Test" << std::endl;
+    }
+
+    void Set(int data)
+    {
+        _data = data;
+    }
+
+private:
+    int _data;
+};
+void testNullPtr()
+{
+    // 运行成功
+    ((Test*)nullptr)->Say();
+    // 运行会崩掉，尝试访问空指针所指内存(_data)
+    ((Test*)nullptr)->Set(1);
+}
+#pragma endregion
+
 #pragma region boosthttp
 template<bool isRequest, class SyncReadStream, class DynamicBuffer>
-auto read_and_print_body(
-    std::ostream& os,
-    SyncReadStream& stream,
-    DynamicBuffer& buffer,
-    boost::beast::error_code& ec)
+auto read_and_print_body(std::ostream& os, SyncReadStream& stream, DynamicBuffer& buffer, boost::beast::error_code& ec)
 {
     namespace net = boost::asio;
     namespace beast = boost::beast;
@@ -121,7 +149,8 @@ auto read_and_print_body(
 #ifdef bufferbodyparser
     http::parser<isRequest, http::buffer_body> p;
     ret.hbytes = http::read_header(stream, buffer, p, ec);
-    std::cout << p.get().result() << p.get().result_int() << p.get().has_content_length() << " ;content_length: " << p.get()[boost::beast::http::field::content_length] << std::endl;
+    std::cout << p.get().result() << p.get().result_int() << p.get().has_content_length()
+              << " ;content_length: " << p.get()[boost::beast::http::field::content_length] << std::endl;
 
     while (!p.is_done())
     {
@@ -130,25 +159,24 @@ auto read_and_print_body(
         p.get().body().size = sizeof(buf);
         int trns = http::read_some(stream, buffer, p, ec);
         ret.bbytes += trns;
-        if (ec)
-            return ret;
+        if (ec) return ret;
         os.write(buf, sizeof(buf) - p.get().body().size);
-        std::cout << trns << "\n"
-                  << p.get().body().size << "\n"
-                  << std::endl;
+        std::cout << trns << "\n" << p.get().body().size << "\n" << std::endl;
     }
 #endif
     return ret;
 }
+#pragma endregion
 //https://www.boost.org/doc/libs/develop/libs/beast/example/http/client/sync/http_client_sync.cpp
 //C++ 使用boost实现http客户端——同步、异步、协程
 
-#pragma region async -boost-beast
+#pragma region async
 namespace beast = boost::beast;   // from <boost/beast.hpp>
 namespace http = beast::http;     // from <boost/beast/http.hpp>
 namespace net = boost::asio;      // from <boost/asio.hpp>
 using tcp = boost::asio::ip::tcp; // from <boost/asio/ip/tcp.hpp>
 // Performs an HTTP GET and prints the response
+
 class session : public std::enable_shared_from_this<session>
 {
     // Report a failure
@@ -166,18 +194,12 @@ class session : public std::enable_shared_from_this<session>
 public:
     // Objects are constructed with a strand to
     // ensure that handlers do not execute concurrently.
-    explicit session(net::io_context& ioc)
-        : resolver_(net::make_strand(ioc)), stream_(net::make_strand(ioc))
+    explicit session(net::io_context& ioc) : resolver_(net::make_strand(ioc)), stream_(net::make_strand(ioc))
     {
     }
 
     // Start the asynchronous operation
-    void
-    run(
-        char const* host,
-        char const* port,
-        char const* target,
-        int version)
+    void run(char const* host, char const* port, char const* target, int version)
     {
         // Set up an HTTP GET request message
         req_.version(version);
@@ -187,90 +209,83 @@ public:
         req_.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 
         // Look up the domain name
-        resolver_.async_resolve(
-            host,
-            port,
-            beast::bind_front_handler(
-                &session::on_resolve,
-                shared_from_this()));
+        resolver_.async_resolve(host, port, beast::bind_front_handler(&session::on_resolve, shared_from_this()));
     }
 
-    void
-    on_resolve(
-        beast::error_code ec,
-        tcp::resolver::results_type results)
+    void on_resolve(beast::error_code ec, tcp::resolver::results_type results)
     {
-        if (ec)
-            return fail(ec, "resolve");
+        if (ec) return fail(ec, "resolve");
 
         // Set a timeout on the operation
         stream_.expires_after(std::chrono::seconds(30));
 
         // Make the connection on the IP address we get from a lookup
-        stream_.async_connect(
-            results,
-            beast::bind_front_handler(
-                &session::on_connect,
-                shared_from_this()));
+        stream_.async_connect(results, beast::bind_front_handler(&session::on_connect, shared_from_this()));
     }
 
-    void
-    on_connect(beast::error_code ec, tcp::resolver::results_type::endpoint_type)
+    void on_connect(beast::error_code ec, tcp::resolver::results_type::endpoint_type)
     {
-        if (ec)
-            return fail(ec, "connect");
+        if (ec) return fail(ec, "connect");
 
         // Set a timeout on the operation
         stream_.expires_after(std::chrono::seconds(30));
 
         // Send the HTTP request to the remote host
-        http::async_write(stream_, req_,
-                          beast::bind_front_handler(
-                              &session::on_write,
-                              shared_from_this()));
+        http::async_write(stream_, req_, beast::bind_front_handler(&session::on_write, shared_from_this()));
     }
 
-    void
-    on_write(
-        beast::error_code ec,
-        std::size_t bytes_transferred)
+    void on_write(beast::error_code ec, std::size_t bytes_transferred)
     {
         boost::ignore_unused(bytes_transferred);
 
-        if (ec)
-            return fail(ec, "write");
+        if (ec) return fail(ec, "write");
 
         // Receive the HTTP response
-        http::async_read(stream_, buffer_, res_,
-                         beast::bind_front_handler(
-                             &session::on_read,
-                             shared_from_this()));
+        http::async_read(stream_, buffer_, res_, beast::bind_front_handler(&session::on_read, shared_from_this()));
     }
 
-    void
-    on_read(
-        beast::error_code ec,
-        std::size_t bytes_transferred)
+    void on_read(beast::error_code ec, std::size_t bytes_transferred)
     {
         boost::ignore_unused(bytes_transferred);
 
-        if (ec)
-            return fail(ec, "read");
+        if (ec) return fail(ec, "read");
 
         // Write the message to standard out
-        std::cout << res_ << std::endl;
+        std::cout << res_.body().size() << "\n" << res_ << std::endl;
 
         // Gracefully close the socket
         stream_.socket().shutdown(tcp::socket::shutdown_both, ec);
 
         // not_connected happens sometimes so don't bother reporting it.
-        if (ec && ec != beast::errc::not_connected)
-            return fail(ec, "shutdown");
+        if (ec && ec != beast::errc::not_connected) return fail(ec, "shutdown");
 
         // If we get here then the connection is closed gracefully
     }
 };
+
+void test_http_async_client()
+{
+    net::io_context ioc;
+    auto const host = "www.baidu.com"; //要访问的主机名
+    auto const port = "80";            //http服务端口
+    auto const target = "/";           //要获取的文档
+    // auto const url = "https://www.baidu.com";
+    int version = 11;
+    // Launch the asynchronous operation
+    std::make_shared<session>(ioc)->run(host, port, target, version);
+    // Run the I/O service. The call will return when
+    // the get operation is complete.
+    // ioc.run(); //堵塞
+    std::thread t([&ioc]() { ioc.run(); });
+    std::cout << "Main thread will for 1 seconds...\n"; // 这里是为了防止stop()执行过快
+    std::this_thread::sleep_for(std::chrono::seconds(15));
+    std::cout << "Main thread weak up...\n";
+
+    t.join();
+}
 #pragma endregion
+
+#pragma region testboosthttpSync
 void testboosthttpSync()
 {
     using tcp = boost::asio::ip::tcp;    // from <boost/asio/ip/tcp.hpp>
@@ -357,8 +372,7 @@ void testboosthttpSync()
         // not_connected happens sometimes
         // so don't bother reporting it.
         //
-        if (ec && ec != boost::system::errc::not_connected)
-            throw boost::system::system_error{ec};
+        if (ec && ec != boost::system::errc::not_connected) throw boost::system::system_error{ec};
 
         // If we get here then the connection is closed gracefully
     }
@@ -401,10 +415,7 @@ void test_http_async_client(int& finished)
     req->timeout = 10;
     http_client_send_async(req, [&finished](const HttpResponsePtr& resp) {
         printf("test_http_async_client response thread tid=%ld\n", hv_gettid());
-        if (resp == NULL)
-        {
-            printf("request failed!\n");
-        }
+        if (resp == NULL) { printf("request failed!\n"); }
         else
         {
             printf("%d %s\r\n", resp->status_code, resp->status_message());
@@ -421,20 +432,14 @@ void testhvhttp()
     test_http_async_client(finished);
 
     // demo wait async ResponseCallback
-    while (!finished)
-    {
-        hv_delay(100);
-    }
+    while (!finished) { hv_delay(100); }
     printf("finished! %d\n", finished);
 }
 
 void testhvhttpSync()
 {
     auto resp = requests::get("http://163.com");
-    if (resp == NULL)
-    {
-        printf("request failed!\n");
-    }
+    if (resp == NULL) { printf("request failed!\n"); }
     else
     {
         printf("%d %s\r\n", resp->status_code, resp->status_message());
@@ -442,10 +447,7 @@ void testhvhttpSync()
     }
 
     resp = requests::post("https://skynet-dev.starnetiot.net/api/skynet-iot/login", "hello,world!");
-    if (resp == NULL)
-    {
-        printf("request failed!\n");
-    }
+    if (resp == NULL) { printf("request failed!\n"); }
     else
     {
         printf("%d %s\r\n", resp->status_code, resp->status_message());
@@ -484,10 +486,7 @@ struct adl_serializer<std::optional<T>>
 {
     static void to_json(json& j, const std::optional<T>& opt)
     {
-        if (opt == std::nullopt)
-        {
-            j = nullptr;
-        }
+        if (opt == std::nullopt) { j = nullptr; }
         else
         {
             j = *opt; // this will call adl_serializer<T>::to_json which will
@@ -497,10 +496,7 @@ struct adl_serializer<std::optional<T>>
 
     static void from_json(const json& j, std::optional<T>& opt)
     {
-        if (j.is_null())
-        {
-            opt = std::nullopt;
-        }
+        if (j.is_null()) { opt = std::nullopt; }
         else
         {
             opt = j.get<T>(); // same as above, but with
@@ -524,21 +520,12 @@ void testjsoncls()
     s.test = 100;
     s.testBool = true;
     s.testOpt = true;
-    for (int i = 0; i < 10; ++i)
-    {
-        s.testVec.push_back(i);
-    }
+    for (int i = 0; i < 10; ++i) { s.testVec.push_back(i); }
     s.subTestStruct.test = 99;
 
-    std::cout << "TestStruct test: " << s.test
-              << ", testBool: " << s.testBool
-              << ", testEnum: " << (int)s.testEnum
-              << ", testOpt: " << (s.testOpt.has_value() && s.testOpt.value())
-              << ", testVec: { ";
-    for (auto val : s.testVec)
-    {
-        std::cout << val << ",";
-    }
+    std::cout << "TestStruct test: " << s.test << ", testBool: " << s.testBool << ", testEnum: " << (int)s.testEnum
+              << ", testOpt: " << (s.testOpt.has_value() && s.testOpt.value()) << ", testVec: { ";
+    for (auto val : s.testVec) { std::cout << val << ","; }
     std::cout << "\b"
               << " }";
     std::cout << ", subTestStruct.test: " << s.subTestStruct.test;
@@ -549,15 +536,14 @@ void testjsoncls()
 }
 void testjson()
 {
-    json j2 = {
-        {"pi", 3.141},
-        {"happy", true},
+    json j2 = {{"pi", 3.141},
+               {"happy", true},
 
-        {"name", "Niels"},
-        {"nothing", nullptr},
-        {"answer", {{"everything", 42}}},
-        {"list", {1, 0, 2}},
-        {"object", {{"currency", "USD"}, {"value", 42.99}}}};
+               {"name", "Niels"},
+               {"nothing", nullptr},
+               {"answer", {{"everything", 42}}},
+               {"list", {1, 0, 2}},
+               {"object", {{"currency", "USD"}, {"value", 42.99}}}};
 
     cout << j2.size() << j2["answer"]["everything"] << j2["object"]["value"] << endl;
     string str2 = R"(D:\workdataDJ\code\vas_pgg_proj)";
@@ -574,10 +560,7 @@ void testStd()
     ss << std::uppercase << std::hex << std::setfill('0');
     std::string data = "1111111111";
     int len = data.size();
-    for (int i = 0; i < len; i++)
-    {
-        ss << std::setw(2) << static_cast<unsigned>(data[i]);
-    }
+    for (int i = 0; i < len; i++) { ss << std::setw(2) << static_cast<unsigned>(data[i]); }
     fmt::print(ss.str());
     std::cout << std::hex << 42 << std::endl;
 }
@@ -593,20 +576,23 @@ void testHMAC()
     //key value
     const char key[] = "745s295z8lv458ll46w2467ta460562n";
     //data in hex, /or you can init with text
-    unsigned char data[] = {
-        0x00, 0x01, 0x00, 0x48, 0x21, 0x12, 0xa4, 0x42, 0x78, 0x2b, 0x66, 0x6b, 0x32, 0x34, 0x30, 0x6b, 0x4e, 0x51, 0x6a, 0x56, 0x00, 0x06, 0x00, 0x0d, 0x36, 0x37, 0x76, 0x32, 0x37, 0x30, 0x37, 0x35, 0x3a, 0x31, 0x33, 0x42, 0x5a, 0x00, 0x00, 0x00, 0xc0, 0x57, 0x00, 0x04, 0x00, 0x02, 0x00, 0x00, 0x80, 0x2a, 0x00, 0x08, 0x70, 0xfb, 0xe5, 0x05, 0x91, 0xbf, 0x83, 0x3c, 0x00, 0x24, 0x00, 0x04, 0x6e, 0x7e, 0x1e, 0xff};
+    unsigned char data[]
+        = {0x00, 0x01, 0x00, 0x48, 0x21, 0x12, 0xa4, 0x42, 0x78, 0x2b, 0x66, 0x6b, 0x32, 0x34, 0x30, 0x6b, 0x4e,
+           0x51, 0x6a, 0x56, 0x00, 0x06, 0x00, 0x0d, 0x36, 0x37, 0x76, 0x32, 0x37, 0x30, 0x37, 0x35, 0x3a, 0x31,
+           0x33, 0x42, 0x5a, 0x00, 0x00, 0x00, 0xc0, 0x57, 0x00, 0x04, 0x00, 0x02, 0x00, 0x00, 0x80, 0x2a, 0x00,
+           0x08, 0x70, 0xfb, 0xe5, 0x05, 0x91, 0xbf, 0x83, 0x3c, 0x00, 0x24, 0x00, 0x04, 0x6e, 0x7e, 0x1e, 0xff};
 
     unsigned char result[20] = {0};
     unsigned int resultlen = 20;
 
     string strtest = "abcdabcd";
-    const unsigned char* sss = (unsigned char*)strtest.data(); // reinterpret_cast<unsigned char*>(const_cast<char*>(strtest.c_str()));
+    const unsigned char* sss
+        = (unsigned char*)strtest.data(); // reinterpret_cast<unsigned char*>(const_cast<char*>(strtest.c_str()));
 
     //可参照 https://github.com/qiniu/c-sdk/ 判断ssl版本
     unsigned char* ss = HMAC(EVP_sha1(), key, strlen(key), sss, sizeof(sss), result, &resultlen);
     fmt::print("HMAC\n\n");
-    for (int i = 0; i < resultlen; i++)
-        printf("%02x", result[i]);
+    for (int i = 0; i < resultlen; i++) printf("%02x", result[i]);
     // ss = HMAC(EVP_sha1(), key, strlen(key), sss, sizeof(sss) / 2, result, &resultlen);
     {
 //改用libressl
@@ -623,14 +609,12 @@ void testHMAC()
         */
 #if libressl
         HMAC_CTX* ctx = HMAC_CTX_new();
-        EVP_MAC_init
-            HMAC_Init(ctx, key, strlen(key), EVP_sha1());
+        EVP_MAC_init HMAC_Init(ctx, key, strlen(key), EVP_sha1());
         HMAC_Update(ctx, sss, sizeof(sss) / 2);
         HMAC_Update(ctx, sss, sizeof(sss) / 2);
         HMAC_Final(ctx, result, &resultlen);
         fmt::print("\n\nHMAC_Final\n\n");
-        for (int i = 0; i < resultlen; i++)
-            printf("%02x", result[i]);
+        for (int i = 0; i < resultlen; i++) printf("%02x", result[i]);
         HMAC_CTX_free(ctx);
 #endif
     }
