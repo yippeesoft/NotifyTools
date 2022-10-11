@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/bigobj>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/bigobj>")
 cmake_policy(SET CMP0003 NEW)
 project(TEST_VCPKG)
 # 设置VCPKG_ROOT所在的位置
@@ -18,10 +20,11 @@ find_package(fmt CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(libhv CONFIG REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS thread coroutine coroutine)
 
 add_executable(main main.cpp)
 message(STATUS "OpenSSL_LIBRARIES =  ${OpenSSL_LIBRARIES}.")
+message(STATUS "Boost_LIBRARIES =  ${Boost_LIBRARIES}.")
 target_link_libraries(
   main
   PRIVATE fmt::fmt
@@ -29,6 +32,8 @@ target_link_libraries(
           nlohmann_json::nlohmann_json
           hv
           Boost::boost
+          Boost::thread
+          Boost::coroutine
           OpenSSL::Crypto
           OpenSSL::SSL)
 
