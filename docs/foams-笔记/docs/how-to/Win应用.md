@@ -7,7 +7,11 @@ tags: windows,  软件,应用
 
 # windows 应用
 
-##
+### jetbrains
+
+```dotnetcli
+https://3.jetbra.in/ 按照readme
+```
 
 ### WINDOWS 7 windows 测试模式
 
@@ -56,6 +60,10 @@ vscode(必需)
     "CMAKE_TOOLCHAIN_FILE": "D:/vcpkg/scripts/buildsystems/vcpkg.cmake",
     "VCPKG_TARGET_TRIPLET": "x64-windows"
 }
+```
+
+```dotnetcli
+clion 要在 设置-编译-cmake- -DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake
 ```
 
 #### 清理
