@@ -171,8 +171,6 @@ linux 正常
 打开 首选项 - 设置，在用户设置
 "code-runner.runInTerminal":true
 
-### vs code
-
 #### 括号对 设置颜色 启动匹对指示线
 
 ```dotnetcli
@@ -191,6 +189,26 @@ linux 正常
         "editorBracketHighlight.foreground5": "#01cece",
         "editorBracketHighlight.foreground6": "#a3023b"
     },
+```
+
+### vs2022
+
+#### 替换 recaptcha
+
+//https://blog.csdn.net/haohaoganhuo/article/details/124869877
+
+1. 安装 Header Editor 插件 firefox
+2. 导入 https://azurezeng.github.io/static/HE-GoogleRedirect.json 或者 https://www.azurezeng.com/static/HE-GoogleRedirect.json 规则
+
+#### split file 新窗口
+
+还是 google 好用 bing 就是比 baidu 好那么一点点的,,, stackoverflow 自己的搜索还要 google 的 CAPTCHA 简直,,,,
+//https://stackoverflow.com/questions/728949/open-two-instances-of-a-file-in-a-single-visual-studio-session
+
+```dotnetcli
+Select the tab you want two copies of
+Select menu Window → New Window from the menu.
+Right click the new tab and select New Vertical Tab Group
 ```
 
 ## 吐槽

@@ -3,6 +3,16 @@ add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/bigobj>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/bigobj>")
+
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer ")
+
+set (CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address  -lasan -lstdc++ ")
+
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address  -lasan -lstdc++ ")
+
+
 cmake_policy(SET CMP0003 NEW)
 project(TEST_VCPKG)
 # 设置VCPKG_ROOT所在的位置
@@ -28,6 +38,7 @@ message(STATUS "Boost_LIBRARIES =  ${Boost_LIBRARIES}.")
 target_link_libraries(
   main
   PRIVATE fmt::fmt
+     
           ${OPENSSL_LIBRARIES}
           nlohmann_json::nlohmann_json
           hv

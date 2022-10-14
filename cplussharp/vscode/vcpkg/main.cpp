@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 #include <fmt/format.h>
-#include <coroutine>
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -52,7 +52,7 @@
 #include <openssl/hmac.h>
 
 #include <coroutine>
-
+#include "AsioHttp.hpp"
 using namespace nlohmann;
 using namespace std;
 void testFmt();
@@ -80,12 +80,18 @@ void test_union()
     u.i = 5678;
     std::cout << u.f << std::endl;
 }
+void testAsan()
+{
+    int* ary = new int[100];
+    ary[100] = 100;
+}
 
 std::thread t;
 
 int main()
 {
     std::cout << "main begin" << std::endl;
+    //testAsan();
     //test_union();
     // testHMAC();
     // testStd();
@@ -224,18 +230,34 @@ void ctxrun(asio::io_context& ctx)
 {
     ctx.run();
 }
+
 void test()
 {
-    asio::io_context ctx{};
+    asio::io_context ctx{}; //被释放了
     asio::co_spawn(ctx, coro_test(ctx), boost::asio::detached);
     t = std::thread(ctxrun, std::ref(ctx));
-
+    t.join();
     std::cout << "test2" << std::endl;
+}
+struct structfun
+{
+    void fun()
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::cout << "fun" << std::endl;
+    }
+};
+void threadfun()
+{
+    structfun sfun;
+    t = std::thread(&structfun::fun, &sfun);
 }
 void test_http_co_spawn_time()
 {
+    //threadfun();
+    //t.join();
     test();
-    t.join();
+
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     std::cout << "enendd" << std::endl;
@@ -314,13 +336,13 @@ boost::asio::awaitable<void> co_wait_async(boost::asio::ip::tcp::resolver resolv
         boost::beast::flat_buffer b;
         std::cout << "async_write\n" << std::endl;
         /*
-    https://www.boost.org/doc/libs/1_80_0/doc/html/boost_asio/overview/core/cancellation.html
-    https://www.boost.org/doc/libs/1_80_0/doc/html/boost_asio/overview/composition/cpp20_coroutines.html#boost_asio.overview.composition.cpp20_coroutines.coroutines_and_per_operation_cancellation
-    boost::asio::cancellation_signal cancel_signal_;
-    boost::asio::async_read(
-        socket, b,
-        boost::asio::bind_cancellation_slot(cancel_signal_.slot(), [](boost::system::error_code e, std::size_t n) {}));
-    */
+	https://www.boost.org/doc/libs/1_80_0/doc/html/boost_asio/overview/core/cancellation.html
+	https://www.boost.org/doc/libs/1_80_0/doc/html/boost_asio/overview/composition/cpp20_coroutines.html#boost_asio.overview.composition.cpp20_coroutines.coroutines_and_per_operation_cancellation
+	boost::asio::cancellation_signal cancel_signal_;
+	boost::asio::async_read(
+		socket, b,
+		boost::asio::bind_cancellation_slot(cancel_signal_.slot(), [](boost::system::error_code e, std::size_t n) {}));
+	*/
 
         http::response<http::dynamic_body> res;
         auto [ecx, n2] = co_await http::async_read(socket, b, res, boost::asio::as_tuple(boost::asio::use_awaitable));
@@ -400,7 +422,7 @@ void do_session(std::string const& host, std::string const& port, std::string co
     http::response<http::dynamic_body> res;
     http::async_read(socket, b, res, yield[ec]);
     if (ec) { return fail(ec, "read"); }
-    std ::cout << res << std::endl;
+    std::cout << res << std::endl;
     socket.shutdown(tcp::socket::shutdown_both, ec);
     if (ec && ec != boost::system::errc::not_connected) { return fail(ec, "shutdown"); }
 }
@@ -522,14 +544,14 @@ void test_http_async_client()
     int version = 11;
     // Launch the asynchronous operation
     std::make_shared<session>(ioc)->run(host, port, target, version);
-// Run the I/O service. The call will return when
-// the get operation is complete.
-// ioc.run(); //堵塞
+    // Run the I/O service. The call will return when
+    // the get operation is complete.
+    // ioc.run(); //堵塞
 #ifdef stdthread
     std::thread t([&ioc]() { ioc.run(); });
     t.detach();
 
-//t.join();
+    //t.join();
 #endif
     std::function<void()> accumulator = [&ioc]() { ioc.run(); };
     boost::thread(boost::bind(accumulator));
@@ -791,7 +813,7 @@ void testjsoncls()
     std::cout << ", subTestStruct.test: " << s.subTestStruct.test;
     std::cout << std::endl;
 
-    nlohmann ::to_json(j, s);
+    nlohmann::to_json(j, s);
     std::cout << "dump:" << j.dump() << std::endl;
 }
 void testjson()
@@ -855,18 +877,18 @@ void testHMAC()
     for (int i = 0; i < resultlen; i++) printf("%02x", result[i]);
     // ss = HMAC(EVP_sha1(), key, strlen(key), sss, sizeof(sss) / 2, result, &resultlen);
     {
-//改用libressl
-//复制FindLibreSSL.cmake到 ....\cmake\share\cmake-3.22\Modules\FindLibreSSL.cmake
-//https://github.com/openssl/openssl/issues/1093
-/* Under Win32 these are defined in wincrypt.h */
-/* 修改 x509.h 
-#ifdef OPENSSL_SYS_WIN32
+        //改用libressl
+        //复制FindLibreSSL.cmake到 ....\cmake\share\cmake-3.22\Modules\FindLibreSSL.cmake
+        //https://github.com/openssl/openssl/issues/1093
+        /* Under Win32 these are defined in wincrypt.h */
+        /* 修改 x509.h
+		#ifdef OPENSSL_SYS_WIN32
 
-#include <windows.h>
-#undef X509_NAME
-#undef X509_EXTENSIONS
-#endif
-        */
+		#include <windows.h>
+		#undef X509_NAME
+		#undef X509_EXTENSIONS
+		#endif
+				*/
 #if libressl
         HMAC_CTX* ctx = HMAC_CTX_new();
         EVP_MAC_init HMAC_Init(ctx, key, strlen(key), EVP_sha1());
