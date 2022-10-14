@@ -1,7 +1,5 @@
 
 
-#include <boost/beast/http/field.hpp>
-#include <boost/beast/http/string_body.hpp>
 #include <fmt/core.h>
 #include <ios>
 #include <nlohmann/json_fwd.hpp>
@@ -20,6 +18,9 @@
 #include "hv/requests.h"
 #include "hv/hthread.h" // import hv_gettid
 
+#define BOOST_ASIO_ENABLE_HANDLER_TRACKING
+#include <boost/beast/http/field.hpp>
+#include <boost/beast/http/string_body.hpp>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
 #include <boost/asio/coroutine.hpp>
@@ -65,9 +66,27 @@ void testNullPtr();
 void test_http_async_client();
 void test_http_spawn_clinet();
 void test_http_co_spawn_clinet();
+void test_http_co_spawn_time();
+void test_union()
+{
+    union un
+    {
+        float f;
+        int i;
+    };
+    un u;
+
+    u.f = 1234;
+    u.i = 5678;
+    std::cout << u.f << std::endl;
+}
+
+std::thread t;
+
 int main()
 {
     std::cout << "main begin" << std::endl;
+    //test_union();
     // testHMAC();
     // testStd();
     // testjson();
@@ -77,11 +96,18 @@ int main()
     // testNullPtr();
     //test_http_async_client();
     //test_http_spawn_clinet();
-    test_http_co_spawn_clinet();
+    // test_http_co_spawn_clinet();
+    test_http_co_spawn_time();
     std::cout << "Main thread will for 1 seconds...\n"; // 这里是为了防止stop()执行过快
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "Main thread weak up...\n";
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+    std::cout << t.joinable() << " ::Main thread weak up...\n";
+    if (t.joinable())
+    {
+        std::cout << "joinable:" << t.get_id() << std::endl;
+        t.join();
+    }
     std::cout << "main end" << std::endl;
+
     return 0;
 }
 
@@ -181,6 +207,40 @@ auto read_and_print_body(std::ostream& os, SyncReadStream& stream, DynamicBuffer
 #endif
     return ret;
 }
+
+#pragma region test_http_co_spawn_time
+namespace asio = boost::asio;
+boost::asio::cancellation_signal cancel_signal_2;
+boost::asio::awaitable<void> coro_test(asio::io_context& ctx)
+{
+    boost::asio::steady_timer timer(ctx);
+    timer.expires_after(std::chrono::seconds(1));
+    co_await timer.async_wait(asio::use_awaitable);
+    std::cout << "coro_test" << std::endl;
+    co_return;
+}
+
+void ctxrun(asio::io_context& ctx)
+{
+    ctx.run();
+}
+void test()
+{
+    asio::io_context ctx{};
+    asio::co_spawn(ctx, coro_test(ctx), boost::asio::detached);
+    t = std::thread(ctxrun, std::ref(ctx));
+
+    std::cout << "test2" << std::endl;
+}
+void test_http_co_spawn_time()
+{
+    test();
+    t.join();
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    std::cout << "enendd" << std::endl;
+}
+
 #pragma endregion
 //https://www.boost.org/doc/libs/develop/libs/beast/example/http/client/sync/http_client_sync.cpp
 //C++ 使用boost实现http客户端——同步、异步、协程
@@ -190,47 +250,90 @@ void fail(boost::system::error_code ec, char const* what)
 {
     std::cerr << what << ":code:" << ec.value() << ":msg:" << ec.message() << "\n";
 }
+void canceled(boost::asio::cancellation_state cs)
+{
+    std::cout << "cancellation_state: "
+              << static_cast<typename std::underlying_type<boost::asio::cancellation_type>::type>(cs.cancelled())
+              << " :  ";
+    if (cs.cancelled() == boost::asio::cancellation_type::all) { std::cout << "all"; };
+    if (cs.cancelled() == boost::asio::cancellation_type::none) { std::cout << "none"; };
+    if (cs.cancelled() == boost::asio::cancellation_type::partial) { std::cout << "partial"; };
+    if (cs.cancelled() == boost::asio::cancellation_type::terminal) { std::cout << "terminal"; };
+    if (cs.cancelled() == boost::asio::cancellation_type::total) { std::cout << "total"; };
+    //<< static_cast<typename std::underlying_type<boost::asio::cancellation_type>::type>(cs.cancelled())
+    std::cout << "" << std::endl;
+}
 boost::asio::awaitable<void> co_wait_async(boost::asio::ip::tcp::resolver resolver, boost::asio::ip::tcp::socket socket)
 {
-    for (int i = 0; i < 5; i++)
+    boost::asio::cancellation_state cs;
+    for (int i = 0; i < 0; i++)
     {
-        boost::asio::cancellation_state cs = co_await boost::asio::this_coro::cancellation_state;
+        cs = co_await boost::asio::this_coro::cancellation_state;
+        canceled(cs);
         std::cout << i << ": sleep_for:";
-        if (cs.cancelled() == boost::asio::cancellation_type::all) { std::cout << "all"; };
-        if (cs.cancelled() == boost::asio::cancellation_type::none) { std::cout << "none"; };
-        if (cs.cancelled() == boost::asio::cancellation_type::partial) { std::cout << "partial"; };
-        if (cs.cancelled() == boost::asio::cancellation_type::terminal) { std::cout << "terminal"; };
-        if (cs.cancelled() == boost::asio::cancellation_type::total) { std::cout << "total"; };
-        //<< static_cast<typename std::underlying_type<boost::asio::cancellation_type>::type>(cs.cancelled())
-        std::cout << "" << std::endl;
+
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+    try
+    {
+        using tcp = boost::asio::ip::tcp;    // from <boost/asio/ip/tcp.hpp>
+        namespace http = boost::beast::http; // from <boost/beast/http.hpp>
+        auto const host = "www.163.com";
+        auto const port = "80";
+        auto const target = "/loading.html";
+        int version = 11;
 
-    using tcp = boost::asio::ip::tcp;    // from <boost/asio/ip/tcp.hpp>
-    namespace http = boost::beast::http; // from <boost/beast/http.hpp>
-    auto const host = "www.baidu.com";
-    auto const port = "80";
-    auto const target = "/loading.html";
-    int version = 11;
+        std::cout << "co_wait_async\n" << std::endl;
+        auto [ec, endpoint]
+            = co_await resolver.async_resolve(host, port, boost::asio::as_tuple(boost::asio::use_awaitable));
+        if (ec) { fail(ec, "resolve"); }
+        std::cout << endpoint.size() << " ;async_resolve\n" << std::endl;
+        for (auto ep : endpoint) { std::cout << ep.endpoint().address() << ep.endpoint().port() << std::endl; }
 
-    std::cout << "co_wait_async\n" << std::endl;
-    auto [ec, endpoint]
-        = co_await resolver.async_resolve(host, port, boost::asio::as_tuple(boost::asio::use_awaitable));
-    if (ec) { fail(ec, "resolve"); }
-    std::cout << "async_resolve\n" << std::endl;
-    auto [ec1, n] = co_await boost::asio::async_connect(socket, endpoint.begin(), endpoint.end(),
-                                                        boost::asio::as_tuple(boost::asio::use_awaitable));
-    http::request<http::string_body> req{http::verb::get, target, version};
-    req.set(http::field::host, host);
-    req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
-    auto [ec2, n1] = co_await http::async_write(socket, req, boost::asio::as_tuple(boost::asio::use_awaitable));
-    boost::beast::flat_buffer b;
-    http::response<http::dynamic_body> res;
-    auto [ecx, n2] = co_await http::async_read(socket, b, res, boost::asio::as_tuple(boost::asio::use_awaitable));
-    std::cout << res << std::endl;
-    boost::system::error_code ecc;
-    socket.shutdown(tcp::socket::shutdown_both, ecc);
-    std::cout << "shutdown\n" << std::endl;
+        std::cout << "async_resolve1\n" << std::endl;
+
+        boost::asio::ip::tcp::endpoint m_ep(boost::asio::ip::address::from_string("aaa", ec), 80);
+        if (ec) { fail(ec, "from_string"); }
+        //m_ep = boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("aaa"), 80);
+
+        cs = co_await boost::asio::this_coro::cancellation_state;
+        canceled(cs);
+
+        auto [ec1, n] = co_await boost::asio::async_connect(socket, endpoint.begin(), endpoint.end(),
+                                                            boost::asio::as_tuple(boost::asio::use_awaitable));
+        if (ec) { fail(ec, "async_connect"); }
+        std::cout << "async_connect\n" << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        cs = co_await boost::asio::this_coro::cancellation_state;
+        canceled(cs);
+        http::request<http::string_body> req{http::verb::get, target, version};
+        req.set(http::field::host, host);
+        req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+        std::cout << "request set \n" << std::endl;
+        auto [ec2, n1] = co_await http::async_write(socket, req, boost::asio::as_tuple(boost::asio::use_awaitable));
+        boost::beast::flat_buffer b;
+        std::cout << "async_write\n" << std::endl;
+        /*
+    https://www.boost.org/doc/libs/1_80_0/doc/html/boost_asio/overview/core/cancellation.html
+    https://www.boost.org/doc/libs/1_80_0/doc/html/boost_asio/overview/composition/cpp20_coroutines.html#boost_asio.overview.composition.cpp20_coroutines.coroutines_and_per_operation_cancellation
+    boost::asio::cancellation_signal cancel_signal_;
+    boost::asio::async_read(
+        socket, b,
+        boost::asio::bind_cancellation_slot(cancel_signal_.slot(), [](boost::system::error_code e, std::size_t n) {}));
+    */
+
+        http::response<http::dynamic_body> res;
+        auto [ecx, n2] = co_await http::async_read(socket, b, res, boost::asio::as_tuple(boost::asio::use_awaitable));
+        std::cout << "async_read\n" << std::endl;
+        std::cout << res << std::endl;
+        boost::system::error_code ecc;
+        socket.shutdown(tcp::socket::shutdown_both, ecc);
+        std::cout << "shutdown\n" << std::endl;
+    }
+    catch (exception e)
+    {
+        std::cout << " !!!!!!!excep:: " << e.what() << std::endl;
+    }
     co_return;
 }
 void signal_handler(const boost::system::error_code& err, int signal)
@@ -242,11 +345,10 @@ void signal_handler(const boost::system::error_code& err, int signal)
     default: break;
     }
 }
-
+boost::asio::cancellation_signal cancel_signal_;
 void test_http_co_spawn_clinet()
 {
-    boost::asio::io_context io_context(1);
-
+    boost::asio::io_context io_context;
     boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
     //signals.async_wait([&](auto, auto) { io_context.stop(); });
     //signals.async_wait(signal_handler);
@@ -254,19 +356,22 @@ void test_http_co_spawn_clinet()
     boost::asio::ip::tcp::resolver resolver{io_context};
     boost::asio::ip::tcp::socket socket{io_context};
 
-    boost::asio::cancellation_signal cancel_signal_;
-
     co_spawn(io_context, co_wait_async(std::move(resolver), std::move(socket)),
              boost::asio::bind_cancellation_slot(cancel_signal_.slot(), boost::asio::detached));
 
     std::cout << "co_spawn\n" << std::endl;
     boost::system::error_code ec;
     //io_context.run(ec);
-    std::thread t([&io_context]() { io_context.run(); });
-    t.detach();
-    for (int i = 0; i < 2; i++) { std::this_thread::sleep_for(std::chrono::seconds(1)); }
-    cancel_signal_.emit(boost::asio::cancellation_type::terminal);
-    std::cout << "test_http_co_spawn_clinet end\n" << std::endl;
+    t = (std::thread([&io_context]() { io_context.run(); }));
+
+    for (int i = 0; i < 1; i++)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        cancel_signal_.emit(boost::asio::cancellation_type::none);
+        std::cout << "test_http_co_spawn_clinet end cancel_signal_ emit \n" << std::endl;
+    }
+
+    std::cout << t.get_id() << " :: test_http_co_spawn_clinet end cancel_signal_ emit end \n" << std::endl;
 }
 #pragma endregion
 
@@ -311,6 +416,7 @@ void test_http_spawn_clinet()
                                       std::ref(ioc), std::placeholders::_1));
     ioc.run();
 }
+
 #pragma endregion
 
 #pragma region async
@@ -431,6 +537,15 @@ void test_http_async_client()
 #pragma endregion
 
 #pragma region testboosthttpSync
+
+void testtt()
+{
+    auto const host = "www.baidu.com";
+    auto const port = "80";
+    auto const target = "/loading.html";
+    int version = 11;
+}
+
 void testboosthttpSync()
 {
     using tcp = boost::asio::ip::tcp;    // from <boost/asio/ip/tcp.hpp>
