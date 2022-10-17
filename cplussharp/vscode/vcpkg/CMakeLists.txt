@@ -31,6 +31,7 @@ find_package(OpenSSL REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(libhv CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread coroutine coroutine)
+ find_package(spdlog CONFIG REQUIRED)
 
 add_executable(main main.cpp)
 message(STATUS "OpenSSL_LIBRARIES =  ${OpenSSL_LIBRARIES}.")
@@ -45,6 +46,8 @@ target_link_libraries(
           Boost::boost
           Boost::thread
           Boost::coroutine
+
+           spdlog::spdlog spdlog::spdlog_header_only
           OpenSSL::Crypto
           OpenSSL::SSL)
 

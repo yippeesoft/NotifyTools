@@ -53,6 +53,7 @@
 
 #include <coroutine>
 #include "AsioHttp.hpp"
+#include "Log.hpp"
 using namespace nlohmann;
 using namespace std;
 void testFmt();
@@ -67,6 +68,7 @@ void test_http_async_client();
 void test_http_spawn_clinet();
 void test_http_co_spawn_clinet();
 void test_http_co_spawn_time();
+void test_http_class();
 void test_union()
 {
     union un
@@ -91,6 +93,8 @@ std::thread t;
 int main()
 {
     std::cout << "main begin" << std::endl;
+    InitSpdLog(1);
+    warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
     //testAsan();
     //test_union();
     // testHMAC();
@@ -103,9 +107,11 @@ int main()
     //test_http_async_client();
     //test_http_spawn_clinet();
     // test_http_co_spawn_clinet();
-    test_http_co_spawn_time();
+    //test_http_co_spawn_time();
+    test_http_class();
+
     std::cout << "Main thread will for 1 seconds...\n"; // 这里是为了防止stop()执行过快
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << t.joinable() << " ::Main thread weak up...\n";
     if (t.joinable())
     {
@@ -116,6 +122,16 @@ int main()
 
     return 0;
 }
+
+#pragma region http_class
+void test_http_class()
+{
+    std::shared_ptr<asiohttp::HttpAsio> ha = std::make_shared<asiohttp::HttpAsio>();
+    ha->run();
+    //ha->clear();
+    return;
+}
+#pragma endregion http_class
 
 #pragma region testNullPtr
 class Test
@@ -321,8 +337,8 @@ boost::asio::awaitable<void> co_wait_async(boost::asio::ip::tcp::resolver resolv
         cs = co_await boost::asio::this_coro::cancellation_state;
         canceled(cs);
 
-        auto [ec1, n] = co_await boost::asio::async_connect(socket, endpoint.begin(), endpoint.end(),
-                                                            boost::asio::as_tuple(boost::asio::use_awaitable));
+        auto [ec1, n] = co_await boost::asio::async_connect(
+            socket, endpoint.begin(), endpoint.end(), boost::asio::as_tuple(boost::asio::use_awaitable));
         if (ec) { fail(ec, "async_connect"); }
         std::cout << "async_connect\n" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -378,8 +394,9 @@ void test_http_co_spawn_clinet()
     boost::asio::ip::tcp::resolver resolver{io_context};
     boost::asio::ip::tcp::socket socket{io_context};
 
-    co_spawn(io_context, co_wait_async(std::move(resolver), std::move(socket)),
-             boost::asio::bind_cancellation_slot(cancel_signal_.slot(), boost::asio::detached));
+    co_spawn(
+        io_context, co_wait_async(std::move(resolver), std::move(socket)),
+        boost::asio::bind_cancellation_slot(cancel_signal_.slot(), boost::asio::detached));
 
     std::cout << "co_spawn\n" << std::endl;
     boost::system::error_code ec;
@@ -399,8 +416,9 @@ void test_http_co_spawn_clinet()
 
 #pragma region spawn
 
-void do_session(std::string const& host, std::string const& port, std::string const& target, int version,
-                boost::asio::io_context& ioc, boost::asio::yield_context yield)
+void do_session(
+    std::string const& host, std::string const& port, std::string const& target, int version,
+    boost::asio::io_context& ioc, boost::asio::yield_context yield)
 {
     using tcp = boost::asio::ip::tcp;    // from <boost/asio/ip/tcp.hpp>
     namespace http = boost::beast::http; // from <boost/beast/http.hpp>
@@ -434,8 +452,10 @@ void test_http_spawn_clinet()
     int version = 11;
 
     boost::asio::io_context ioc;
-    boost::asio::spawn(ioc, std::bind(&do_session, std::string(host), std::string(port), std::string(target), version,
-                                      std::ref(ioc), std::placeholders::_1));
+    boost::asio::spawn(
+        ioc, std::bind(
+                 &do_session, std::string(host), std::string(port), std::string(target), version, std::ref(ioc),
+                 std::placeholders::_1));
     ioc.run();
 }
 
@@ -791,10 +811,11 @@ struct adl_serializer<std::optional<T>>
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(SubTestStruct, test)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TestStruct, test, testBool, testEnum, testOpt, testVec, subTestStruct)
 // 序列化enum
-NLOHMANN_JSON_SERIALIZE_ENUM(TestEnum, {
-                                           {TestEnum::Left, "Left"},
-                                           {TestEnum::Right, "Right"},
-                                       })
+NLOHMANN_JSON_SERIALIZE_ENUM(
+    TestEnum, {
+                  {TestEnum::Left, "Left"},
+                  {TestEnum::Right, "Right"},
+              })
 void testjsoncls()
 {
     json j;
@@ -818,14 +839,15 @@ void testjsoncls()
 }
 void testjson()
 {
-    json j2 = {{"pi", 3.141},
-               {"happy", true},
+    json j2
+        = {{"pi", 3.141},
+           {"happy", true},
 
-               {"name", "Niels"},
-               {"nothing", nullptr},
-               {"answer", {{"everything", 42}}},
-               {"list", {1, 0, 2}},
-               {"object", {{"currency", "USD"}, {"value", 42.99}}}};
+           {"name", "Niels"},
+           {"nothing", nullptr},
+           {"answer", {{"everything", 42}}},
+           {"list", {1, 0, 2}},
+           {"object", {{"currency", "USD"}, {"value", 42.99}}}};
 
     cout << j2.size() << j2["answer"]["everything"] << j2["object"]["value"] << endl;
     string str2 = R"(D:\workdataDJ\code\vas_pgg_proj)";
