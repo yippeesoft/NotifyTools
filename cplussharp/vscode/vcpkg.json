@@ -1,0 +1,5 @@
+{
+  "name": "test",
+  "version-semver": "1.0.0",
+  "dependencies": ["libhv", "boost-asio", "boost-log", "openssl"]
+}
