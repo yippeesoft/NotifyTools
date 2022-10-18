@@ -93,8 +93,8 @@ std::thread t;
 int main()
 {
     std::cout << "main begin" << std::endl;
-    InitSpdLog(1);
-    warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
+
+    // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
     //testAsan();
     //test_union();
     // testHMAC();
