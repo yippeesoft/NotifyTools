@@ -4,7 +4,6 @@
 //#include <spdlog/sinks/stdout_color_sinks.h>
 //#include <spdlog/spdlog.h>
 //#include <spdlog/async.h>
-#include <source_location>
 #include <filesystem>
 #include <iostream>
 #include <string_view>
@@ -111,8 +110,12 @@ private:
 #endif
 #pragma endregion
 
+#define GLOG 1
 #if GLOG //GLOG没有滚动日志
 #include <glog/logging.h>
+namespace asiohttp {
+
+using namespace std;
 class Log
 {
 public:
@@ -136,7 +139,7 @@ public:
     }
     Log(const Log&) = delete;
     Log& operator=(const Log&) = delete;
-    static Log& getInstance()
+    static Log& Instance()
     {
         static Log log;
         return log;
@@ -151,7 +154,11 @@ private:
     {
     }
 };
+} // namespace asiohttp
 #endif
+
+#pragma region SPDLOG
+
 #if SPDLOGG //asan 内存检测失败
 [[nodiscard]] constexpr auto get_log_source_location(const source_location& location)
 {
@@ -215,5 +222,7 @@ private:
     std::vector<spdlog::sink_ptr> sinks;
 };
 #endif
+
+#pragma endregion
 
 #endif

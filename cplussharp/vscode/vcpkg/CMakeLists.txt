@@ -35,6 +35,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(benchmark CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
+find_package(glog CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(libhv CONFIG REQUIRED)
@@ -60,6 +61,7 @@ target_link_libraries(
           Boost::thread
           Boost::coroutine
           Boost::filesystem
+          glog::glog
           ${Boost_LOG_LIBRARY}
           ${Boost_LOG_SETUP_LIBRARY}
           OpenSSL::Crypto

@@ -85,17 +85,18 @@ void testAsan()
     int* ary = new int[100];
     ary[100] = 100;
 }
-void testLog(char* processname)
+void testgLog(char* processname)
 {
     using namespace asiohttp;
-
-    // asiohttp::Log::Instance().d("sdfjksdfjlsdfjs");
+    asiohttp::Log::Instance().Init(processname);
+    asiohttp::Log::Instance().d("sdfjksdfjlsdfjs");
 }
 std::thread t;
 
 int main(int argc, char* argv[])
 {
     std::cout << "main begin" << std::endl;
+    testgLog(argv[0]);
     // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
     //testAsan();
     //test_union();
