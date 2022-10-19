@@ -1,5 +1,3 @@
-
-
 #include <fmt/core.h>
 #include <ios>
 #include <nlohmann/json_fwd.hpp>
@@ -87,13 +85,17 @@ void testAsan()
     int* ary = new int[100];
     ary[100] = 100;
 }
+void testLog(char* processname)
+{
+    using namespace asiohttp;
 
+    // asiohttp::Log::Instance().d("sdfjksdfjlsdfjs");
+}
 std::thread t;
 
-int main()
+int main(int argc, char* argv[])
 {
     std::cout << "main begin" << std::endl;
-
     // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
     //testAsan();
     //test_union();

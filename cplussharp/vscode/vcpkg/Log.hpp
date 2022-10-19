@@ -1,19 +1,158 @@
 #ifndef LOG_HPP
 #define LOG_HPP
-#define FMT_HEADER_ONLY
-
-#include <spdlog/sinks/rotating_file_sink.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
-#include <spdlog/spdlog.h>
-#include <spdlog/async.h>
+//#include <spdlog/sinks/rotating_file_sink.h>
+//#include <spdlog/sinks/stdout_color_sinks.h>
+//#include <spdlog/spdlog.h>
+//#include <spdlog/async.h>
 #include <source_location>
 #include <filesystem>
 #include <iostream>
 #include <string_view>
 #include <vector>
 
+#pragma region BOOST::LOG
+#ifdef BOOSTLOG
+/***
+https://stackoverflow.com/questions/59210778/address-sanitizer-error-when-using-boost-serialization
+clang boost  AddressSanitizer 编译问题
+
+结果:
+https://github.com/google/sanitizers/issues/1174 
+GCC #92928 (might apply to Clang too) 踢到gcc
+
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92928
+gcc: 2019的提问,2021回复 :Not a bug, the sanitizer is doing the correct thing really.
+
+https://github.com/boostorg/serialization/issues/182
+BOOST reopened this on 20 Jan 2020
+
+https://github.com/boostorg/log/blob/develop/example/basic_usage/main.cpp
+BOOST::LOG 基本例子 << expr::format_date_time< boost::posix_time::ptime > 不能通过编译
+注释后,运行,asan检测出错
+**/
+
+#define BOOST_LOG_DYN_LINK       1
+#define BOOST_USE_WINAPI_VERSION BOOST_WINAPI_VERSION_WIN7
+
+#include <boost/log/common.hpp>
+#include <boost/log/sinks.hpp>
+#include <boost/log/sources/logger.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/log/attributes/named_scope.hpp>
+#include <boost/log/utility/setup/console.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+
+#include <boost/log/attributes/timer.hpp>
+#include <boost/log/attributes/named_scope.hpp>
+
+#include <boost/log/sources/logger.hpp>
+
+#include <boost/log/support/date_time.hpp>
+
 namespace asiohttp {
-using source_location = std::source_location;
+using namespace std;
+namespace logging = boost::log;
+namespace sinks = boost::log::sinks;
+namespace attrs = boost::log::attributes;
+namespace src = boost::log::sources;
+namespace expr = boost::log::expressions;
+namespace keywords = boost::log::keywords;
+/*
+#define S_LOG_TRACE(logEvent) \
+    BOOST_LOG_FUNCTION();     \
+    BOOST_LOG_SEV(Logger::Instance()._logger, boost::log::trivial::trace) << logEvent;
+
+#define S_LOG_DEBUG(logEvent) \
+    BOOST_LOG_FUNCTION();     \
+    BOOST_LOG_SEV(Logger::Instance()._logger, boost::log::trivial::debug) << logEvent;
+
+#define S_LOG_INFO(logEvent) \
+    BOOST_LOG_FUNCTION();    \
+    BOOST_LOG_SEV(Logger::Instance()._logger, boost::log::trivial::info) << logEvent;
+
+#define S_LOG_WARN(logEvent) \
+    BOOST_LOG_FUNCTION();    \
+    BOOST_LOG_SEV(Logger::Instance()._logger, boost::log::trivial::warning) << logEvent;
+
+#define S_LOG_ERROR(logEvent) \
+    BOOST_LOG_FUNCTION();     \
+    BOOST_LOG_SEV(Logger::Instance()._logger, boost::log::trivial::error) << logEvent;
+
+#define S_LOG_FATAL(logEvent) \
+    BOOST_LOG_FUNCTION();     \
+    BOOST_LOG_SEV(Logger::Instance()._logger, boost::log::trivial::fatal) << logEvent;
+*/
+class Log
+{
+public:
+    static Log& Instance()
+    {
+        static Log log;
+        return log;
+    }
+    void init()
+    {
+        logging::add_console_log(std::clog, keywords::format = "%TimeStamp%: %Message%");
+        logging::add_common_attributes();
+        logging::core::get()->add_thread_attribute("Scope", attrs::named_scope());
+
+        BOOST_LOG_FUNCTION();
+        src::logger lg;
+        BOOST_LOG(lg) << "sdfsdf";
+    }
+
+private:
+    Log()
+    {
+    }
+};
+} // namespace asiohttp
+#endif
+#pragma endregion
+
+#if GLOG //GLOG没有滚动日志
+#include <glog/logging.h>
+class Log
+{
+public:
+    void d(string s)
+    {
+        LOG(INFO) << s;
+    }
+    void Init(string processname)
+    {
+        if (google::IsGoogleLoggingInitialized()) { return; };
+        FLAGS_colorlogtostderr = true;           // 带颜色的输出
+        FLAGS_stderrthreshold = 0;               // 输出到控制台
+        FLAGS_timestamp_in_logfile_name = false; //去掉每次不同时间戳文件名
+        FLAGS_max_log_size = 1;
+        FLAGS_stop_logging_if_full_disk = 1; //https://code.google.com/archive/p/google-glog/issues/22
+        processname_ = string(processname);
+        google::InitGoogleLogging(processname_.data());
+        google::SetLogDestination(google::GLOG_INFO, "./logtestInfo");
+        google::InstallFailureSignalHandler();
+        google::SetLogFilenameExtension(".log"); //
+    }
+    Log(const Log&) = delete;
+    Log& operator=(const Log&) = delete;
+    static Log& getInstance()
+    {
+        static Log log;
+        return log;
+    }
+    ~Log()
+    {
+    }
+
+private:
+    string processname_;
+    Log()
+    {
+    }
+};
+#endif
+#if SPDLOGG //asan 内存检测失败
 [[nodiscard]] constexpr auto get_log_source_location(const source_location& location)
 {
     return spdlog::source_loc{
@@ -75,6 +214,6 @@ private:
 
     std::vector<spdlog::sink_ptr> sinks;
 };
-} // namespace asiohttp
+#endif
 
 #endif
