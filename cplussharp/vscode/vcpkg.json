@@ -1,5 +1,15 @@
 {
   "name": "test",
   "version-semver": "1.0.0",
-  "dependencies": ["libhv", "boost-asio", "boost-log", "openssl"]
+  "dependencies": [
+    "libhv",
+    "boost-asio",
+    "boost-log",
+    "boost-beast",
+    "openssl",
+    "benchmark",
+    "fmt",
+    "nlohmann-json",
+    "spdlog"
+  ]
 }
