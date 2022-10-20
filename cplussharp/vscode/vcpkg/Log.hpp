@@ -46,10 +46,12 @@ BOOST::LOG 基本例子 << expr::format_date_time< boost::posix_time::ptime > �
 #include <boost/log/support/date_time.hpp>
 
 #include <glog/logging.h>
-#include "spdlog/spdlog.h"
-#include "spdlog/cfg/env.h"
-#include "spdlog/sinks/basic_file_sink.h"
-#include "spdlog/sinks/rotating_file_sink.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/cfg/env.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/rotating_file_sink.h>
+
+#include "Utils.hpp"
 
 namespace asiohttp {
 using namespace std;
@@ -59,6 +61,8 @@ namespace attrs = boost::log::attributes;
 namespace src = boost::log::sources;
 namespace expr = boost::log::expressions;
 namespace keywords = boost::log::keywords;
+
+#define LOGD(logEvent) LogSpd::Instance().d(logEvent)
 /*
 #define S_LOG_TRACE(logEvent) \
     BOOST_LOG_FUNCTION();     \
@@ -151,10 +155,18 @@ private:
     }
 };
 using source_location = std::source_location;
+constexpr std::string_view filename_only(std::source_location location = std::source_location::current())
+{
+    std::string_view s = location.file_name();
+    return s.substr(s.find_last_of('/') + 1);
+}
 [[nodiscard]] constexpr auto get_log_source_location(const source_location& location)
 {
+    std::string_view s = location.file_name(); //filename_only(location);
+    //(location.file_name());
+    int i = s.find_last_of('\\');
     return spdlog::source_loc{
-        location.file_name(), static_cast<std::int32_t>(location.line()), location.function_name()};
+        s.substr(i + 1).data(), static_cast<std::int32_t>(location.line()), location.function_name()};
 }
 class LogSpd
 {
@@ -180,7 +192,7 @@ public:
     void d(format_with_location fmt, Args&&... args)
     {
         //spdlog::debug(s);
-        console_->log(fmt.loc, spdlog::level::warn, fmt.value, std::forward<Args>(args)...);
+        console_->log(fmt.loc, spdlog::level::debug, fmt.value, std::forward<Args>(args)...);
     }
     void Init(std::string processname, std::string filename, size_t maxfilesize = 1024, size_t maxfiles = 1)
     {
@@ -218,13 +230,20 @@ public:
     }
 
 private:
-    static constexpr size_t MAX_FILE_SIZE = 1024 * 1024 * 100; //  100Mb
-    static constexpr size_t MAX_FILE_COUNT = 10;
-    static constexpr std::string_view BASE_FILE_NAME = "./running.log";
-
     LogSpd(){};
     std::shared_ptr<spdlog::logger> console_;
     std::shared_ptr<spdlog::logger> rotating_;
 };
+
+class Log
+{
+private:
+public:
+    void static Init(std::string processname, std::string filename, size_t maxfilesize = 1024, size_t maxfiles = 1)
+    {
+        LogSpd::Instance().Init(processname, filename, maxfilesize, maxfiles);
+    }
+};
+
 } // namespace asiohttp
 #endif

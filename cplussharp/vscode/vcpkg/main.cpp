@@ -88,8 +88,10 @@ void testAsan()
 void testgLog(char* processname)
 {
     using namespace asiohttp;
-    asiohttp::LogSpd::Instance().Init(processname, std::string(processname) + ".log");
-    asiohttp::LogSpd::Instance().d("sdfjksdfjlsdfjs");
+    Log::Init(processname, std::string(processname) + ".log");
+    LOGD("sdfjksdfjlsdfjs");
+    //LogSpd::Instance().Init(processname, std::string(processname) + ".log");
+    LogSpd::Instance().d("sdfjksdfjlsdfjs");
 }
 void print_this_file_name(std::source_location location = std::source_location::current())
 {
@@ -935,7 +937,7 @@ void testHMAC()
     // std::cout << OPENSSL_VERSION_NUMBER << " ret " << OPENSSL_API_LEVEL << std::endl;
     // for (int i = 0; i < strlen((char*)ss); i++)
     //     printf("%02x", ss[i]);
-    fmt::print("\n\n");
+    //fmt::print("\n\n");
     // for (int i = 0; i < resultlen; i++)
     //     printf("%02x", result[i]);
 }
