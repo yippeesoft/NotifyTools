@@ -88,14 +88,20 @@ void testAsan()
 void testgLog(char* processname)
 {
     using namespace asiohttp;
-    asiohttp::Log::Instance().Init(processname);
-    asiohttp::Log::Instance().d("sdfjksdfjlsdfjs");
+    asiohttp::LogSpd::Instance().Init(processname, std::string(processname) + ".log");
+    asiohttp::LogSpd::Instance().d("sdfjksdfjlsdfjs");
+}
+void print_this_file_name(std::source_location location = std::source_location::current())
+{
+    // Name of file that contains the call site of this function.
+    std::cout << "File: " << location.file_name() << '\n';
 }
 std::thread t;
 
 int main(int argc, char* argv[])
 {
-    std::cout << "main begin" << std::endl;
+    std::cout << "main begin:" << argv[0] << std::endl;
+    print_this_file_name();
     testgLog(argv[0]);
     // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
     //testAsan();

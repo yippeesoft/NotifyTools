@@ -8,9 +8,8 @@
 #include <iostream>
 #include <string_view>
 #include <vector>
+#include <source_location>
 
-#pragma region BOOST::LOG
-#ifdef BOOSTLOG
 /***
 https://stackoverflow.com/questions/59210778/address-sanitizer-error-when-using-boost-serialization
 clang boost  AddressSanitizer 编译问题
@@ -41,13 +40,16 @@ BOOST::LOG 基本例子 << expr::format_date_time< boost::posix_time::ptime > �
 #include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
-
 #include <boost/log/attributes/timer.hpp>
 #include <boost/log/attributes/named_scope.hpp>
-
 #include <boost/log/sources/logger.hpp>
-
 #include <boost/log/support/date_time.hpp>
+
+#include <glog/logging.h>
+#include "spdlog/spdlog.h"
+#include "spdlog/cfg/env.h"
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/rotating_file_sink.h"
 
 namespace asiohttp {
 using namespace std;
@@ -82,12 +84,12 @@ namespace keywords = boost::log::keywords;
     BOOST_LOG_FUNCTION();     \
     BOOST_LOG_SEV(Logger::Instance()._logger, boost::log::trivial::fatal) << logEvent;
 */
-class Log
+class BoostLog
 {
 public:
-    static Log& Instance()
+    static BoostLog& Instance()
     {
-        static Log log;
+        static BoostLog log;
         return log;
     }
     void init()
@@ -102,21 +104,15 @@ public:
     }
 
 private:
-    Log()
+    BoostLog()
     {
     }
 };
-} // namespace asiohttp
-#endif
-#pragma endregion
 
-#define GLOG 1
-#if GLOG //GLOG没有滚动日志
-#include <glog/logging.h>
-namespace asiohttp {
+//GLOG没有滚动日志
 
 using namespace std;
-class Log
+class GLog
 {
 public:
     void d(string s)
@@ -137,38 +133,32 @@ public:
         google::InstallFailureSignalHandler();
         google::SetLogFilenameExtension(".log"); //
     }
-    Log(const Log&) = delete;
-    Log& operator=(const Log&) = delete;
-    static Log& Instance()
+    GLog(const GLog&) = delete;
+    GLog& operator=(const GLog&) = delete;
+    static GLog& Instance()
     {
-        static Log log;
+        static GLog log;
         return log;
     }
-    ~Log()
+    ~GLog()
     {
     }
 
 private:
     string processname_;
-    Log()
+    GLog()
     {
     }
 };
-} // namespace asiohttp
-#endif
-
-#pragma region SPDLOG
-
-#if SPDLOGG //asan 内存检测失败
+using source_location = std::source_location;
 [[nodiscard]] constexpr auto get_log_source_location(const source_location& location)
 {
     return spdlog::source_loc{
         location.file_name(), static_cast<std::int32_t>(location.line()), location.function_name()};
 }
-class Log
+class LogSpd
 {
 public:
-    Log(){};
     struct format_with_location
     {
         std::string_view value;
@@ -182,47 +172,59 @@ public:
     };
 
     template<typename... Args>
-    void warn(format_with_location fmt_, Args&&... args)
+    void warn(format_with_location fmt, Args&&... args)
     {
-        // !cpp20 above should warp fmt_.value with fmt::runtime
-        spdlog::default_logger_raw()->log(
-            fmt_.loc, spdlog::level::warn, fmt::runtime(fmt_.value), std::forward<Args>(args)...);
+        spdlog::default_logger_raw()->log(fmt.loc, spdlog::level::warn, fmt.value, std::forward<Args>(args)...);
     }
-    void multi_sink_example2()
+    template<typename... Args>
+    void d(format_with_location fmt, Args&&... args)
     {
-        spdlog::init_thread_pool(8192, 1);
-        auto stdout_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-        auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>("mylog.txt", 1024 * 1024 * 10, 3);
-        std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
-        auto logger = std::make_shared<spdlog::async_logger>(
-            "loggername", sinks.begin(), sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
-        spdlog::register_logger(logger);
+        //spdlog::debug(s);
+        console_->log(fmt.loc, spdlog::level::warn, fmt.value, std::forward<Args>(args)...);
     }
-    void InitSpdLog(int levell)
+    void Init(std::string processname, std::string filename, size_t maxfilesize = 1024, size_t maxfiles = 1)
     {
-        sinks.push_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
-        sinks.push_back(std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-            std::string(BASE_FILE_NAME), MAX_FILE_SIZE, MAX_FILE_COUNT));
-        sinks[0]->set_pattern("[%Y-%m-%d %T.%e][%^%-8l%$][%-20s:%#] %v");
-        sinks[1]->set_pattern("[%Y-%m-%d %T.%e][%-8l][%-20s:%#] %v");
-        main_logger = std::make_shared<spdlog::logger>("xxx", begin(sinks), end(sinks));
-        main_logger->flush_on(spdlog::level::err);
-        spdlog::flush_every(std::chrono::seconds(1));
-        main_logger->set_level(static_cast<spdlog::level::level_enum>(levell));
-        /* set default */
-        spdlog::register_logger(main_logger);
+        spdlog::cfg::load_env_levels();
+
+        // Runtime log levels
+        spdlog::set_level(spdlog::level::info); // Set global log level to info
+        //spdlog::debug("This message should not be displayed!");
+        spdlog::set_level(spdlog::level::trace); // Set specific logger's log level
+        //spdlog::debug("This message should be displayed..");
+
+        // Customize msg format for all loggers
+        //spdlog::set_pattern("[%H:%M:%S %z] [%^%L%$] [thread %t] %v");
+        //spdlog::info("This an info message with custom format");
+        spdlog::set_pattern("%+"); // back to default format
+        spdlog::set_level(spdlog::level::trace);
+
+        console_ = spdlog::stdout_color_mt(processname + "console");
+
+        console_->set_level(spdlog::level::trace);
+        console_->set_pattern("[%Y-%m-%d %H:%M:%S.%e][thread %t][%@,%!][%l] : %v");
+
+        rotating_ = spdlog::rotating_logger_mt(processname + "file", filename, maxfilesize, maxfiles);
+        rotating_->set_level(spdlog::level::trace);
+    }
+    LogSpd(const LogSpd&) = delete;
+    LogSpd& operator=(const LogSpd&) = delete;
+    static LogSpd& Instance()
+    {
+        static LogSpd log;
+        return log;
+    }
+    ~LogSpd()
+    {
     }
 
 private:
     static constexpr size_t MAX_FILE_SIZE = 1024 * 1024 * 100; //  100Mb
     static constexpr size_t MAX_FILE_COUNT = 10;
     static constexpr std::string_view BASE_FILE_NAME = "./running.log";
-    std::shared_ptr<spdlog::logger> main_logger = nullptr;
 
-    std::vector<spdlog::sink_ptr> sinks;
+    LogSpd(){};
+    std::shared_ptr<spdlog::logger> console_;
+    std::shared_ptr<spdlog::logger> rotating_;
 };
-#endif
-
-#pragma endregion
-
+} // namespace asiohttp
 #endif
