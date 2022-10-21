@@ -50,8 +50,11 @@
 #include <openssl/hmac.h>
 
 #include <coroutine>
+
 #include "AsioHttp.hpp"
 #include "Log.hpp"
+#include "common.hpp"
+namespace asiohttp {
 using namespace nlohmann;
 using namespace std;
 void testFmt();
@@ -92,6 +95,7 @@ void testgLog(char* processname)
     LOGD("sdfjksdfjlsdfjs");
     //LogSpd::Instance().Init(processname, std::string(processname) + ".log");
     LogSpd::Instance().d("sdfjksdfjlsdfjs");
+    //Log().d("sdfjksdfjlsdfjs");
 }
 void print_this_file_name(std::source_location location = std::source_location::current())
 {
@@ -99,41 +103,6 @@ void print_this_file_name(std::source_location location = std::source_location::
     std::cout << "File: " << location.file_name() << '\n';
 }
 std::thread t;
-
-int main(int argc, char* argv[])
-{
-    std::cout << "main begin:" << argv[0] << std::endl;
-    print_this_file_name();
-    testgLog(argv[0]);
-    // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
-    //testAsan();
-    //test_union();
-    // testHMAC();
-    // testStd();
-    // testjson();
-    // testjsoncls();
-    // testhvhttp();
-    // testboosthttpSync();
-    // testNullPtr();
-    //test_http_async_client();
-    //test_http_spawn_clinet();
-    // test_http_co_spawn_clinet();
-    //test_http_co_spawn_time();
-    test_http_class();
-
-    std::cout << "Main thread will for 1 seconds...\n"; // 这里是为了防止stop()执行过快
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << t.joinable() << " ::Main thread weak up...\n";
-    if (t.joinable())
-    {
-        std::cout << "joinable:" << t.get_id() << std::endl;
-        t.join();
-    }
-    std::cout << "main end" << std::endl;
-
-    return 0;
-}
-
 #pragma region http_class
 void test_http_class()
 {
@@ -793,7 +762,7 @@ struct TestStruct
 // nl 不直接支持 optional， 使用 adl_serializer 可以支持任意类型的序列化
 // https://github.com/nlohmann/json/pull/2117
 // https://github.com/nlohmann/json#how-do-i-convert-third-party-types
-namespace nlohmann {
+
 template<typename T>
 struct adl_serializer<std::optional<T>>
 {
@@ -817,7 +786,6 @@ struct adl_serializer<std::optional<T>>
         }
     }
 };
-} // namespace nlohmann
 
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(SubTestStruct, test)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TestStruct, test, testBool, testEnum, testOpt, testVec, subTestStruct)
@@ -940,4 +908,39 @@ void testHMAC()
     //fmt::print("\n\n");
     // for (int i = 0; i < resultlen; i++)
     //     printf("%02x", result[i]);
+}
+} // namespace asiohttp
+using namespace asiohttp;
+int main(int argc, char* argv[])
+{
+    std::cout << "main begin:" << argv[0] << std::endl;
+    print_this_file_name();
+    testgLog(argv[0]);
+    // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
+    //testAsan();
+    //test_union();
+    // testHMAC();
+    // testStd();
+    // testjson();
+    // testjsoncls();
+    // testhvhttp();
+    // testboosthttpSync();
+    // testNullPtr();
+    //test_http_async_client();
+    //test_http_spawn_clinet();
+    // test_http_co_spawn_clinet();
+    //test_http_co_spawn_time();
+    test_http_class();
+
+    std::cout << "Main thread will for 1 seconds...\n"; // 这里是为了防止stop()执行过快
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << t.joinable() << " ::Main thread weak up...\n";
+    if (t.joinable())
+    {
+        std::cout << "joinable:" << t.get_id() << std::endl;
+        t.join();
+    }
+    std::cout << "main end" << std::endl;
+
+    return 0;
 }

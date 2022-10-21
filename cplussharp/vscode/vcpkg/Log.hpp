@@ -62,7 +62,6 @@ namespace src = boost::log::sources;
 namespace expr = boost::log::expressions;
 namespace keywords = boost::log::keywords;
 
-#define LOGD(logEvent) LogSpd::Instance().d(logEvent)
 /*
 #define S_LOG_TRACE(logEvent) \
     BOOST_LOG_FUNCTION();     \
@@ -182,7 +181,6 @@ public:
         {
         }
     };
-
     template<typename... Args>
     void warn(format_with_location fmt, Args&&... args)
     {
@@ -237,13 +235,11 @@ private:
 
 class Log
 {
-private:
 public:
     void static Init(std::string processname, std::string filename, size_t maxfilesize = 1024, size_t maxfiles = 1)
     {
         LogSpd::Instance().Init(processname, filename, maxfilesize, maxfiles);
     }
 };
-
 } // namespace asiohttp
 #endif
