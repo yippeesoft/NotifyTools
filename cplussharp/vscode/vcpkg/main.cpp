@@ -109,6 +109,9 @@ void test_http_class()
     std::shared_ptr<asiohttp::HttpAsio> ha = std::make_shared<asiohttp::HttpAsio>();
     ha->run();
     //ha->clear();
+    //bool b = ha->httpGet("163.com", "80");
+    //LOGD("httpGet:" + b);
+    //std::this_thread::sleep_for(std::chrono::seconds(5));
     return;
 }
 #pragma endregion http_class

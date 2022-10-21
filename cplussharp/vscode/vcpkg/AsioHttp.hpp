@@ -18,6 +18,9 @@
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
+
+#include "common.hpp"
+
 namespace asiohttp {
 namespace asio = boost::asio;
 using tcp = boost::asio::ip::tcp;
@@ -37,7 +40,8 @@ public:
 
     void run()
     {
-        asio::co_spawn(ctx_, coro_test(), boost::asio::detached);
+        //asio::co_spawn(ctx_, coro_test(), boost::asio::detached
+        asio::co_spawn(ctx_, co_httpGet("www.163.com", "80"), boost::asio::detached);
     }
 
     boost::asio::awaitable<void> coro_test()
@@ -59,32 +63,52 @@ public:
         jthread_.join();
     }
 
-    void log(boost::system::error_code ec, const std::source_location& location = std::source_location::current())
+    bool httpGet(
+        std::string const& host, std::string& port, std::string const scheme = "https", std::string const& target = "/",
+        int version = 11)
     {
-        std::cout << "Debug:" << location.file_name() << ':' << location.line() << ' ' << ec.value() << ":"
-                  << ec.message() << std::endl;
-        ;
+        std::future<bool> fu
+            = boost::asio ::co_spawn(ctx_, co_httpGet(host, port, scheme, target, version), boost::asio::use_future);
+        return fu.get();
     }
-    void log(std::string_view msg, const std::source_location& location = std::source_location::current())
-    {
-        std::cout << "Debug:" << location.file_name() << ':' << location.line() << ' ' << msg << std::endl;
-        ;
-    }
-
-public:
-    boost::asio::awaitable<bool> do_session(
-        std::string const& host, std::string const& port, std::string const& scheme = "https",
-        std::string const& target = "/", int version = 11)
+    boost::asio::awaitable<bool> co_httpGet(
+        std::string host, std::string port, std::string const& scheme = "https", std::string const& target = "/",
+        int version = 11)
     {
         bool result = false;
-        log("do_session");
-        auto [ec, endpoint]
-            = co_await resolver_.async_resolve(host, port, boost::asio::as_tuple(boost::asio::use_awaitable));
-        if (ec)
+        //LOGD("{}", do_session);
+        try
         {
-            log(ec);
-            co_return result;
+#if 0
+            auto [ec, endpoint]
+                = co_await resolver_.async_resolve(host, port, boost::asio::as_tuple(boost::asio::use_awaitable));
+            if (ec)
+            {
+                LOGE(ec);
+                co_return result;
+            }
+#endif
+            auto endpoints = co_await resolver_.async_resolve(host, port, boost::asio::use_awaitable);
+
+            auto tcpp
+                = co_await asio::async_connect(socket_, endpoints.begin(), endpoints.end(), boost::asio::use_awaitable);
+            http::request<http::string_body> req{http::verb::get, target, version};
+            req.set(http::field::host, host);
+            req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+
+            auto writelen = co_await http::async_write(socket_, req, asio::use_awaitable);
+
+            boost::beast::flat_buffer buff;
+            http::response<http::dynamic_body> res;
+            auto readlen = co_await http::async_read(socket_, buff, res, asio::use_awaitable);
+            LOGD("async_read: {}", readlen);
+            result = true;
         }
+        catch (std::exception e)
+        {
+            LOGD(e.what());
+        }
+        co_return result;
     }
 
 private:
@@ -95,6 +119,8 @@ private:
 
     std::jthread jthread_;
     asio::executor_work_guard<asio::io_context::executor_type> guard_;
+
+    boost::asio::cancellation_state cs;
 };
 }; // namespace asiohttp
 
