@@ -107,7 +107,7 @@ std::thread t;
 void test_http_class()
 {
     std::shared_ptr<asiohttp::HttpAsio> ha = std::make_shared<asiohttp::HttpAsio>();
-    bool b = ha->httpGet("www.163.com", "80");
+    bool b = ha->httpGet("www.163.commmm", "80");
     LOGD("ha->httpGet {}", b);
     // ha->run();
     //ha->clear();
@@ -696,7 +696,7 @@ void test_http_async_client(int& finished)
     HttpRequestPtr req(new HttpRequest);
     req->method = HTTP_POST;
 
-    req->url = "https://skynet-dev.starnetiot.net/api/skynet-iot/login";
+    req->url = "https://10.30.16.10/api/login";
     req->headers["Connection"] = "keep-alive";
     req->body = "this is an async request.";
     req->timeout = 10;
@@ -733,7 +733,7 @@ void testhvhttpSync()
         printf("%s\n", resp->body.c_str());
     }
 
-    resp = requests::post("https://skynet-dev.starnetiot.net/api/skynet-iot/login", "hello,world!");
+    resp = requests::post("https://10.30.16.10//api/login", "hello,world!");
     if (resp == NULL) { printf("request failed!\n"); }
     else
     {

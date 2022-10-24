@@ -67,7 +67,7 @@ public:
         std::string const host, std::string port, std::string const scheme = "https", std::string const& target = "/",
         int version = 11)
     {
-        std::future<bool> fu
+        auto fu
             = boost::asio ::co_spawn(ctx_, co_httpGet(host, port, scheme, target, version), boost::asio::use_future);
         return fu.get();
     }
