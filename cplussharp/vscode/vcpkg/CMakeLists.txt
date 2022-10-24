@@ -8,14 +8,17 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/bigobj>")
 # https://stackoverflow.com/questions/68165932/cannot-build-boost-asio-with-clang-12-on-windows
 # msvc clang编译asio失败
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fno-omit-frame-pointer  /std:c++20  ")
+set(CMAKE_C_FLAGS
+    "${CMAKE_C_FLAGS} -fsanitize=address -fno-omit-frame-pointer  /std:c++20  ")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize-recover=address -fno-omit-frame-pointer  /std:c++20  ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer  /std:c++20  ")
 
 set(CMAKE_LINKER_FLAGS
-    "${CMAKE_LINKER_FLAGS} -fsanitize=address -fsanitize-recover=address -fno-omit-frame-pointer -O0 -Wall  -lasan -lstdc++ /std:c++20  ")
+    "${CMAKE_LINKER_FLAGS} -fsanitize=address -fsanitize-recover=address -fno-omit-frame-pointer -O0 -Wall  -lasan -lstdc++ /std:c++20  "
+)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -lasan -lstdc++ /std:c++20  ")
+set(CMAKE_EXE_LINKER_FLAGS
+    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -lasan -lstdc++ /std:c++20  ")
 
 cmake_policy(SET CMP0003 NEW)
 project(TEST_VCPKG)

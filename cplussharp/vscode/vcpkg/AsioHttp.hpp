@@ -64,7 +64,7 @@ public:
     }
 
     bool httpGet(
-        std::string const& host, std::string& port, std::string const scheme = "https", std::string const& target = "/",
+        std::string const host, std::string port, std::string const scheme = "https", std::string const& target = "/",
         int version = 11)
     {
         std::future<bool> fu
@@ -101,6 +101,7 @@ public:
             boost::beast::flat_buffer buff;
             http::response<http::dynamic_body> res;
             auto readlen = co_await http::async_read(socket_, buff, res, asio::use_awaitable);
+            // LOGD(fmt::format("async_read: {}", readlen));
             LOGD("async_read: {}", readlen);
             result = true;
         }
