@@ -107,8 +107,8 @@ std::thread t;
 void test_http_class()
 {
     std::shared_ptr<asiohttp::HttpAsio> ha = std::make_shared<asiohttp::HttpAsio>();
-    bool b = ha->httpGet("www.163.commmm", "80");
-    LOGD("ha->httpGet {}", b);
+    bool b = ha->httpGet("10.30.16.91", "80", "/Downloads/ideaIC.zip");
+    //LOGD("ha->httpGet {}", b);
     // ha->run();
     //ha->clear();
     //bool b = ha->httpGet("163.com", "80");

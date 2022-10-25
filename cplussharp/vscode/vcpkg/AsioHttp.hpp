@@ -64,7 +64,7 @@ public:
     }
 
     bool httpGet(
-        std::string const host, std::string port, std::string const scheme = "https", std::string const& target = "/",
+        std::string const host, std::string port, std::string const target = "/", std::string const scheme = "https",
         int version = 11)
     {
         auto fu
@@ -75,6 +75,7 @@ public:
         std::string host, std::string port, std::string const& scheme = "https", std::string const& target = "/",
         int version = 11)
     {
+        //大文件导致: body limit exceeded [beast.http:9]
         bool result = false;
         //LOGD("{}", do_session);
         try
@@ -101,8 +102,11 @@ public:
             boost::beast::flat_buffer buff;
             http::response<http::dynamic_body> res;
             auto readlen = co_await http::async_read(socket_, buff, res, asio::use_awaitable);
-            // LOGD(fmt::format("async_read: {}", readlen));
-            LOGD("async_read: {}", readlen);
+
+            std::cout << "read:" << (fmt::format("async_read: {}", readlen)) << std::endl;
+
+            std::cout << "reason:" << res.reason() << res["Content-Length"] << std::endl;
+            std::cout << fmt::format("async_read:len: {}   {}", readlen, 444) << std::endl;
             result = true;
         }
         catch (std::exception e)
