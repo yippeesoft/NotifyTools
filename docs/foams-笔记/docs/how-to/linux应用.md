@@ -36,6 +36,14 @@ sudo do-release-upgrade
 deb [arch=amd64,i386] http://mirrors.163.com/debian wheezy main non-free contrib
 ```
 
+sources.list:
+
+```dotnetcli
+建议按区域找最近的源
+例如 https://mirrors.ustc.edu.cn
+
+```
+
 ### 升级空间清理
 
 问题:
@@ -61,9 +69,8 @@ do-release-upgrade Error writing to output file - write (28: No space left on de
 解决方法: (解决/ 根目录空间和 /BOOT 空间)
 
 ```dotnetcli
-/ 根目录 :apt remove 一些软件包; 清理 /var/log /var/cache
-/BOOT : 清理Linux Kernel
-sudo apt-get purge  内核名称
+/ 根目录 :apt list --installed ; apt remove 一些软件包; 清理 /var/log /var/cache
+
 ```
 
 ### 清理 /BOOT Linux Kernel
@@ -114,6 +121,16 @@ valid users = ddd
 log level = 1
 
 service smbd restart
+```
+
+```scala
+Checking smb.conf with testparm
+Linux testparm 命令用于测试Samba的设置是否正确无误。
+
+```
+
+```powershell
+sudo  smbd -F
 ```
 
 ### android sdk
