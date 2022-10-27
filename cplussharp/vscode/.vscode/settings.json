@@ -3,4 +3,5 @@
         "CMAKE_TOOLCHAIN_FILE": "E:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-windows"
     },
+    "cmake.generator": "MinGW Makefiles"
 }
