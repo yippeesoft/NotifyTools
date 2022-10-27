@@ -1,22 +1,31 @@
-cmake_minimum_required(VERSION 3.22)
+# cmake_minimum_required(VERSION 3.22)
 set(CMAKE_CXX_STANDARD 20)
-add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+if(CMAKE_COMPILER_IS_GNUCXX)
+  # 检查GNU编译是否支持 -Wa,-mbig-obj
+  include(CheckCXXCompilerFlag)
+  check_cxx_compiler_flag("-Wa,-mbig-obj" GNU_BIG_OBJ_FLAG_ENABLE)
+  message(STATUS GNU_BIG_OBJ_FLAG_ENABLE=${GNU_BIG_OBJ_FLAG_ENABLE})
+endif()
+# add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+# add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+
+# file too big
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/bigobj>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/bigobj>")
 
+add_compile_options("$<$<C_COMPILER_ID:GNU>:-Wa,-mbig-obj>")
+add_compile_options("$<$<CXX_COMPILER_ID:GNU>:-Wa,-mbig-obj>")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Os -Wall -s")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Os -Wall -s")
 # https://stackoverflow.com/questions/68165932/cannot-build-boost-asio-with-clang-12-on-windows
 # msvc clang编译asio失败
 
-#vs2022会自动加上 1> Environment settings:
-#    CXXFLAGS=-fsanitize=address
-#     CFLAGS=-fsanitize=address
-# 需要在cmakesetting中查找删除
+# vs2022会自动加上 1> Environment settings: CXXFLAGS=-fsanitize=address
+# CFLAGS=-fsanitize=address 需要在cmakesetting中查找删除
 
-
-#vs2022使用asan导致asio等运行报错
-# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fno-omit-frame-pointer
-# /std:c++20  ")
+# vs2022使用asan导致asio等运行报错 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address
+# -fno-omit-frame-pointer /std:c++20  ")
 
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -fsanitize=address
 # -fno-omit-frame-pointer  /std:c++20  ")

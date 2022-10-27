@@ -30,7 +30,7 @@ BOOST::LOG 基本例子 << expr::format_date_time< boost::posix_time::ptime > �
 **/
 
 #define BOOST_LOG_DYN_LINK       1
-#define BOOST_USE_WINAPI_VERSION BOOST_WINAPI_VERSION_WIN7
+// #define BOOST_USE_WINAPI_VERSION BOOST_WINAPI_VERSION_WIN7
 
 #include <boost/log/common.hpp>
 #include <boost/log/sinks.hpp>
