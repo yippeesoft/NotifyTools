@@ -86,7 +86,10 @@ struct adl_serializer<std::optional<T>>
 {
     static void to_json(json& j, const std::optional<T>& opt)
     {
-        if (opt == std::nullopt) { j = nullptr; }
+        if (opt == std::nullopt)
+        {
+            j = nullptr;
+        }
         else
         {
             j = *opt; // this will call adl_serializer<T>::to_json which will
@@ -96,7 +99,10 @@ struct adl_serializer<std::optional<T>>
 
     static void from_json(const json& j, std::optional<T>& opt)
     {
-        if (j.is_null()) { opt = std::nullopt; }
+        if (j.is_null())
+        {
+            opt = std::nullopt;
+        }
         else
         {
             opt = j.get<T>(); // same as above, but with
@@ -208,7 +214,8 @@ std::thread t;
 void test_http_class()
 {
     std::shared_ptr<asiohttp::HttpAsio> ha = std::make_shared<asiohttp::HttpAsio>();
-    bool b = ha->httpGet("10.30.16.91", "80", "/Downloads/ideaIC.zip");
+    //bool b = ha->httpGet("10.30.16.91", "80", "/Downloads/ideaIC.zip
+    bool b = ha->httpDownload("10.30.16.91", "80", "/Downloads/ideaIC.zip");
     //LOGD("ha->httpGet {}", b);
     // ha->run();
     //ha->clear();
@@ -308,7 +315,8 @@ auto read_and_print_body(std::ostream& os, SyncReadStream& stream, DynamicBuffer
         p.get().body().size = sizeof(buf);
         int trns = http::read_some(stream, buffer, p, ec);
         ret.bbytes += trns;
-        if (ec) return ret;
+        if (ec)
+            return ret;
         os.write(buf, sizeof(buf) - p.get().body().size);
         std::cout << trns << "\n" << p.get().body().size << "\n" << std::endl;
     }
@@ -379,11 +387,26 @@ void canceled(boost::asio::cancellation_state cs)
     std::cout << "cancellation_state: "
               << static_cast<typename std::underlying_type<boost::asio::cancellation_type>::type>(cs.cancelled())
               << " :  ";
-    if (cs.cancelled() == boost::asio::cancellation_type::all) { std::cout << "all"; };
-    if (cs.cancelled() == boost::asio::cancellation_type::none) { std::cout << "none"; };
-    if (cs.cancelled() == boost::asio::cancellation_type::partial) { std::cout << "partial"; };
-    if (cs.cancelled() == boost::asio::cancellation_type::terminal) { std::cout << "terminal"; };
-    if (cs.cancelled() == boost::asio::cancellation_type::total) { std::cout << "total"; };
+    if (cs.cancelled() == boost::asio::cancellation_type::all)
+    {
+        std::cout << "all";
+    };
+    if (cs.cancelled() == boost::asio::cancellation_type::none)
+    {
+        std::cout << "none";
+    };
+    if (cs.cancelled() == boost::asio::cancellation_type::partial)
+    {
+        std::cout << "partial";
+    };
+    if (cs.cancelled() == boost::asio::cancellation_type::terminal)
+    {
+        std::cout << "terminal";
+    };
+    if (cs.cancelled() == boost::asio::cancellation_type::total)
+    {
+        std::cout << "total";
+    };
     //<< static_cast<typename std::underlying_type<boost::asio::cancellation_type>::type>(cs.cancelled())
     std::cout << "" << std::endl;
 }
@@ -410,14 +433,20 @@ boost::asio::awaitable<void> co_wait_async(boost::asio::ip::tcp::resolver resolv
         std::cout << "co_wait_async\n" << std::endl;
         auto [ec, endpoint]
             = co_await resolver.async_resolve(host, port, boost::asio::as_tuple(boost::asio::use_awaitable));
-        if (ec) { fail(ec, "resolve"); }
+        if (ec)
+        {
+            fail(ec, "resolve");
+        }
         std::cout << endpoint.size() << " ;async_resolve\n" << std::endl;
         for (auto ep : endpoint) { std::cout << ep.endpoint().address() << ep.endpoint().port() << std::endl; }
 
         std::cout << "async_resolve1\n" << std::endl;
 
         boost::asio::ip::tcp::endpoint m_ep(boost::asio::ip::address::from_string("aaa", ec), 80);
-        if (ec) { fail(ec, "from_string"); }
+        if (ec)
+        {
+            fail(ec, "from_string");
+        }
         //m_ep = boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("aaa"), 80);
 
         cs = co_await boost::asio::this_coro::cancellation_state;
@@ -425,7 +454,10 @@ boost::asio::awaitable<void> co_wait_async(boost::asio::ip::tcp::resolver resolv
 
         auto [ec1, n] = co_await boost::asio::async_connect(
             socket, endpoint.begin(), endpoint.end(), boost::asio::as_tuple(boost::asio::use_awaitable));
-        if (ec) { fail(ec, "async_connect"); }
+        if (ec)
+        {
+            fail(ec, "async_connect");
+        }
         std::cout << "async_connect\n" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
         cs = co_await boost::asio::this_coro::cancellation_state;
@@ -514,21 +546,36 @@ void do_session(
     tcp::socket socket{ioc};
 
     auto const results = resolver.async_resolve(host, port, yield[ec]);
-    if (ec) { return fail(ec, "resolve"); }
+    if (ec)
+    {
+        return fail(ec, "resolve");
+    }
     boost::asio::async_connect(socket, results.begin(), results.end(), yield[ec]);
-    if (ec) { return fail(ec, "async_connect"); }
+    if (ec)
+    {
+        return fail(ec, "async_connect");
+    }
     http::request<http::string_body> req{http::verb::get, target, version};
     req.set(http::field::host, host);
     req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
     http::async_write(socket, req, yield[ec]);
-    if (ec) { return fail(ec, "write"); }
+    if (ec)
+    {
+        return fail(ec, "write");
+    }
     boost::beast::flat_buffer b;
     http::response<http::dynamic_body> res;
     http::async_read(socket, b, res, yield[ec]);
-    if (ec) { return fail(ec, "read"); }
+    if (ec)
+    {
+        return fail(ec, "read");
+    }
     std::cout << res << std::endl;
     socket.shutdown(tcp::socket::shutdown_both, ec);
-    if (ec && ec != boost::system::errc::not_connected) { return fail(ec, "shutdown"); }
+    if (ec && ec != boost::system::errc::not_connected)
+    {
+        return fail(ec, "shutdown");
+    }
 }
 void test_http_spawn_clinet()
 {
@@ -591,7 +638,8 @@ public:
 
     void on_resolve(beast::error_code ec, tcp::resolver::results_type results)
     {
-        if (ec) return fail(ec, "resolve");
+        if (ec)
+            return fail(ec, "resolve");
 
         // Set a timeout on the operation
         stream_.expires_after(std::chrono::seconds(30));
@@ -602,7 +650,8 @@ public:
 
     void on_connect(beast::error_code ec, tcp::resolver::results_type::endpoint_type)
     {
-        if (ec) return fail(ec, "connect");
+        if (ec)
+            return fail(ec, "connect");
 
         // Set a timeout on the operation
         stream_.expires_after(std::chrono::seconds(30));
@@ -615,7 +664,8 @@ public:
     {
         boost::ignore_unused(bytes_transferred);
 
-        if (ec) return fail(ec, "write");
+        if (ec)
+            return fail(ec, "write");
 
         // Receive the HTTP response
         http::async_read(stream_, buffer_, res_, beast::bind_front_handler(&session::on_read, shared_from_this()));
@@ -625,7 +675,8 @@ public:
     {
         boost::ignore_unused(bytes_transferred);
 
-        if (ec) return fail(ec, "read");
+        if (ec)
+            return fail(ec, "read");
 
         // Write the message to standard out
         std::cout << res_.body().size() << "\n" << res_ << std::endl;
@@ -634,7 +685,8 @@ public:
         stream_.socket().shutdown(tcp::socket::shutdown_both, ec);
 
         // not_connected happens sometimes so don't bother reporting it.
-        if (ec && ec != beast::errc::not_connected) return fail(ec, "shutdown");
+        if (ec && ec != beast::errc::not_connected)
+            return fail(ec, "shutdown");
 
         // If we get here then the connection is closed gracefully
     }
@@ -760,7 +812,8 @@ void testboosthttpSync()
         // not_connected happens sometimes
         // so don't bother reporting it.
         //
-        if (ec && ec != boost::system::errc::not_connected) throw boost::system::system_error{ec};
+        if (ec && ec != boost::system::errc::not_connected)
+            throw boost::system::system_error{ec};
 
         // If we get here then the connection is closed gracefully
     }
@@ -803,7 +856,10 @@ void test_http_async_client(int& finished)
     req->timeout = 10;
     http_client_send_async(req, [&finished](const HttpResponsePtr& resp) {
         printf("test_http_async_client response thread tid=%ld\n", hv_gettid());
-        if (resp == NULL) { printf("request failed!\n"); }
+        if (resp == NULL)
+        {
+            printf("request failed!\n");
+        }
         else
         {
             printf("%d %s\r\n", resp->status_code, resp->status_message());
@@ -827,7 +883,10 @@ void testhvhttp()
 void testhvhttpSync()
 {
     auto resp = requests::get("http://163.com");
-    if (resp == NULL) { printf("request failed!\n"); }
+    if (resp == NULL)
+    {
+        printf("request failed!\n");
+    }
     else
     {
         printf("%d %s\r\n", resp->status_code, resp->status_message());
@@ -835,7 +894,10 @@ void testhvhttpSync()
     }
 
     resp = requests::post("https://10.30.16.10//api/login", "hello,world!");
-    if (resp == NULL) { printf("request failed!\n"); }
+    if (resp == NULL)
+    {
+        printf("request failed!\n");
+    }
     else
     {
         printf("%d %s\r\n", resp->status_code, resp->status_message());
@@ -844,7 +906,7 @@ void testhvhttpSync()
 }
 #pragma endregion
 
-void testStd()   
+void testStd()
 {
     std::stringstream ss;
     ss << std::uppercase << std::hex << std::setfill('0');

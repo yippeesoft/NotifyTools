@@ -28,20 +28,20 @@ namespace http = boost::beast::http;
 class HttpAsio
 {
 public:
-    HttpAsio() : guard_{asio::make_work_guard(ctx_)}
+    HttpAsio() : guard_{asio::make_work_guard(ioc_)}
     {
-        jthread_ = std::jthread([this]() { ctx_.run(); });
+        jthread_ = std::jthread([this]() { ioc_.run(); });
     }
     template<class F>
     void run(F f)
     {
-        boost::asio::post(ctx_, f);
+        boost::asio::post(ioc_, f);
     }
 
     void run()
     {
         //asio::co_spawn(ctx_, coro_test(), boost::asio::detached
-        asio::co_spawn(ctx_, co_httpGet("www.163.com", "80"), boost::asio::detached);
+        asio::co_spawn(ioc_, co_httpGet("www.163.com", "80"), boost::asio::detached);
     }
 
     boost::asio::awaitable<void> coro_test()
@@ -59,8 +59,58 @@ public:
     }
     void clear()
     {
-        ctx_.stop();
+        ioc_.stop();
         jthread_.join();
+    }
+
+    bool httpDownload(
+        std::string const host, std::string port, std::string const target = "/", std::string const scheme = "https",
+        int version = 11)
+    {
+        auto fu = boost::asio ::co_spawn(
+            ioc_, co_httpDownload(host, port, scheme, target, version), boost::asio::use_future);
+        return fu.get();
+    }
+
+    //https://github.com/boostorg/beast/issues/2335
+    //https://www.boost.org/doc/libs/1_80_0/libs/beast/doc/html/beast/using_http/parser_stream_operations/read_large_response_body.html
+    boost::asio::awaitable<bool> co_httpDownload(
+        std::string host, std::string port, std::string const& scheme = "https", std::string const& target = "/",
+        int version = 11)
+    {
+        //大文件导致: body limit exceeded [beast.http:9]
+        bool result = false;
+        //LOGD("{}", do_session);
+        try
+        {
+            auto endpoints = co_await resolver_.async_resolve(host, port, boost::asio::use_awaitable);
+
+            auto tcpp
+                = co_await asio::async_connect(socket_, endpoints.begin(), endpoints.end(), boost::asio::use_awaitable);
+
+            http::request<http::string_body> req{http::verb::get, target, version};
+            req.set(http::field::host, host);
+            req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+
+            auto writelen = co_await http::async_write(socket_, req, asio::use_awaitable);
+            boost::beast::flat_buffer buff;
+            http::response<http::file_body> res;
+            res.body().size()
+            res.body().open("d:/ttt.test", boost::beast::file_mode::write_new, ec_);
+
+            auto readlen = co_await http::async_read(socket_, buff, res, asio::use_awaitable);
+            res.body().close();
+
+            //std::cout << "read:" << (fmt::format("async_read: {}", readlen)) << std::endl;
+            LOGD(fmt::format("async_read: {}", readlen));
+
+            result = true;
+        }
+        catch (std::exception e)
+        {
+            LOGD(e.what());
+        }
+        co_return result;
     }
 
     bool httpGet(
@@ -68,9 +118,10 @@ public:
         int version = 11)
     {
         auto fu
-            = boost::asio ::co_spawn(ctx_, co_httpGet(host, port, scheme, target, version), boost::asio::use_future);
+            = boost::asio ::co_spawn(ioc_, co_httpGet(host, port, scheme, target, version), boost::asio::use_future);
         return fu.get();
     }
+
     boost::asio::awaitable<bool> co_httpGet(
         std::string host, std::string port, std::string const& scheme = "https", std::string const& target = "/",
         int version = 11)
@@ -103,8 +154,8 @@ public:
             http::response<http::dynamic_body> res;
             auto readlen = co_await http::async_read(socket_, buff, res, asio::use_awaitable);
 
-            std::cout << "read:" << (fmt::format("async_read: {}", readlen)) << std::endl;
-
+            //std::cout << "read:" << (fmt::format("async_read: {}", readlen)) << std::endl;
+            LOGD(fmt::format("async_read: {}", readlen));
             std::cout << "reason:" << res.reason() << res["Content-Length"] << std::endl;
             std::cout << fmt::format("async_read:len: {}   {}", readlen, 444) << std::endl;
             result = true;
@@ -117,10 +168,10 @@ public:
     }
 
 private:
-    asio::io_context ctx_{};
+    asio::io_context ioc_{};
     boost::system::error_code ec_;
-    tcp::resolver resolver_{ctx_};
-    tcp::socket socket_{ctx_};
+    tcp::resolver resolver_{ioc_};
+    tcp::socket socket_{ioc_};
 
     std::jthread jthread_;
     asio::executor_work_guard<asio::io_context::executor_type> guard_;
