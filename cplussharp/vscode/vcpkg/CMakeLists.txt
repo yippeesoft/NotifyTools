@@ -6,18 +6,18 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   check_cxx_compiler_flag("-Wa,-mbig-obj" GNU_BIG_OBJ_FLAG_ENABLE)
   message(STATUS GNU_BIG_OBJ_FLAG_ENABLE=${GNU_BIG_OBJ_FLAG_ENABLE})
 endif()
-# add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-# add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 # file too big
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/bigobj>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/bigobj>")
 
-add_compile_options("$<$<C_COMPILER_ID:GNU>:-Wa,-mbig-obj>")
-add_compile_options("$<$<CXX_COMPILER_ID:GNU>:-Wa,-mbig-obj>")
+# add_compile_options("$<$<C_COMPILER_ID:GNU>:-Wa,-mbig-obj>")
+# add_compile_options("$<$<CXX_COMPILER_ID:GNU>:-Wa,-mbig-obj>")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Os -Wall -s")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Os -Wall -s")
+# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Os -Wall -s") set(CMAKE_CXX_FLAGS
+# "${CMAKE_CXX_FLAGS} -Os -Wall -s -Wno-unknown-pragmas -Wno-unused-variable")
 # https://stackoverflow.com/questions/68165932/cannot-build-boost-asio-with-clang-12-on-windows
 # msvc clang编译asio失败
 

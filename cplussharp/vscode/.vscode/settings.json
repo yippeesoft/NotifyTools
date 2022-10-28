@@ -2,5 +2,4 @@
     "cmake.configureSettings": {
         "CMAKE_TOOLCHAIN_FILE": "E:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake",
     },
-    "cmake.generator": "MinGW Makefiles"
 }

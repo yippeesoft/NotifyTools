@@ -29,7 +29,7 @@ BOOST::LOG 基本例子 << expr::format_date_time< boost::posix_time::ptime > �
 注释后,运行,asan检测出错
 **/
 
-#define BOOST_LOG_DYN_LINK       1
+#define BOOST_LOG_DYN_LINK 1
 // #define BOOST_USE_WINAPI_VERSION BOOST_WINAPI_VERSION_WIN7
 
 #include <boost/log/common.hpp>
@@ -46,6 +46,7 @@ BOOST::LOG 基本例子 << expr::format_date_time< boost::posix_time::ptime > �
 #include <boost/log/support/date_time.hpp>
 
 #include <glog/logging.h>
+
 #include <spdlog/spdlog.h>
 #include <spdlog/cfg/env.h>
 #include <spdlog/sinks/basic_file_sink.h>
@@ -115,6 +116,7 @@ private:
 //GLOG没有滚动日志
 
 using namespace std;
+
 class GLog
 {
 public:
@@ -124,7 +126,10 @@ public:
     }
     void Init(string processname)
     {
-        if (google::IsGoogleLoggingInitialized()) { return; };
+        if (google::IsGoogleLoggingInitialized())
+        {
+            return;
+        };
         FLAGS_colorlogtostderr = true;           // 带颜色的输出
         FLAGS_stderrthreshold = 0;               // 输出到控制台
         FLAGS_timestamp_in_logfile_name = false; //去掉每次不同时间戳文件名
@@ -153,6 +158,7 @@ private:
     {
     }
 };
+
 using source_location = std::source_location;
 constexpr std::string_view filename_only(std::source_location location = std::source_location::current())
 {
