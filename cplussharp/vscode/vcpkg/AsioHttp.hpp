@@ -74,11 +74,21 @@ public:
 
     //https://github.com/boostorg/beast/issues/2335
     //https://www.boost.org/doc/libs/1_80_0/libs/beast/doc/html/beast/using_http/parser_stream_operations/read_large_response_body.html
+    //https://www.boost.org/doc/libs/1_80_0/libs/beast/doc/html/beast/using_http/parser_stream_operations/incremental_read.html
+
+    /*
+    https://www.boost.org/doc/libs/1_80_0/libs/beast/doc/html/beast/using_http/parser_stream_operations.html
+    Non-trivial algorithms need to do more than receive entire messages at once, such as:
+
+    Receive the header first and body later.
+    Receive a large body using a fixed-size buffer.
+    Receive a message incrementally: bounded work in each I/O cycle.
+    这些不是网络基本操作么,,,,
+    */
     boost::asio::awaitable<bool> co_httpDownload(
         std::string host, std::string port, std::string const& scheme = "https", std::string const& target = "/",
         int version = 11)
     {
-        //大文件导致: body limit exceeded [beast.http:9]
         bool result = false;
         //LOGD("{}", do_session);
         try
@@ -93,16 +103,39 @@ public:
             req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 
             auto writelen = co_await http::async_write(socket_, req, asio::use_awaitable);
-            boost::beast::flat_buffer buff;
-            http::response<http::file_body> res;
-            res.body().size()
-            res.body().open("d:/ttt.test", boost::beast::file_mode::write_new, ec_);
+            boost::beast::flat_buffer buffer;
+            {
+                //https://www.boost.org/doc/libs/1_80_0/libs/beast/doc/html/beast/more_examples/change_body_type.html
+                //https://www.boost.org/doc/libs/1_80_0/libs/beast/doc/html/beast/using_http/parser_stream_operations/incremental_read.html
+                //还是 limit exceeded
+                http::parser<false, http::buffer_body> req0;
 
-            auto readlen = co_await http::async_read(socket_, buff, res, asio::use_awaitable);
-            res.body().close();
+                // Read just the header. Otherwise, the empty_body
+                // would generate an error if body octets were received.
+                error_code ec;
+                http::read_header(socket_, buffer, req0);
+                std::cout << req0.get()[http::field::content_type] << req0.get()[http::field::content_length];
+            }
+            if (0)
+            {
+                http::parser<false, http::buffer_body> p;
 
+                //读头也会 limit exceeded
+                auto readlen = co_await http::async_read_header(socket_, buffer, p, asio::use_awaitable);
+                std::cout << p.get().result() << p.get().result_int() << p.get().has_content_length()
+                          << " ;content_length: " << p.get()[boost::beast::http::field::content_length] << std::endl;
+
+                //大文件导致: body limit exceeded
+                boost::beast::flat_buffer buff;
+                http::response<http::file_body> res;
+                // res.body().size()
+                res.body().open("d:/ttt.test", boost::beast::file_mode::write_new, ec_);
+
+                readlen = co_await http::async_read(socket_, buff, res, asio::use_awaitable);
+                res.body().close();
+                LOGD(fmt::format("async_read: {}", readlen));
+            }
             //std::cout << "read:" << (fmt::format("async_read: {}", readlen)) << std::endl;
-            LOGD(fmt::format("async_read: {}", readlen));
 
             result = true;
         }

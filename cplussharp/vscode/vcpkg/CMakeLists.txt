@@ -46,6 +46,7 @@ set(VCPKG_ROOT
 set(CMAKE_TOOLCHAIN_FILE "E:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # "cmake.configureSettings": { "CMAKE_TOOLCHAIN_FILE":
 # "E:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake", }
 
