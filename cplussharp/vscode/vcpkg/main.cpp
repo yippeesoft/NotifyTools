@@ -214,8 +214,9 @@ std::thread t;
 void test_http_class()
 {
     std::shared_ptr<asiohttp::HttpAsio> ha = std::make_shared<asiohttp::HttpAsio>();
+    ha->makeMac();
     //bool b = ha->httpGet("10.30.16.91", "80", "/Downloads/ideaIC.zip
-    bool b = ha->httpDownload("10.30.16.91", "80", "/Downloads/ideaIC.zip");
+    //bool b = ha->httpDownload("10.30.16.91", "80", "/Downloads/ideaIC.zip");
     //LOGD("ha->httpGet {}", b);
     // ha->run();
     //ha->clear();
@@ -954,7 +955,7 @@ void testHMAC()
         /* 修改 x509.h
 		#ifdef OPENSSL_SYS_WIN32
 
-		#include <windows.h>
+		#include <windows.h>ig
 		#undef X509_NAME
 		#undef X509_EXTENSIONS
 		#endif

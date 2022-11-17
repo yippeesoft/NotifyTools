@@ -20,7 +20,7 @@
 #include <spdlog/spdlog.h>
 
 #include "common.hpp"
-
+#include "Hmac.hpp"
 namespace asiohttp {
 namespace asio = boost::asio;
 using tcp = boost::asio::ip::tcp;
@@ -210,6 +210,32 @@ private:
     asio::executor_work_guard<asio::io_context::executor_type> guard_;
 
     boost::asio::cancellation_state cs;
+
+
+    public:
+    void makeMac()
+    {
+        long nonce = 1655429553;
+        string dataString
+            = R"+*({"auth":"Og==","bid":"aaa","data":[{"packageName":"com.naodianzi.jie.mnzcyx","version":"1.2.5"}],"disk":"12408848384/2221903872","hardware_version":"5.8.3","ip":"eth0:192.168.65.225","mac":"eth0:be:fc:42:6e:1f:94","marks":"box","memory":"2094247936/571047936","model":"111","name":"222","network":"","password":"","port":8384,"protocol_version":"3.0","results":[],"sn":"333","status":[],"type":"android","username":""})+*";
+        string apiverison = "11";
+        string path = "qqqqqq";
+        string secretKey = "wwwwwwww";
+        string host = "eeeee.com";
+        string method = "POST";
+        string contentType = "application/json";
+
+        string data = method + " " +"/"+apiverison+ path;
+        data += "\nHost:" +   host;
+        data += "\nContent-Type:" + contentType;
+        data += "\n\n";
+        data += dataString;
+        data +=std::to_string( nonce);
+
+        string mac=Hmac::Mac_Base64(secretKey, data);
+        LOGD(fmt::format("datastr:::\n{}\nend!!\n{}\n", data, mac));
+       
+    }
 };
 }; // namespace asiohttp
 

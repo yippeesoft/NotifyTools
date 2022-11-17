@@ -63,6 +63,10 @@ find_package(Boost REQUIRED COMPONENTS thread coroutine coroutine log log_setup)
 # find_package(glog REQUIRED)
 
 add_executable(main main.cpp)
+find_path(CPPCODEC_INCLUDE_DIRS "cppcodec/base32_crockford.hpp")
+target_include_directories(main PRIVATE ${CPPCODEC_INCLUDE_DIRS})
+
+
 message(STATUS "OpenSSL_LIBRARIES =  ${OpenSSL_LIBRARIES}.")
 message(
   STATUS
