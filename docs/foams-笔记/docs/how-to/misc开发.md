@@ -21,6 +21,8 @@ godbolt.org 测试
 4. C++-12 godbolt 正常;UBUNTU 22.04 正常
 5. VS2022 开启 asan 会出现很多内存泄漏错误
 6. VS2022 会莫名出现 error: 'fmt' is not a constant expression 等
+7. 还有乱七八糟 boost 新版要求 cmake 版本什么的
+8. beast基本的读头,下载大文件都缺失.估计上传也是坑. 类玩具
 
 ## nodejs typescript
 
