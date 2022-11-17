@@ -56,13 +56,14 @@ find_package(glog CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(libhv CONFIG REQUIRED)
+  find_package(jsoncpp CONFIG REQUIRED)
 
 # SET(Boost_USE_STATIC_LIBS ON)
 set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -DBOOST_LOG_DYN_LINK ")
 find_package(Boost REQUIRED COMPONENTS thread coroutine coroutine log log_setup)
 # find_package(glog REQUIRED)
 
-add_executable(main main.cpp)
+add_executable(main main.cpp ReqBean.cpp )
 find_path(CPPCODEC_INCLUDE_DIRS "cppcodec/base32_crockford.hpp")
 target_include_directories(main PRIVATE ${CPPCODEC_INCLUDE_DIRS})
 
@@ -86,7 +87,8 @@ target_link_libraries(
           ${Boost_LOG_LIBRARY}
           ${Boost_LOG_SETUP_LIBRARY}
           OpenSSL::Crypto
-          OpenSSL::SSL)
+          OpenSSL::SSL
+          jsoncpp_lib jsoncpp_object JsonCpp::JsonCpp)
 
 # fetchcontent重点来了
 # -------------------------------------------------------------------

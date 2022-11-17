@@ -21,6 +21,8 @@
 
 #include "common.hpp"
 #include "Hmac.hpp"
+#include "ReqBean.hpp"
+
 namespace asiohttp {
 namespace asio = boost::asio;
 using tcp = boost::asio::ip::tcp;
@@ -211,8 +213,7 @@ private:
 
     boost::asio::cancellation_state cs;
 
-
-    public:
+public:
     void makeMac()
     {
         long nonce = 1655429553;
@@ -225,16 +226,15 @@ private:
         string method = "POST";
         string contentType = "application/json";
 
-        string data = method + " " +"/"+apiverison+ path;
-        data += "\nHost:" +   host;
+        string data = method + " " + "/" + apiverison + path;
+        data += "\nHost:" + host;
         data += "\nContent-Type:" + contentType;
         data += "\n\n";
         data += dataString;
-        data +=std::to_string( nonce);
+        data += std::to_string(nonce);
 
-        string mac=Hmac::Mac_Base64(secretKey, data);
+        string mac = Hmac::Mac_Base64(secretKey, data);
         LOGD(fmt::format("datastr:::\n{}\nend!!\n{}\n", data, mac));
-       
     }
 };
 }; // namespace asiohttp

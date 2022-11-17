@@ -195,6 +195,12 @@ void testAsan()
     int* ary = new int[100];
     ary[100] = 100;
 }
+
+void testReqBean()
+{
+    ReqBean req = ReqBean();
+    req.Write("d:/testtt.json");
+}
 void testgLog(char* processname)
 {
     using namespace asiohttp;
@@ -985,7 +991,8 @@ int main(int argc, char* argv[])
 {
     std::cout << "main begin:" << argv[0] << std::endl;
     print_this_file_name();
-    testgLog(argv[0]);
+    //testReqBean();
+    //testgLog(argv[0]);
     // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
     //testAsan();
     //test_union();
