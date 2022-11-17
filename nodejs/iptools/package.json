@@ -56,7 +56,7 @@
     }
   },
   "dependencies": {
-    "electron": ">=9.4.0",
+    "electron": ">=20.0.1",
     "axios": ">=0.18.1",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "global": "^4.3.2",
@@ -91,7 +91,7 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     //"electron": "^1.7.5",
-    "electron": ">=11.5.0"
+    "electron": ">=20.0.1"
     "electron-builder": "^19.19.1",
     "electron-debug": "^1.4.0",
     "electron-devtools-installer": "^2.2.0",
