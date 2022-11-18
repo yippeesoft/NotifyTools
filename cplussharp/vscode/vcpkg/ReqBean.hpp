@@ -3,12 +3,15 @@
 
 #include <string>
 #include <vector>
-namespace asiohttp {
+namespace iot {
 class ReqBean
 {
 public:
     int Read(std::string sFileName);
     int Write(std::string sFileName);
+
+    int fromjson(std::string strjson);
+    std::string tojson();
     void SetDefault(void);
     std::string auth;
     std::string bid;
@@ -39,25 +42,25 @@ public:
     std::string type;
     std::string username;
     ReqBean(void)
-        : auth("Og=="),
-          bid("aaa"),
-          disk("12408848384/2221903872"),
-          hardware_version("5.8.3"),
-          ip("eth0:192.168.65.225"),
-          mac("eth0:be:fc:42:6e:1f:94"),
-          marks("box"),
-          memory("2094247936/571047936"),
-          model("111"),
-          name("222"),
+        : auth(""),
+          bid(""),
+          disk(""),
+          hardware_version(""),
+          ip(""),
+          mac(""),
+          marks(""),
+          memory(""),
+          model(""),
+          name(""),
           network(""),
           password(""),
-          port(8384),
-          protocol_version("3.0"),
-          sn("333"),
-          type("android"),
+          port(),
+          protocol_version(""),
+          sn(""),
+          type(""),
           username("")
     {
     }
 };
-} // namespace asiohttp
+} // namespace iot
 #endif

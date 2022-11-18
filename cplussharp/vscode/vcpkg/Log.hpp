@@ -54,7 +54,7 @@ BOOST::LOG 基本例子 << expr::format_date_time< boost::posix_time::ptime > �
 
 #include "Utils.hpp"
 
-namespace asiohttp {
+namespace iot {
 using namespace std;
 namespace logging = boost::log;
 namespace sinks = boost::log::sinks;
@@ -247,5 +247,5 @@ public:
         LogSpd::Instance().Init(processname, filename, maxfilesize, maxfiles);
     }
 };
-} // namespace asiohttp
+} // namespace iot
 #endif

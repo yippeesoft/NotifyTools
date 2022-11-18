@@ -23,7 +23,7 @@
 #include "Hmac.hpp"
 #include "ReqBean.hpp"
 
-namespace asiohttp {
+namespace iot {
 namespace asio = boost::asio;
 using tcp = boost::asio::ip::tcp;
 namespace http = boost::beast::http;
@@ -237,6 +237,6 @@ public:
         LOGD(fmt::format("datastr:::\n{}\nend!!\n{}\n", data, mac));
     }
 };
-}; // namespace asiohttp
+}; // namespace iot
 
 #endif

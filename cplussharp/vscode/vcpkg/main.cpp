@@ -54,7 +54,7 @@
 #include "AsioHttp.hpp"
 #include "Log.hpp"
 #include "common.hpp"
-
+#include "HttpIot.hpp"
 #pragma region json
 // nl 不直接支持 optional， 使用 adl_serializer 可以支持任意类型的序列化
 // https://github.com/nlohmann/json/pull/2117
@@ -161,7 +161,7 @@ void testjson()
 }
 #pragma endregion
 
-namespace asiohttp {
+namespace iot {
 using namespace nlohmann;
 using namespace std;
 void testFmt();
@@ -203,7 +203,7 @@ void testReqBean()
 }
 void testgLog(char* processname)
 {
-    using namespace asiohttp;
+    using namespace iot;
     Log::Init(processname, std::string(processname) + ".log");
     LOGD("sdfjksdfjlsdfjs");
     //LogSpd::Instance().Init(processname, std::string(processname) + ".log");
@@ -219,7 +219,7 @@ std::thread t;
 #pragma region http_class
 void test_http_class()
 {
-    std::shared_ptr<asiohttp::HttpAsio> ha = std::make_shared<asiohttp::HttpAsio>();
+    std::shared_ptr<iot::HttpAsio> ha = std::make_shared<iot::HttpAsio>();
     ha->makeMac();
     //bool b = ha->httpGet("10.30.16.91", "80", "/Downloads/ideaIC.zip
     //bool b = ha->httpDownload("10.30.16.91", "80", "/Downloads/ideaIC.zip");
@@ -985,12 +985,19 @@ void testHMAC()
     // for (int i = 0; i < resultlen; i++)
     //     printf("%02x", result[i]);
 }
-} // namespace asiohttp
-using namespace asiohttp;
+} // namespace iot
+using namespace iot;
+void testHttpiot()
+{
+    Httpiot ho;
+    hi.postLogin();
+}
 int main(int argc, char* argv[])
 {
     std::cout << "main begin:" << argv[0] << std::endl;
-    print_this_file_name();
+    testHttpiot();
+
+    //print_this_file_name();
     //testReqBean();
     //testgLog(argv[0]);
     // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
@@ -1007,7 +1014,7 @@ int main(int argc, char* argv[])
     //test_http_spawn_clinet();
     // test_http_co_spawn_clinet();
     //test_http_co_spawn_time();
-    test_http_class();
+    //test_http_class();
 
     std::cout << "Main thread will for 1 seconds...\n"; // 这里是为了防止stop()执行过快
     std::this_thread::sleep_for(std::chrono::seconds(1));

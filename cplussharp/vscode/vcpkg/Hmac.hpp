@@ -5,7 +5,7 @@
 #include <cppcodec/base32_crockford.hpp>
 #include <cppcodec/base64_rfc4648.hpp>
 #include <iostream>
-namespace asiohttp {
+namespace iot {
 class Hmac
 {
 private:
@@ -16,7 +16,7 @@ private:
         HMAC(EVP_sha1(), key.data(), key.length(), bdata, data.length(), result, &resultlen);
     }
 
-    string static Base64Encode(unsigned char* data, unsigned int  len)
+    string static Base64Encode(unsigned char* data, unsigned int len)
     {
         using base32 = cppcodec::base32_crockford;
         using base64 = cppcodec::base64_rfc4648;
@@ -58,7 +58,7 @@ private:
             strcat(allitems, addition);
             allitemslen += addlen;
         }
-        HMAC(EVP_sha1(), key, strlen(key), reinterpret_cast<unsigned char *>(allitems), allitemslen, digest, digest_len);
+        HMAC(EVP_sha1(), key, strlen(key), reinterpret_cast<unsigned char*>(allitems), allitemslen, digest, digest_len);
 #elif OPENSSL_VERSION_NUMBER > 0x10100000
         HMAC_CTX* ctx = HMAC_CTX_new();
         HMAC_Init_ex(ctx, key, strlen(key), EVP_sha1(), NULL);
@@ -73,7 +73,7 @@ private:
 #endif
     }
 
-public :
+public:
     string static Mac_Base64(string key, string data)
     {
         unsigned char result[100] = {0};
@@ -83,5 +83,5 @@ public :
         return m;
     }
 };
-} // namespace asiohttp
+} // namespace iot
 #endif
