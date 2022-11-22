@@ -210,10 +210,11 @@ void testgLog(char* processname)
     LogSpd::Instance().d("sdfjksdfjlsdfjs");
     //Log().d("sdfjksdfjlsdfjs");
 }
+namespace fs = std::filesystem;
 void print_this_file_name(std::source_location location = std::source_location::current())
 {
     // Name of file that contains the call site of this function.
-    std::cout << "File: " << location.file_name() << '\n';
+    std::cout << "File: " << location.file_name()  << "\nCurrent working directory: " << fs::current_path()<< '\n';
 }
 std::thread t;
 #pragma region http_class
@@ -989,17 +990,23 @@ void testHMAC()
 using namespace iot;
 void testHttpiot()
 {
-    Httpiot ho;
+    Httpiot hi;
+    Settings set;
+    set.Write("d:/settingssss.json");
     hi.postLogin();
 }
+
 int main(int argc, char* argv[])
 {
+    system("chcp 65001");
     std::cout << "main begin:" << argv[0] << std::endl;
-    testHttpiot();
+  
 
-    //print_this_file_name();
+    print_this_file_name();
+    testgLog(argv[0]);
+    testHttpiot();
     //testReqBean();
-    //testgLog(argv[0]);
+
     // log.warn(" This is a log message, {} + {} = {}\n", 1, 1, 2);
     //testAsan();
     //test_union();

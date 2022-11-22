@@ -211,6 +211,36 @@ Select menu Window → New Window from the menu.
 Right click the new tab and select New Vertical Tab Group
 ```
 
+#### ms edge hosts
+
+有时候加了 hosts 指定,例如 stackoverflow,edge 访问会提示:strict-origin-when-cross-origin
+安装 Allow CORS: Access-Control-Allow-Origin 类似扩展解决
+
+#### msys2 gcc vcpkg
+
+https://code.visualstudio.com/docs/cpp/config-mingw
+Using GCC with MinGW
+
+https://blog.csdn.net/kingfox/article/details/117450533
+利用 msys2 安装 clang 和 llvm 编译器
+
+https://vcpkg.io/en/docs/users/mingw.html#using-mingw-w64-natively-on-windows
+Using Mingw-w64 natively on Windows
+
+#### whistle Fiddler
+
+http://wproxy.org/whistle/install.html
+https://www.jianshu.com/p/2a69875c5928
+使用 whistle 加速 Git 和 zeal 等
+https://www.proyy.com/6959525997930610719.html
+https://github.com/avwo/whistle/blob/567ab94763b37dc2b1cd00621b6f548cb8a5fc8d/docs/zh/webui/https.md
+开启拦截 HTTPS
+
+https://www.cnblogs.com/bore/p/14339090.html
+
+http://events.jianshu.io/p/4dfbe353be0f
+使用 Fiddler 加速 vcpkg 和 Git
+
 ## 吐槽
 
 1. 现在更新真是没什么好写的了么,什么改个图标啊,改个记事本啊 都月月发

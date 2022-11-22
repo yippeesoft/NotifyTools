@@ -2,8 +2,8 @@
 #define ASIOHTTP_COMMON_HPP
 #include "Log.hpp"
 // #define LOGD(logEvent)    LogSpd::Instance().d(logEvent)
-#define LOGD(format, ...) LogSpd::Instance().d(format, ##__VA_ARGS__)
-#define LOGE(logEvent)    LogSpd::Instance().d(logEvent)
+//#define LOGD(format, ...) LogSpd::Instance().d(format, ##__VA_ARGS__)
+#define LOGD(logEvent) LogSpd::Instance().d(logEvent)
 
 /*
 VS支持一种方式：

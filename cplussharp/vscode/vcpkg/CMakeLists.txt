@@ -8,7 +8,8 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 endif()
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/d1reportTimeSummary>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/d1reportTimeSummary>")
 # file too big
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/bigobj>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/bigobj>")
@@ -63,7 +64,7 @@ set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -DBOOST_LOG_DYN_LINK ")
 find_package(Boost REQUIRED COMPONENTS thread coroutine coroutine log log_setup)
 # find_package(glog REQUIRED)
 
-add_executable(main main.cpp ReqBean.cpp )
+add_executable(main main.cpp ReqBean.cpp   )
 find_path(CPPCODEC_INCLUDE_DIRS "cppcodec/base32_crockford.hpp")
 target_include_directories(main PRIVATE ${CPPCODEC_INCLUDE_DIRS})
 

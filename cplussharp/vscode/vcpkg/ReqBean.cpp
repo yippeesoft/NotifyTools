@@ -1,7 +1,5 @@
 #include "ReqBean.hpp"
-#include <algorithm>
-#include <fstream>
-#include "json/json.h" //json-cpp, tested with version 0.5
+
 //#include "nlohmann/json.hpp"
 using namespace iot;
 
@@ -176,7 +174,7 @@ std::string ReqBean::tojson()
 
     root["auth"] = auth;
     root["bid"] = bid;
-    for (unsigned int i = 0; i < root["data"].size(); i++)
+    for (unsigned int i = 0; i <data.size(); i++)
     {
         root["data"][i]["packageName"] = data[i].packageName;
         root["data"][i]["version"] = data[i].version;
