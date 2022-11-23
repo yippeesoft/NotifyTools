@@ -214,7 +214,7 @@ namespace fs = std::filesystem;
 void print_this_file_name(std::source_location location = std::source_location::current())
 {
     // Name of file that contains the call site of this function.
-    std::cout << "File: " << location.file_name()  << "\nCurrent working directory: " << fs::current_path()<< '\n';
+    std::cout << "File: " << location.file_name() << "\nCurrent working directory: " << fs::current_path() << '\n';
 }
 std::thread t;
 #pragma region http_class
@@ -991,16 +991,38 @@ using namespace iot;
 void testHttpiot()
 {
     Httpiot hi;
+    int last_progress = 0;
+    Httpiot::wget(
+        "http://10.30.16.91/Downloads/CLion-2022.2.1.win.zip", "d:/CLion-2022.2.1.win.zip",
+        [&last_progress](size_t received_bytes, size_t total_bytes) {
+            // print progress
+            if (total_bytes == 0)
+            {
+                printf("\rprogress: %lu/? = ?", (unsigned long)received_bytes);
+            }
+            else
+            {
+                int cur_progress = received_bytes * 100 / total_bytes;
+                if (cur_progress > last_progress)
+                {
+                    printf(
+                        "\rprogress: %lu/%lu = %d%%", (unsigned long)received_bytes, (unsigned long)total_bytes,
+                        (int)cur_progress);
+                    last_progress = cur_progress;
+                }
+            }
+            fflush(stdout);
+        },
+        true);
     Settings set;
-    set.Write("d:/settingssss.json");
-    hi.postLogin();
+    //set.Write("d:/settingssss.json");
+    //hi.postLogin();
 }
 
 int main(int argc, char* argv[])
 {
     system("chcp 65001");
     std::cout << "main begin:" << argv[0] << std::endl;
-  
 
     print_this_file_name();
     testgLog(argv[0]);

@@ -158,6 +158,7 @@ public:
     {
         data.push_back(Data());
     }
+
 };
 } // namespace iot
 #endif
