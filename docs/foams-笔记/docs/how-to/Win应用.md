@@ -73,6 +73,50 @@ vcpkg remove --purge -recurse
 vcpkg\installed\x64-windows 对应目录
 vcpkg\buildtrees 对应目录
 
+### powershell 美化
+
+```dotnetcli
+https://ohmyposh.dev/docs/installation/windows
+
+使用 Oh My Posh 为 PowerShell 或 WSL 设置自定义提示符
+https://learn.microsoft.com/zh-cn/windows/terminal/tutorials/custom-prompt-setup
+
+重点在于字体
+```
+
+### powershell 配置
+
+```typescript
+oh-my-posh init pwsh  --config "$env:POSH_THEMES_PATH\unicorn.omp.json" | Invoke-Expression
+
+Import-Module -Name Terminal-Icons
+
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+Set-PSReadLineOption -PredictionSource History # 设置预测文本来源为历史记录
+Set-PSReadLineOption -PredictionViewStyle Listview
+#Set-PSReadlineKeyHandler -Key Tab -Function Complete # 设置 Tab 键补全
+Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
+Set-PSReadLineKeyHandler -Key "Ctrl+d" -Function MenuComplete # 设置 Ctrl+d 为菜单补全和 Intellisense
+Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo # 设置 Ctrl+z 为撤销
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward # 设置向上键为后向搜索历史记录
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward # 设置向下键为前向搜索历史纪录
+
+New-Alias open invoke-item
+New-Alias which get-command
+```
+
+### scoop
+
+```powershell-interactive
+删除原有仓库
+scoop bucket list
+scoop bucket rm main
+
+设置国内源
+ scoop bucket add main https://gitcode.net/mirrors/ScoopInstaller/Main.git
+ scoop bucket add extras https://gitcode.net/mirrors/lukesampson/scoop-extras.git
+```
+
 ### openssl libressl
 
 openssl 3.x 取消了\*_\_update 等,怀疑处理大数据会有问题
