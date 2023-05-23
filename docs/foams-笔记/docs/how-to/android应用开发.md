@@ -38,17 +38,24 @@ public boolean onTouchEvent(MotionEvent event) {
 }
 ```
 
-### 智障 gralde
+### 智障 gradle
 
 setting > Build, Execution, Deployment > Build Tools > Gradle > Gradle JDK 设置 gradle 目录和 jdk 版本
 不然 as 这白痴每次都要下载一次 gradle 和报错 jdk 版本错误 JDK11 不能 JDK8.
 保存了也没用.
+和 android 配合各种版本不匹配提示智障的错误信息
 
 ```java
     repositories {
         maven { url 'https://maven.aliyun.com/repository/google/' }
         maven { url 'https://maven.aliyun.com/repository/jcenter/'}
     }
+```
+
+gradle 全局 阿里源头
+
+```dotnetcli
+https://zhuanlan.zhihu.com/p/427103768
 ```
 
 各种碎片化...

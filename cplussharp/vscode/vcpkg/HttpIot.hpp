@@ -4,7 +4,7 @@
 #include <hv/axios.h>
 #include <hv/http_client.h>
 #include "Log.hpp"
-using namespace hv;
+
 namespace iot {
 
 class Httpiot
@@ -16,7 +16,7 @@ public:
         req.ip = "1.1.1.1";
         req.type = "aaa";
         req.port = 1234;
-        req.auth = "Og==";
+        req.auth = "123123";
         req.mac = "aa:ff:gg:ee::kk";
         req.hardware_version = "1.1";
         req.marks = "box";
@@ -34,7 +34,7 @@ public:
         req->url = "https://192.168.65.144:3001";
         req->headers["Connection"] = "keep-alive";
 
-        req->headers["Authorization"] = "1655429553:8nuZoH5zbXr6EhSMn4l2nQmz8zE=";
+        req->headers["Authorization"] = "1655429553:123123=";
 
         req->headers["Content-Type"] = "application/json";
         //req->headers["Content-Length"] = datas.length();
@@ -56,7 +56,7 @@ public:
     }
 
     typedef std::function<void(size_t received_bytes, size_t total_bytes)> wget_progress_cb;
-
+    using HttpClient = hv::HttpClient;
     static int wget(const char* url, const char* filepath, wget_progress_cb progress_cb = NULL, bool use_range = true)
     {
         int ret = 0;

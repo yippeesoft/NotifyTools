@@ -8,98 +8,6 @@
 #include "json/json.h" //json-cpp, tested with version 0.5
 namespace iot {
 
-
-class Settings
-{
-public:
-    void  SetDefault(void){};
-
-    int Read(std::string sFileName)
-    {
-        Json::Value root; // will contains the root value after parsing.
-        Json::Reader reader;
-
-        SetDefault();
-
-        try
-        {
-            std::ifstream ifs(sFileName.c_str());
-            std::string strConfig((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-            ifs.close();
-            bool parsingSuccessful = reader.parse(strConfig, root);
-            if (!parsingSuccessful)
-            {
-                return 2;
-            }
-        }
-        catch (...)
-        {
-            return 1;
-        }
-        if (root.type() != Json::objectValue)
-        {
-            return 1;
-        }
-
-        version = root.get("version", "XXXXXX").asString();
-        if (root["data"].type() != Json::arrayValue)
-        {
-            return 1;
-        }
-        data.resize(root["data"].size());
-        for (unsigned int i = 0; i < root["data"].size(); i++)
-        {
-            data[i].AAA = root["data"][i].get("AAA", "123").asString();
-            data[i].BBB = root["data"][i].get("BBB", "1").asString();
-        }
-
-        return 0;
-    };
-
-    int  Write(std::string sFileName)
-    {
-        Json::Value root;
-        Json::StyledWriter writer;
-
-        root["version"] = version;
-        for (unsigned int i = 0; i < data.size(); i++)
-        {
-            root["data"][i]["AAA"] = data[i].AAA;
-            root["data"][i]["BBB"] = data[i].BBB;
-        }
-
-        std::string outputConfig = writer.write(root);
-
-        try
-        {
-            std::ofstream ofs(sFileName.c_str());
-            ofs << outputConfig;
-            ofs.close();
-        }
-        catch (...)
-        {
-            return 1;
-        }
-
-        return 0;
-    };
-   
-    std::string version;
-    struct Data
-    {
-        std::string AAA;
-        std::string BBB;
-        Data(void) : AAA("123"), BBB("1")
-        {
-        }
-    };
-    std::vector<Data> data;
-    Settings(void) : version("XXXXXX")
-    {
-        data.push_back(Data());
-    }
-};
-
 class ReqBean
 {
 public:
@@ -158,7 +66,6 @@ public:
     {
         data.push_back(Data());
     }
-
 };
 } // namespace iot
 #endif

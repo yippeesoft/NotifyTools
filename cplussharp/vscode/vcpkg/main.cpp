@@ -55,6 +55,7 @@
 #include "Log.hpp"
 #include "common.hpp"
 #include "HttpIot.hpp"
+#include "Configs.hpp"
 #pragma region json
 // nl 不直接支持 optional， 使用 adl_serializer 可以支持任意类型的序列化
 // https://github.com/nlohmann/json/pull/2117
@@ -1014,7 +1015,7 @@ void testHttpiot()
             fflush(stdout);
         },
         true);
-    Settings set;
+    Configs cfg;
     //set.Write("d:/settingssss.json");
     //hi.postLogin();
 }
