@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+#include "weasel_cfg.hpp"
+using namespace weasel_cfg;
 #if !SDL_VERSION_ATLEAST(2, 0, 17)
 #error This backend requires SDL 2.0.17+ because of SDL_RenderGeometry() function
 #endif
@@ -27,6 +29,11 @@ int main(int, char**)
         return -1;
     }
 
+    Log::d(std::format("{} tt", "start"));
+    string path;
+    Syss::GetCfgPath(path);
+    Log::d(std::format("GetCfgPath {}  ", path));
+    return 0;
     // From 2.0.18: Enable native IME.
 #ifdef SDL_HINT_IME_SHOW_UI
     SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");
