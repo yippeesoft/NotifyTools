@@ -12,6 +12,16 @@ namespace weasel_cfg {
 class CfgGui
 {
 public:
+    static void createCfg()
+    {
+        ImGui::Begin("小狼毫选项");
+        static int e = 0;
+        ImGui::RadioButton("横向显示", &e, 0);
+        ImGui::SameLine();
+        ImGui::RadioButton("竖向显示", &e, 1);
+
+        ImGui::End();
+    }
     static int show()
     {
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
@@ -63,6 +73,8 @@ public:
             ImGui_ImplSDLRenderer_NewFrame();
             ImGui_ImplSDL2_NewFrame();
             ImGui::NewFrame();
+
+            createCfg();
 
             ImGui::Render();
             SDL_RenderSetScale(renderer, imguiio.DisplayFramebufferScale.x, imguiio.DisplayFramebufferScale.y);
