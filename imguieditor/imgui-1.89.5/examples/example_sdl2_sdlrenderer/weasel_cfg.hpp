@@ -7,6 +7,12 @@
 #include <iostream>
 #include <format>
 #include <shlobj.h>
+#include <fstream>
+#include <cstdint>
+#include <filesystem>
+#include "yaml-cpp/yaml.h"
+namespace fs = std::filesystem;
+
 using namespace std;
 
 namespace weasel_cfg {
@@ -17,6 +23,25 @@ public:
     static void d(string s)
     {
         std::cout << s << std::endl;
+    }
+};
+class Test
+{
+public:
+    static void testYaml()
+    {
+        YAML::Node config = YAML::LoadFile("z:/default.custom.yaml");
+        Log::d("aaa");
+        YAML::Node patch = config["patch"]["schema_list"];
+        std::cout << patch.Type();
+        auto it = patch.begin();
+        for (; it != patch.end(); it++)
+        {
+            std::cout << (*(it))["schema"] << std::endl;
+        }
+
+        // const std::string username = patch["distribution_code_name"].as<std::string>();
+        // Log::d(std::format("{}", username));
     }
 };
 
@@ -55,7 +80,7 @@ public:
                 path = (lpValue);
                 Log::d(std::format("{}::{}", " RegQueryValueEx  ", path));
                 delete[] lpValue;
-                if (!path.empty())
+                if (path.empty())
                 {
                     char buff[1024] = {0};
                     bool ret = ::SHGetSpecialFolderPath(0, buff, CSIDL_APPDATA, false);
@@ -71,6 +96,7 @@ public:
             }
         }
         ::RegCloseKey(hKeyResult);
+        return path.empty() ? false : true;
     }
 };
 

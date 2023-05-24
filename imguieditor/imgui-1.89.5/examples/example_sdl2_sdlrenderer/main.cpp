@@ -14,6 +14,7 @@
 #include <SDL2/SDL.h>
 
 #include "weasel_cfg.hpp"
+#include "weasel_cfggui.hpp"
 using namespace weasel_cfg;
 #if !SDL_VERSION_ATLEAST(2, 0, 17)
 #error This backend requires SDL 2.0.17+ because of SDL_RenderGeometry() function
@@ -33,6 +34,9 @@ int main(int, char**)
     string path;
     Syss::GetCfgPath(path);
     Log::d(std::format("GetCfgPath {}  ", path));
+    Test::testYaml();
+
+    CfgGui::show();
     return 0;
     // From 2.0.18: Enable native IME.
 #ifdef SDL_HINT_IME_SHOW_UI
@@ -86,7 +90,7 @@ int main(int, char**)
 
     // Our state
     bool show_demo_window = true;
-    bool show_another_window = false;
+    bool show_another_window = true;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     // Main loop
