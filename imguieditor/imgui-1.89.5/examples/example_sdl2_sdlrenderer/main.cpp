@@ -12,7 +12,8 @@
 #include "imgui_impl_sdlrenderer.h"
 #include <stdio.h>
 #include <SDL2/SDL.h>
-
+#include <SDL2/SDL_syswm.h>
+#include <SDL2/SDL_video.h>
 #include "weasel_cfg.hpp"
 #include "weasel_cfggui.hpp"
 using namespace weasel_cfg;
@@ -20,6 +21,8 @@ using namespace weasel_cfg;
 #error This backend requires SDL 2.0.17+ because of SDL_RenderGeometry() function
 #endif
 #define _S(_LITERAL) (const char*)u8##_LITERAL
+
+#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 // Main code
 int main(int, char**)
 {
@@ -36,15 +39,16 @@ int main(int, char**)
     Log::d(std::format("GetCfgPath {}  ", path));
     Test::testYaml();
 
-    CfgGui::show();
-    return 0;
+    //CfgGui::show();
+    //return 0;
     // From 2.0.18: Enable native IME.
 #ifdef SDL_HINT_IME_SHOW_UI
     SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");
 #endif
 
     // Create window with SDL_Renderer graphics context
-    SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+    SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_BORDERLESS);
+    //(SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
     SDL_Window* window = SDL_CreateWindow("Dears是 ImGui SDL2+SDL_Renderer example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     if (renderer == nullptr)
@@ -55,6 +59,18 @@ int main(int, char**)
     //SDL_RendererInfo info;
     //SDL_GetRendererInfo(renderer, &info);
     //SDL_Log("Current SDL_Renderer: %s", info.name);
+    SDL_SysWMinfo info;
+    HWND hwnd;
+    //if (SDL_GetWindowWMInfo(window, &info))
+    //{
+    //    hwnd = info.info.win.window;
+    //    /*设置窗口colorkey*/
+    //    SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+    //    SetLayeredWindowAttributes(hwnd, RGB(255, 255, 255), 0, LWA_COLORKEY);
+    //    /*设置窗口为悬浮窗 */
+    //    SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    //    /*--------------*/
+    //}
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -63,7 +79,8 @@ int main(int, char**)
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
-
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
     // Setup Dear ImGui style
     //ImGui::StyleColorsDark();
     ImGui::StyleColorsLight();
@@ -71,7 +88,7 @@ int main(int, char**)
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
     ImGui_ImplSDLRenderer_Init(renderer);
-
+    //SDL_HideWindow(window);
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
     // - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
@@ -85,7 +102,7 @@ int main(int, char**)
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    io.FontDefault = io.Fonts->AddFontDefault();
+    //io.FontDefault = io.Fonts->AddFontDefault();
     ImFontConfig config;
     io.Fonts->AddFontFromFileTTF("z:/jp.otf", 20, &config, io.Fonts->GetGlyphRangesJapanese());
     io.Fonts->AddFontFromFileTTF("z://yh.ttf", 20, &config, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
@@ -101,7 +118,7 @@ int main(int, char**)
     // Our state
     bool show_demo_window = true;
     bool show_another_window = true;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    ImVec4 clear_color = ImVec4(0, 0, 0, 0); //0.45f, 0.55f, 0.60f, 1.00f);
 
     // Main loop
     bool done = false;
@@ -169,7 +186,8 @@ int main(int, char**)
         // Rendering
         ImGui::Render();
         SDL_RenderSetScale(renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
-        SDL_SetRenderDrawColor(renderer, (Uint8)(clear_color.x * 255), (Uint8)(clear_color.y * 255), (Uint8)(clear_color.z * 255), (Uint8)(clear_color.w * 255));
+        //SDL_SetRenderDrawColor(renderer, (Uint8)(clear_color.x * 255), (Uint8)(clear_color.y * 255), (Uint8)(clear_color.z * 255), (Uint8)(clear_color.w * 255));
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
         SDL_RenderClear(renderer);
         ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
         SDL_RenderPresent(renderer);

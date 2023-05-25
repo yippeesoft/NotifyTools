@@ -90,7 +90,15 @@ public:
 
         ImGuiIO& imguiio = ImGui::GetIO();
         (void)imguiio;
-        imguiio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad;
+        // 避免 unused 变量的警告
+        imguiio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+        //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        //imguiio.ConfigFlags |= ImGuiConfigFlags_DockingEnable;   // !!! 启用 docking 功能的支持
+        //imguiio.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // !!! 启用 viewport 功能的支持
+        //io.ConfigViewportsNoAutoMerge = true;
+        //io.ConfigViewportsNoTaskBarIcon = true;
+
+        //imguiio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad;
         //imguiio.Fonts->AddFontDefault();
         ImFont* font = imguiio.Fonts->AddFontFromFileTTF("c:/windows/fonts/msyh.ttc", 15.0f, NULL, imguiio.Fonts->GetGlyphRangesChineseFull());
         //imguiio.Fonts->Build();
