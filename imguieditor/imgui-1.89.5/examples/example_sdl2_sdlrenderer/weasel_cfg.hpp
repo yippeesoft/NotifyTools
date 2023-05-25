@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <filesystem>
 #include "yaml-cpp/yaml.h"
+
+#include "weasel.custom.yaml.h"
 namespace fs = std::filesystem;
 
 using namespace std;
@@ -29,6 +31,22 @@ class Test
 {
 public:
     static void testYaml()
+    {
+        YAML::Node config = YAML::Load((char*)WEASEL_CUSTOM_YAML__DATA);
+        Log::d("aaa");
+        YAML::Node patch = config["patch"]["style/horizontal"];
+        std::cout << patch.Type();
+        const std::string username = patch.as<std::string>();
+        Log::d(std::format("{} {}", username, patch.as<bool>()));
+        auto it = patch.begin();
+        for (; it != patch.end(); it++)
+        {
+            std::cout << (*(it))["schema"] << std::endl;
+        }
+
+     
+    }
+    static void testYaml1()
     {
         YAML::Node config = YAML::LoadFile("z:/default.custom.yaml");
         Log::d("aaa");

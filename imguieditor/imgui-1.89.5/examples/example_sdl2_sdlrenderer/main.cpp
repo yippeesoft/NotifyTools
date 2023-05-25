@@ -22,7 +22,7 @@ using namespace weasel_cfg;
 #endif
 #define _S(_LITERAL) (const char*)u8##_LITERAL
 
-#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
+//#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 // Main code
 int main(int, char**)
 {

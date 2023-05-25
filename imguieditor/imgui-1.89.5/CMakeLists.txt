@@ -39,7 +39,7 @@ foreach(input_src ${EMBED_FILES})
     get_filename_component(embed_file ${input_src} NAME)
     set(gen_embed_file        "${GEN_EMBED_OUTPUT_SRC_DIR}/${embed_file}.cpp")
     set(gen_embed_file_header "${GEN_EMBED_OUTPUT_HDR_DIR}/${embed_file}.h")
-    message(STATUS "gen_embed_file ${gen_embed_file}")
+   
     # 清空输出文件
     file(WRITE ${gen_embed_file} "")
     file(WRITE ${gen_embed_file_header} "")
@@ -53,8 +53,8 @@ foreach(input_src ${EMBED_FILES})
     string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," filedata ${filedata})
     # append data to output file
     file(APPEND ${gen_embed_file}
-        "const unsigned char ${token}__DATA[] = {\n${filedata}0x00\n};\n"
-        "const unsigned long ${token}__SIZE   = ${embed_file_size};\n")
+        "extern const unsigned char ${token}__DATA[] = {\n${filedata}0x00\n};\n"
+        "extern const unsigned long ${token}__SIZE   = ${embed_file_size};\n")
     file(APPEND ${gen_embed_file_header}
         "extern const unsigned char ${token}__DATA[];\n"
         "extern const unsigned long ${token}__SIZE;\n")
@@ -69,7 +69,7 @@ add_custom_target(
     embed_gen_files
     DEPENDS ${GEN_EMBED_FILES}
 )
-
+ message(STATUS "GEN_EMBED_FILES ${GEN_EMBED_FILES}")
 
 # Add all .cpp files of project root directory as source file
 set(SOURCE_FILES imgui.cpp imgui_draw.cpp imgui_demo.cpp imgui_tables.cpp
@@ -334,7 +334,8 @@ endif()
 if(${BUILD_EXAMPLE_SDL_SDLRENDERER})
 
   set(EXAMPLE_MAIN_FILE ./examples/example_sdl2_sdlrenderer/main.cpp)
-  add_executable(example_sdl2_sdlrenderer ${EXAMPLE_MAIN_FILE}  ${GEN_EMBED_FILES}) 
+  add_executable(example_sdl2_sdlrenderer ${EXAMPLE_MAIN_FILE}  ${GEN_EMBED_FILES})
+  add_dependencies(example_sdl2_sdlrenderer embed_gen_files)
   target_include_directories(
     example_sdl2_sdlrenderer PRIVATE ${SDL2_INCLUDE_DIRS}
                                      ${YAML_CPP_INCLUDE_DIR})
