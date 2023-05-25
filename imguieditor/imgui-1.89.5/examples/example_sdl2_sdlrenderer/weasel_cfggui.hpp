@@ -12,6 +12,44 @@ namespace weasel_cfg {
 class CfgGui
 {
 public:
+    static std::string w2s(const std::string& str)
+    {
+        int nwLen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
+        wchar_t* pwBuf = new wchar_t[nwLen + 1];
+        memset(pwBuf, 0, nwLen * 2 + 2);
+        MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), pwBuf, nwLen);
+
+        int nLen = WideCharToMultiByte(CP_ACP, 0, pwBuf, -1, NULL, NULL, NULL, NULL);
+        char* pBuf = new char[nLen + 1];
+        memset(pBuf, 0, nLen + 1);
+        WideCharToMultiByte(CP_ACP, 0, pwBuf, nwLen, pBuf, nLen, NULL, NULL);
+
+        std::string ret = pBuf;
+        delete[] pBuf;
+        delete[] pwBuf;
+
+        return ret;
+    }
+
+    static std::string s2w(const std::string& str)
+    {
+        int nwLen = MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, NULL, 0);
+        wchar_t* pwBuf = new wchar_t[nwLen + 1];
+        memset(pwBuf, 0, nwLen * 2 + 2);
+        MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), pwBuf, nwLen);
+
+        int nLen = WideCharToMultiByte(CP_UTF8, 0, pwBuf, -1, NULL, NULL, NULL, NULL);
+        char* pBuf = new char[nLen + 1];
+        memset(pBuf, 0, nLen + 1);
+        WideCharToMultiByte(CP_UTF8, 0, pwBuf, nwLen, pBuf, nLen, NULL, NULL);
+
+        std::string ret = pBuf;
+        delete[] pwBuf;
+        delete[] pBuf;
+
+        return ret;
+    }
+
     static void createCfg()
     {
         ImGui::Begin("小狼毫选项");
@@ -47,12 +85,16 @@ public:
 
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
+
+        ImGui::StyleColorsClassic();
+
         ImGuiIO& imguiio = ImGui::GetIO();
         (void)imguiio;
         imguiio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad;
-        imguiio.Fonts->AddFontDefault();
-        imguiio.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\simhei.ttf", 12.0f, NULL, imguiio.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-        ImGui::StyleColorsClassic();
+        //imguiio.Fonts->AddFontDefault();
+        ImFont* font = imguiio.Fonts->AddFontFromFileTTF("c:/windows/fonts/msyh.ttc", 15.0f, NULL, imguiio.Fonts->GetGlyphRangesChineseFull());
+        //imguiio.Fonts->Build();
+        //ImGui::PushFont(font);
 
         ImGui_ImplSDL2_InitForSDLRenderer(win, renderer);
         ImGui_ImplSDLRenderer_Init(renderer);

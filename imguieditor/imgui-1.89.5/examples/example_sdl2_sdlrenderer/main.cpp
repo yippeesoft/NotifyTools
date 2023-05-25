@@ -1,4 +1,4 @@
-// Dear ImGui: standalone example application for SDL2 + SDL_Renderer
+﻿// Dear ImGui: standalone example application for SDL2 + SDL_Renderer
 // (SDL is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
 // If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
@@ -19,7 +19,7 @@ using namespace weasel_cfg;
 #if !SDL_VERSION_ATLEAST(2, 0, 17)
 #error This backend requires SDL 2.0.17+ because of SDL_RenderGeometry() function
 #endif
-
+#define _S(_LITERAL) (const char*)u8##_LITERAL
 // Main code
 int main(int, char**)
 {
@@ -45,7 +45,7 @@ int main(int, char**)
 
     // Create window with SDL_Renderer graphics context
     SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-    SDL_Window* window = SDL_CreateWindow("Dear ImGui SDL2+SDL_Renderer example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
+    SDL_Window* window = SDL_CreateWindow("Dears是 ImGui SDL2+SDL_Renderer example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     if (renderer == nullptr)
     {
@@ -85,8 +85,18 @@ int main(int, char**)
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
-    //IM_ASSERT(font != nullptr);
+    io.FontDefault = io.Fonts->AddFontDefault();
+    ImFontConfig config;
+    io.Fonts->AddFontFromFileTTF("z:/jp.otf", 20, &config, io.Fonts->GetGlyphRangesJapanese());
+    io.Fonts->AddFontFromFileTTF("z://yh.ttf", 20, &config, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    io.Fonts->AddFontFromFileTTF("z:/jp.otf", 20, &config, io.Fonts->GetGlyphRangesCyrillic());
+
+    ImFont* font = io.Fonts->AddFontFromFileTTF("z:/yh.ttf", 20, &config, nullptr);
+
+    //ImFont* font = io.Fonts->AddFontFromFileTTF("z:/yh.ttf", 14, nullptr, io.Fonts->GetGlyphRangesChineseFull());
+    //io.Fonts->Build();
+    //ImGui::PushFont(font);
+    IM_ASSERT(font != nullptr);
 
     // Our state
     bool show_demo_window = true;
@@ -126,7 +136,7 @@ int main(int, char**)
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Hello, world!"); // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Hello,战争中 world!"); // Create a window called "Hello, world!" and append into it.
 
             ImGui::Text("This is some useful text.");          // Display some text (you can use a format strings too)
             ImGui::Checkbox("Demo Window", &show_demo_window); // Edit bools storing our window open/close state
@@ -147,8 +157,10 @@ int main(int, char**)
         // 3. Show another simple window.
         if (show_another_window)
         {
-            ImGui::Begin("Another Window", &show_another_window); // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            ImGui::Begin("Another s Window", &show_another_window); // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
             ImGui::Text("Hello from another window!");
+            ImGui::Text(_S("你好"));
+            ImGui::DebugTextEncoding(("你好"));
             if (ImGui::Button("Close Me"))
                 show_another_window = false;
             ImGui::End();

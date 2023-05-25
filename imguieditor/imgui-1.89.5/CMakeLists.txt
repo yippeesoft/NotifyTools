@@ -1,7 +1,17 @@
 cmake_minimum_required(VERSION 3.13) # CMake version check
 project(imgui) # Create project "imgui"
-set(CMAKE_CXX_STANDARD 14) # Enable c++14 standard
+set(CMAKE_CXX_STANDARD 20) # Enable c++14 standard
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+#add_compile_options("$<$<C_COMPILER_ID:MSVC>: /Zc:char8_t->")
+#add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/Zc:char8_t->")
+#add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>")
+#add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/execution-charset:utf-8>")
+
+#add_compile_options("$<$<C_COMPILER_ID:MSVC>:/std:c++latest>")
+#add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/std:c++latest>")
 # You may have to manually set CMAKE_C_COMPILER and CMAKE_CXX_COMPILER
 # respectively to clang set(CMAKE_C_COMPILER "/usr/local/bin/clang")
 # set(CMAKE_CXX_COMPILER "/usr/local/bin/clang++")
@@ -21,6 +31,15 @@ if(SDL2_FOUND)
 else()
   message(FATAL_ERROR "SDL2 library not found")
 endif()
+
+set(yaml-cpp_DIR "../../../yaml-cpp/builddll/inst/share/cmake/yaml-cpp")
+find_package(yaml-cpp REQUIRED)
+if(yaml-cpp_FOUND)
+  message(STATUS "YAML_CPP ${YAML_CPP_INCLUDE_DIR} ${YAML_CPP_LIBRARIES}")
+else()
+  message(FATAL_ERROR "YAML_CPP library not found")
+endif()
+
 # Add library target with source files listed in SOURCE_FILES variable
 add_library(imgui ${SOURCE_FILES})
 
@@ -95,7 +114,8 @@ if(${BUILD_BACKEND_SDL})
   set(BACKEND_FILE ./backends/imgui_impl_sdl2.cpp
                    ./backends/imgui_impl_sdlrenderer.cpp)
   add_library(imgui_backend_sdl2 ${BACKEND_FILE})
-  target_include_directories(imgui_backend_sdl2 PRIVATE ${SDL2_INCLUDE_DIRS})
+  target_include_directories(imgui_backend_sdl2 PRIVATE ${SDL2_INCLUDE_DIRS}
+                                                        ${YAML_CPP_INCLUDE_DIR})
   target_link_libraries(imgui_backend_sdl2 imgui ${SDL2_LIBRARIES})
 endif()
 if(${BUILD_BACKEND_VULKAN})
@@ -260,10 +280,11 @@ if(${BUILD_EXAMPLE_SDL_SDLRENDERER})
 
   set(EXAMPLE_MAIN_FILE ./examples/example_sdl2_sdlrenderer/main.cpp)
   add_executable(example_sdl2_sdlrenderer ${EXAMPLE_MAIN_FILE})
-  target_include_directories(example_sdl2_sdlrenderer
-                             PRIVATE ${SDL2_INCLUDE_DIRS})
+  target_include_directories(
+    example_sdl2_sdlrenderer PRIVATE ${SDL2_INCLUDE_DIRS}
+                                     ${YAML_CPP_INCLUDE_DIR})
   target_link_libraries(example_sdl2_sdlrenderer imgui imgui_backend_sdl2
-                        ${SDL2_LIBRARIES})
+                        ${SDL2_LIBRARIES} ${YAML_CPP_LIBRARIES})
 endif()
 if(${BUILD_EXAMPLE_SDL_VULKAN})
   pkg_check_modules(SDL2 REQUIRED sdl2)
