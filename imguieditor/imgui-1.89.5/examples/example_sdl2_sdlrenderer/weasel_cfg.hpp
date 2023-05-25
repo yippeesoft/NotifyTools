@@ -114,8 +114,9 @@ public:
             }
         }
         ::RegCloseKey(hKeyResult);
+        if(path.empty()) return false;
         path += "/rime";
-        return path.empty() ? false : true;
+        return true;
     }
 };
 
