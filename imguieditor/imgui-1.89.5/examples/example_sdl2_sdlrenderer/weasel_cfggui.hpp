@@ -53,11 +53,52 @@ public:
     static void createCfg()
     {
         ImGui::Begin("小狼毫选项");
-        static int e = 0;
+        ImGui::SeparatorText("选词栏反向");
+        static int e = 1;
         ImGui::RadioButton("横向显示", &e, 0);
         ImGui::SameLine();
         ImGui::RadioButton("竖向显示", &e, 1);
+        ImGui::SeparatorText("候选词个数");
+        static int f = 1;
+        ImGui::SliderInt("个", &f, 1, 9);
+        ImGui::SeparatorText("模糊音设置");
 
+        //https://github.com/xiaolai/rime-settings
+        //  # 【朙月拼音】模糊音定製模板
+        //#佛振配製 : -)
+        std::string chks[] = {
+            "zh, ch, sh => z, c, s",
+            "z, c, s => zh, ch, sh",
+            "n => l",
+            "l => n",
+            "r => l"
+            "l => r",
+            "ren => yin, reng => ying",
+            "r => y",
+            "hu => fu"
+            "hong => feng",
+
+            "hui => fei, hun => fen",
+            "hua => fa, ...",
+            "fu => hu",
+            "feng => hong",
+            "fei => hui, fen => hun"
+            "fa => hua, ...",
+
+            "meng = mong, ...",
+            "en => eng, in => ing",
+            "eng => en, ing => in"
+            "iong => un",
+            "iong => un",
+        };
+        int size = _countof(chks);
+        bool* bchks = new bool[size];
+        //for (string& str : chks)
+        for (int i = 0; i < size; ++i)
+        {
+            bchks[i] = false;
+            ImGui::Checkbox(chks[i].data(), &bchks[i]);
+        }
         ImGui::End();
     }
     static int show()

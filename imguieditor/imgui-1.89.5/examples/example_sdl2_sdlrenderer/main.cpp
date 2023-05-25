@@ -39,8 +39,8 @@ int main(int, char**)
     Log::d(std::format("GetCfgPath {}  ", path));
     Test::testYaml();
 
-    //CfgGui::show();
-    //return 0;
+    CfgGui::show();
+    return 0;
     // From 2.0.18: Enable native IME.
 #ifdef SDL_HINT_IME_SHOW_UI
     SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");
