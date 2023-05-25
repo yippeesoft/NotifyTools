@@ -3,6 +3,7 @@ project(imgui) # Create project "imgui"
 set(CMAKE_CXX_STANDARD 20) # Enable c++14 standard
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
+#纠缠的WIN VS UTF8 GBK
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 #add_compile_options("$<$<C_COMPILER_ID:MSVC>: /Zc:char8_t->")
@@ -15,6 +16,60 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 # You may have to manually set CMAKE_C_COMPILER and CMAKE_CXX_COMPILER
 # respectively to clang set(CMAKE_C_COMPILER "/usr/local/bin/clang")
 # set(CMAKE_CXX_COMPILER "/usr/local/bin/clang++")
+
+
+#文件转c
+#https://tisyang.github.io/post/2021-01-25-embed-assets-using-cmake/
+# 需要生成嵌入的文件
+file (GLOB EMBED_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/examples/example_sdl2_sdlrenderer/*.yaml"
+)
+# 输出文件目录
+set (GEN_EMBED_OUTPUT_HDR_DIR
+    "${CMAKE_CURRENT_SOURCE_DIR}/examples/example_sdl2_sdlrenderer/")
+set (GEN_EMBED_OUTPUT_SRC_DIR
+     "${CMAKE_CURRENT_SOURCE_DIR}/examples/example_sdl2_sdlrenderer/")
+file(MAKE_DIRECTORY ${GEN_EMBED_OUTPUT_HDR_DIR})
+file(MAKE_DIRECTORY ${GEN_EMBED_OUTPUT_SRC_DIR})
+
+# 依次处理文件
+foreach(input_src ${EMBED_FILES})
+    # 配置输出文件名
+    file(SIZE ${input_src} embed_file_size)
+    get_filename_component(embed_file ${input_src} NAME)
+    set(gen_embed_file        "${GEN_EMBED_OUTPUT_SRC_DIR}/${embed_file}.cpp")
+    set(gen_embed_file_header "${GEN_EMBED_OUTPUT_HDR_DIR}/${embed_file}.h")
+    message(STATUS "gen_embed_file ${gen_embed_file}")
+    # 清空输出文件
+    file(WRITE ${gen_embed_file} "")
+    file(WRITE ${gen_embed_file_header} "")
+    # for c compatibility
+    string(MAKE_C_IDENTIFIER ${embed_file} token)
+    # to upper case
+    string(TOUPPER ${token} token)
+    # read hex data from file
+    file(READ ${input_src} filedata HEX)
+    # convert hex data for C compatibility
+    string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," filedata ${filedata})
+    # append data to output file
+    file(APPEND ${gen_embed_file}
+        "const unsigned char ${token}__DATA[] = {\n${filedata}0x00\n};\n"
+        "const unsigned long ${token}__SIZE   = ${embed_file_size};\n")
+    file(APPEND ${gen_embed_file_header}
+        "extern const unsigned char ${token}__DATA[];\n"
+        "extern const unsigned long ${token}__SIZE;\n")
+    # 加入到生成文件列表
+    list(APPEND GEN_EMBED_FILES
+        ${gen_embed_file}
+        ${gen_embed_file_header}
+    )
+endforeach()
+
+add_custom_target(
+    embed_gen_files
+    DEPENDS ${GEN_EMBED_FILES}
+)
+
 
 # Add all .cpp files of project root directory as source file
 set(SOURCE_FILES imgui.cpp imgui_draw.cpp imgui_demo.cpp imgui_tables.cpp
@@ -279,7 +334,7 @@ endif()
 if(${BUILD_EXAMPLE_SDL_SDLRENDERER})
 
   set(EXAMPLE_MAIN_FILE ./examples/example_sdl2_sdlrenderer/main.cpp)
-  add_executable(example_sdl2_sdlrenderer ${EXAMPLE_MAIN_FILE})
+  add_executable(example_sdl2_sdlrenderer ${EXAMPLE_MAIN_FILE}  ${GEN_EMBED_FILES}) 
   target_include_directories(
     example_sdl2_sdlrenderer PRIVATE ${SDL2_INCLUDE_DIRS}
                                      ${YAML_CPP_INCLUDE_DIR})
