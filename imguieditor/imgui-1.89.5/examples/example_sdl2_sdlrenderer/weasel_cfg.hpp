@@ -27,45 +27,45 @@ public:
         std::cout << s << std::endl;
     }
 };
-class Test
-{
-public:
-    static void testYaml()
-    {
-        YAML::Node config = YAML::Load((char*)WEASEL_CUSTOM_YAML__DATA);
-        Log::d("aaa");
-        YAML::Node patch = config["patch"]["style/horizontal"];
-        std::cout << patch.Type();
-        const std::string username = patch.as<std::string>();
-        Log::d(std::format("{} {}", username, patch.as<bool>()));
-        auto it = patch.begin();
-        for (; it != patch.end(); it++)
-        {
-            std::cout << (*(it))["schema"] << std::endl;
-        }
-
-     
-    }
-    static void testYaml1()
-    {
-        YAML::Node config = YAML::LoadFile("z:/default.custom.yaml");
-        Log::d("aaa");
-        YAML::Node patch = config["patch"]["schema_list"];
-        std::cout << patch.Type();
-        auto it = patch.begin();
-        for (; it != patch.end(); it++)
-        {
-            std::cout << (*(it))["schema"] << std::endl;
-        }
-
-        // const std::string username = patch["distribution_code_name"].as<std::string>();
-        // Log::d(std::format("{}", username));
-    }
-};
 
 class Syss
 {
 public:
+    static YAML::Node readYaml(string filename, std::vector<std::string> xxpath)
+    {
+        fs::path path = filename;
+
+        YAML::Node config = YAML::LoadFile(filename);
+        YAML::Node nodee = config;
+        for (auto str : xxpath)
+        {
+            nodee = nodee[str];
+            if (nodee.IsNull()) return nodee;
+        }
+        return nodee;
+    }
+    static bool readYaml(string filename, std::vector<std::string> xxpath, bool def)
+    {
+        if (!fs::exists(filename)) return def;
+        YAML::Node nodee = readYaml(filename, xxpath);
+        if (nodee.IsScalar())
+        {
+            string tt = typeid(def).name();
+            if (tt == "bool") return nodee.as<bool>();
+        }
+        return def;
+    }
+    static int readYaml(string filename, std::vector<std::string> xxpath, int def)
+    {
+        if (!fs::exists(filename)) return def;
+        YAML::Node nodee = readYaml(filename, xxpath);
+        if (nodee.IsScalar())
+        {
+            string tt = typeid(def).name();
+            if (tt == "int") return nodee.as<int>();
+        }
+        return def;
+    }
     static bool GetCfgPath(string& path)
     {
         HKEY hkey = HKEY_CURRENT_USER;
@@ -114,7 +114,62 @@ public:
             }
         }
         ::RegCloseKey(hKeyResult);
+        path += "/rime";
         return path.empty() ? false : true;
+    }
+};
+
+class Test
+{
+public:
+    static void testYaml()
+    {
+        string p;
+        Syss::GetCfgPath(p);
+        Log::d(p);
+
+        bool b = false;
+        cout << typeid(b).name() << "\n";
+        std::vector<std::string> xxpath;
+        xxpath.push_back("patch");
+        xxpath.push_back("style/horizontal");
+        b = Syss::readYaml(p + "/weasel.custom.yaml", xxpath, b);
+        Log::d(std::format("readYaml {}", b));
+        int k = 5;
+        xxpath.clear();
+        xxpath.push_back("patch");
+        xxpath.push_back("menu/page_size");
+        k = Syss::readYaml(p + "/default.custom.yaml", xxpath, k);
+        Log::d(std::format("readYaml {}", k));
+        if (0)
+        {
+            YAML::Node config = YAML::Load((char*)WEASEL_CUSTOM_YAML__DATA);
+            Log::d("aaa");
+            YAML::Node patch = config["patch"]["style/horizontal"];
+            std::cout << patch.Type();
+            const std::string username = patch.as<std::string>();
+            Log::d(std::format("{} {}", username, patch.as<bool>()));
+            auto it = patch.begin();
+            for (; it != patch.end(); it++)
+            {
+                std::cout << (*(it))["schema"] << std::endl;
+            }
+        }
+    }
+    static void testYaml1()
+    {
+        YAML::Node config = YAML::LoadFile("z:/default.custom.yaml");
+        Log::d("aaa");
+        YAML::Node patch = config["patch"]["schema_list"];
+        std::cout << patch.Type();
+        auto it = patch.begin();
+        for (; it != patch.end(); it++)
+        {
+            std::cout << (*(it))["schema"] << std::endl;
+        }
+
+        // const std::string username = patch["distribution_code_name"].as<std::string>();
+        // Log::d(std::format("{}", username));
     }
 };
 
