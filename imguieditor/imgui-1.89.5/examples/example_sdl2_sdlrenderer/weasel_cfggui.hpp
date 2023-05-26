@@ -55,7 +55,10 @@ public:
         ImGui::Begin("小狼毫选项");
         ImGui::SeparatorText("选词栏反向");
         static int e = 1;
-        ImGui::RadioButton("横向显示", &e, 0);
+        if (ImGui::RadioButton("横向显示", &e, 0))
+        {
+            Log::d("RadioButton clk");
+        };
         ImGui::SameLine();
         ImGui::RadioButton("竖向显示", &e, 1);
         ImGui::SeparatorText("候选词个数");
@@ -99,6 +102,19 @@ public:
             bchks[i] = false;
             ImGui::Checkbox(chks[i].data(), &bchks[i]);
         }
+
+        ImGui::SeparatorText("设置");
+        if (ImGui::Button("保存"))
+        {
+            Log::d("Button sav clk");
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("退出"))
+        {
+            Log::d("Button ext clk");
+            std::exit(1);
+        }
+
         ImGui::End();
     }
     static int show()

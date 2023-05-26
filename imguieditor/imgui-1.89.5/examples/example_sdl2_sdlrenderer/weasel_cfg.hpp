@@ -13,6 +13,7 @@
 #include "yaml-cpp/yaml.h"
 
 #include "weasel.custom.yaml.h"
+#include "luna_pinyin_simp.custom.yaml.h"
 namespace fs = std::filesystem;
 
 using namespace std;
@@ -114,7 +115,7 @@ public:
             }
         }
         ::RegCloseKey(hKeyResult);
-        if(path.empty()) return false;
+        if (path.empty()) return false;
         path += "/rime";
         return true;
     }
@@ -142,18 +143,20 @@ public:
         xxpath.push_back("menu/page_size");
         k = Syss::readYaml(p + "/default.custom.yaml", xxpath, k);
         Log::d(std::format("readYaml {}", k));
-        if (0)
+        if (1)
         {
-            YAML::Node config = YAML::Load((char*)WEASEL_CUSTOM_YAML__DATA);
+            YAML::Node config = YAML::Load((char*)LUNA_PINYIN_SIMP_CUSTOM_YAML__DATA);
+            //YAML::LoadFile("z:/1.yaml");
+            //YAML::Load((char*)LUNA_PINYIN_SIMP_CUSTOM_YAML__DATA);
             Log::d("aaa");
-            YAML::Node patch = config["patch"]["style/horizontal"];
+            YAML::Node patch = config["patch"]["speller/algebra"];
             std::cout << patch.Type();
-            const std::string username = patch.as<std::string>();
-            Log::d(std::format("{} {}", username, patch.as<bool>()));
+            /*   const std::string username = patch.as<std::string>();
+            Log::d(std::format("{} {}", username, patch.as<bool>()));*/
             auto it = patch.begin();
             for (; it != patch.end(); it++)
             {
-                std::cout << (*(it))["schema"] << std::endl;
+                std::cout << (*(it)) << std::endl;
             }
         }
     }

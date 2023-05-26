@@ -24,7 +24,7 @@ patch:
 
     # 這兩組一般是單向的
     - derive/^r/l/                     # r => l
-    - derive/^l/r/                     # r => l
+    - derive/^l/r/                     # l => r
 
     #- derive/^ren/yin/                 # ren => yin, reng => ying
     #- derive/^r/y/                     # r => y
@@ -44,9 +44,9 @@ patch:
     #- derive/^([bpmf])eng$/$1ong/      # meng = mong, ...
     - derive/([aei])n$/$1ng/            # en => eng, in => ing
     - derive/([aei])ng$/$1n/            # eng => en, ing => in
-    - derive/^un/iong/                 # un => iong
-    - derive/^iong/un/                 # iong => un
-    - derive/wang/huang/                 # iong => un
+    - derive/^un/iong/                  # un => iong
+    - derive/^iong/un/                  # iong => un
+    - derive/wang/huang/                # wang => huang
 
     # 樣例足夠了，其他請自己總結……
 
