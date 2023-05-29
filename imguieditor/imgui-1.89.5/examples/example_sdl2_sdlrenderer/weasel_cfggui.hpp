@@ -106,7 +106,14 @@ public:
         ImGui::SeparatorText("设置");
         if (ImGui::Button("保存"))
         {
-            Log::d("Button sav clk");
+            Log::d(std::format("候选词个数 {}", f));
+            string p;
+            Syss::GetCfgPath(p);
+            bool b = false;
+            std::vector<std::string> xxpath;
+            xxpath.push_back("patch");
+            xxpath.push_back("menu/page_size");
+            b = Syss::saveYaml(p + "/default.custom.yaml", xxpath, f);
         }
         ImGui::SameLine();
         if (ImGui::Button("退出"))

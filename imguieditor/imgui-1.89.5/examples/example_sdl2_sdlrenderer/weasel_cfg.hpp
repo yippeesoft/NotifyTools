@@ -45,6 +45,7 @@ public:
         }
         return nodee;
     }
+
     static bool readYaml(string filename, std::vector<std::string> xxpath, bool def)
     {
         if (!fs::exists(filename)) return def;
@@ -66,6 +67,46 @@ public:
             if (tt == "int") return nodee.as<int>();
         }
         return def;
+    }
+
+    //https://stackoverflow.com/questions/49514417/manipulating-nodes-in-yaml-cpp
+    //https://stackoverflow.com/users/112/jesse-beder
+    template<typename T, typename Iter>
+    static void setConfigParam(YAML::Node node, Iter begin, Iter end, T value)
+    {
+        if (begin == end)
+        {
+            return;
+        }
+        const auto& tag = *begin;
+        if (std::next(begin) == end)
+        {
+            node[tag] = value;
+            return;
+        }
+        if (!node[tag])
+        {
+            node[tag] = YAML::Node(YAML::NodeType::Map);
+        }
+        setConfigParam(node[tag], std::next(begin), end, value);
+    }
+    template<typename T>
+    static bool saveYaml(string filename, std::vector<std::string> xxpath, T def)
+    {
+        YAML::Node nodee;
+        if (fs::exists(filename))
+        {
+            nodee = YAML::LoadFile(filename);
+        }
+        else
+        {
+            nodee = YAML::Node(YAML::NodeType::Map);
+        }
+        setConfigParam(nodee, xxpath.begin(), xxpath.end(), def);
+        ofstream fout(filename);
+        fout << nodee;
+        fout.close();
+        return true;
     }
     static bool GetCfgPath(string& path)
     {
@@ -131,19 +172,35 @@ public:
         Log::d(p);
 
         bool b = false;
-        cout << typeid(b).name() << "\n";
         std::vector<std::string> xxpath;
-        xxpath.push_back("patch");
-        xxpath.push_back("style/horizontal");
-        b = Syss::readYaml(p + "/weasel.custom.yaml", xxpath, b);
-        Log::d(std::format("readYaml {}", b));
-        int k = 5;
-        xxpath.clear();
-        xxpath.push_back("patch");
-        xxpath.push_back("menu/page_size");
-        k = Syss::readYaml(p + "/default.custom.yaml", xxpath, k);
-        Log::d(std::format("readYaml {}", k));
-        if (1)
+
+        if (0)
+        {
+            xxpath.push_back("patch");
+            xxpath.push_back("styleaaa/horizontal");
+            //b = Syss::saveYaml("./testconfig.yaml", xxpath, 123);
+
+            b = Syss::saveYaml(p + "/weasel.custom.yaml", xxpath, 123);
+            Log::d(std::format("saveYaml {}", b));
+        }
+
+        if (0)
+        {
+            cout << typeid(b).name() << "\n";
+            std::vector<std::string> xxpath;
+            xxpath.push_back("patch");
+            xxpath.push_back("style/horizontal");
+            b = Syss::readYaml(p + "/weasel.custom.yaml", xxpath, b);
+            Log::d(std::format("readYaml {}", b));
+            int k = 5;
+            xxpath.clear();
+            xxpath.push_back("patch");
+            xxpath.push_back("menu/page_size");
+            k = Syss::readYaml(p + "/default.custom.yaml", xxpath, k);
+            Log::d(std::format("readYaml {}", k));
+        }
+
+        if (0)
         {
             YAML::Node config = YAML::Load((char*)LUNA_PINYIN_SIMP_CUSTOM_YAML__DATA);
             //YAML::LoadFile("z:/1.yaml");
