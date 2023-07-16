@@ -20,7 +20,8 @@
 #include <memory>
 #include <ostream>
 #include <refbase.h>
-
+#include <ratio>
+#include <chrono>
 #include "display_manager.h"
 #include "snapshot_utils.h"
 
@@ -36,14 +37,14 @@ int main(int argc, char *argv[])
     if (!SnapShotUtils::ProcessArgs(argc, argv, cmdArgments)) {
         return 0;
     }
-
+    uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     auto display = DisplayManager::GetInstance().GetDisplayById(cmdArgments.displayId);
     if (display == nullptr) {
         std::cout << "error: GetDisplayById " << cmdArgments.displayId << " error!" << std::endl;
         return -1;
     }
 
-    std::cout << "process: display " << cmdArgments.displayId <<
+    std::cout << "process22: display " << cmdArgments.displayId <<
         ": width " << display->GetWidth() << ", height " << display->GetHeight() << std::endl;
 
     // get PixelMap from DisplayManager API
@@ -69,18 +70,21 @@ int main(int argc, char *argv[])
         constexpr int rotation = 0;
         pixelMap = DisplayManager::GetInstance().GetScreenshot(cmdArgments.displayId, rect, size, rotation);
     }
-
+    uint64_t ts_ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    
     bool ret = false;
     if (pixelMap != nullptr) {
         ret = SnapShotUtils::WriteToJpegWithPixelMap(cmdArgments.fileName, *pixelMap);
     }
+     uint64_t ts_ms3 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     if (!ret) {
         std::cout << "\nerror: snapshot display " << cmdArgments.displayId <<
             ", write to " << cmdArgments.fileName.c_str() << " as jpeg failed!" << std::endl;
         return -1;
     }
-
-    std::cout << "\nsuccess: snapshot display " << cmdArgments.displayId << " , write to " <<
+    std::cout <<"\n 33GetScreenshot time :: "<<ts_ms2-ts_ms<<std::endl;
+    std::cout <<"\n 44WriteToJpegWithPixelMap time :: "<<ts_ms3-ts_ms2<<std::endl;
+    std::cout << "\n222success: snapshot display " << cmdArgments.displayId << " , write to " <<
         cmdArgments.fileName.c_str() << " as jpeg, width " << pixelMap->GetWidth() <<
         ", height " << pixelMap->GetHeight() << std::endl;
     return 0;

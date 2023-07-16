@@ -31,7 +31,8 @@
 #include <securec.h>
 #include <string>
 #include <sys/time.h>
-
+#include <ratio>
+#include <chrono>
 using namespace OHOS::Rosen;
 
 namespace OHOS {
@@ -215,9 +216,57 @@ bool SnapShotUtils::RGB565ToRGB888(const uint8_t* rgb565Buf, uint8_t *rgb888Buf,
     return true;
 }
 
+void WriteRgb888ToJpegMem(uint32_t width, uint32_t height, const uint8_t* data)
+{
+     uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    int quality = 75;
+    struct jpeg_compress_struct jpeg;
+    struct jpeg_error_mgr jerr;
+  
+    unsigned char* outbuffer;
+    outbuffer = NULL;
+    int row_stride; 
+    unsigned long outSize = 0; 
+ 
+ 
+    jpeg.err = jpeg_std_error(&jerr);
+    jpeg_create_compress(&jpeg);
+    jpeg_mem_dest (&jpeg, &outbuffer, &outSize);
+    jpeg.image_width =width;// inRgbImg.width; 
+    jpeg.image_height =height;// inRgbImg.height;
+  
+    jpeg.input_components = 3;    
+    jpeg.in_color_space = JCS_RGB; 
+    jpeg_set_defaults(&jpeg);
+    jpeg_set_quality(&jpeg, quality, true);
+    jpeg_start_compress(&jpeg, TRUE);
+    row_stride = width * 3; 
+   JSAMPROW rowPointer[1];
+        for (uint32_t i = 0; i < jpeg.image_height; i++) {
+        rowPointer[0] = const_cast<uint8_t *>(data + i * jpeg.image_width * RGB888_PIXEL_BYTES);
+        (void)jpeg_write_scanlines(&jpeg, rowPointer, 1);
+    }
+    jpeg_finish_compress(&jpeg);
+    
+//     for(int i = 0; i < outSize; i++)
+//     {
+//        (*pOutJpgImg).bufferPtr[i] = outbuffer[i];
+//     }
+// 　　(*pOutJpgImg).bufferSize = outSize;
+    jpeg_destroy_compress(&jpeg); 
+    
+    if(NULL != outbuffer)
+    {
+        free(outbuffer);
+        outbuffer = NULL;
+    }
+     uint64_t ts_ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+      std::cout << "WriteRgb888ToJpegMem time::" << ts_ms2-ts_ms<< std::endl;
+}
 // The method will NOT release file.
 bool SnapShotUtils::WriteRgb888ToJpeg(FILE* file, uint32_t width, uint32_t height, const uint8_t* data)
 {
+      uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     if (data == nullptr) {
         std::cout << "error: data error, nullptr!" << std::endl;
         return false;
@@ -258,6 +307,10 @@ bool SnapShotUtils::WriteRgb888ToJpeg(FILE* file, uint32_t width, uint32_t heigh
 
     jpeg_finish_compress(&jpeg);
     jpeg_destroy_compress(&jpeg);
+
+      uint64_t ts_ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+      std::cout << "WriteRgb888ToJpeg time::" << ts_ms2-ts_ms<< std::endl;
+      WriteRgb888ToJpegMem(width,height,data);
     return true;
 }
 
