@@ -16,7 +16,7 @@ int main() {
     char cmd[1024];
     char buf[1024];
     char result[4096];
-    sprintf(cmd, "snapshot_display");
+    sprintf(cmd, "snapshot_display  -f /data/1.jpeg");
     uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
     if ((fp = popen(cmd, "r")) != NULL) {
