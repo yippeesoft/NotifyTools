@@ -1,0 +1,73 @@
+# Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+## Build snapshot {{{
+config("snapshot_config") {
+  visibility = [ ":*" ]
+  include_dirs = [ "include" ]
+}
+
+ohos_executable("snapshot_display_sf") {
+  install_enable = true
+  sources = [ "src/snapshot_display.cpp" ]
+
+  configs = [
+    ":snapshot_config",
+    "//foundation/window/window_manager/resources/config/build:coverage_flags",
+  ]
+
+  deps = [
+    ":libsnapshot_util_sf",
+    "../dm:libdm",
+  ]
+
+  external_deps = [
+    "c_utils:utils",
+    "multimedia_image_framework:image_native",
+  ]
+
+  part_name = "window_manager"
+  subsystem_name = "window"
+}
+
+ohos_shared_library("libsnapshot_util_sf") {
+  sources = [ "src/snapshot_utils.cpp" ]
+
+  configs = [
+    ":snapshot_config",
+    "//foundation/window/window_manager/resources/config/build:coverage_flags",
+  ]
+
+  deps = [
+    "//foundation/window/window_manager/dm:libdm",
+    "//third_party/libjpeg-turbo:turbojpeg_static",
+  ]
+
+  external_deps = [
+    "c_utils:utils",
+    "hitrace_native:hitrace_meter",
+    "multimedia_image_framework:image_native",
+  ]
+
+  part_name = "window_manager"
+  subsystem_name = "window"
+}
+
+## Build snapshot }}}
+
+## group("test") {
+##   testonly = true
+##   deps = [ "test:test" ]
+## }

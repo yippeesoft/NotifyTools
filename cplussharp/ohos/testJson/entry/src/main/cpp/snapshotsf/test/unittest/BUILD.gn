@@ -1,0 +1,90 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/test.gni")
+
+module_out_path = "window_manager/snapshot"
+
+group("unittest") {
+  testonly = true
+
+  deps = [
+    ":snapshot_display_test_sf",
+    ":snapshot_utils_test",
+  ]
+}
+
+ohos_unittest("snapshot_utils_test") {
+  module_out_path = module_out_path
+
+  sources = [ "snapshot_utils_test.cpp" ]
+
+  deps = [ ":utils_unittest_common" ]
+}
+
+ohos_unittest("snapshot_display_test_sf") {
+  module_out_path = module_out_path
+
+  sources = [ "snapshot_display_test.cpp" ]
+
+  deps = [ ":utils_unittest_common" ]
+}
+
+## Build utils_unittest_common.a {{{
+config("utils_unittest_common_public_config") {
+  include_dirs = [
+    "//foundation/window/window_manager/dmserver/include",
+    "//foundation/window/window_manager/interfaces/innerkits/dm",
+    "//foundation/window/window_manager/interfaces/innerkits/wm",
+    "//foundation/window/window_manager/snapshot/include",
+    "//foundation/window/window_manager/test/common/utils/include",
+    "//foundation/window/window_manager/utils/include",
+    "//foundation/graphic/graphic_2d/rosen/modules/render_service_base/include",
+  ]
+}
+
+ohos_static_library("utils_unittest_common") {
+  visibility = [ ":*" ]
+  testonly = true
+
+  public_configs = [
+    ":utils_unittest_common_public_config",
+    "//foundation/window/window_manager/resources/config/build:coverage_flags",
+    "//foundation/window/window_manager/resources/config/build:testcase_flags",
+  ]
+
+  public_deps = [
+    "//commonlibrary/c_utils/base:utils",
+    "//foundation/graphic/graphic_2d/rosen/modules/2d_graphics:2d_graphics",
+    "//foundation/graphic/graphic_2d/rosen/modules/render_service_base:librender_service_base",
+    "//foundation/graphic/graphic_2d/rosen/modules/render_service_client:librender_service_client",
+    "//foundation/window/window_manager/dm:libdm",
+    "//foundation/window/window_manager/snapshot:libsnapshot_util",
+    "//foundation/window/window_manager/test/common/utils:libtestutil",
+    "//foundation/window/window_manager/utils:libwmutil",
+    "//third_party/googletest:gmock",
+    "//third_party/googletest:gtest_main",
+  ]
+
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "access_token:libnativetoken",
+    "access_token:libtoken_setproc",
+    "hilog_native:libhilog",
+    "ipc:ipc_core",
+  ]
+
+  subsystem_name = "window"
+  part_name = "window_manager"
+}
+## Build utils_unittest_common.a }}}
