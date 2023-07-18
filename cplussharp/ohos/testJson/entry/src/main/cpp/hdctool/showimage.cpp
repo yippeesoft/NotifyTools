@@ -34,7 +34,8 @@
 #include <string.h>
 #include <ratio>
 #include <chrono>
-
+#include <vcruntime.h>
+#include <vector>
 #include "stdlib.h"
 using namespace std;
 
@@ -78,6 +79,84 @@ void testPopn() {
         printf("%s", buf);
     }
     _pclose(fp);
+}
+
+// https://blog.csdn.net/weixin_43919932/article/details/111304250
+void Stringsplit(const string &str, const char split, std::vector<string> &res) {
+    if (str == "")
+        return;
+
+    string strs = str + split;
+    size_t pos = strs.find(split);
+
+    while (pos != strs.npos) {
+        string temp = strs.substr(0, pos);
+        res.push_back(temp);
+
+        strs = strs.substr(pos + 1, strs.size());
+        pos = strs.find(split);
+    }
+}
+
+int sdlShowDlg(string s) {
+    // 设置按钮
+    const SDL_MessageBoxButtonData buttons[] = {
+        {/* .flags, .buttonid, .text */ 0, 0, "确定"},
+        {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "取消"},
+        // {SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "cancel"},
+    };
+    // 设置对话框颜色
+    const SDL_MessageBoxColorScheme colorScheme = {
+        {/* .colors (.r, .g, .b) */
+         /* [SDL_MESSAGEBOX_COLOR_BACKGROUND] */
+         {255, 0, 0},
+         /* [SDL_MESSAGEBOX_COLOR_TEXT] */
+         {0, 255, 0},
+         /* [SDL_MESSAGEBOX_COLOR_BUTTON_BORDER] */
+         {255, 255, 0},
+         /* [SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND] */
+         {0, 0, 255},
+         /* [SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED] */
+         {255, 0, 255}}};
+    // 填充SDL_MessageBoxData结构体
+    const SDL_MessageBoxData messageboxdata = {
+        SDL_MESSAGEBOX_INFORMATION, /* .flags */
+        NULL,                       /* .window */
+        "设备",                     /* .title */
+        s.data(),                   /* .message */
+        SDL_arraysize(buttons),     /* .numbuttons */
+        buttons,                    /* .buttons */
+        &colorScheme                /* .colorScheme */
+    };
+    int buttonid;
+    // 调用函数
+    if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0) {
+        SDL_Log("error displaying message box");
+        return 10;
+    }
+
+    return buttonid;
+}
+string hdcList() {
+    FILE *fp = NULL;
+    char cmd[1024] = {};
+    char buf[1024] = {};
+    char result[4096] = {};
+    sprintf(cmd, "%s", "hdc list targets");
+    uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+    if ((fp = _popen(cmd, "r")) != NULL) {
+        while (fgets(buf, 1024, fp) != NULL) {
+            strcat(result, buf);
+            // printf("%s", buf);
+        }
+        printf("%s", result);
+        _pclose(fp);
+        fp = NULL;
+    }
+    uint64_t ts_ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    // cout << "time::" << (ts_ms2 - ts_ms) << endl;
+    return result;
 }
 
 void hdcShot() {
@@ -125,7 +204,8 @@ void hdcTap(int x, int y) {
 
 int main(int argc, char *argv[]) {
     // testPopn();
-    hdcTap(1256, 616);
+    // hdcTap(1256, 616);
+
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
@@ -153,6 +233,18 @@ int main(int argc, char *argv[]) {
     if (SDL_Init(SDL_INIT_VIDEO) == -1) {
         SDL_Log("SDL_Init(SDL_INIT_VIDEO) failed: %s\n", SDL_GetError());
         return (2);
+    }
+    string lsts = hdcList();
+    vector<string> strList;
+    Stringsplit(lsts, '\n', strList);
+    for (string s : strList) {
+        if (s.length() > 0) {
+            //  SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "选择", ("打开设备号:" + s + "?").data(), NULL);
+            int sel = sdlShowDlg("打开设备号:" + s + "?");
+            std::cout << "dlg sele::" << sel << std::endl;
+            if (sel == 0)
+                break;
+        }
     }
 
     if (SDL_CreateWindowAndRenderer(0, 0, flags, &window, &renderer) < 0) {

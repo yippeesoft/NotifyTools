@@ -17,6 +17,9 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
       "Prevented in-tree built. Please create a build directory outside of the SDL_image source code and call cmake from there"
   )
 endif()
+set(CMAKE_CXX_STANDARD 11)
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 project(SDL2_image)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
