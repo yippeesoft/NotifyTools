@@ -23,6 +23,8 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 project(SDL2_image)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+#改用msys2 clang ,clangd才能跳转
+
 message(STATUS "Configuring ${PROJECT_NAME} ${PROJECT_VERSION}")
 
 # Set defaults preventing destination file conflicts

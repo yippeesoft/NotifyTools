@@ -34,7 +34,7 @@
 #include <string.h>
 #include <ratio>
 #include <chrono>
-#include <vcruntime.h>
+// #include <vcruntime.h>
 #include <vector>
 #include "stdlib.h"
 using namespace std;
@@ -258,6 +258,7 @@ int main(int argc, char *argv[]) {
         SDL_Log("Couldn't load %s: %s\n", argv[i], SDL_GetError());
         return -1;
     }
+
     SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     /* Save the image file, if desired */
     if (saveFile) {
@@ -282,9 +283,12 @@ int main(int argc, char *argv[]) {
 
     /* Show the window */
     SDL_SetWindowTitle(window, argv[i]);
-    SDL_SetWindowSize(window, w, h);
+    SDL_SetWindowSize(window, w / 2, h / 2);
     SDL_ShowWindow(window);
+
     int x = 0, y = 0;
+    char *dropped_filedir;
+
     done = quit;
     while (!done) {
         while (SDL_PollEvent(&event)) {
@@ -295,6 +299,18 @@ int main(int argc, char *argv[]) {
                     std::cout << "resize w::" << event.window.data1 << "  y::" << event.window.data2 << std::endl;
                 }
                 break;
+            case (SDL_DROPFILE): { // In case if dropped file
+                dropped_filedir = event.drop.file;
+                // Shows directory of dropped file
+                SDL_ShowSimpleMessageBox(
+                    SDL_MESSAGEBOX_INFORMATION,
+                    "File dropped on window",
+                    dropped_filedir,
+                    window);
+                SDL_free(dropped_filedir); // Free dropped_filedir memory
+                // 可以拿来做文件发送
+                break;
+            }
             case SDL_KEYUP:
                 switch (event.key.keysym.sym) {
                 case SDLK_LEFT:
