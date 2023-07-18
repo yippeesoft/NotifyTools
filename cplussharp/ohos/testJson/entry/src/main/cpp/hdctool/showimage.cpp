@@ -76,7 +76,7 @@ void testPopn() {
         exit(1);
     }
     while (fgets(buf, 255, fp) != NULL) {
-        printf("%s", buf);
+        // printf("%s", buf);
     }
     _pclose(fp);
 }
@@ -150,7 +150,7 @@ string hdcList() {
             strcat(result, buf);
             // printf("%s", buf);
         }
-        printf("%s", result);
+        // printf("%s", result);
         _pclose(fp);
         fp = NULL;
     }
@@ -170,7 +170,7 @@ void hdcShot() {
     if ((fp = _popen("hdc shell snapshot_display  -f /data/1.jpeg && hdc  file recv   /data/1.jpeg z:\\temp\\hdcrec.jpeg", "r")) != NULL) {
         while (fgets(buf, 1024, fp) != NULL) {
             // strcat(result, buf);
-            printf("%s", buf);
+            // printf("%s", buf);
         }
         _pclose(fp);
         fp = NULL;
@@ -222,7 +222,7 @@ int main(int argc, char *argv[]) {
     //     return(1);
     // }
 
-    flags = SDL_WINDOW_HIDDEN;
+    flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
     for (i = 1; argv[i]; ++i) {
         if (SDL_strcmp(argv[i], "-fullscreen") == 0) {
             SDL_ShowCursor(0);
@@ -289,6 +289,12 @@ int main(int argc, char *argv[]) {
     while (!done) {
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
+            case SDL_WINDOWEVENT:
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+
+                    std::cout << "resize w::" << event.window.data1 << "  y::" << event.window.data2 << std::endl;
+                }
+                break;
             case SDL_KEYUP:
                 switch (event.key.keysym.sym) {
                 case SDLK_LEFT:
