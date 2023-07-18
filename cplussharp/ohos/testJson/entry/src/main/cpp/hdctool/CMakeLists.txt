@@ -18,8 +18,8 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
   )
 endif()
 
-project(  SDL2_image )
-
+project(SDL2_image)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 message(STATUS "Configuring ${PROJECT_NAME} ${PROJECT_VERSION}")
 
 # Set defaults preventing destination file conflicts

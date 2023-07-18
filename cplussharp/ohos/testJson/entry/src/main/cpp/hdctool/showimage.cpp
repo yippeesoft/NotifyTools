@@ -22,6 +22,7 @@
 // https://blog.csdn.net/supernova_TOP/article/details/129082929
 // https://github.com/Genymobile/scrcpy/issues/4137
 // https://www.bilibili.com/read/cv24125018
+// https://github.com/westinyang
 // github.com/libsdl-org/SDL_image 2.6.3
 // github.com/libsdl-org/SDL  2.28.1
 
@@ -88,10 +89,33 @@ void hdcShot() {
     uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
     if ((fp = _popen("hdc shell snapshot_display  -f /data/1.jpeg && hdc  file recv   /data/1.jpeg z:\\temp\\hdcrec.jpeg", "r")) != NULL) {
-        // while (fgets(buf, 1024, fp) != NULL) {
-        // strcat(result, buf);
-        // printf("%s", buf);
-        // }
+        while (fgets(buf, 1024, fp) != NULL) {
+            // strcat(result, buf);
+            printf("%s", buf);
+        }
+        _pclose(fp);
+        fp = NULL;
+    }
+    uint64_t ts_ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    // cout << "time::" << (ts_ms2 - ts_ms) << endl;
+}
+
+void hdcTap(int x, int y) {
+    FILE *fp = NULL;
+    char cmd[1024];
+    char buf[1024];
+    char result[4096];
+    // sprintf(cmd, "hdc shell uinput -T -d %d %d -u %d %d ", x, y, x, y);
+    // 导致 err The process tried to write to a nonexistent pipe.,但是hdc shell ; # uinput -T -d 1661 583 -u 1661 583 正常
+
+    sprintf(cmd, "hdc shell uinput  -T -c %d %d", x, y);
+    uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    printf("%s", cmd);
+    if ((fp = _popen(cmd, "r")) != NULL) {
+        while (fgets(buf, 1024, fp) != NULL) {
+            // strcat(result, buf);
+            printf("%s", buf);
+        }
         _pclose(fp);
         fp = NULL;
     }
@@ -101,7 +125,7 @@ void hdcShot() {
 
 int main(int argc, char *argv[]) {
     // testPopn();
-
+    hdcTap(1256, 616);
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
@@ -168,7 +192,7 @@ int main(int argc, char *argv[]) {
     SDL_SetWindowTitle(window, argv[i]);
     SDL_SetWindowSize(window, w, h);
     SDL_ShowWindow(window);
-
+    int x = 0, y = 0;
     done = quit;
     while (!done) {
         while (SDL_PollEvent(&event)) {
@@ -199,10 +223,13 @@ int main(int argc, char *argv[]) {
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                done = 1;
+                x = event.button.x;
+                y = event.button.y;
+                hdcTap(x, y);
+                // done = 1;
                 break;
             case SDL_QUIT:
-                argv[i + 1] = NULL;
+                // argv[i + 1] = NULL;
                 done = 1;
                 break;
             default:
