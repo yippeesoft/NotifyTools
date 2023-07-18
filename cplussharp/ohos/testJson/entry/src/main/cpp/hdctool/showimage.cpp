@@ -19,6 +19,12 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
+// https://blog.csdn.net/supernova_TOP/article/details/129082929
+// https://github.com/Genymobile/scrcpy/issues/4137
+// https://www.bilibili.com/read/cv24125018
+// github.com/libsdl-org/SDL_image 2.6.3
+// github.com/libsdl-org/SDL  2.28.1
+
 #include "SDL.h"
 #include "SDL_image.h"
 #include <stdint.h>
@@ -72,6 +78,27 @@ void testPopn() {
     }
     _pclose(fp);
 }
+
+void hdcShot() {
+    FILE *fp = NULL;
+    char cmd[1024];
+    char buf[1024];
+    char result[4096];
+    sprintf(cmd, "%s", "hdc shell snapshot_display  -f /data/1.jpeg && hdc  file recv   /data/1.jpeg z:/temp/hdcrec.jpeg");
+    uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+    if ((fp = _popen("hdc shell snapshot_display  -f /data/1.jpeg && hdc  file recv   /data/1.jpeg z:\\temp\\hdcrec.jpeg", "r")) != NULL) {
+        // while (fgets(buf, 1024, fp) != NULL) {
+        // strcat(result, buf);
+        // printf("%s", buf);
+        // }
+        _pclose(fp);
+        fp = NULL;
+    }
+    uint64_t ts_ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    // cout << "time::" << (ts_ms2 - ts_ms) << endl;
+}
+
 int main(int argc, char *argv[]) {
     // testPopn();
 
@@ -84,29 +111,12 @@ int main(int argc, char *argv[]) {
     int quit = 0;
     SDL_Event event;
     const char *saveFile = NULL;
-
+    char jpg[] = "z:/temp/hdcrec.jpeg";
     /* Check command line usage */
     // if ( ! argv[1] ) {
     //     SDL_Log("Usage: %s [-fullscreen] [-save file.png] <image_file> ...\n", argv[0]);
     //     return(1);
     // }
-    FILE *fp = NULL;
-    char cmd[1024];
-    char buf[1024];
-    char result[4096];
-    sprintf(cmd, "%s", "hdc shell snapshot_display  -f /data/1.jpeg && hdc  file recv   /data/1.jpeg z:/temp/hdcrec.jpeg");
-    uint64_t ts_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-
-    if ((fp = _popen("hdc shell snapshot_display  -f /data/1.jpeg && hdc  file recv   /data/1.jpeg z:\\temp\\hdcrec.jpeg", "r")) != NULL) {
-        while (fgets(buf, 1024, fp) != NULL) {
-            // strcat(result, buf);
-            printf("%s", buf);
-        }
-        _pclose(fp);
-        fp = NULL;
-    }
-    uint64_t ts_ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    cout << "time::" << (ts_ms2 - ts_ms) << endl;
 
     flags = SDL_WINDOW_HIDDEN;
     for (i = 1; argv[i]; ++i) {
@@ -125,16 +135,14 @@ int main(int argc, char *argv[]) {
         SDL_Log("SDL_CreateWindowAndRenderer() failed: %s\n", SDL_GetError());
         return (2);
     }
-
-    char jpg[] = "z:/temp/hdcrec.jpeg";
+    hdcShot();
     /* Open the image file */
     texture = IMG_LoadTexture(renderer, jpg);
-    // if (!texture) {
-    //     SDL_Log("Couldn't load %s: %s\n", jpg, SDL_GetError());
-    //     ret;
-    // }
+    if (!texture) {
+        SDL_Log("Couldn't load %s: %s\n", argv[i], SDL_GetError());
+        return -1;
+    }
     SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-
     /* Save the image file, if desired */
     if (saveFile) {
         SDL_Surface *surface = IMG_Load(argv[i]);
@@ -203,6 +211,13 @@ int main(int argc, char *argv[]) {
         }
         /* Draw a background pattern in case the image has transparency */
         draw_background(renderer, w, h);
+        hdcShot();
+        /* Open the image file */
+        texture = IMG_LoadTexture(renderer, jpg);
+        if (!texture) {
+            SDL_Log("Couldn't load %s: %s\n", jpg, SDL_GetError());
+            return -1;
+        }
 
         /* Display the image */
         SDL_RenderCopy(renderer, texture, NULL, NULL);
